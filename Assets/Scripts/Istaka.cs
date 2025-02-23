@@ -32,6 +32,8 @@ public class Istaka : MonoBehaviour
     }
 
     public void BosCebeYerleştir(GameObject dokunulanTas){
+        Vector2 cardSize = Card.Instance.Size;
+        float colonWidth = cardSize.x / CepSayisi;
         for (var i = 0; i < CepList.Count; i++){
             var cep = CepList[i];
             var cepScript = cep.GetComponent<IstakaCebi>();
@@ -39,6 +41,7 @@ public class Istaka : MonoBehaviour
                 dokunulanTas.transform.position = cep.transform.position;
                 dokunulanTas.transform.position += new Vector3(0, 0, -1);
                 dokunulanTas.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                dokunulanTas.transform.localScale = new Vector3(colonWidth,colonWidth)*0.9f;
                 cepScript.Dolu = true;
                 Taslar.Add(i,dokunulanTas);
                 TasinRakami.Add(i,dokunulanTas.GetComponent<Kare>().Rakam);

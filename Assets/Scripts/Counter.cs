@@ -37,6 +37,8 @@ public class Counter : MonoBehaviour{
         transform.position = _startPos;
         IstakaKontrolcu.Instance.SiraliGruplariBelirle();
         IstakaKontrolcu.Instance.AyniRakamGruplariniBelirle();
-        IstakaKontrolcu.Instance.GruplariTemizle();
+        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
+        PuanlamaKontrolcu.Instance.PuanlamaYap();
     }
 }

@@ -37,7 +37,8 @@ public class PlatformManager : MonoBehaviour{
             float holePositionY = cardSize.y * .5f;
             holePositionX += colonWidth * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
-            var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -1), Quaternion.identity);
+            var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -0.01f), Quaternion.identity);
+            sh.transform.localScale = new Vector3(colonWidth,colonWidth)*0.95f;
             SpawnHolesList.Add(sh);
         }
     }

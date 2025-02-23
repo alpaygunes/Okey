@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 
 public class KareManeger : MonoBehaviour{
     public List<GameObject> KarelerList = new List<GameObject>();
-    private RangeInt _renkAraligi = new RangeInt(1,10);
+    private RangeInt _renkAraligi = new RangeInt(1,3);
+    private RangeInt _rakamAraligi = new RangeInt(1,10);
     public static KareManeger Instance{ get; private set; }
     void Awake(){
         if (Instance != null && Instance != this){
@@ -20,7 +21,7 @@ public class KareManeger : MonoBehaviour{
         for (int i = 0; i < PlatformManager.Instance.kareCount; i++){ 
             GameObject kare = Resources.Load<GameObject>("Prefabs/Kare");
             var Kare = Instantiate(kare, new Vector2(0, 0), Quaternion.identity);
-            var rakam = Random.Range(_renkAraligi.start, _renkAraligi.end);  
+            var rakam = Random.Range(_rakamAraligi.start, _rakamAraligi.end);  
             Kare.transform.GetComponent<Renderer>().material.color =  
                 RenklerYonetimi.RenkSozlugu[Random.Range(_renkAraligi.start, _renkAraligi.end + 1)];
             Kare.GetComponentInChildren<TextMeshPro>().text = rakam.ToString();
