@@ -7,6 +7,7 @@ public class IstakaKontrolcu : MonoBehaviour{
     public static IstakaKontrolcu Instance;
     public List<Dictionary<int, GameObject>> SiraliGruplar = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> BenzerRakamGruplari = new List<Dictionary<int, GameObject>>();
+    public List<Dictionary<int, GameObject>> AyniRakamHepsiFarkliRenkGruplari = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> SiraliRakamRenkGruplari = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> AyniRakamRenkGruplari = new List<Dictionary<int, GameObject>>();
 
@@ -73,16 +74,19 @@ public class IstakaKontrolcu : MonoBehaviour{
                     if (SiraliGrup.Count > 3){
                         // sonraki iki cep varmı ? varsa aynı rakammı ?
                         bool sonrakiIkitaneVar = false;
+                        bool sonrakiUctaneVar = false;
                         if (Istaka.Instance.Taslar.TryGetValue(i + 1, out var sonrakiTasA)){
                             if (Istaka.Instance.Taslar.TryGetValue(i + 2, out var sonrakiTasB)){
                                 sonrakiIkitaneVar = true;
+                                // if (Istaka.Instance.Taslar.TryGetValue(i + 3, out var sonrakiTasC)){
+                                //     sonrakiUctaneVar = true;
+                                // }
                             }
                         }
 
                         if (sonrakiIkitaneVar){
                             if (Istaka.Instance.TasinRakami[i] == Istaka.Instance.TasinRakami[i + 1]){
                                 if (Istaka.Instance.TasinRakami[i + 1] == Istaka.Instance.TasinRakami[i + 2]){
-                                    // sonraki ikitane nin rakamları aynıysa
                                     SiraliGrup.Remove(SiraliGrup.Keys.Last());
                                 }
                             }
@@ -95,9 +99,13 @@ public class IstakaKontrolcu : MonoBehaviour{
                 SiraliGrup.Clear();
             }
         } // for end 
+ 
+        if (SiraliGruplar.Count>0){
+            print($"SiraliGruplar: {SiraliGruplar.Count}");
+        }
     }
 
-    public void AyniRakamGruplariniBelirle(){
+    public void BenzerRakamGruplariniBelirle(){
         BenzerRakamGruplari.Clear();
         bool yeniGrupOlustur = false;
         Dictionary<int, GameObject> BenzerRakamGrubu = new Dictionary<int, GameObject>();
@@ -132,10 +140,15 @@ public class IstakaKontrolcu : MonoBehaviour{
             if (yeniGrupOlustur){
                 if (BenzerRakamGrubu.Count > 2){
                     BenzerRakamGruplari.Add(new Dictionary<int, GameObject>(BenzerRakamGrubu));
-                } 
+                }
+
                 BenzerRakamGrubu.Clear();
             }
         } // for end 
+        
+        if (BenzerRakamGruplari.Count>0){
+            print($"BenzerRakamGruplari: {BenzerRakamGruplari.Count}");
+        }
     }
 
     public void GruplariTemizle(){
@@ -172,7 +185,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         Dictionary<int, GameObject> RenkGrubu = new Dictionary<int, GameObject>();
         for (int i = 0; i < SiraliGruplar.Count; i++){
             var grup = SiraliGruplar[i];
-            for (int j = 0; j < grup.Count; j++ ){ 
+            for (int j = 0; j < grup.Count; j++){
                 yeniGrupOlustur = false;
                 var key = grup.Keys.ToList()[j];
                 var Tas = grup[key];
@@ -181,42 +194,45 @@ public class IstakaKontrolcu : MonoBehaviour{
                 }
 
                 //sonraki var mı ?  
-                if (j+1 < grup.Keys.ToList().Count ){ 
-                    var sonrakiKey = grup.Keys.ToList()[j+1];
+                if (j + 1 < grup.Keys.ToList().Count){
+                    var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         // rengi aynı mı ?
-                        if (Tas.GetComponent<Renderer>().material.color == sonrakiTasA.GetComponent<Renderer>().material.color){
+                        if (Tas.GetComponent<Renderer>().material.color ==
+                            sonrakiTasA.GetComponent<Renderer>().material.color){
                             RenkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
-                        }else{
+                        }
+                        else{
                             yeniGrupOlustur = true;
                         }
                     }
-                } else{
+                }
+                else{
                     yeniGrupOlustur = true;
                 }
 
                 if (yeniGrupOlustur){
                     if (RenkGrubu.Count > 2){
                         SiraliRakamRenkGruplari.Add(new Dictionary<int, GameObject>(RenkGrubu));
-                    } 
+                    }
+
                     RenkGrubu.Clear();
                 }
             } // end for 
-        }// end for
-        foreach (var grp in SiraliRakamRenkGruplari){
-            foreach (var item in grp){
-                Debug.Log($"Taslar Key: {item.Key} Rakam: {item.Value.GetComponent<Kare>().Rakam} Renk : {item.Value.GetComponent<Renderer>().materials[0].color}");
-            }
+        } // end for
+ 
+        if (SiraliRakamRenkGruplari.Count>0){
+            print($"SiraliRakamRenkGruplari: {SiraliRakamRenkGruplari.Count}");
         }
     }
-    
+
     public void AyniRakamGruplarinIcindekiRenkGruplariniBelirle(){
         AyniRakamRenkGruplari.Clear();
         bool yeniGrupOlustur = false;
         Dictionary<int, GameObject> RenkGrubu = new Dictionary<int, GameObject>();
         for (int i = 0; i < BenzerRakamGruplari.Count; i++){
             var grup = BenzerRakamGruplari[i];
-            for (int j = 0; j < grup.Count; j++ ){ 
+            for (int j = 0; j < grup.Count; j++){
                 yeniGrupOlustur = false;
                 var key = grup.Keys.ToList()[j];
                 var Tas = grup[key];
@@ -225,32 +241,85 @@ public class IstakaKontrolcu : MonoBehaviour{
                 }
 
                 //sonraki var mı ?  
-                if (j+1 < grup.Keys.ToList().Count ){ 
-                    var sonrakiKey = grup.Keys.ToList()[j+1];
+                if (j + 1 < grup.Keys.ToList().Count){
+                    var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         // rengi aynı mı ?
-                        if (Tas.GetComponent<Renderer>().material.color == sonrakiTasA.GetComponent<Renderer>().material.color){
+                        if (Tas.GetComponent<Renderer>().material.color ==
+                            sonrakiTasA.GetComponent<Renderer>().material.color){
                             RenkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
-                        }else{
+                        }
+                        else{
                             yeniGrupOlustur = true;
                         }
                     }
-                } else{
+                }
+                else{
                     yeniGrupOlustur = true;
                 }
 
                 if (yeniGrupOlustur){
                     if (RenkGrubu.Count > 2){
                         AyniRakamRenkGruplari.Add(new Dictionary<int, GameObject>(RenkGrubu));
-                    } 
+                    }
+
                     RenkGrubu.Clear();
                 }
             } // end for 
-        }// end for
-        foreach (var grp in AyniRakamRenkGruplari){
-            foreach (var item in grp){
-                Debug.Log($"Taslar Key: {item.Key} Rakam: {item.Value.GetComponent<Kare>().Rakam} Renk : {item.Value.GetComponent<Renderer>().materials[0].color}");
-            }
+        } // end for
+        if (AyniRakamRenkGruplari.Count>0){
+            print($"AyniRakamRenkGruplari: {AyniRakamRenkGruplari.Count}");
+        }
+        
+    }
+
+    public void AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(){
+        AyniRakamHepsiFarkliRenkGruplari.Clear();
+        bool yeniGrupOlustur = false;
+        Dictionary<int, GameObject> FarkliRenklilerGrubu = new Dictionary<int, GameObject>();
+        for (int i = 0; i < BenzerRakamGruplari.Count; i++){
+            var grup = BenzerRakamGruplari[i];
+            for (int j = 0; j < grup.Count; j++){
+                yeniGrupOlustur = false;
+                int key = grup.Keys.ToList()[j];
+                var Tas = grup[key];
+                // grup yeni grupsa  bakamdan gruba ekleyelim
+                if (FarkliRenklilerGrubu.Count == 0){
+                    FarkliRenklilerGrubu.Add(key, Tas);
+                }
+                
+                // sonraki var mi ?
+                if (j + 1 < grup.Keys.ToList().Count){
+                    var sonrakiKey = grup.Keys.ToList()[j + 1];
+                    if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){ 
+                        foreach (var item in FarkliRenklilerGrubu){
+                            if (sonrakiTasA.GetComponent<Renderer>().material.color 
+                                == item.Value.GetComponent<Renderer>().material.color){
+                                //aynı renk zaten var
+                                yeniGrupOlustur = true;
+                                break;
+                            }
+                        } 
+                        if (!yeniGrupOlustur){
+                            FarkliRenklilerGrubu.Add(sonrakiKey, sonrakiTasA);
+                        }
+                    }
+                }
+                else{
+                    yeniGrupOlustur = true;
+                }
+                
+                if (yeniGrupOlustur){
+                    if (FarkliRenklilerGrubu.Count > 2){
+                        AyniRakamHepsiFarkliRenkGruplari.Add(new Dictionary<int, GameObject>(FarkliRenklilerGrubu));
+                    } 
+                    FarkliRenklilerGrubu.Clear();
+                }
+            } // end for 
+        } // end for 
+
+        if (AyniRakamHepsiFarkliRenkGruplari.Count>0){
+            print($"AyniRakamHepsiFarkliRenkGruplari: {AyniRakamHepsiFarkliRenkGruplari.Count}");
         }
     }
 }

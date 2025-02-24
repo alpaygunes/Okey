@@ -36,9 +36,10 @@ public class Counter : MonoBehaviour{
         } 
         transform.position = _startPos;
         IstakaKontrolcu.Instance.SiraliGruplariBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplariniBelirle();
+        IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
         IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
         IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         PuanlamaKontrolcu.Instance.PuanlamaYap();
     }
 }
