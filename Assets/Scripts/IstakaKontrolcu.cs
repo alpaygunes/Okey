@@ -13,7 +13,7 @@ public class IstakaKontrolcu : MonoBehaviour{
     public List<Dictionary<int, GameObject>> SiraliRakamHepsiFarkliRenkGruplari =
         new List<Dictionary<int, GameObject>>();
     
-    private bool yeniGrupOlustur;
+    private bool _yeniGrupOlustur;
 
     private void Awake(){
         if (Instance == null){
@@ -29,7 +29,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         Dictionary<int, GameObject> siraliGrup = new Dictionary<int, GameObject>();
         // Istakadaki cepleri tek tek kontrole delim.
         for (int i = 0; i < Istaka.Instance.CepSayisi; i++){
-            yeniGrupOlustur = false;
+            _yeniGrupOlustur = false;
             //Cepte taş var mı ?
             if (Istaka.Instance.Taslar.TryGetValue(i, out var tas)){
                 // grup yeni grupsa ardışıklığına bakamdan gruba ekleyelim
@@ -46,16 +46,16 @@ public class IstakaKontrolcu : MonoBehaviour{
                         siraliGrup.Add(i + 1, sonrakiTas);
                     }
                     else{
-                        yeniGrupOlustur = true;
+                        _yeniGrupOlustur = true;
                     }
                 }
                 else{
                     // sonrraki yoksa yeni grup olustur
-                    yeniGrupOlustur = true;
+                    _yeniGrupOlustur = true;
                 }
             }
 
-            if (yeniGrupOlustur){
+            if (_yeniGrupOlustur){
                 // önceki üç taşı kontrole delim per mi ? 
                 if (siraliGrup.Count > 2){
                     if (Istaka.Instance.Taslar.TryGetValue(i - (siraliGrup.Count + 1), out var ardisikIlkTas)){
@@ -109,7 +109,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         Dictionary<int, GameObject> benzerRakamGrubu = new Dictionary<int, GameObject>();
         // Istakadaki cepleri tek tek kontrole delim.
         for (int i = 0; i < Istaka.Instance.CepSayisi; i++){
-            yeniGrupOlustur = false;
+            _yeniGrupOlustur = false;
             //Cepte taş var mı ?
             if (Istaka.Instance.Taslar.TryGetValue(i, out var tas)){
                 // grup yeni grupsa ardışıklığına bakamdan gruba ekleyelim
@@ -126,16 +126,16 @@ public class IstakaKontrolcu : MonoBehaviour{
                         benzerRakamGrubu.Add(i + 1, sonrakiTas);
                     }
                     else{
-                        yeniGrupOlustur = true;
+                        _yeniGrupOlustur = true;
                     }
                 }
                 else{
                     // sonrraki yoksa yeni grup olustur
-                    yeniGrupOlustur = true;
+                    _yeniGrupOlustur = true;
                 }
             }
 
-            if (yeniGrupOlustur){
+            if (_yeniGrupOlustur){
                 if (benzerRakamGrubu.Count > 2){
                     BenzerRakamGruplari.Add(new Dictionary<int, GameObject>(benzerRakamGrubu));
                 }
@@ -155,7 +155,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < SiraliGruplar.Count; i++){
             var grup = SiraliGruplar[i];
             for (int j = 0; j < grup.Count; j++){
-                yeniGrupOlustur = false;
+                _yeniGrupOlustur = false;
                 var key = grup.Keys.ToList()[j];
                 var tas = grup[key];
                 if (renkGrubu.Count == 0){
@@ -172,15 +172,15 @@ public class IstakaKontrolcu : MonoBehaviour{
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else{
-                            yeniGrupOlustur = true;
+                            _yeniGrupOlustur = true;
                         }
                     }
                 }
                 else{
-                    yeniGrupOlustur = true;
+                    _yeniGrupOlustur = true;
                 }
 
-                if (yeniGrupOlustur){
+                if (_yeniGrupOlustur){
                     if (renkGrubu.Count > 2){
                         SiraliRakamAyniRenkGruplari.Add(new Dictionary<int, GameObject>(renkGrubu));
                     }
@@ -201,7 +201,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < BenzerRakamGruplari.Count; i++){
             var grup = BenzerRakamGruplari[i];
             for (int j = 0; j < grup.Count; j++){
-                yeniGrupOlustur = false;
+                _yeniGrupOlustur = false;
                 var key = grup.Keys.ToList()[j];
                 var tas = grup[key];
                 if (renkGrubu.Count == 0){
@@ -218,15 +218,15 @@ public class IstakaKontrolcu : MonoBehaviour{
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else{
-                            yeniGrupOlustur = true;
+                            _yeniGrupOlustur = true;
                         }
                     }
                 }
                 else{
-                    yeniGrupOlustur = true;
+                    _yeniGrupOlustur = true;
                 }
 
-                if (yeniGrupOlustur){
+                if (_yeniGrupOlustur){
                     if (renkGrubu.Count > 2){
                         AyniRakamAyniRenkGruplari.Add(new Dictionary<int, GameObject>(renkGrubu));
                     }
@@ -247,7 +247,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < BenzerRakamGruplari.Count; i++){
             var grup = BenzerRakamGruplari[i];
             for (int j = 0; j < grup.Count; j++){
-                yeniGrupOlustur = false;
+                _yeniGrupOlustur = false;
                 int key = grup.Keys.ToList()[j];
                 var tas = grup[key];
                 // grup yeni grupsa  bakamdan gruba ekleyelim
@@ -263,21 +263,21 @@ public class IstakaKontrolcu : MonoBehaviour{
                             if (sonrakiTasA.GetComponent<Renderer>().material.color
                                 == item.Value.GetComponent<Renderer>().material.color){
                                 //aynı renk zaten var
-                                yeniGrupOlustur = true;
+                                _yeniGrupOlustur = true;
                                 break;
                             }
                         }
 
-                        if (!yeniGrupOlustur){
+                        if (!_yeniGrupOlustur){
                             farkliRenklilerGrubu.Add(sonrakiKey, sonrakiTasA);
                         }
                     }
                 }
                 else{
-                    yeniGrupOlustur = true;
+                    _yeniGrupOlustur = true;
                 }
 
-                if (yeniGrupOlustur){
+                if (_yeniGrupOlustur){
                     if (farkliRenklilerGrubu.Count > 2){
                         AyniRakamHepsiFarkliRenkGruplari.Add(new Dictionary<int, GameObject>(farkliRenklilerGrubu));
                     }
@@ -298,7 +298,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < SiraliGruplar.Count; i++){
             var grup = SiraliGruplar[i];
             for (int j = 0; j < grup.Count; j++){
-                yeniGrupOlustur = false;
+                _yeniGrupOlustur = false;
                 int key = grup.Keys.ToList()[j];
                 var tas = grup[key];
                 // grup yeni grupsa  bakamdan gruba ekleyelim
@@ -314,21 +314,21 @@ public class IstakaKontrolcu : MonoBehaviour{
                             if (sonrakiTasA.GetComponent<Renderer>().material.color
                                 == item.Value.GetComponent<Renderer>().material.color){
                                 //aynı renk zaten var
-                                yeniGrupOlustur = true;
+                                _yeniGrupOlustur = true;
                                 break;
                             }
                         }
 
-                        if (!yeniGrupOlustur){
+                        if (!_yeniGrupOlustur){
                             farkliRenklilerGrubu.Add(sonrakiKey, sonrakiTasA);
                         }
                     }
                 }
                 else{
-                    yeniGrupOlustur = true;
+                    _yeniGrupOlustur = true;
                 }
 
-                if (yeniGrupOlustur){
+                if (_yeniGrupOlustur){
                     if (farkliRenklilerGrubu.Count > 2){
                         SiraliRakamHepsiFarkliRenkGruplari.Add(new Dictionary<int, GameObject>(farkliRenklilerGrubu));
                     }
@@ -345,36 +345,47 @@ public class IstakaKontrolcu : MonoBehaviour{
 
     public void GruplariTemizle(){
         // sıralı grupları temizle
-        for (int i = 0; i < SiraliGruplar.Count; i++){
-            break; // ana grup temizlenmesin. renk uyumu olmayanlar ıstakada kalmalı
-            var grup = SiraliGruplar[i];
-            foreach (var item in grup){
-                Destroy(item.Value);
-                Istaka.Instance.TasinRakami.Remove(item.Key);
-                Istaka.Instance.Taslar.Remove(item.Key);
-                Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-            }
-        }
+        // for (int i = 0; i < SiraliGruplar.Count; i++){
+        //     break; // ana grup temizlenmesin. renk uyumu olmayanlar ıstakada kalmalı
+        //     var grup = SiraliGruplar[i];
+        //     foreach (var item in grup){
+        //         Destroy(item.Value);
+        //         Istaka.Instance.TasinRakami.Remove(item.Key);
+        //         Istaka.Instance.Taslar.Remove(item.Key);
+        //         Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
+        //     }
+        // }
 
 
         // aynı rakamlı grupları temizle
-        for (int i = 0; i < BenzerRakamGruplari.Count; i++){
-            break; // ana grup temizlenmesin. renk uyumu olmayanlar ıstakada kalmalı
-            var grup = BenzerRakamGruplari[i];
-            foreach (var item in grup){
-                Destroy(item.Value);
-                Istaka.Instance.TasinRakami.Remove(item.Key);
-                Istaka.Instance.Taslar.Remove(item.Key);
-                Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-            }
-        }
+        // for (int i = 0; i < BenzerRakamGruplari.Count; i++){
+        //     break; // ana grup temizlenmesin. renk uyumu olmayanlar ıstakada kalmalı
+        //     var grup = BenzerRakamGruplari[i];
+        //     foreach (var item in grup){
+        //         Destroy(item.Value);
+        //         Istaka.Instance.TasinRakami.Remove(item.Key);
+        //         Istaka.Instance.Taslar.Remove(item.Key);
+        //         Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
+        //     }
+        // }
 
 
         // SiraliRakamAyniRenkGruplari grupları temizle
         for (int i = 0; i < SiraliRakamAyniRenkGruplari.Count; i++){
             var grup = SiraliRakamAyniRenkGruplari[i];
             foreach (var item in grup){
-                Destroy(item.Value);
+                //Destroy(item.Value);
+                Istaka.Instance.TasinRakami.Remove(item.Key);
+                Istaka.Instance.Taslar.Remove(item.Key);
+                Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
+            }
+        }
+        
+        // AyniRakamAyniRenkGruplari grupları temizle
+        for (int i = 0; i < AyniRakamAyniRenkGruplari.Count; i++){
+            var grup = AyniRakamAyniRenkGruplari[i];
+            foreach (var item in grup){
+                //Destroy(item.Value);
                 Istaka.Instance.TasinRakami.Remove(item.Key);
                 Istaka.Instance.Taslar.Remove(item.Key);
                 Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
@@ -386,7 +397,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < AyniRakamHepsiFarkliRenkGruplari.Count; i++){
             var grup = AyniRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup){
-                Destroy(item.Value);
+                //Destroy(item.Value);
                 Istaka.Instance.TasinRakami.Remove(item.Key);
                 Istaka.Instance.Taslar.Remove(item.Key);
                 Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
@@ -397,7 +408,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < SiraliRakamHepsiFarkliRenkGruplari.Count; i++){
             var grup = SiraliRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup){
-                Destroy(item.Value);
+                //Destroy(item.Value);
                 Istaka.Instance.TasinRakami.Remove(item.Key);
                 Istaka.Instance.Taslar.Remove(item.Key);
                 Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;

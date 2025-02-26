@@ -45,7 +45,7 @@ public class Istaka : MonoBehaviour
                 dokunulanTas.transform.localScale = new Vector3(colonWidth,colonWidth)*0.9f;
                 cepScript.Dolu = true;
                 Taslar.Add(i,dokunulanTas);
-                TasinRakami.Add(i,dokunulanTas.GetComponent<Kare>().Rakam);
+                TasinRakami.Add(i,dokunulanTas.GetComponent<Tas>().Rakam);
                 Counter.Instance.StartCountdown();
                 break;
             }

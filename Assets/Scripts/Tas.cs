@@ -1,0 +1,34 @@
+using System;
+using System.Collections;
+using DG.Tweening;
+using TMPro;
+using UnityEngine;
+
+public class Tas : MonoBehaviour{
+    public int Rakam = 0;
+    public float animasyonSuresi = .5f;
+
+    /*
+     * puanlama sırasında stakadan çıkar sahnenin merkezine uçar
+     */
+    public void merkezeKay(float gecikme){
+        StartCoroutine(WaitAndExecute(gecikme));
+    }
+
+    IEnumerator WaitAndExecute(float gecikme){
+        yield return new WaitForSeconds(gecikme);
+        Vector3 ilkScale = transform.localScale;
+        transform.DOMove(new Vector3(0, 0, 0), animasyonSuresi);
+        Sequence mySequence = DOTween.Sequence();
+        mySequence
+            .Append(transform.DOScale(transform.localScale * 4, animasyonSuresi * .5f))
+            .Append(transform.DOScale(ilkScale*2, animasyonSuresi * .5f));
+        StartCoroutine(KillSelf(animasyonSuresi));
+    }
+
+    IEnumerator KillSelf(float gecikme){
+        yield return new WaitForSeconds(gecikme + animasyonSuresi);
+        transform.DOKill();
+        Destroy(this.gameObject);
+    }
+}

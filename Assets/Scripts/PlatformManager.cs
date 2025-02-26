@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 public class PlatformManager : MonoBehaviour{
     public GameObject card;
     private int colonCount = 5;
-    internal int kareCount = 50;
+    internal int tasCount = 50;
     public List<GameObject> SpawnHolesList = new List<GameObject>();
 
     public static PlatformManager Instance{ get; private set; }
@@ -20,14 +20,11 @@ public class PlatformManager : MonoBehaviour{
     }
 
     private void Start(){
-        CreateSpawnHoles();
-        IstakayiHazirla();
-        KareManeger.Instance.KareleriHazirla();
+        CreateSpawnHoles(); 
+        TasManeger.Instance.TaslariHazirla();
     }
 
-    private void IstakayiHazirla(){
-        
-    }
+ 
 
     private void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
@@ -50,15 +47,15 @@ public class PlatformManager : MonoBehaviour{
                 Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero); 
                 if (hit.collider != null){
-                    if (hit.collider.gameObject.CompareTag("KARE")){
-                        KareyeDokunuldu(hit.collider.gameObject);
+                    if (hit.collider.gameObject.CompareTag("TAS")){
+                        TasaDokunuldu(hit.collider.gameObject);
                     }
                 }
             }
         }
     }
 
-    private void KareyeDokunuldu(GameObject dokunulanKare){
-       Istaka.Instance.BosCebeYerleştir(dokunulanKare);
+    private void TasaDokunuldu(GameObject dokunulanTas){
+       Istaka.Instance.BosCebeYerleştir(dokunulanTas);
     }
 }

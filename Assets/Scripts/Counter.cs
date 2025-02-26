@@ -28,7 +28,7 @@ public class Counter : MonoBehaviour{
     }
 
     private IEnumerator CountdownRoutine(){
-        bool herhangiBirGrupVar = true;
+        //bool herhangiBirGrupVar = true;
         float _timeLeft = GeriSayimSuresi;
         while (_timeLeft > 0){
             yield return new WaitForSeconds(1f);

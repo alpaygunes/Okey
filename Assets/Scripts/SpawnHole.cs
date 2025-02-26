@@ -4,26 +4,26 @@ public class SpawnHole : MonoBehaviour{
     private bool musait = true;
     
     private void OnTriggerStay2D(Collider2D other){
-        if (other.CompareTag("KARE")){
+        if (other.CompareTag("TAS")){
             musait = false;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other){
-        if (other.CompareTag("KARE")){
+        if (other.CompareTag("TAS")){
             musait = true;
         }
     }
 
     private void Update(){
-        if (musait && KareManeger.Instance.KarelerList.Count>0){
+        if (musait && TasManeger.Instance.TasList.Count>0){
             musait = false;
-            var siradakiKare = KareManeger.Instance.KarelerList[0];
-            KareManeger.Instance.KarelerList.RemoveAt(0); 
-            siradakiKare.gameObject.transform.position = transform.position;
-            siradakiKare.gameObject.transform.localScale = transform.localScale;
-            siradakiKare.transform.SetParent(PlatformManager.Instance.transform); 
-            siradakiKare.SetActive(true);
+            var siradakiTas = TasManeger.Instance.TasList[0];
+            TasManeger.Instance.TasList.RemoveAt(0); 
+            siradakiTas.gameObject.transform.position = transform.position;
+            siradakiTas.gameObject.transform.localScale = transform.localScale;
+            siradakiTas.transform.SetParent(PlatformManager.Instance.transform); 
+            siradakiTas.SetActive(true);
         }
     }
 }
