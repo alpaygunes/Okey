@@ -28,6 +28,7 @@ public class Counter : MonoBehaviour{
     }
 
     private IEnumerator CountdownRoutine(){
+        bool herhangiBirGrupVar = true;
         float _timeLeft = GeriSayimSuresi;
         while (_timeLeft > 0){
             yield return new WaitForSeconds(1f);
@@ -35,11 +36,20 @@ public class Counter : MonoBehaviour{
             transform.position += new Vector3(Card.Instance.transform.localScale.x / GeriSayimSuresi, 0, 0);
         } 
         transform.position = _startPos;
+
         IstakaKontrolcu.Instance.SiraliGruplariBelirle();
         IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
         IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
         IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
         IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
-        PuanlamaKontrolcu.Instance.PuanlamaYap();
+        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(); 
+        
+        if (   IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari.Count>0 
+            || IstakaKontrolcu.Instance.AyniRakamAyniRenkGruplari.Count>0
+            || IstakaKontrolcu.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
+            || IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
+            PuanlamaKontrolcu.Instance.PuanlamaYap();
+        }
+        
     }
 }

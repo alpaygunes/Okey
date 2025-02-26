@@ -40,7 +40,8 @@ public class Istaka : MonoBehaviour
             if (cepScript.Dolu == false){
                 dokunulanTas.transform.position = cep.transform.position;
                 dokunulanTas.transform.position += new Vector3(0, 0, -1);
-                dokunulanTas.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                Destroy(dokunulanTas.GetComponent<Rigidbody2D>());
+                Destroy(dokunulanTas.GetComponent<Collider2D>());
                 dokunulanTas.transform.localScale = new Vector3(colonWidth,colonWidth)*0.9f;
                 cepScript.Dolu = true;
                 Taslar.Add(i,dokunulanTas);
