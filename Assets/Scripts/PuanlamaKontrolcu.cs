@@ -4,14 +4,16 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PuanlamaKontrolcu : MonoBehaviour{
     public static PuanlamaKontrolcu Instance{ get; private set; }
     //private Vector2 size;
-    public int Puan = 0;
-    private TextMeshProUGUI Skor;
+    public int PerlerdenKazanilanPuan = 1;
+    public TextMeshProUGUI ToplamPuanTMP;
+    [FormerlySerializedAs("perlerdenKazanilanPuanTMP")] public TextMeshProUGUI PerlerdenKazanilanPuanTMP;
     public int merkezeKayGecikmesi = 0;
-
+    public int ToplamPuan = 0;
     void Awake(){
         if (Instance != null && Instance != this){
             Destroy(this);
@@ -20,76 +22,23 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         Instance = this;
     }
 
-    private void Start(){ 
-        // transform.Find("Zemin").transform.localScale = Card.Instance.transform.localScale;
-        // transform.Find("Zemin").transform.position = Card.Instance.transform.position;
-        // transform.Find("Zemin").transform.position += new Vector3(0, 0, -0.1f);
-        Skor = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
+    private void Start(){  
+        ToplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
+        PerlerdenKazanilanPuanTMP = GameObject.Find("PerlerdenKazanilanPuan").GetComponent<TextMeshProUGUI>();
     }
 
     public void PuanlamaYap(){
-        merkezeKayGecikmesi = 0;
-        Puan = 1;
-        //gameObject.SetActive(true);
+        merkezeKayGecikmesi = 0; 
         var satir = 0;
-        // önceki puanlamadan kalan ATIL_TAS temizle  
-        // foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ATIL_TAS")) {
-        //     Destroy(obj); 
-        // }
-        
-        //SiraliGruplar sahneye diz 
-        // foreach (var grupList in IstakaKontrolcu.Instance.SiraliGruplar){
-        //     break; // puanlamaya dahil etme
-        //     var sayac = 0;
-        //     satir++;
-        //     GameObject tas = grupList.First().Value;
-        //     Vector2 tasSize = tas.GetComponent<SpriteRenderer>().bounds.size;
-        //     float ortayCekmePayi = tasSize.x * grupList.Count;
-        //     foreach (var item in grupList){
-        //         float x = tasSize.x * sayac + tasSize.x * .5f - ortayCekmePayi * .5f;
-        //         float y = tasSize.y * satir;
-        //         item.Value.tag = "ATIL_TAS";
-        //         item.Value.GetComponent<Tas>().merkezeKay(satir+sayac);
-        //         //Instantiate(item.Value, new Vector3(x, y, -2), Quaternion.identity, transform);
-        //         Puan *= Istaka.Instance.TasinRakami[item.Key];
-        //         sayac++;
-        //     }
-        // }
-
-        //BenzerRakamGruplari sahneye diz 
-        // foreach (var grupList in IstakaKontrolcu.Instance.BenzerRakamGruplari){
-        //     break; // puanlamaya dahil etme
-        //     var sayac = 0;
-        //     satir++;
-        //     GameObject tas = grupList.First().Value;
-        //     Vector2 tasSize = tas.GetComponent<SpriteRenderer>().bounds.size;
-        //     float ortayCekmePayi = tasSize.x * grupList.Count;
-        //     foreach (var item in grupList){
-        //         float x = tasSize.x * sayac + tasSize.x * .5f - ortayCekmePayi * .5f;
-        //         float y = tasSize.y * satir;
-        //         item.Value.tag = "ATIL_TAS";
-        //         item.Value.GetComponent<Tas>().merkezeKay(satir+sayac);
-        //         //Instantiate(item.Value, new Vector3(x, y, -2), Quaternion.identity, transform);
-        //         Puan *= Istaka.Instance.TasinRakami[item.Key];
-        //         sayac++;
-        //     }
-        // }
-
+        PerlerdenKazanilanPuan = 1;
         //SiraliRakamRenkGruplari sahneye diz 
         foreach (var grupList in IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari){
             var sayac = 0;
             satir++;
-            GameObject tas = grupList.First().Value;
-            Vector2 tasSize = tas.GetComponent<SpriteRenderer>().bounds.size;
-            float ortayCekmePayi = tasSize.x * grupList.Count;
-            foreach (var item in grupList){
-                float x = tasSize.x * sayac + tasSize.x * .5f - ortayCekmePayi * .5f;
-                float y = tasSize.y * satir;
+            GameObject tas = grupList.First().Value; 
+            foreach (var item in grupList){ 
                 merkezeKayGecikmesi++;
-                item.Value.tag = "ATIL_TAS";
-                item.Value.GetComponent<Tas>().merkezeKay(merkezeKayGecikmesi); 
-                //Instantiate(item.Value, new Vector3(x, y, -2), Quaternion.identity, transform);
-                Puan *= Istaka.Instance.TasinRakami[item.Key];
+                item.Value.GetComponent<Tas>().merkezeKay(item.Key); 
                 sayac++;
             }
         }
@@ -98,17 +47,10 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         foreach (var grupList in IstakaKontrolcu.Instance.AyniRakamAyniRenkGruplari){
             var sayac = 0;
             satir++;
-            GameObject tas = grupList.First().Value;
-            Vector2 tasSize = tas.GetComponent<SpriteRenderer>().bounds.size;
-            float ortayCekmePayi = tasSize.x * grupList.Count;
-            foreach (var item in grupList){
-                float x = tasSize.x * sayac + tasSize.x * .5f - ortayCekmePayi * .5f;
-                float y = tasSize.y * satir;
-                item.Value.tag = "ATIL_TAS";
+            GameObject tas = grupList.First().Value; 
+            foreach (var item in grupList){ 
                 merkezeKayGecikmesi++;
-                item.Value.GetComponent<Tas>().merkezeKay( merkezeKayGecikmesi);
-                //Instantiate(item.Value, new Vector3(x, y, -2), Quaternion.identity, transform);
-                Puan *= Istaka.Instance.TasinRakami[item.Key];
+                item.Value.GetComponent<Tas>().merkezeKay(item.Key);
                 sayac++;
             }
         }
@@ -117,17 +59,10 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         foreach (var grupList in IstakaKontrolcu.Instance.AyniRakamHepsiFarkliRenkGruplari){
             var sayac = 0;
             satir++;
-            GameObject tas = grupList.First().Value;
-            Vector2 tasSize = tas.GetComponent<SpriteRenderer>().bounds.size;
-            float ortayCekmePayi = tasSize.x * grupList.Count;
-            foreach (var item in grupList){
-                float x = tasSize.x * sayac + tasSize.x * .5f - ortayCekmePayi * .5f;
-                float y = tasSize.y * satir;
-                item.Value.tag = "ATIL_TAS";
+            GameObject tas = grupList.First().Value; 
+            foreach (var item in grupList){ 
                 merkezeKayGecikmesi++;
-                item.Value.GetComponent<Tas>().merkezeKay( merkezeKayGecikmesi);
-                //Instantiate(item.Value, new Vector3(x, y, -2), Quaternion.identity, transform);
-                Puan *= Istaka.Instance.TasinRakami[item.Key];
+                item.Value.GetComponent<Tas>().merkezeKay(item.Key);
                 sayac++;
             }
         }
@@ -136,27 +71,21 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         foreach (var grupList in IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari){
             var sayac = 0;
             satir++;
-            GameObject tas = grupList.First().Value;
-            Vector2 tasSize = tas.GetComponent<SpriteRenderer>().bounds.size;
-            float ortayCekmePayi = tasSize.x * grupList.Count;
-            foreach (var item in grupList){
-                float x = tasSize.x * sayac + tasSize.x * .5f - ortayCekmePayi * .5f;
-                float y = tasSize.y * satir; 
-                item.Value.tag = "ATIL_TAS";
+            GameObject tas = grupList.First().Value; 
+            foreach (var item in grupList){ 
                 merkezeKayGecikmesi++;
-                item.Value.GetComponent<Tas>().merkezeKay( merkezeKayGecikmesi);
-                //Instantiate(item.Value, new Vector3(x, y, -2), Quaternion.identity, transform);
-                Puan *= Istaka.Instance.TasinRakami[item.Key];
+                item.Value.GetComponent<Tas>().merkezeKay(item.Key);
                 sayac++;
             }
-        } 
-        Skor.text = Puan.ToString(); 
+        }  
         StartCoroutine(WaitAndExecute());
     }
     
     IEnumerator WaitAndExecute(){
         yield return new WaitForSeconds(merkezeKayGecikmesi); 
         IstakaKontrolcu.Instance.GruplariTemizle(); 
+        ToplamPuan += PerlerdenKazanilanPuan;
+        ToplamPuanTMP.text = ToplamPuan.ToString();
     }
 
  

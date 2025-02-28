@@ -23,11 +23,16 @@ public class Tas : MonoBehaviour{
         mySequence
             .Append(transform.DOScale(transform.localScale * 4, animasyonSuresi * .5f))
             .Append(transform.DOScale(ilkScale*2, animasyonSuresi * .5f));
-        StartCoroutine(KillSelf(animasyonSuresi));
+        StartCoroutine(KillSelf());
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan *= Rakam;
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text = PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        
+        
+        
     }
 
-    IEnumerator KillSelf(float gecikme){
-        yield return new WaitForSeconds(gecikme + animasyonSuresi);
+    IEnumerator KillSelf(){
+        yield return new WaitForSeconds(animasyonSuresi);
         transform.DOKill();
         Destroy(this.gameObject);
     }

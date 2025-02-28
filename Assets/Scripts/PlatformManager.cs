@@ -20,8 +20,9 @@ public class PlatformManager : MonoBehaviour{
     }
 
     private void Start(){
-        CreateSpawnHoles(); 
-        TasManeger.Instance.TaslariHazirla();
+        CreateSpawnHoles();
+        TasManeger.Instance.TaslariHazirla(); 
+        KutulariHazirla();
     }
 
  
@@ -34,10 +35,26 @@ public class PlatformManager : MonoBehaviour{
             float holePositionY = cardSize.y * .5f;
             holePositionX += colonWidth * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
-            var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -0.01f), Quaternion.identity);
-            sh.transform.localScale = new Vector3(colonWidth,colonWidth)*0.95f;
+            var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -0.2f), Quaternion.identity);
+            sh.transform.localScale = new Vector2(colonWidth,colonWidth);
             SpawnHolesList.Add(sh);
         }
+    }
+    
+    
+    private void KutulariHazirla(){
+        Vector2 cardSize = Card.Instance.Size;
+        float colonWidth = cardSize.x / colonCount; 
+        GameObject Kutu = Resources.Load<GameObject>("Prefabs/Kutu");
+        float satirSayisi = cardSize.y / colonWidth;
+        for (int satir = 0; satir < satirSayisi; satir++){
+            for (int sutun = 0; sutun < colonCount; sutun++){
+                float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
+                float positionY = (cardSize.y * .5f) - (satir * cardSize.y/satirSayisi) - (cardSize.y/satirSayisi)*.5f;  
+                var kutu = Instantiate(Kutu, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
+                kutu.transform.localScale = new Vector2(colonWidth,colonWidth); 
+            }
+        } 
     }
 
     void Update(){

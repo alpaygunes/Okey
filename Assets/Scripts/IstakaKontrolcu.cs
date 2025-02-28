@@ -344,32 +344,6 @@ public class IstakaKontrolcu : MonoBehaviour{
     }
 
     public void GruplariTemizle(){
-        // sıralı grupları temizle
-        // for (int i = 0; i < SiraliGruplar.Count; i++){
-        //     break; // ana grup temizlenmesin. renk uyumu olmayanlar ıstakada kalmalı
-        //     var grup = SiraliGruplar[i];
-        //     foreach (var item in grup){
-        //         Destroy(item.Value);
-        //         Istaka.Instance.TasinRakami.Remove(item.Key);
-        //         Istaka.Instance.Taslar.Remove(item.Key);
-        //         Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-        //     }
-        // }
-
-
-        // aynı rakamlı grupları temizle
-        // for (int i = 0; i < BenzerRakamGruplari.Count; i++){
-        //     break; // ana grup temizlenmesin. renk uyumu olmayanlar ıstakada kalmalı
-        //     var grup = BenzerRakamGruplari[i];
-        //     foreach (var item in grup){
-        //         Destroy(item.Value);
-        //         Istaka.Instance.TasinRakami.Remove(item.Key);
-        //         Istaka.Instance.Taslar.Remove(item.Key);
-        //         Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-        //     }
-        // }
-
-
         // SiraliRakamAyniRenkGruplari grupları temizle
         for (int i = 0; i < SiraliRakamAyniRenkGruplari.Count; i++){
             var grup = SiraliRakamAyniRenkGruplari[i];
