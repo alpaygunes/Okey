@@ -921,7 +921,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PerlerdenKazanilanPuan: 1
-  skor: {fileID: 0}
+  ToplamPuanTMP: {fileID: 0}
+  PerlerdenKazanilanPuanTMP: {fileID: 0}
   merkezeKayGecikmesi: 0
   ToplamPuan: 0
 --- !u!4 &1416006419
@@ -1348,7 +1349,7 @@ GameObject:
   - component: {fileID: 2088673485}
   - component: {fileID: 2088673484}
   - component: {fileID: 2088673486}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1378,7 +1379,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: d9b72bba9c05ad9babecba4a59a261f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1400,7 +1401,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.21176471, g: 0.24313726, b: 0.38039216, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

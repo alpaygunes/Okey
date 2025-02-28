@@ -22,13 +22,13 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         Instance = this;
     }
 
-    private void Start(){  
+    private void Start(){
         ToplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         PerlerdenKazanilanPuanTMP = GameObject.Find("PerlerdenKazanilanPuan").GetComponent<TextMeshProUGUI>();
     }
 
     public void PuanlamaYap(){
-        merkezeKayGecikmesi = 0; 
+        merkezeKayGecikmesi = 0;
         var satir = 0;
         PerlerdenKazanilanPuan = 1;
         //SiraliRakamRenkGruplari sahneye diz 
@@ -71,22 +71,21 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         foreach (var grupList in IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari){
             var sayac = 0;
             satir++;
-            GameObject tas = grupList.First().Value; 
-            foreach (var item in grupList){ 
+            GameObject tas = grupList.First().Value;
+            foreach (var item in grupList){
                 merkezeKayGecikmesi++;
                 item.Value.GetComponent<Tas>().merkezeKay(item.Key);
                 sayac++;
             }
-        }  
+        }
         StartCoroutine(WaitAndExecute());
     }
     
     IEnumerator WaitAndExecute(){
-        yield return new WaitForSeconds(merkezeKayGecikmesi); 
-        IstakaKontrolcu.Instance.GruplariTemizle(); 
+        yield return new WaitForSeconds(merkezeKayGecikmesi);
+        IstakaKontrolcu.Instance.GruplariTemizle();
         ToplamPuan += PerlerdenKazanilanPuan;
         ToplamPuanTMP.text = ToplamPuan.ToString();
     }
-
- 
+    
 }

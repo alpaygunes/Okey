@@ -6,13 +6,21 @@ using UnityEngine;
 
 public class Tas : MonoBehaviour{
     public int Rakam = 0;
+    public Color Renk ;
     public float animasyonSuresi = .5f;
 
-    /*
-     * puanlama sırasında stakadan çıkar sahnenin merkezine uçar
-     */
+
+    private void Awake(){ 
+        gameObject.SetActive(false); 
+    }
+
+    private void Start(){ 
+        GetComponentInChildren<TextMeshPro>().color = Renk;
+    }
+
     public void merkezeKay(float gecikme){
         StartCoroutine(WaitAndExecute(gecikme));
+        
     }
 
     IEnumerator WaitAndExecute(float gecikme){

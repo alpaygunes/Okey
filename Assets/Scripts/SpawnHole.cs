@@ -21,7 +21,7 @@ public class SpawnHole : MonoBehaviour{
             var siradakiTas = TasManeger.Instance.TasList[0];
             TasManeger.Instance.TasList.RemoveAt(0);
             siradakiTas.gameObject.transform.position = transform.position;
-            siradakiTas.gameObject.transform.localScale = transform.localScale * .75f;
+            siradakiTas.gameObject.transform.localScale = transform.localScale * .85f;
             siradakiTas.transform.SetParent(PlatformManager.Instance.transform);
             siradakiTas.SetActive(true);
         }

@@ -21,13 +21,13 @@ public class TasManeger : MonoBehaviour{
     public void TaslariHazirla(){
         for (int i = 0; i < PlatformManager.Instance.tasCount; i++){ 
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
-            var Tas = Instantiate(tare, new Vector2(0, 0), Quaternion.identity);
-            var rakam = Random.Range(_rakamAraligi.start, _rakamAraligi.end);  
-            Tas.transform.GetComponent<Renderer>().material.color =  
-                RenklerYonetimi.RenkSozlugu[Random.Range(_renkAraligi.start, _renkAraligi.end + 1)];
+            var Tas = Instantiate(tare, new Vector3(0, 0,-1), Quaternion.identity);
+            var rakam = Random.Range(_rakamAraligi.start, _rakamAraligi.end);
+            Color color = RenklerYonetimi.RenkSozlugu[Random.Range(_renkAraligi.start, _renkAraligi.end + 1)];
+            Tas.transform.Find("Zemin").transform.GetComponent<Renderer>().material.color = color;
             Tas.GetComponentInChildren<TextMeshPro>().text = rakam.ToString();
             Tas.GetComponentInChildren<Tas>().Rakam = rakam;
-            Tas.SetActive(false);
+            Tas.GetComponentInChildren<Tas>().Renk = color;
             TasList.Add(Tas);
         } 
     }
