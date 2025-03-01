@@ -1,13 +1,12 @@
-using System;
 using System.Collections;
 using DG.Tweening;
 using TMPro;
-using UnityEngine;
+using UnityEngine; 
 
 public class Tas : MonoBehaviour{
-    public int Rakam = 0;
-    public Color Renk ;
-    public float animasyonSuresi = .5f;
+    public int rakam;
+    public Color renk ;
+    private readonly float _animasyonSuresi = .2f;
 
 
     private void Awake(){ 
@@ -15,10 +14,10 @@ public class Tas : MonoBehaviour{
     }
 
     private void Start(){ 
-        GetComponentInChildren<TextMeshPro>().color = Renk;
+        GetComponentInChildren<TextMeshPro>().color = renk;
     }
 
-    public void merkezeKay(float gecikme){
+    public void MerkezeKay(float gecikme){
         StartCoroutine(WaitAndExecute(gecikme));
         
     }
@@ -26,13 +25,13 @@ public class Tas : MonoBehaviour{
     IEnumerator WaitAndExecute(float gecikme){
         yield return new WaitForSeconds(gecikme);
         Vector3 ilkScale = transform.localScale;
-        transform.DOMove(new Vector3(0, 0, 0), animasyonSuresi);
+        transform.DOMove(new Vector3(0, 0, 0), _animasyonSuresi);
         Sequence mySequence = DOTween.Sequence();
         mySequence
-            .Append(transform.DOScale(transform.localScale * 4, animasyonSuresi * .5f))
-            .Append(transform.DOScale(ilkScale*2, animasyonSuresi * .5f));
+            .Append(transform.DOScale(transform.localScale * 4, _animasyonSuresi * .5f))
+            .Append(transform.DOScale(ilkScale*2, _animasyonSuresi * .5f));
         StartCoroutine(KillSelf());
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan *= Rakam;
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan *= rakam;
         PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text = PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
         
         
@@ -40,7 +39,7 @@ public class Tas : MonoBehaviour{
     }
 
     IEnumerator KillSelf(){
-        yield return new WaitForSeconds(animasyonSuresi);
+        yield return new WaitForSeconds(_animasyonSuresi);
         transform.DOKill();
         Destroy(this.gameObject);
     }

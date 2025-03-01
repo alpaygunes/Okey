@@ -26,8 +26,8 @@ public class TasManeger : MonoBehaviour{
             Color color = RenklerYonetimi.RenkSozlugu[Random.Range(_renkAraligi.start, _renkAraligi.end + 1)];
             Tas.transform.Find("Zemin").transform.GetComponent<Renderer>().material.color = color;
             Tas.GetComponentInChildren<TextMeshPro>().text = rakam.ToString();
-            Tas.GetComponentInChildren<Tas>().Rakam = rakam;
-            Tas.GetComponentInChildren<Tas>().Renk = color;
+            Tas.GetComponentInChildren<Tas>().rakam = rakam;
+            Tas.GetComponentInChildren<Tas>().renk = color;
             TasList.Add(Tas);
         } 
     }

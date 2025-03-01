@@ -167,8 +167,8 @@ public class IstakaKontrolcu : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         // rengi aynı mı ?
-                        if (tas.GetComponent<Tas>().Renk ==
-                            sonrakiTasA.GetComponent<Tas>().Renk){
+                        if (tas.GetComponent<Tas>().renk ==
+                            sonrakiTasA.GetComponent<Tas>().renk){
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else{
@@ -213,8 +213,8 @@ public class IstakaKontrolcu : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         // rengi aynı mı ?
-                        if (tas.GetComponent<Tas>().Renk ==
-                            sonrakiTasA.GetComponent<Tas>().Renk){
+                        if (tas.GetComponent<Tas>().renk ==
+                            sonrakiTasA.GetComponent<Tas>().renk){
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else{
@@ -260,8 +260,8 @@ public class IstakaKontrolcu : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         foreach (var item in farkliRenklilerGrubu){
-                            if (sonrakiTasA.GetComponent<Tas>().Renk
-                                == item.Value.GetComponent<Tas>().Renk){
+                            if (sonrakiTasA.GetComponent<Tas>().renk
+                                == item.Value.GetComponent<Tas>().renk){
                                 //aynı renk zaten var
                                 _yeniGrupOlustur = true;
                                 break;
@@ -311,8 +311,8 @@ public class IstakaKontrolcu : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         foreach (var item in farkliRenklilerGrubu){
-                            if (sonrakiTasA.GetComponent<Tas>().Renk
-                                == item.Value.GetComponent<Tas>().Renk){
+                            if (sonrakiTasA.GetComponent<Tas>().renk
+                                == item.Value.GetComponent<Tas>().renk){
                                 //aynı renk zaten var
                                 _yeniGrupOlustur = true;
                                 break;
