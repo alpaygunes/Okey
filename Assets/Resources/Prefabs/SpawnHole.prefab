@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5952606636066827658}
   - component: {fileID: 2675149756733515038}
   - component: {fileID: -3495755626774623203}
-  - component: {fileID: 5089915510023603702}
+  - component: {fileID: 3401027901779859336}
   m_Layer: 0
   m_Name: SpawnHole
   m_TagString: Untagged
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 809bf51d931ba5fbbb4c281713abd372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &5089915510023603702
-BoxCollider2D:
+--- !u!68 &3401027901779859336
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -135,15 +135,12 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.50109947}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.8822299, y: 1.0139396}
+  m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.0004990101, y: -0.0064038634}
+  - {x: 0.00049894303, y: -0.23053902}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0

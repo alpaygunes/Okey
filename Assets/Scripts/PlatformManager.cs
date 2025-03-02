@@ -65,14 +65,12 @@ public class PlatformManager : MonoBehaviour{
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero); 
                 if (hit.collider != null){
                     if (hit.collider.gameObject.CompareTag("TAS")){
-                        TasaDokunuldu(hit.collider.gameObject);
+                        hit.collider.gameObject.GetComponent<Tas>().BosCebeYerles();
                     }
                 }
             }
         }
     }
 
-    private void TasaDokunuldu(GameObject dokunulanTas){
-       Istaka.Instance.BosCebeYerleştir(dokunulanTas);
-    }
+ 
 }

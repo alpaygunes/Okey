@@ -1,25 +1,54 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
+using NUnit.Framework.Constraints;
 using TMPro;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Tas : MonoBehaviour{
     public int rakam;
-    public Color renk ;
+    public Color renk;
     private readonly float _animasyonSuresi = .2f;
+    public GameObject SagindakiKomsuTas;
+    private Rigidbody2D _rigidbody;
+    public bool birCardPerineDahil = false;
 
 
-    private void Awake(){ 
-        gameObject.SetActive(false); 
+    private void Awake(){
+        gameObject.SetActive(false);
     }
 
-    private void Start(){ 
+    private void Start(){
+        _rigidbody = GetComponent<Rigidbody2D>();
         GetComponentInChildren<TextMeshPro>().color = renk;
+    }
+    
+    public void BosCebeYerles(){
+        Vector2 cardSize = Card.Instance.Size;
+        float colonWidth = cardSize.x / Istaka.Instance.CepSayisi;
+        for (var i = 0; i < Istaka.Instance.CepList.Count; i++){
+            var cep = Istaka.Instance.CepList[i];
+            var cepScript = cep.GetComponent<IstakaCebi>();
+            if (cepScript.Dolu == false){
+                gameObject.transform.position = cep.transform.position;
+                gameObject.transform.position += new Vector3(0, 0, -1);
+                Destroy(gameObject.GetComponent<Rigidbody2D>());
+                Destroy(gameObject.GetComponent<Collider2D>());
+                gameObject.transform.localScale = new Vector3(colonWidth,colonWidth)*0.9f;
+                cepScript.Dolu = true;
+                gameObject.tag = "CEPTEKI_TAS";  
+                Istaka.Instance.Taslar.Add(i,gameObject);
+                Istaka.Instance.TasinRakami.Add(i,gameObject.GetComponent<Tas>().rakam);
+                Counter.Instance.StartCountdown();
+                break;
+            }
+        }
     }
 
     public void MerkezeKay(float gecikme){
         StartCoroutine(WaitAndExecute(gecikme));
-        
     }
 
     IEnumerator WaitAndExecute(float gecikme){
@@ -29,18 +58,116 @@ public class Tas : MonoBehaviour{
         Sequence mySequence = DOTween.Sequence();
         mySequence
             .Append(transform.DOScale(transform.localScale * 4, _animasyonSuresi * .5f))
-            .Append(transform.DOScale(ilkScale*2, _animasyonSuresi * .5f));
+            .Append(transform.DOScale(ilkScale * 2, _animasyonSuresi * .5f));
         StartCoroutine(KillSelf());
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan *= rakam;
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text = PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
-        
-        
-        
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text =
+            PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
     }
 
     IEnumerator KillSelf(){
         yield return new WaitForSeconds(_animasyonSuresi);
         transform.DOKill();
-        Destroy(this.gameObject);
+        Destroy(gameObject);
+        this.enabled = false; 
+        TasManeger.Instance.TasIstances.Remove(gameObject);
+    }
+
+    public void DestroySelf(){ 
+        Destroy(gameObject);
+        this.enabled = false; 
+        TasManeger.Instance.TasIstances.Remove(gameObject); 
+    }
+
+    void OnTriggerStay2D(Collider2D other){
+        if (other.gameObject.CompareTag("TAS")){
+            EdgeCollider2D edgeCollider = GetComponent<EdgeCollider2D>();
+            if (edgeCollider != null && edgeCollider.IsTouching(other)){
+                if (other is BoxCollider2D){
+                    SagindakiKomsuTas = other.gameObject; 
+                }
+            }
+        }
+    }
+
+    private void Update(){
+        if (gameObject.CompareTag("TAS")){
+            Card.Instance.TaslarHareketli = (_rigidbody.linearVelocity.magnitude > 0.01f);
+        }
+        else{
+            Card.Instance.TaslarHareketli = false;
+            this.enabled = false;
+        } 
+    }
+
+    public async Task SiraliAyniRenkGrubunaDahilOl(){
+        if (birCardPerineDahil) return;
+        CardKontrolcu.Instance.SiraliAyniRenkliGrup.Add(gameObject);
+        if (SagindakiKomsuTas){
+            var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
+            var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam;
+            if (sagdakininRengi == renk && sagdakininRakami==rakam+1){ 
+                await TasManeger.Instance.TasIstances[SagindakiKomsuTas].SiraliAyniRenkGrubunaDahilOl();
+            }
+        }
+    }
+    
+    public async Task SiraliFarkliRenkGrubunaDahilOl(){
+        if (birCardPerineDahil) return;
+        bool gruptaAyniRenkYok = true;
+        //grupta zaten aynı renk varsa per olmaz . Çık
+        foreach (var gruptakiTas in CardKontrolcu.Instance.SiraliFarkliRenkliGrup){
+            if (TasManeger.Instance.TasIstances[gruptakiTas].renk == renk){  
+                gruptaAyniRenkYok = false;
+                break;
+            }
+        }
+
+        if (gruptaAyniRenkYok){
+            CardKontrolcu.Instance.SiraliFarkliRenkliGrup.Add(gameObject);
+            if (SagindakiKomsuTas){
+                var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
+                var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam; 
+                if (sagdakininRengi != renk && sagdakininRakami==rakam+1){ 
+                    //print($"{rakam} ---- {sagdakininRakami}");
+                    await TasManeger.Instance.TasIstances[SagindakiKomsuTas].SiraliFarkliRenkGrubunaDahilOl();
+                }
+            }
+        } 
+    }
+    
+    public async Task AyniRakamAyniRenkGrubunaDahilOl(){
+        if (birCardPerineDahil) return;
+        CardKontrolcu.Instance.AyniRakamAyniRenkliGrup.Add(gameObject);
+        if (SagindakiKomsuTas){
+            var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
+            var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam;
+            if (sagdakininRengi == renk && sagdakininRakami==rakam){ 
+                await TasManeger.Instance.TasIstances[SagindakiKomsuTas].AyniRakamAyniRenkGrubunaDahilOl();
+            }
+        }
+    }
+    
+    public async Task AyniRakamFarkliRenkGrubunaDahilOl(){
+        if (birCardPerineDahil) return;
+        bool gruptaAyniRenkYok = true;
+        //grupta zaten aynı renk varsa per olmaz . Çık
+        foreach (var gruptakiTas in CardKontrolcu.Instance.AyniRakamFarkliRenkli){
+            if (TasManeger.Instance.TasIstances[gruptakiTas].renk == renk){  
+                gruptaAyniRenkYok = false;
+                break;
+            }
+        }
+
+        if (gruptaAyniRenkYok){
+            CardKontrolcu.Instance.AyniRakamFarkliRenkli.Add(gameObject);
+            if (SagindakiKomsuTas){
+                var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
+                var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam; 
+                if (sagdakininRengi != renk && sagdakininRakami==rakam){  
+                    await TasManeger.Instance.TasIstances[SagindakiKomsuTas].AyniRakamFarkliRenkGrubunaDahilOl();
+                }
+            }
+        } 
     }
 }

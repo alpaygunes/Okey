@@ -14,6 +14,8 @@ public class SpawnHole : MonoBehaviour{
             musait = true;
         }
     }
+    
+ 
 
     private void Update(){
         if (musait && TasManeger.Instance.TasList.Count > 0){
@@ -23,6 +25,7 @@ public class SpawnHole : MonoBehaviour{
             siradakiTas.gameObject.transform.position = transform.position;
             siradakiTas.gameObject.transform.localScale = transform.localScale * .85f;
             siradakiTas.transform.SetParent(PlatformManager.Instance.transform);
+            TasManeger.Instance.TasIstances.Add(siradakiTas, siradakiTas.gameObject.GetComponent<Tas>());
             siradakiTas.SetActive(true);
         }
     }

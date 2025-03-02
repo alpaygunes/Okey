@@ -9,6 +9,7 @@ public class TasManeger : MonoBehaviour{
     public List<GameObject> TasList = new List<GameObject>();
     private RangeInt _renkAraligi = new RangeInt(1,3);
     private RangeInt _rakamAraligi = new RangeInt(1,10);
+    public  Dictionary<GameObject, Tas> TasIstances = new Dictionary<GameObject, Tas>();
     public static TasManeger Instance{ get; private set; }
     void Awake(){
         if (Instance != null && Instance != this){

@@ -18,6 +18,7 @@ public class Istaka : MonoBehaviour
         Instance = this; 
     }
 
+    // Cepleri oluştur
     private void Start(){
         float istakaGenisligi = transform.GetComponent<SpriteRenderer>().bounds.size.x; 
         float aralikMesafesi = istakaGenisligi / CepSayisi;
@@ -31,26 +32,7 @@ public class Istaka : MonoBehaviour
         }
     }
 
-    public void BosCebeYerleştir(GameObject dokunulanTas){
-        Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = cardSize.x / CepSayisi;
-        for (var i = 0; i < CepList.Count; i++){
-            var cep = CepList[i];
-            var cepScript = cep.GetComponent<IstakaCebi>();
-            if (cepScript.Dolu == false){
-                dokunulanTas.transform.position = cep.transform.position;
-                dokunulanTas.transform.position += new Vector3(0, 0, -1);
-                Destroy(dokunulanTas.GetComponent<Rigidbody2D>());
-                Destroy(dokunulanTas.GetComponent<Collider2D>());
-                dokunulanTas.transform.localScale = new Vector3(colonWidth,colonWidth)*0.9f;
-                cepScript.Dolu = true;
-                Taslar.Add(i,dokunulanTas);
-                TasinRakami.Add(i,dokunulanTas.GetComponent<Tas>().rakam);
-                Counter.Instance.StartCountdown();
-                break;
-            }
-        }
-    }
+
 
 
 }
