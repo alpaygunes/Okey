@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
@@ -80,28 +81,37 @@ public class CardKontrolcu : MonoBehaviour{
             }
         }
 
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan = 0;
         foreach (var grup in SiraliAyniRenkliGruplar){
             foreach (var item in grup){
-                TasManeger.Instance.TasIstances[item].transform.Find("Zemin").localScale *= 0.5f;
+                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
             }
         }
 
         foreach (var grup in SiraliFarkliRenkliGruplar){
             foreach (var item in grup){
-                TasManeger.Instance.TasIstances[item].transform.Find("Zemin").localScale *= 0.5f;
+                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
             }
         }
 
         foreach (var grup in AyniRakamAyniRenkliGruplar){
             foreach (var item in grup){
-                TasManeger.Instance.TasIstances[item].transform.Find("Zemin").localScale *= 0.5f;
+                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
             }
         }
 
         foreach (var grup in AyniRakamFarkliRenkliGruplar){
             foreach (var item in grup){
-                TasManeger.Instance.TasIstances[item].transform.Find("Zemin").localScale *= 0.5f;
+                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
             }
         }
+
+        StartCoroutine(SkorTMPleriGuncelle());
+    }
+
+    IEnumerator SkorTMPleriGuncelle(){
+        yield return new WaitForSeconds(1);
+        PuanlamaKontrolcu.Instance.toplamPuan          += PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
+        PuanlamaKontrolcu.Instance.toplamPuanTMP.text   = PuanlamaKontrolcu.Instance.toplamPuan.ToString();
     }
 }

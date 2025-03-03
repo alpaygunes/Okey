@@ -336,7 +336,6 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < SiraliRakamAyniRenkGruplari.Count; i++){
             var grup = SiraliRakamAyniRenkGruplari[i];
             foreach (var item in grup){
-                //Destroy(item.Value);
                 Istaka.Instance.TasinRakami.Remove(item.Key);
                 Istaka.Instance.Taslar.Remove(item.Key);
                 Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
@@ -347,7 +346,6 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < AyniRakamAyniRenkGruplari.Count; i++){
             var grup = AyniRakamAyniRenkGruplari[i];
             foreach (var item in grup){
-                //Destroy(item.Value);
                 Istaka.Instance.TasinRakami.Remove(item.Key);
                 Istaka.Instance.Taslar.Remove(item.Key);
                 Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
@@ -359,7 +357,6 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < AyniRakamHepsiFarkliRenkGruplari.Count; i++){
             var grup = AyniRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup){
-                //Destroy(item.Value);
                 Istaka.Instance.TasinRakami.Remove(item.Key);
                 Istaka.Instance.Taslar.Remove(item.Key);
                 Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
@@ -370,7 +367,6 @@ public class IstakaKontrolcu : MonoBehaviour{
         for (int i = 0; i < SiraliRakamHepsiFarkliRenkGruplari.Count; i++){
             var grup = SiraliRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup){
-                //Destroy(item.Value);
                 Istaka.Instance.TasinRakami.Remove(item.Key);
                 Istaka.Instance.Taslar.Remove(item.Key);
                 Istaka.Instance.CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;

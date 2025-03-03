@@ -48,7 +48,7 @@ public class Counter : MonoBehaviour{
             || IstakaKontrolcu.Instance.AyniRakamAyniRenkGruplari.Count>0
             || IstakaKontrolcu.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
             || IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
-            PuanlamaKontrolcu.Instance.PuanlamaYap(); 
+            PuanlamaKontrolcu.Instance.PerdekiTaslariToparla(); 
         }
         CardKontrolcu.Instance.KartiKontrolEt();
         

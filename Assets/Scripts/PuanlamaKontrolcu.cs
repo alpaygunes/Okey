@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PuanlamaKontrolcu : MonoBehaviour{
     public static PuanlamaKontrolcu Instance{ get; private set; }
 
     //private Vector2 size;
     public int PerlerdenKazanilanPuan = 1;
-    private TextMeshProUGUI _toplamPuanTMP;
+    public TextMeshProUGUI toplamPuanTMP;
     public TextMeshProUGUI PerlerdenKazanilanPuanTMP;
     private float _merkezeKayGecikmesi;
-    private int _toplamPuan;
+    [FormerlySerializedAs("_toplamPuan")] public int toplamPuan;
 
     void Awake(){
         if (Instance != null && Instance != this){
@@ -23,13 +24,13 @@ public class PuanlamaKontrolcu : MonoBehaviour{
     }
 
     private void Start(){
-        _toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
+        toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         PerlerdenKazanilanPuanTMP = GameObject.Find("PerlerdenKazanilanPuan").GetComponent<TextMeshProUGUI>();
     }
 
-    public void PuanlamaYap(){
+    public void PerdekiTaslariToparla(){
         Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>();
-        PerlerdenKazanilanPuan = 1;
+        PerlerdenKazanilanPuan = 0;
         //SiraliRakamRenkGruplari sahneye diz 
         foreach (var grupList in IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari){
             //GameObject tas = grupList.First().Value; 
@@ -69,20 +70,18 @@ public class PuanlamaKontrolcu : MonoBehaviour{
 
         // perdeki itemleri sıralayalım
         _merkezeKayGecikmesi = 0;
-        SortedDictionary<int, GameObject> siralanmisTumPerTaslari =
-            new SortedDictionary<int, GameObject>(perdekiTumTaslarDic);
+        SortedDictionary<int, GameObject> siralanmisTumPerTaslari = new SortedDictionary<int, GameObject>(perdekiTumTaslarDic);
         foreach (var tas in siralanmisTumPerTaslari){
             _merkezeKayGecikmesi += 0.2f;
-            TasManeger.Instance.TasIstances[tas.Value].MerkezeKay(_merkezeKayGecikmesi);
+            TasManeger.Instance.TasIstances[tas.Value].PuaniVerMerkezeKay(_merkezeKayGecikmesi);
         }
-
-        StartCoroutine(WaitAndExecute());
+        StartCoroutine(SkorTMPleriGuncelle());
     }
 
-    IEnumerator WaitAndExecute(){
+    IEnumerator SkorTMPleriGuncelle(){
         yield return new WaitForSeconds(_merkezeKayGecikmesi);
         IstakaKontrolcu.Instance.GruplariTemizle();
-        _toplamPuan += PerlerdenKazanilanPuan;
-        _toplamPuanTMP.text = _toplamPuan.ToString();
+        toplamPuan += PerlerdenKazanilanPuan;
+        toplamPuanTMP.text = toplamPuan.ToString();
     }
 }

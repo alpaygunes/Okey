@@ -4,9 +4,9 @@ using UnityEngine.Serialization;
 
 public class PlatformManager : MonoBehaviour{
     public GameObject card;
-    private int colonCount = 5;
-    internal int tasCount = 50;
-    public List<GameObject> SpawnHolesList = new List<GameObject>();
+    private readonly int _colonCount = 4;
+    internal readonly int TasCount = 50;
+    public List<GameObject> spawnHolesList = new List<GameObject>();
 
     public static PlatformManager Instance{ get; private set; }
 
@@ -29,26 +29,27 @@ public class PlatformManager : MonoBehaviour{
 
     private void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = cardSize.x / colonCount;
-        for (int i = 0; i < colonCount; i++){
+        float colonWidth = cardSize.x / _colonCount;
+        for (int i = 0; i < _colonCount; i++)
+        {
             float holePositionX = i * colonWidth - cardSize.x * .5f;
-            float holePositionY = cardSize.y * .5f;
+            float holePositionY = cardSize.y * .5f + colonWidth;
             holePositionX += colonWidth * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
             var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -0.2f), Quaternion.identity);
             sh.transform.localScale = new Vector2(colonWidth,colonWidth);
-            SpawnHolesList.Add(sh);
+            spawnHolesList.Add(sh);
         }
     }
     
     
     private void KutulariHazirla(){
         Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = cardSize.x / colonCount; 
+        float colonWidth = cardSize.x / _colonCount; 
         GameObject Kutu = Resources.Load<GameObject>("Prefabs/Kutu");
         float satirSayisi = cardSize.y / colonWidth;
         for (int satir = 0; satir < satirSayisi; satir++){
-            for (int sutun = 0; sutun < colonCount; sutun++){
+            for (int sutun = 0; sutun < _colonCount; sutun++){
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
                 float positionY = (cardSize.y * .5f) - (satir * cardSize.y/satirSayisi) - (cardSize.y/satirSayisi)*.5f;  
                 var kutu = Instantiate(Kutu, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
@@ -65,7 +66,7 @@ public class PlatformManager : MonoBehaviour{
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero); 
                 if (hit.collider != null){
                     if (hit.collider.gameObject.CompareTag("TAS")){
-                        hit.collider.gameObject.GetComponent<Tas>().BosCebeYerles();
+                        TasManeger.Instance.TasIstances[hit.collider.gameObject].BosCebeYerles();
                     }
                 }
             }
