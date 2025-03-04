@@ -34,7 +34,7 @@ public class Tas : MonoBehaviour{
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         //GetComponentInChildren<TextMeshPro>().color = renk;
-        transform.Find("Belirtec").GetComponent<SpriteRenderer>().color = renk;
+        //transform.Find("Belirtec").GetComponent<SpriteRenderer>().color = renk;
         transform.Find("Zemin").GetComponent<SpriteRenderer>().color = renk;
         
         //transform.Find("RakamText").transform.gameObject.SetActive(false);
