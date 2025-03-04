@@ -3,22 +3,21 @@ using UnityEngine;
 public class SpawnHole : MonoBehaviour{
     private bool musait = true;
 
-    private void OnTriggerStay2D(Collider2D other){
-        if (other.CompareTag("TAS")){
+    private void OnTriggerStay2D(Collider2D other) {
+        if (other.CompareTag("TAS")) {
             musait = false;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other){
-        if (other.CompareTag("TAS")){
+    private void OnTriggerExit2D(Collider2D other) {
+        if (other.CompareTag("TAS")) {
             musait = true;
         }
     }
-    
- 
 
-    private void Update(){
-        if (musait && TasManeger.Instance.TasList.Count > 0){
+
+    private void Update() {
+        if (musait && TasManeger.Instance.TasList.Count > 0) {
             musait = false;
             var siradakiTas = TasManeger.Instance.TasList[0];
             TasManeger.Instance.TasList.RemoveAt(0);
