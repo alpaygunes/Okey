@@ -38,12 +38,12 @@ public class Tas : MonoBehaviour{
     // yok olurken eğer spawn alanındaysa spawn deliğinin musait = true olmasını sağlasın. 
     // destro edilirken çarpışma alanından exit olduğunu algılayamıyor spawnhodlerler
     private void OnDestroy(){
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f); 
-        foreach (var collider in colliders) {
-            if (collider.CompareTag("SPAWN_HOLDER")) {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, transform.localScale.x / 2); 
+        foreach (var collider in colliders) { 
+            if (collider.transform.CompareTag("SPAWN_HOLDER")) {
                 SpawnHole spawnHole = collider.GetComponent<SpawnHole>();
                 if (spawnHole != null) {
-                    spawnHole.musait = true;
+                    spawnHole.musait = true; 
                 }
             }
         }
@@ -84,25 +84,20 @@ public class Tas : MonoBehaviour{
     IEnumerator CeptekiTasinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         Vector3 ilkScale = transform.localScale;
-        transform.DOMove(_targetPosition, _animasyonSuresi);
-        //GetComponent<SpriteRenderer>().sortingOrder = 5;
+        transform.DOMove(_targetPosition, _animasyonSuresi); 
         Sequence mySequence = DOTween.Sequence();
         mySequence
             .Append(transform.DOScale(transform.localScale * 2, _animasyonSuresi * .5f))
             .Append(transform.DOScale(ilkScale * .25f, _animasyonSuresi * .5f));
         StartCoroutine(KillSelf());
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
-        // PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text =
-        //     PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam; 
     }
 
     IEnumerator CardPerindekiTasinRakaminiPuanaEkle(float gecikme){
+        gameObject.tag = "CARD_PERINDEKI_TAS"; // yeni taga gerek yok. nasılsa siliniyor bir satır sonra
         yield return new WaitForSeconds(gecikme);
-        gameObject.tag = "CEPTEKI_TAS"; // yeni taga gerek yok. nasılsa siliniyor bir satır sonra
         DestroySelf();
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
-        // PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text =
-        //     PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam; 
     }
 
     IEnumerator KillSelf(){

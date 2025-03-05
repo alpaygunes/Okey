@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 public class PlatformManager : MonoBehaviour{
     public GameObject card;
-    private readonly int _colonCount = 6;
+    private readonly int _colonCount = 5;
     public readonly int _tasCount = 200;
     public List<GameObject> spawnHolesList = new List<GameObject>();
 

@@ -11,12 +11,12 @@ public class SpawnHole : MonoBehaviour{
 
     private void OnTriggerExit2D(Collider2D other){
         if (other.CompareTag("CARDTAKI_TAS")) {
-            musait = true;
+            musait = true; 
         }
     }
 
 
-    private void Update(){
+    private void Update(){ 
         if (musait && TasManeger.Instance.TasList.Count > 0) {
             musait = false;
             var siradakiTas = TasManeger.Instance.TasList[0];
