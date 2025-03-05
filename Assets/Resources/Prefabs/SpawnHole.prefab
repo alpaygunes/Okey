@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3401027901779859336}
   m_Layer: 0
   m_Name: SpawnHole
-  m_TagString: Untagged
+  m_TagString: SPAWN_HOLDER
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -139,7 +139,7 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: -0.0004990101, y: -0.0064038634}
-  - {x: 0.00049894303, y: -0.55357313}
+  - {x: 0.00049893744, y: -0.64938617}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0

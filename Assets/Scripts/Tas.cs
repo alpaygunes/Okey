@@ -1,11 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
-using NUnit.Framework.Constraints;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Tas : MonoBehaviour{
     public int rakam;
@@ -19,8 +15,10 @@ public class Tas : MonoBehaviour{
     public Camera uiCamera;
     private Object _collider;
 
+    public System.Action<Collider2D> OnDestroyed;
 
-    private void Awake() {
+
+    private void Awake(){
         gameObject.SetActive(false);
         _zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
 
@@ -30,30 +28,41 @@ public class Tas : MonoBehaviour{
                 GameObject.Find("Skor").transform.position.y, 30f));
     }
 
-    private void Start() {
+    private void Start(){
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        //GetComponentInChildren<TextMeshPro>().color = renk;
-        //transform.Find("Belirtec").GetComponent<SpriteRenderer>().color = renk;
         transform.Find("Zemin").GetComponent<SpriteRenderer>().color = renk;
-        
-        //transform.Find("RakamText").transform.gameObject.SetActive(false);
     }
 
-    public void ZenminRenginiDegistir() {
+
+    // yok olurken eğer spawn alanındaysa spawn deliğinin musait = true olmasını sağlasın. 
+    // destro edilirken çarpışma alanından exit olduğunu algılayamıyor spawnhodlerler
+    private void OnDestroy(){
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1f); 
+        foreach (var collider in colliders) {
+            if (collider.CompareTag("SPAWN_HOLDER")) {
+                SpawnHole spawnHole = collider.GetComponent<SpawnHole>();
+                if (spawnHole != null) {
+                    spawnHole.musait = true;
+                }
+            }
+        }
+    }
+
+    public void ZenminRenginiDegistir(){
         _zeminSpriteRenderer.color = Color.green;
         StartCoroutine(CardPerindekiTasinRakaminiPuanaEkle(1));
     }
 
 
-    public void BosCebeYerles() {
+    public void BosCebeYerles(){
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / Istaka.Instance.CepSayisi;
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++) {
             var cep = Istaka.Instance.CepList[i];
             var cepScript = cep.GetComponent<IstakaCebi>();
-            if (cepScript.Dolu == false) { 
-                transform.DOMove(cep.transform.position, _animasyonSuresi*.5f);
+            if (cepScript.Dolu == false) {
+                transform.DOMove(cep.transform.position, _animasyonSuresi * .5f);
                 gameObject.transform.position += new Vector3(0, 0, -1);
                 Destroy(_rigidbody);
                 Destroy(_collider);
@@ -68,11 +77,11 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public void PuaniVerMerkezeKay(float gecikme) {
+    public void PuaniVerMerkezeKay(float gecikme){
         StartCoroutine(CeptekiTasinRakaminiPuanaEkle(gecikme));
     }
 
-    IEnumerator CeptekiTasinRakaminiPuanaEkle(float gecikme) {
+    IEnumerator CeptekiTasinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         Vector3 ilkScale = transform.localScale;
         transform.DOMove(_targetPosition, _animasyonSuresi);
@@ -80,23 +89,23 @@ public class Tas : MonoBehaviour{
         Sequence mySequence = DOTween.Sequence();
         mySequence
             .Append(transform.DOScale(transform.localScale * 2, _animasyonSuresi * .5f))
-            .Append(transform.DOScale(ilkScale*.25f, _animasyonSuresi * .5f));
+            .Append(transform.DOScale(ilkScale * .25f, _animasyonSuresi * .5f));
         StartCoroutine(KillSelf());
         PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text =
-            PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        // PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text =
+        //     PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
     }
 
-    IEnumerator CardPerindekiTasinRakaminiPuanaEkle(float gecikme) {
+    IEnumerator CardPerindekiTasinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
-        gameObject.tag = "CEPTEKI_TAS";
+        gameObject.tag = "CEPTEKI_TAS"; // yeni taga gerek yok. nasılsa siliniyor bir satır sonra
         DestroySelf();
         PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text =
-            PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        // PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuanTMP.text =
+        //     PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
     }
 
-    IEnumerator KillSelf() {
+    IEnumerator KillSelf(){
         yield return new WaitForSeconds(_animasyonSuresi);
         transform.DOKill();
         Destroy(gameObject);
@@ -104,14 +113,14 @@ public class Tas : MonoBehaviour{
         TasManeger.Instance.TasIstances.Remove(gameObject);
     }
 
-    public void DestroySelf() {
+    public void DestroySelf(){
         Destroy(gameObject);
         this.enabled = false;
         TasManeger.Instance.TasIstances.Remove(gameObject);
     }
 
-    void OnTriggerStay2D(Collider2D other) {
-        if (other.gameObject.CompareTag("TAS")) {
+    void OnTriggerStay2D(Collider2D other){
+        if (other.gameObject.CompareTag("CARDTAKI_TAS")) {
             EdgeCollider2D edgeCollider = GetComponent<EdgeCollider2D>();
             if (edgeCollider != null && edgeCollider.IsTouching(other)) {
                 if (other is BoxCollider2D) {
@@ -121,8 +130,8 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    private void Update() {
-        if (gameObject.CompareTag("TAS")) {
+    private void Update(){
+        if (gameObject.CompareTag("CARDTAKI_TAS")) {
             Card.Instance.TaslarHareketli = (_rigidbody.linearVelocity.magnitude > 0.01f);
         }
         else {
@@ -131,7 +140,7 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public async Task SiraliAyniRenkGrubunaDahilOl() {
+    public async Task SiraliAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         CardKontrolcu.Instance.SiraliAyniRenkliGrup.Add(gameObject);
         if (SagindakiKomsuTas) {
@@ -143,7 +152,7 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public async Task SiraliFarkliRenkGrubunaDahilOl() {
+    public async Task SiraliFarkliRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         bool gruptaAyniRenkYok = true;
         //grupta zaten aynı renk varsa per olmaz . Çık
@@ -167,7 +176,7 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public async Task AyniRakamAyniRenkGrubunaDahilOl() {
+    public async Task AyniRakamAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         CardKontrolcu.Instance.AyniRakamAyniRenkliGrup.Add(gameObject);
         if (SagindakiKomsuTas) {
@@ -179,7 +188,7 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public async Task AyniRakamFarkliRenkGrubunaDahilOl() {
+    public async Task AyniRakamFarkliRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         bool gruptaAyniRenkYok = true;
         //grupta zaten aynı renk varsa per olmaz . Çık

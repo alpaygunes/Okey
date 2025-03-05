@@ -237,9 +237,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: 1829379509
+  m_SortingLayer: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.94509804, g: 0.9411765, b: 0.7607843, a: 0.5176471}
   m_FlipX: 0
@@ -298,10 +298,8 @@ Transform:
   - {fileID: 3755812}
   - {fileID: 2088673485}
   - {fileID: 1964857373}
-  - {fileID: 1743948157}
   - {fileID: 1131855345}
   - {fileID: 624114091}
-  - {fileID: 999063792}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
@@ -514,8 +512,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1829379509
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.94509804, g: 0.9411765, b: 0.7607843, a: 0.20392157}
@@ -836,12 +834,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999063791}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2688662, y: 1.4385458, z: 0}
+  m_LocalScale: {x: 1.5043678, y: 1.70554, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 343139322}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &999063793
 SpriteRenderer:
@@ -884,9 +882,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1672609231
+  m_SortingLayer: -2
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 201049c17ef0fb9b38c24e37819e03aa, type: 3}
   m_Color: {r: 0.9433962, g: 0.94221574, b: 0.7609469, a: 1}
   m_FlipX: 0
@@ -985,8 +983,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1829379509
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: -4738700643318316331, guid: 50852b37fbc000171a89e0caca691517, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -1337,11 +1335,11 @@ Transform:
   m_GameObject: {fileID: 1743948156}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0076, y: -7.52, z: -0.1}
-  m_LocalScale: {x: 9, y: 0.1, z: 1}
+  m_LocalPosition: {x: 0.0012666667, y: -0.504, z: -0.1}
+  m_LocalScale: {x: 1.5, y: 0.008333334, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 343139322}
+  m_Father: {fileID: 2088673485}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1743948160
 SpriteRenderer:
@@ -1527,9 +1525,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingLayerID: 1829379509
+  m_SortingLayer: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.085307464, g: 0.9433962, b: 0.004449993, a: 1}
   m_FlipX: 0
@@ -1624,9 +1622,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 15, z: 1}
+  m_LocalScale: {x: 8, y: 12, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1743948157}
   m_Father: {fileID: 343139322}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2088673486
@@ -1650,6 +1649,7 @@ SceneRoots:
   - {fileID: 713570639}
   - {fileID: 2037221}
   - {fileID: 343139322}
+  - {fileID: 999063792}
   - {fileID: 1416006419}
   - {fileID: 864947302}
   - {fileID: 1368803295}

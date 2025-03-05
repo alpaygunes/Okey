@@ -35,20 +35,14 @@ public class Counter : MonoBehaviour{
             _timeLeft--;
             transform.position += new Vector3(Card.Instance.transform.localScale.x / GeriSayimSuresi, 0, 0);
         } 
-        transform.position = _startPos;
-
-        IstakaKontrolcu.Instance.SiraliGruplariBelirle();
-        IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(); 
+        transform.position = _startPos; 
         
         if (   IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari.Count>0 
             || IstakaKontrolcu.Instance.AyniRakamAyniRenkGruplari.Count>0
             || IstakaKontrolcu.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
             || IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
-            PuanlamaKontrolcu.Instance.PerdekiTaslariToparla(); 
+               PuanlamaKontrolcu.Instance.PerdekiTaslariToparla();
+               PuanlamaKontrolcu.Instance.BonuslariVer();
         }
         CardKontrolcu.Instance.KartiKontrolEt();
         

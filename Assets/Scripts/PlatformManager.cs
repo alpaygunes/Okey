@@ -4,8 +4,8 @@ using UnityEngine.Serialization;
 
 public class PlatformManager : MonoBehaviour{
     public GameObject card;
-    private readonly int _colonCount = 5;
-    internal readonly int TasCount = 50;
+    private readonly int _colonCount = 6;
+    public readonly int _tasCount = 200;
     public List<GameObject> spawnHolesList = new List<GameObject>();
 
     public static PlatformManager Instance { get; private set; }
@@ -63,11 +63,22 @@ public class PlatformManager : MonoBehaviour{
                 Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
                 if (hit.collider != null) {
-                    if (hit.collider.gameObject.CompareTag("TAS")) {
+                    if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
                         TasManeger.Instance.TasIstances[hit.collider.gameObject].BosCebeYerles();
+                        PerleriKontrolEt(); 
                     }
                 }
             }
         }
+    }
+
+    private void PerleriKontrolEt()
+    {
+        IstakaKontrolcu.Instance.SiraliGruplariBelirle();
+        IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
+        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();  
     }
 }

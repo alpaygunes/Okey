@@ -1,22 +1,22 @@
 using UnityEngine;
 
 public class SpawnHole : MonoBehaviour{
-    private bool musait = true;
+    public bool musait = true;
 
-    private void OnTriggerStay2D(Collider2D other) {
-        if (other.CompareTag("TAS")) {
+    private void OnTriggerStay2D(Collider2D other){
+        if (other.CompareTag("CARDTAKI_TAS")) {
             musait = false;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other) {
-        if (other.CompareTag("TAS")) {
+    private void OnTriggerExit2D(Collider2D other){
+        if (other.CompareTag("CARDTAKI_TAS")) {
             musait = true;
         }
     }
 
 
-    private void Update() {
+    private void Update(){
         if (musait && TasManeger.Instance.TasList.Count > 0) {
             musait = false;
             var siradakiTas = TasManeger.Instance.TasList[0];
@@ -24,6 +24,7 @@ public class SpawnHole : MonoBehaviour{
             siradakiTas.gameObject.transform.position = transform.position;
             siradakiTas.gameObject.transform.localScale = transform.localScale * .85f;
             siradakiTas.transform.SetParent(PlatformManager.Instance.transform);
+            siradakiTas.tag = "CARDTAKI_TAS";
             TasManeger.Instance.TasIstances.Add(siradakiTas, siradakiTas.gameObject.GetComponent<Tas>());
             siradakiTas.SetActive(true);
         }

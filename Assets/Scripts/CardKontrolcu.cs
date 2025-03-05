@@ -29,12 +29,13 @@ public class CardKontrolcu : MonoBehaviour{
 
     // Karttaki taşları kontrol edip yan yana  perler varmı bakalım
     public async Task KartiKontrolEt() {
+        
         SiraliAyniRenkliGruplar.Clear();
         SiraliFarkliRenkliGruplar.Clear();
         AyniRakamAyniRenkliGruplar.Clear();
         AyniRakamFarkliRenkliGruplar.Clear();
 
-        GameObject[] taslar = GameObject.FindGameObjectsWithTag("TAS");
+        GameObject[] taslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
 
         // önceki işaretlemeleri iptal edelim.
         foreach (var tas in taslar) {
