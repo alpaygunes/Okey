@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DG.Tweening;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -18,6 +21,9 @@ public class CardKontrolcu : MonoBehaviour{
     private List<List<GameObject>> AyniRakamFarkliRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> AyniRakamFarkliRenkli = new List<GameObject>();
 
+    private TextMeshProUGUI textMesh;
+    private Camera uiCamera;
+    
     void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(this);
@@ -25,6 +31,11 @@ public class CardKontrolcu : MonoBehaviour{
         }
 
         Instance = this;
+        uiCamera = Camera.main; 
+    }
+
+    private void Start(){
+        textMesh = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>(); 
     }
 
     // Karttaki taşları kontrol edip yan yana  perler varmı bakalım
@@ -112,7 +123,24 @@ public class CardKontrolcu : MonoBehaviour{
 
     IEnumerator SkorTMPleriGuncelle() {
         yield return new WaitForSeconds(1);
+        
+        //PuanlamaKontrolcu.Instance.toplamPuan += PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
+        //PuanlamaKontrolcu.Instance.toplamPuanTMP.text = PuanlamaKontrolcu.Instance.toplamPuan.ToString(); 
+        var startScore =   PuanlamaKontrolcu.Instance.toplamPuan;
+        var currentScore = PuanlamaKontrolcu.Instance.toplamPuan + PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
+        DOTween.To(() => startScore, x => PuanlamaKontrolcu.Instance.toplamPuanTMP.text = x.ToString(), currentScore, 1f).SetEase(Ease.OutQuad);
+        
         PuanlamaKontrolcu.Instance.toplamPuan += PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
-        PuanlamaKontrolcu.Instance.toplamPuanTMP.text = PuanlamaKontrolcu.Instance.toplamPuan.ToString();
+        //print($"PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan  : {PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan} , Toplam :{PuanlamaKontrolcu.Instance.toplamPuan}");
+        
+        // floatingText
+        Vector3 _targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0,2,0));
+        textMesh.text = "+" + PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        textMesh.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0,0,0));
+        textMesh.transform.DOMoveY(_targetPosition.y, 2f).SetEase(Ease.OutQuad);
+        var color = textMesh.color;
+        color.a = 1f;
+        textMesh.color = color;
+        textMesh.DOFade(0, 3f);
     }
 }

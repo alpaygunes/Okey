@@ -15,7 +15,7 @@ public class Tas : MonoBehaviour{
     public Camera uiCamera;
     private Object _collider;
 
-    public System.Action<Collider2D> OnDestroyed;
+    private GameObject destroyEffectPrefab;
 
 
     private void Awake(){
@@ -32,18 +32,23 @@ public class Tas : MonoBehaviour{
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         transform.Find("Zemin").GetComponent<SpriteRenderer>().color = renk;
+        destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof");
     }
 
 
     // yok olurken eğer spawn alanındaysa spawn deliğinin musait = true olmasını sağlasın. 
     // destro edilirken çarpışma alanından exit olduğunu algılayamıyor spawnhodlerler
     private void OnDestroy(){
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, transform.localScale.x / 2); 
-        foreach (var collider in colliders) { 
+        if (destroyEffectPrefab != null) {
+            Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, transform.localScale.x / 2);
+        foreach (var collider in colliders) {
             if (collider.transform.CompareTag("SPAWN_HOLDER")) {
                 SpawnHole spawnHole = collider.GetComponent<SpawnHole>();
                 if (spawnHole != null) {
-                    spawnHole.musait = true; 
+                    spawnHole.musait = true;
                 }
             }
         }
@@ -84,20 +89,20 @@ public class Tas : MonoBehaviour{
     IEnumerator CeptekiTasinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         Vector3 ilkScale = transform.localScale;
-        transform.DOMove(_targetPosition, _animasyonSuresi); 
+        transform.DOMove(_targetPosition, _animasyonSuresi);
         Sequence mySequence = DOTween.Sequence();
         mySequence
             .Append(transform.DOScale(transform.localScale * 2, _animasyonSuresi * .5f))
             .Append(transform.DOScale(ilkScale * .25f, _animasyonSuresi * .5f));
         StartCoroutine(KillSelf());
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam; 
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
     }
 
     IEnumerator CardPerindekiTasinRakaminiPuanaEkle(float gecikme){
-        gameObject.tag = "CARD_PERINDEKI_TAS"; // yeni taga gerek yok. nasılsa siliniyor bir satır sonra
+        gameObject.tag = "CARD_PERINDEKI_TAS";
         yield return new WaitForSeconds(gecikme);
         DestroySelf();
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam; 
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
     }
 
     IEnumerator KillSelf(){
@@ -164,7 +169,6 @@ public class Tas : MonoBehaviour{
                 var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
                 var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam;
                 if (sagdakininRengi != renk && sagdakininRakami == rakam + 1) {
-                    //print($"{rakam} ---- {sagdakininRakami}");
                     await TasManeger.Instance.TasIstances[SagindakiKomsuTas].SiraliFarkliRenkGrubunaDahilOl();
                 }
             }
