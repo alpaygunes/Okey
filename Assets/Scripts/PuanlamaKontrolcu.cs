@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
-using UnityEngine; 
+using UnityEngine;
 
 public class PuanlamaKontrolcu : MonoBehaviour{
-    public static PuanlamaKontrolcu Instance { get; private set; } 
-    private TextMeshProUGUI textMesh;  
+    public static PuanlamaKontrolcu Instance { get; private set; }
+    private TextMeshProUGUI textMesh;
+
     public TextMeshProUGUI toplamPuanTMP;
+
     //private Transform textMeshTransFrm;
-    public int PerlerdenKazanilanPuan = 1; 
+    public int PerlerdenKazanilanPuan = 1;
     private float _merkezeKayGecikmesi;
     public int toplamPuan;
     private Camera uiCamera;
@@ -26,14 +28,12 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         }
 
         Instance = this;
-        uiCamera = Camera.main; 
+        uiCamera = Camera.main;
     }
 
     private void Start(){
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         textMesh = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
-        //textMeshTransFrm = GameObject.Find("FlatingText").transform;
-        //PerlerdenKazanilanPuanTMP = GameObject.Find("PerlerdenKazanilanPuan").GetComponent<TextMeshProUGUI>();
     }
 
     public void PerdekiTaslariToparla(){
@@ -109,15 +109,14 @@ public class PuanlamaKontrolcu : MonoBehaviour{
     }
 
     IEnumerator SkorTMPleriGuncelle(){
+        IstakaKontrolcu.Instance.GruplariTemizle();
         yield return new WaitForSeconds(_merkezeKayGecikmesi);
-        IstakaKontrolcu.Instance.GruplariTemizle(); 
+        //IstakaKontrolcu.Instance.GruplariTemizle();
         toplamPuan += PerlerdenKazanilanPuan;
-        //toplamPuanTMP.text = toplamPuan.ToString(); 
-        //print($"Puanlama...  toplamPuan : {toplamPuan}");
-        
+
         // floatingText 
-        if (toplamPuan>0) {
-            Vector3 _targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0,2,0));
+        if (toplamPuan > 0) {
+            Vector3 _targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
             textMesh.text = "+" + PerlerdenKazanilanPuan.ToString();
             textMesh.transform.position = uiCamera.WorldToScreenPoint(Istaka.Instance.transform.position);
             textMesh.transform.DOMoveY(_targetPosition.y, 2f).SetEase(Ease.OutQuad);
@@ -138,12 +137,14 @@ public class PuanlamaKontrolcu : MonoBehaviour{
                     var itemIstance = TasManeger.Instance.TasIstances[item];
                     if (BonusAyniRenkArdisikRakam.Count > 3) {
                         if (tasInstance.rakam == itemIstance.rakam || tasInstance.renk == itemIstance.renk) {
-                            itemIstance.ZenminRenginiDegistir();
+                            TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                            StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
                         }
                     }
                     else {
                         if (tasInstance.rakam == itemIstance.rakam) {
-                            itemIstance.ZenminRenginiDegistir();
+                            TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                            StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
                         }
                     }
                 }
@@ -156,7 +157,8 @@ public class PuanlamaKontrolcu : MonoBehaviour{
                 foreach (var item in cardtakiTaslar) {
                     var itemIstance = TasManeger.Instance.TasIstances[item];
                     if (tasInstance.rakam == itemIstance.rakam || tasInstance.renk == itemIstance.renk) {
-                        itemIstance.ZenminRenginiDegistir();
+                        TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                        StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
                     }
                 }
             }
@@ -169,12 +171,14 @@ public class PuanlamaKontrolcu : MonoBehaviour{
                     var itemIstance = TasManeger.Instance.TasIstances[item];
                     if (BonusFarkliRenkAyniRakam.Count > 3) {
                         if (tasInstance.rakam == itemIstance.rakam || tasInstance.renk == itemIstance.renk) {
-                            itemIstance.ZenminRenginiDegistir();
+                            TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                            StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
                         }
                     }
                     else {
                         if (tasInstance.rakam == itemIstance.rakam) {
-                            itemIstance.ZenminRenginiDegistir();
+                            TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                            StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
                         }
                     }
                 }
@@ -188,12 +192,14 @@ public class PuanlamaKontrolcu : MonoBehaviour{
                     var itemIstance = TasManeger.Instance.TasIstances[item];
                     if (BonusFarkliRenkArdisikRakam.Count > 3) {
                         if (tasInstance.rakam == itemIstance.rakam || tasInstance.renk == itemIstance.renk) {
-                            itemIstance.ZenminRenginiDegistir();
+                            TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                            StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
                         }
                     }
                     else {
                         if (tasInstance.rakam == itemIstance.rakam) {
-                            itemIstance.ZenminRenginiDegistir();
+                            TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                            StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
                         }
                     }
                 }

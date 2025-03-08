@@ -24,6 +24,40 @@ public class IstakaKontrolcu : MonoBehaviour{
         }
     }
 
+    public int DoluCepSayisi(){
+        int doluCepSayisi = 0; 
+        foreach (var cep in Istaka.Instance.CepList) {
+            var cepScript = cep.GetComponent<IstakaCebi>();
+            if (cepScript.Dolu) {
+                doluCepSayisi++;
+            }
+        } 
+        return doluCepSayisi;
+    }
+    
+    // public void PersizFullIstakayiBosalt(){
+    //     var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+    //     var ceptekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS"); 
+    //     if (DoluCepSayisi() == Istaka.Instance.CepSayisi) {
+    //         foreach (var ceptekiTas in ceptekiTaslar) {
+    //             var AIstance = TasManeger.Instance.TasIstances[ceptekiTas];
+    //             foreach (var cardtakiTas in cardtakiTaslar) {
+    //                 var BInstance = TasManeger.Instance.TasIstances[cardtakiTas];
+    //                 if (BInstance.rakam == AIstance.rakam || BInstance.renk == AIstance.renk) { 
+    //                     BInstance.ZeminSpriteRenderer.color = Color.red;
+    //                     StartCoroutine(BInstance.CezaliRakamiCikar(1));
+    //                 }
+    //             }
+    //             AIstance.ZeminSpriteRenderer.color = Color.red;
+    //             StartCoroutine(AIstance.CezaliRakamiCikar(1));
+    //         }
+    //
+    //         foreach (var Cep in Istaka.Instance.CepList) {
+    //             Cep.GetComponent<IstakaCebi>().Dolu = false;
+    //         }
+    //     }
+    // }
+
     public void SiraliGruplariBelirle(){
         SiraliGruplar.Clear();
         Dictionary<int, GameObject> siraliGrup = new Dictionary<int, GameObject>();
@@ -377,7 +411,7 @@ public class IstakaKontrolcu : MonoBehaviour{
         SiraliRakamAyniRenkGruplari.Clear();
         BenzerRakamGruplari.Clear();
         SiraliGruplar.Clear();
-        AyniRakamHepsiFarkliRenkGruplari.Clear();
+        AyniRakamHepsiFarkliRenkGruplari.Clear(); 
     }
     
 }

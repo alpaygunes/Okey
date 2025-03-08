@@ -19,7 +19,11 @@ public class Counter : MonoBehaviour{
         _startPos = transform.position; 
     }
 
-    public void StartCountdown(){ 
+    public void KontrolIcinGeriSaymayaBasla(){
+        if (IstakaKontrolcu.Instance.DoluCepSayisi() < 3) {
+            return;
+        } 
+        
         if (_countdownCoroutine != null){
             transform.position = _startPos;
             StopCoroutine(_countdownCoroutine);
@@ -27,8 +31,7 @@ public class Counter : MonoBehaviour{
         _countdownCoroutine = StartCoroutine(CountdownRoutine());
     }
 
-    private IEnumerator CountdownRoutine(){
-        //bool herhangiBirGrupVar = true;
+    private IEnumerator CountdownRoutine(){ 
         float _timeLeft = GeriSayimSuresi;
         while (_timeLeft > 0){
             yield return new WaitForSeconds(1f);
@@ -36,15 +39,16 @@ public class Counter : MonoBehaviour{
             transform.position += new Vector3(Card.Instance.transform.localScale.x / GeriSayimSuresi, 0, 0);
         } 
         transform.position = _startPos; 
-        
         if (   IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari.Count>0 
             || IstakaKontrolcu.Instance.AyniRakamAyniRenkGruplari.Count>0
             || IstakaKontrolcu.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
             || IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
-               PuanlamaKontrolcu.Instance.PerdekiTaslariToparla();
-               PuanlamaKontrolcu.Instance.BonuslariVer();
+            PuanlamaKontrolcu.Instance.PerdekiTaslariToparla();
+            PuanlamaKontrolcu.Instance.BonuslariVer();
         }
-        CardKontrolcu.Instance.KartiKontrolEt();
-        
+        else {
+            //IstakaKontrolcu.Instance.PersizFullIstakayiBosalt();
+        }
+        CardKontrolcu.Instance.KarttakiPerleriBul();
     }
 }

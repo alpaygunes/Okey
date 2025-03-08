@@ -24,23 +24,29 @@ public class CardKontrolcu : MonoBehaviour{
     private TextMeshProUGUI textMesh;
     private Camera uiCamera;
     
-    void Awake() {
+    private AudioSource _audioSource_puan_sayac;
+    
+
+    void Awake(){
         if (Instance != null && Instance != this) {
             Destroy(this);
             return;
         }
 
         Instance = this;
-        uiCamera = Camera.main; 
+        uiCamera = Camera.main;
+        
+        _audioSource_puan_sayac = gameObject.AddComponent<AudioSource>();
+        _audioSource_puan_sayac.playOnAwake = false;
+        _audioSource_puan_sayac.clip = Resources.Load<AudioClip>("Sounds/puan_sayac");
     }
 
     private void Start(){
-        textMesh = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>(); 
+        textMesh = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>();
     }
 
     // Karttaki taşları kontrol edip yan yana  perler varmı bakalım
-    public async Task KartiKontrolEt() {
-        
+    public async Task KarttakiPerleriBul(){
         SiraliAyniRenkliGruplar.Clear();
         SiraliFarkliRenkliGruplar.Clear();
         AyniRakamAyniRenkliGruplar.Clear();
@@ -96,48 +102,54 @@ public class CardKontrolcu : MonoBehaviour{
         PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan = 0;
         foreach (var grup in SiraliAyniRenkliGruplar) {
             foreach (var item in grup) {
-                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
             }
         }
 
         foreach (var grup in SiraliFarkliRenkliGruplar) {
             foreach (var item in grup) {
-                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
             }
         }
 
         foreach (var grup in AyniRakamAyniRenkliGruplar) {
             foreach (var item in grup) {
-                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
             }
         }
 
         foreach (var grup in AyniRakamFarkliRenkliGruplar) {
-            foreach (var item in grup) {
-                TasManeger.Instance.TasIstances[item].ZenminRenginiDegistir();
+            foreach (var item in grup) { 
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
             }
         }
 
         StartCoroutine(SkorTMPleriGuncelle());
     }
 
-    IEnumerator SkorTMPleriGuncelle() {
+    IEnumerator SkorTMPleriGuncelle(){
         yield return new WaitForSeconds(1);
-        
-        //PuanlamaKontrolcu.Instance.toplamPuan += PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
-        //PuanlamaKontrolcu.Instance.toplamPuanTMP.text = PuanlamaKontrolcu.Instance.toplamPuan.ToString(); 
-        var startScore =   PuanlamaKontrolcu.Instance.toplamPuan;
+
+        // puan artış animasyonu
+        var startScore = PuanlamaKontrolcu.Instance.toplamPuan;
         var currentScore = PuanlamaKontrolcu.Instance.toplamPuan + PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
-        DOTween.To(() => startScore, x => PuanlamaKontrolcu.Instance.toplamPuanTMP.text = x.ToString(), currentScore, 1f).SetEase(Ease.OutQuad);
-        
+        DOTween.To(() => startScore, x => PuanlamaKontrolcu.Instance.toplamPuanTMP.text = x.ToString(), currentScore,
+            1f).SetEase(Ease.OutQuad);
         PuanlamaKontrolcu.Instance.toplamPuan += PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
-        //print($"PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan  : {PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan} , Toplam :{PuanlamaKontrolcu.Instance.toplamPuan}");
+        PuanlamaKontrolcu.Instance.toplamPuanTMP.transform.DOPunchPosition(new Vector3(Screen.width*.01f, Screen.height*.02f, 0f), 1f, 30, 0.5f);
+
+        // sayaç sesi
+        _audioSource_puan_sayac.Play();
         
         // floatingText
-        Vector3 _targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0,2,0));
+        Vector3 targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
         textMesh.text = "+" + PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
-        textMesh.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0,0,0));
-        textMesh.transform.DOMoveY(_targetPosition.y, 2f).SetEase(Ease.OutQuad);
+        textMesh.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0, 0, 0));
+        textMesh.transform.DOMoveY(targetPosition.y, 2f).SetEase(Ease.OutQuad);
         var color = textMesh.color;
         color.a = 1f;
         textMesh.color = color;

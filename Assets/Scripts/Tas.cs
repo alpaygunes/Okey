@@ -2,6 +2,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Tas : MonoBehaviour{
     public int rakam;
@@ -10,20 +11,23 @@ public class Tas : MonoBehaviour{
     public GameObject SagindakiKomsuTas;
     private Rigidbody2D _rigidbody;
     public bool birCardPerineDahil = false;
-    private SpriteRenderer _zeminSpriteRenderer;
-    private Vector3 _targetPosition;
+    [FormerlySerializedAs("_zeminSpriteRenderer")] public SpriteRenderer ZeminSpriteRenderer;
+    private Vector3 _skorTxtPosition;
     public Camera uiCamera;
     private Object _collider;
-
     private GameObject destroyEffectPrefab;
+    private AudioSource _audioSource_down;
+    private AudioSource _audioSource_up;
+    private AudioSource _audioSource_patla;
+    
 
 
     private void Awake(){
         gameObject.SetActive(false);
-        _zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
+        ZeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
 
         uiCamera = Camera.main;
-        _targetPosition = uiCamera.ScreenToWorldPoint(
+        _skorTxtPosition = uiCamera.ScreenToWorldPoint(
             new Vector3(GameObject.Find("Skor").transform.position.x,
                 GameObject.Find("Skor").transform.position.y, 30f));
     }
@@ -33,16 +37,22 @@ public class Tas : MonoBehaviour{
         _collider = GetComponent<Collider2D>();
         transform.Find("Zemin").GetComponent<SpriteRenderer>().color = renk;
         destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof");
+        
+        _audioSource_down = gameObject.AddComponent<AudioSource>();
+        _audioSource_down.playOnAwake = false;
+        _audioSource_down.clip = Resources.Load<AudioClip>("Sounds/tas_down");
+        
+        _audioSource_up = gameObject.AddComponent<AudioSource>();
+        _audioSource_up.playOnAwake = false;
+        _audioSource_up.clip = Resources.Load<AudioClip>("Sounds/tas_up");
+        
+        _audioSource_patla = gameObject.AddComponent<AudioSource>();
+        _audioSource_patla.playOnAwake = false;
+        _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
     }
 
-
-    // yok olurken eğer spawn alanındaysa spawn deliğinin musait = true olmasını sağlasın. 
-    // destro edilirken çarpışma alanından exit olduğunu algılayamıyor spawnhodlerler
-    private void OnDestroy(){
-        if (destroyEffectPrefab != null) {
-            Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
-        }
-
+    
+    private void OnDestroy(){ 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, transform.localScale.x / 2);
         foreach (var collider in colliders) {
             if (collider.transform.CompareTag("SPAWN_HOLDER")) {
@@ -54,20 +64,17 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public void ZenminRenginiDegistir(){
-        _zeminSpriteRenderer.color = Color.green;
-        StartCoroutine(CardPerindekiTasinRakaminiPuanaEkle(1));
-    }
 
-
-    public void BosCebeYerles(){
+    public void BosCebeYerles(){ 
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / Istaka.Instance.CepSayisi;
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++) {
             var cep = Istaka.Instance.CepList[i];
             var cepScript = cep.GetComponent<IstakaCebi>();
             if (cepScript.Dolu == false) {
-                transform.DOMove(cep.transform.position, _animasyonSuresi * .5f);
+                transform.DOMove(cep.transform.position, _animasyonSuresi * .5f)
+                    .SetEase(Ease.OutExpo)
+                    .OnComplete((() => _audioSource_up.Play()));
                 gameObject.transform.position += new Vector3(0, 0, -1);
                 Destroy(_rigidbody);
                 Destroy(_collider);
@@ -76,7 +83,8 @@ public class Tas : MonoBehaviour{
                 gameObject.tag = "CEPTEKI_TAS";
                 Istaka.Instance.Taslar.Add(i, gameObject);
                 Istaka.Instance.TasinRakami.Add(i, gameObject.GetComponent<Tas>().rakam);
-                Counter.Instance.StartCountdown();
+                Counter.Instance.KontrolIcinGeriSaymayaBasla();
+                _audioSource_down.Play();  
                 break;
             }
         }
@@ -89,7 +97,7 @@ public class Tas : MonoBehaviour{
     IEnumerator CeptekiTasinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         Vector3 ilkScale = transform.localScale;
-        transform.DOMove(_targetPosition, _animasyonSuresi);
+        transform.DOMove(_skorTxtPosition, _animasyonSuresi);
         Sequence mySequence = DOTween.Sequence();
         mySequence
             .Append(transform.DOScale(transform.localScale * 2, _animasyonSuresi * .5f))
@@ -98,11 +106,25 @@ public class Tas : MonoBehaviour{
         PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
     }
 
-    IEnumerator CardPerindekiTasinRakaminiPuanaEkle(float gecikme){
+    public IEnumerator RakamiPuanaEkle(float gecikme){
         gameObject.tag = "CARD_PERINDEKI_TAS";
-        yield return new WaitForSeconds(gecikme);
+        Invoke("Patla", Random.value*2);
+        yield return new WaitForSeconds(gecikme); 
         DestroySelf();
         PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
+    }
+    
+    public IEnumerator CezaliRakamiCikar(float gecikme){
+        gameObject.tag = "CARD_PERINDEKI_TAS";  
+        Invoke("Patla", Random.value*2);
+        yield return new WaitForSeconds(gecikme); 
+        DestroySelf();
+        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan -= rakam;
+    }
+
+    void Patla(){
+        Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
+        _audioSource_patla.Play();
     }
 
     IEnumerator KillSelf(){
@@ -116,7 +138,7 @@ public class Tas : MonoBehaviour{
     public void DestroySelf(){
         Destroy(gameObject);
         this.enabled = false;
-        TasManeger.Instance.TasIstances.Remove(gameObject);
+        TasManeger.Instance.TasIstances.Remove(gameObject); 
     }
 
     void OnTriggerStay2D(Collider2D other){
@@ -133,6 +155,7 @@ public class Tas : MonoBehaviour{
     private void Update(){
         if (gameObject.CompareTag("CARDTAKI_TAS")) {
             Card.Instance.TaslarHareketli = (_rigidbody.linearVelocity.magnitude > 0.01f);
+            //TasManeger.Instance.TasSecileBilir = (_rigidbody.linearVelocity.magnitude < 0.5f);;
         }
         else {
             Card.Instance.TaslarHareketli = false;

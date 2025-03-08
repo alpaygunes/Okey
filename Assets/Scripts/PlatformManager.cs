@@ -39,8 +39,7 @@ public class PlatformManager : MonoBehaviour{
             spawnHolesList.Add(sh);
         }
     }
-
-
+    
     private void KutulariHazirla() {
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = (cardSize.x / _colonCount);
@@ -55,30 +54,5 @@ public class PlatformManager : MonoBehaviour{
             } 
         }
     }
-
-    void Update() {
-        if (Input.touchCount > 0) {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began) {
-                Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
-                RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-                if (hit.collider != null) {
-                    if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
-                        TasManeger.Instance.TasIstances[hit.collider.gameObject].BosCebeYerles();
-                        PerleriKontrolEt(); 
-                    }
-                }
-            }
-        }
-    }
-
-    private void PerleriKontrolEt()
-    {
-        IstakaKontrolcu.Instance.SiraliGruplariBelirle();
-        IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();  
-    }
+    
 }
