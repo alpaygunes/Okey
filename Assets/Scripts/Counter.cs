@@ -47,7 +47,7 @@ public class Counter : MonoBehaviour{
             PuanlamaKontrolcu.Instance.BonuslariVer();
         }
         else {
-            Istaka.Instance.PersizFullIstakayiBosalt();
+           Istaka.Instance.PersizFullIstakayiBosalt();
         }
         CardKontrolcu.Instance.KarttakiPerleriBul();
     }

@@ -110,8 +110,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
 
     IEnumerator SkorTMPleriGuncelle(){
         Istaka.Instance.GruplariTemizle();
-        yield return new WaitForSeconds(_merkezeKayGecikmesi);
-        //IstakaKontrolcu.Instance.GruplariTemizle();
+        yield return new WaitForSeconds(_merkezeKayGecikmesi); 
         toplamPuan += PerlerdenKazanilanPuan;
 
         // floatingText 
