@@ -20,7 +20,7 @@ public class Counter : MonoBehaviour{
     }
 
     public void KontrolIcinGeriSaymayaBasla(){
-        if (IstakaKontrolcu.Instance.DoluCepSayisi() < 3) {
+        if (Istaka.Instance.DoluCepSayisi() < 3) {
             return;
         } 
         
@@ -39,15 +39,15 @@ public class Counter : MonoBehaviour{
             transform.position += new Vector3(Card.Instance.transform.localScale.x / GeriSayimSuresi, 0, 0);
         } 
         transform.position = _startPos; 
-        if (   IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari.Count>0 
-            || IstakaKontrolcu.Instance.AyniRakamAyniRenkGruplari.Count>0
-            || IstakaKontrolcu.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
-            || IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
+        if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
+            || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
+            || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
+            || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
             PuanlamaKontrolcu.Instance.PerdekiTaslariToparla();
             PuanlamaKontrolcu.Instance.BonuslariVer();
         }
         else {
-            IstakaKontrolcu.Instance.PersizFullIstakayiBosalt();
+            Istaka.Instance.PersizFullIstakayiBosalt();
         }
         CardKontrolcu.Instance.KarttakiPerleriBul();
     }

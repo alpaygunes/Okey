@@ -45,7 +45,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>();
         PerlerdenKazanilanPuan = 0;
         //SiraliRakamRenkGruplari sahneye diz 
-        foreach (var grupList in IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari) {
+        foreach (var grupList in Istaka.Instance.SiraliRakamAyniRenkGruplari) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
                     perdekiTumTaslarDic.Add(item.Key, item.Value);
@@ -58,7 +58,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         }
 
         //AyniRakamAyniRenkGruplari sahneye diz 
-        foreach (var grupList in IstakaKontrolcu.Instance.AyniRakamAyniRenkGruplari) {
+        foreach (var grupList in Istaka.Instance.AyniRakamAyniRenkGruplari) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
                     perdekiTumTaslarDic.Add(item.Key, item.Value);
@@ -71,7 +71,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         }
 
         //AyniRakamHepsiFarkliRenkGruplari sahneye diz 
-        foreach (var grupList in IstakaKontrolcu.Instance.AyniRakamHepsiFarkliRenkGruplari) {
+        foreach (var grupList in Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
                     perdekiTumTaslarDic.Add(item.Key, item.Value);
@@ -84,7 +84,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         }
 
         //SiraliRakamHepsiFarkliRenkGruplari sahneye diz 
-        foreach (var grupList in IstakaKontrolcu.Instance.SiraliRakamHepsiFarkliRenkGruplari) {
+        foreach (var grupList in Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
                     perdekiTumTaslarDic.Add(item.Key, item.Value);
@@ -109,7 +109,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
     }
 
     IEnumerator SkorTMPleriGuncelle(){
-        IstakaKontrolcu.Instance.GruplariTemizle();
+        Istaka.Instance.GruplariTemizle();
         yield return new WaitForSeconds(_merkezeKayGecikmesi);
         //IstakaKontrolcu.Instance.GruplariTemizle();
         toplamPuan += PerlerdenKazanilanPuan;

@@ -54,11 +54,11 @@ public class TasManeger : MonoBehaviour{
     
     private void PerleriKontrolEt()
     {
-        IstakaKontrolcu.Instance.SiraliGruplariBelirle();
-        IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
+        Istaka.Instance.SiraliGruplariBelirle();
+        Istaka.Instance.BenzerRakamGruplariniBelirle();
+        Istaka.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
+        Istaka.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
+        Istaka.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
+        Istaka.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
     }
 }

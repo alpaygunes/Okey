@@ -1,47 +1,451 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class Istaka : MonoBehaviour
-{
+public class Istaka : MonoBehaviour{
     public int CepSayisi { get; set; } = 4;
     public List<GameObject> CepList = new List<GameObject>();
     public Dictionary<int, GameObject> Taslar = new Dictionary<int, GameObject>();
     public Dictionary<int, int> TasinRakami = new Dictionary<int, int>();
-    public static Istaka Instance { get; private set; }
+    
+    
+    
+    
+    
+    public static Istaka Instance;
+    public List<Dictionary<int, GameObject>> SiraliGruplar = new List<Dictionary<int, GameObject>>();
+    public List<Dictionary<int, GameObject>> BenzerRakamGruplari = new List<Dictionary<int, GameObject>>();
+    public List<Dictionary<int, GameObject>> SiraliRakamAyniRenkGruplari = new List<Dictionary<int, GameObject>>();
+    public List<Dictionary<int, GameObject>> AyniRakamAyniRenkGruplari = new List<Dictionary<int, GameObject>>();
+    public List<Dictionary<int, GameObject>> AyniRakamHepsiFarkliRenkGruplari = new List<Dictionary<int, GameObject>>();
 
-    void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-            return;
+    public List<Dictionary<int, GameObject>> SiraliRakamHepsiFarkliRenkGruplari =
+        new List<Dictionary<int, GameObject>>();
+
+    private bool _yeniGrupOlustur;
+
+    private void Awake(){
+        if (Instance == null) {
+            Instance = this;
         }
-
-        Instance = this;
+        else {
+            Destroy(gameObject);
+        }
     }
 
-
-    private void Start()
-    {
+    private void Start(){
         cepleriOlustur();
     }
 
-    // Cepleri oluştur
-    void cepleriOlustur()
-    {
-        float istakaGenisligi = transform.GetComponent<SpriteRenderer>().bounds.size.x;
-        float aralikMesafesi = istakaGenisligi / CepSayisi; 
-        for (int i = 0; i < CepSayisi; i++)
-        {
+    public int DoluCepSayisi(){
+        int doluCepSayisi = 0;
+        foreach (var cep in CepList) {
+            var cepScript = cep.GetComponent<IstakaCebi>();
+            if (cepScript.Dolu) {
+                doluCepSayisi++;
+            }
+        }
+
+        return doluCepSayisi;
+    }
+    
+    void cepleriOlustur(){
+        float istakaGenisligi = GetComponent<SpriteRenderer>().bounds.size.x;
+        float aralikMesafesi = istakaGenisligi / CepSayisi;
+        for (int i = 0; i < CepSayisi; i++) {
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - istakaGenisligi * .5f;
             GameObject Cep = Resources.Load<GameObject>("Prefabs/IstakaCebi");
-            var cep = Instantiate(Cep, new Vector3(x, transform.position.y, -2), Quaternion.identity); 
+            var cep = Instantiate(Cep, new Vector3(x, transform.position.y, -2), Quaternion.identity);
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
             cep.transform.localScale *= .7f;
             cep.transform.SetParent(PlatformManager.Instance.transform);
             CepList.Add(cep);
         }
+    }
+
+    public void PersizFullIstakayiBosalt(){
+        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+        var ceptekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
+        if (DoluCepSayisi() == CepSayisi) {
+            List<int> silinecekKeyler = new List<int>();
+            foreach (var ceptekiTas in ceptekiTaslar) {
+                var AIstance = TasManeger.Instance.TasIstances[ceptekiTas];
+
+                foreach (var tas in Taslar) {
+                    if (tas.Value == ceptekiTas) {
+                        silinecekKeyler.Add(tas.Key);
+                    }
+                }
+
+                foreach (var cardtakiTas in cardtakiTaslar) {
+                    var BInstance = TasManeger.Instance.TasIstances[cardtakiTas];
+                    if (BInstance.rakam == AIstance.rakam || BInstance.renk == AIstance.renk) {
+                        BInstance.ZeminSpriteRenderer.color = Color.red;
+                        StartCoroutine(BInstance.CezaliRakamiCikar(1));
+                    }
+                }
+
+                AIstance.ZeminSpriteRenderer.color = Color.red;
+                StartCoroutine(AIstance.CezaliRakamiCikar(1));
+            }
+
+            foreach (var Cep in CepList) {
+                Cep.GetComponent<IstakaCebi>().Dolu = false;
+            }
+            
+            for (int i = 0; i < silinecekKeyler.Count; i++) {
+                Taslar.Remove(silinecekKeyler[i]);
+                TasinRakami.Remove(silinecekKeyler[i]);
+            }
+        }
+    }
+
+    public void SiraliGruplariBelirle(){
+        SiraliGruplar.Clear();
+        Dictionary<int, GameObject> siraliGrup = new Dictionary<int, GameObject>();
+        // Istakadaki cepleri tek tek kontrole delim.
+        for (int i = 0; i < CepSayisi; i++) {
+            _yeniGrupOlustur = false;
+            //Cepte taş var mı ?
+            if (Taslar.TryGetValue(i, out var tas)) {
+                // grup yeni grupsa ardışıklığına bakamdan gruba ekleyelim
+                if (siraliGrup.Count == 0) {
+                    siraliGrup.Add(i, tas);
+                }
+
+                // sonraki ile ardışık mı ?
+                if (Taslar.TryGetValue(i + 1, out var sonrakiTas)) {
+                    int sonrakiTasinRakami = TasinRakami[i + 1];
+                    int simdikiTasinRakami = TasinRakami[i];
+                    if (simdikiTasinRakami == sonrakiTasinRakami - 1) {
+                        // sonrakiyle ardışıksa sonrakinide ekleyelim
+                        siraliGrup.Add(i + 1, sonrakiTas);
+                    }
+                    else {
+                        _yeniGrupOlustur = true;
+                    }
+                }
+                else {
+                    // sonrraki yoksa yeni grup olustur
+                    _yeniGrupOlustur = true;
+                }
+            }
+
+            if (_yeniGrupOlustur) {
+                // önceki üç taşı kontrole delim per mi ? 
+                if (siraliGrup.Count > 2) {
+                    if (Taslar.TryGetValue(i - (siraliGrup.Count + 1), out var ardisikIlkTas)) {
+                        if (Taslar.TryGetValue(i - (siraliGrup.Count), out var oncekiTasB)) {
+                            if (Taslar.TryGetValue(i - (siraliGrup.Count - 1), out var oncekiTasC)) {
+                                if (TasinRakami[i - (siraliGrup.Count + 1)] ==
+                                    TasinRakami[i - (siraliGrup.Count)]) {
+                                    if (TasinRakami[i - (siraliGrup.Count)] ==
+                                        TasinRakami[i - (siraliGrup.Count - 1)]) {
+                                        //SiraliGrup.Remove(SiraliGrup.Keys.First());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (siraliGrup.Count > 2) {
+                    if (siraliGrup.Count > 3) {
+                        // sonraki iki cep varmı ? varsa aynı rakammı ?
+                        bool sonrakiIkitaneVar = false;
+                        if (Taslar.TryGetValue(i + 1, out var sonrakiTasA)) {
+                            if (Taslar.TryGetValue(i + 2, out var sonrakiTasB)) {
+                                sonrakiIkitaneVar = true;
+                            }
+                        }
+
+                        if (sonrakiIkitaneVar) {
+                            if (TasinRakami[i] == TasinRakami[i + 1]) {
+                                if (TasinRakami[i + 1] == TasinRakami[i + 2]) {
+                                    //SiraliGrup.Remove(SiraliGrup.Keys.Last());
+                                }
+                            }
+                        }
+                    }
+
+                    SiraliGruplar.Add(new Dictionary<int, GameObject>(siraliGrup));
+                }
+
+                siraliGrup.Clear();
+            }
+        } // for end 
+    }
+
+    public void BenzerRakamGruplariniBelirle(){
+        BenzerRakamGruplari.Clear();
+        Dictionary<int, GameObject> benzerRakamGrubu = new Dictionary<int, GameObject>();
+        // Istakadaki cepleri tek tek kontrole delim.
+        for (int i = 0; i < CepSayisi; i++) {
+            _yeniGrupOlustur = false;
+            //Cepte taş var mı ?
+            if (Taslar.TryGetValue(i, out var tas)) {
+                // grup yeni grupsa ardışıklığına bakamdan gruba ekleyelim
+                if (benzerRakamGrubu.Count == 0) {
+                    benzerRakamGrubu.Add(i, tas);
+                }
+
+                // sonraki ile aynımı mı ?
+                if (Taslar.TryGetValue(i + 1, out var sonrakiTas)) {
+                    int sonrakiTasinRakami = TasinRakami[i + 1];
+                    int simdikiTasinRakami = TasinRakami[i];
+                    if (simdikiTasinRakami == sonrakiTasinRakami) {
+                        // sonrakiyle aynıysa sonrakinide ekleyelim
+                        benzerRakamGrubu.Add(i + 1, sonrakiTas);
+                    }
+                    else {
+                        _yeniGrupOlustur = true;
+                    }
+                }
+                else {
+                    // sonrraki yoksa yeni grup olustur
+                    _yeniGrupOlustur = true;
+                }
+            }
+
+            if (_yeniGrupOlustur) {
+                if (benzerRakamGrubu.Count > 2) {
+                    BenzerRakamGruplari.Add(new Dictionary<int, GameObject>(benzerRakamGrubu));
+                }
+
+                benzerRakamGrubu.Clear();
+            }
+        } // for end 
+    }
+
+    public void SiraliGruplarinIcindekiRenkGruplariniBelirle(){
+        SiraliRakamAyniRenkGruplari.Clear();
+        Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>();
+        for (int i = 0; i < SiraliGruplar.Count; i++) {
+            var grup = SiraliGruplar[i];
+            for (int j = 0; j < grup.Count; j++) {
+                _yeniGrupOlustur = false;
+                var key = grup.Keys.ToList()[j];
+                var tas = grup[key];
+                if (renkGrubu.Count == 0) {
+                    renkGrubu.Add(key, tas);
+                }
+
+                //sonraki var mı ?  
+                if (j + 1 < grup.Keys.ToList().Count) {
+                    var sonrakiKey = grup.Keys.ToList()[j + 1];
+                    if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
+                        // rengi aynı mı ?
+                        if (TasManeger.Instance.TasIstances[tas].renk ==
+                            TasManeger.Instance.TasIstances[sonrakiTasA].renk) {
+                            renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
+                        }
+                        else {
+                            _yeniGrupOlustur = true;
+                        }
+                    }
+                }
+                else {
+                    _yeniGrupOlustur = true;
+                }
+
+                if (_yeniGrupOlustur) {
+                    if (renkGrubu.Count > 2) {
+                        SiraliRakamAyniRenkGruplari.Add(new Dictionary<int, GameObject>(renkGrubu));
+                    }
+
+                    renkGrubu.Clear();
+                }
+            } // end for 
+        } // end for
+    }
+
+    public void AyniRakamGruplarinIcindekiRenkGruplariniBelirle(){
+        AyniRakamAyniRenkGruplari.Clear();
+        Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>();
+        for (int i = 0; i < BenzerRakamGruplari.Count; i++) {
+            var grup = BenzerRakamGruplari[i];
+            for (int j = 0; j < grup.Count; j++) {
+                _yeniGrupOlustur = false;
+                var key = grup.Keys.ToList()[j];
+                var tas = grup[key];
+                if (renkGrubu.Count == 0) {
+                    renkGrubu.Add(key, tas);
+                }
+
+                //sonraki var mı ?  
+                if (j + 1 < grup.Keys.ToList().Count) {
+                    var sonrakiKey = grup.Keys.ToList()[j + 1];
+                    if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
+                        // rengi aynı mı ?
+                        if (TasManeger.Instance.TasIstances[tas].renk ==
+                            TasManeger.Instance.TasIstances[sonrakiTasA].renk) {
+                            renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
+                        }
+                        else {
+                            _yeniGrupOlustur = true;
+                        }
+                    }
+                }
+                else {
+                    _yeniGrupOlustur = true;
+                }
+
+                if (_yeniGrupOlustur) {
+                    if (renkGrubu.Count > 2) {
+                        AyniRakamAyniRenkGruplari.Add(new Dictionary<int, GameObject>(renkGrubu));
+                    }
+
+                    renkGrubu.Clear();
+                }
+            } // end for 
+        } // end for
+    }
+
+    public void AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(){
+        AyniRakamHepsiFarkliRenkGruplari.Clear();
+        Dictionary<int, GameObject> farkliRenklilerGrubu = new Dictionary<int, GameObject>();
+        for (int i = 0; i < BenzerRakamGruplari.Count; i++) {
+            var grup = BenzerRakamGruplari[i];
+            for (int j = 0; j < grup.Count; j++) {
+                _yeniGrupOlustur = false;
+                int key = grup.Keys.ToList()[j];
+                var tas = grup[key];
+                // grup yeni grupsa  bakamdan gruba ekleyelim
+                if (farkliRenklilerGrubu.Count == 0) {
+                    farkliRenklilerGrubu.Add(key, tas);
+                }
+
+                // sonraki var mi ?
+                if (j + 1 < grup.Keys.ToList().Count) {
+                    var sonrakiKey = grup.Keys.ToList()[j + 1];
+                    if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
+                        foreach (var item in farkliRenklilerGrubu) {
+                            if (TasManeger.Instance.TasIstances[sonrakiTasA].renk
+                                == TasManeger.Instance.TasIstances[item.Value].renk) {
+                                //aynı renk zaten var
+                                _yeniGrupOlustur = true;
+                                break;
+                            }
+                        }
+
+                        if (!_yeniGrupOlustur) {
+                            farkliRenklilerGrubu.Add(sonrakiKey, sonrakiTasA);
+                        }
+                    }
+                }
+                else {
+                    _yeniGrupOlustur = true;
+                }
+
+                if (_yeniGrupOlustur) {
+                    if (farkliRenklilerGrubu.Count > 2) {
+                        AyniRakamHepsiFarkliRenkGruplari.Add(new Dictionary<int, GameObject>(farkliRenklilerGrubu));
+                    }
+
+                    farkliRenklilerGrubu.Clear();
+                }
+            } // end for 
+        } // end for 
+    }
+
+    public void SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(){
+        SiraliRakamHepsiFarkliRenkGruplari.Clear();
+        Dictionary<int, GameObject> farkliRenklilerGrubu = new Dictionary<int, GameObject>();
+        for (int i = 0; i < SiraliGruplar.Count; i++) {
+            var grup = SiraliGruplar[i];
+            for (int j = 0; j < grup.Count; j++) {
+                _yeniGrupOlustur = false;
+                int key = grup.Keys.ToList()[j];
+                var tas = grup[key];
+                // grup yeni grupsa  bakamdan gruba ekleyelim
+                if (farkliRenklilerGrubu.Count == 0) {
+                    farkliRenklilerGrubu.Add(key, tas);
+                }
+
+                // sonraki var mi ?
+                if (j + 1 < grup.Keys.ToList().Count) {
+                    var sonrakiKey = grup.Keys.ToList()[j + 1];
+                    if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
+                        foreach (var item in farkliRenklilerGrubu) {
+                            if (TasManeger.Instance.TasIstances[sonrakiTasA].renk
+                                == TasManeger.Instance.TasIstances[item.Value].renk) {
+                                //aynı renk zaten var
+                                _yeniGrupOlustur = true;
+                                break;
+                            }
+                        }
+
+                        if (!_yeniGrupOlustur) {
+                            farkliRenklilerGrubu.Add(sonrakiKey, sonrakiTasA);
+                        }
+                    }
+                }
+                else {
+                    _yeniGrupOlustur = true;
+                }
+
+                if (_yeniGrupOlustur) {
+                    if (farkliRenklilerGrubu.Count > 2) {
+                        SiraliRakamHepsiFarkliRenkGruplari.Add(new Dictionary<int, GameObject>(farkliRenklilerGrubu));
+                    }
+
+                    farkliRenklilerGrubu.Clear();
+                }
+            } // end for 
+        } // end for 
+    }
+
+    public void GruplariTemizle(){
+        // SiraliRakamAyniRenkGruplari grupları temizle
+        for (int i = 0; i < SiraliRakamAyniRenkGruplari.Count; i++) {
+            var grup = SiraliRakamAyniRenkGruplari[i];
+            foreach (var item in grup) {
+                TasinRakami.Remove(item.Key);
+                Taslar.Remove(item.Key);
+                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
+                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+            }
+        }
+
+        // AyniRakamAyniRenkGruplari grupları temizle
+        for (int i = 0; i < AyniRakamAyniRenkGruplari.Count; i++) {
+            var grup = AyniRakamAyniRenkGruplari[i];
+            foreach (var item in grup) {
+                TasinRakami.Remove(item.Key);
+                Taslar.Remove(item.Key);
+                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
+                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+            }
+        }
+
+
+        // AyniRakamHepsiFarkliRenkGruplari grupları temizle
+        for (int i = 0; i < AyniRakamHepsiFarkliRenkGruplari.Count; i++) {
+            var grup = AyniRakamHepsiFarkliRenkGruplari[i];
+            foreach (var item in grup) {
+                TasinRakami.Remove(item.Key);
+                Taslar.Remove(item.Key);
+                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
+                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+            }
+        }
+
+        // SiraliRakamHepsiFarkliRenkGruplari grupları temizle
+        for (int i = 0; i < SiraliRakamHepsiFarkliRenkGruplari.Count; i++) {
+            var grup = SiraliRakamHepsiFarkliRenkGruplari[i];
+            foreach (var item in grup) {
+                TasinRakami.Remove(item.Key);
+                Taslar.Remove(item.Key);
+                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
+                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+            }
+        }
+
+        SiraliRakamHepsiFarkliRenkGruplari.Clear();
+        SiraliRakamAyniRenkGruplari.Clear();
+        BenzerRakamGruplari.Clear();
+        SiraliGruplar.Clear();
+        AyniRakamHepsiFarkliRenkGruplari.Clear();
     }
 }
