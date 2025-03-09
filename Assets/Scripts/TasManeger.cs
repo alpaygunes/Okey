@@ -42,7 +42,7 @@ public class TasManeger : MonoBehaviour{
             if (touch.phase == TouchPhase.Began) {
                 Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-                if (hit.collider != null) {
+                if (hit.collider) {
                     if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
                         TasIstances[hit.collider.gameObject].BosCebeYerles();
                         PerleriKontrolEt(); 

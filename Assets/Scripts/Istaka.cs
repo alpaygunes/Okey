@@ -6,7 +6,6 @@ using UnityEngine;
 public class Istaka : MonoBehaviour{
     public int CepSayisi { get; set; } = 10;
     public List<IstakaCebi> CepList = new List<IstakaCebi>();
-    //public Dictionary<int, int> TasinRakami = new Dictionary<int, int>();
     public static Istaka Instance;
     public List<Dictionary<int, GameObject>> SiraliGruplar = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> BenzerRakamGruplari = new List<Dictionary<int, GameObject>>();
@@ -29,14 +28,14 @@ public class Istaka : MonoBehaviour{
     }
 
     private void Start(){
-        cepleriOlustur();
+        CepleriOlustur();
     }
 
     public int DoluCepSayisi(){
         int doluCepSayisi = 0;
-        foreach (var cep in CepList) {
-            var cepScript = cep.GetComponent<IstakaCebi>();
-            if (cepScript.Dolu) {
+        foreach (var cepIns in CepList) {
+            //var cepScript = cep.GetComponent<IstakaCebi>();
+            if (cepIns.Dolu) {
                 doluCepSayisi++;
             }
         }
@@ -44,7 +43,7 @@ public class Istaka : MonoBehaviour{
         return doluCepSayisi;
     }
 
-    void cepleriOlustur(){
+    void CepleriOlustur(){
         float istakaGenisligi = GetComponent<SpriteRenderer>().bounds.size.x;
         float aralikMesafesi = istakaGenisligi / CepSayisi;
         for (int i = 0; i < CepSayisi; i++) {
@@ -118,8 +117,7 @@ public class Istaka : MonoBehaviour{
                 siraliGrup.Clear();
             }
         } // for end 
-
-        Debug.Log($"SiraliGruplar{siraliGrup.Count}");
+ 
     }
 
     public void BenzerRakamGruplariniBelirle(){
@@ -344,9 +342,9 @@ public class Istaka : MonoBehaviour{
         for (int i = 0; i < SiraliRakamAyniRenkGruplari.Count; i++) {
             var grup = SiraliRakamAyniRenkGruplari[i];
             foreach (var item in grup) {
-                //TasinRakami.Remove(item.Key);  
-                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+                var cepins = CepList[item.Key];
+                cepins.Dolu = false;
+                cepins.TasInstance = null;
             }
         }
     
@@ -354,9 +352,9 @@ public class Istaka : MonoBehaviour{
         for (int i = 0; i < AyniRakamAyniRenkGruplari.Count; i++) {
             var grup = AyniRakamAyniRenkGruplari[i];
             foreach (var item in grup) {
-                //TasinRakami.Remove(item.Key); 
-                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+                var cepins = CepList[item.Key];
+                cepins.Dolu = false;
+                cepins.TasInstance = null;
             }
         }
     
@@ -365,19 +363,19 @@ public class Istaka : MonoBehaviour{
         for (int i = 0; i < AyniRakamHepsiFarkliRenkGruplari.Count; i++) {
             var grup = AyniRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup) {
-                //TasinRakami.Remove(item.Key); 
-                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+                var cepins = CepList[item.Key];
+                cepins.Dolu = false;
+                cepins.TasInstance = null;
             }
         }
     
         // SiraliRakamHepsiFarkliRenkGruplari grupları temizle
         for (int i = 0; i < SiraliRakamHepsiFarkliRenkGruplari.Count; i++) {
             var grup = SiraliRakamHepsiFarkliRenkGruplari[i];
-            foreach (var item in grup) {
-                //TasinRakami.Remove(item.Key); 
-                CepList[item.Key].GetComponent<IstakaCebi>().Dolu = false;
-                CepList[item.Key].GetComponent<IstakaCebi>().TasInstance = null;
+            foreach (var item in grup) { 
+                var cepins = CepList[item.Key];
+                cepins.Dolu = false;
+                cepins.TasInstance = null;
             }
         }
     

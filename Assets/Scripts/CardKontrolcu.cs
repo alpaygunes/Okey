@@ -9,20 +9,20 @@ using UnityEngine;
 
 public class CardKontrolcu : MonoBehaviour{
     public static CardKontrolcu Instance { get; private set; }
-    private List<List<GameObject>> SiraliAyniRenkliGruplar = new List<List<GameObject>>();
+    private List<List<GameObject>> _siraliAyniRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> SiraliAyniRenkliGrup = new List<GameObject>();
 
-    private List<List<GameObject>> SiraliFarkliRenkliGruplar = new List<List<GameObject>>();
+    private List<List<GameObject>> _siraliFarkliRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> SiraliFarkliRenkliGrup = new List<GameObject>();
 
-    private List<List<GameObject>> AyniRakamAyniRenkliGruplar = new List<List<GameObject>>();
+    private List<List<GameObject>> _ayniRakamAyniRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> AyniRakamAyniRenkliGrup = new List<GameObject>();
 
-    private List<List<GameObject>> AyniRakamFarkliRenkliGruplar = new List<List<GameObject>>();
+    private List<List<GameObject>> _ayniRakamFarkliRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> AyniRakamFarkliRenkli = new List<GameObject>();
 
     private TextMeshProUGUI textMesh;
-    private Camera uiCamera;
+    private Camera _uiCamera;
     
     private AudioSource _audioSource_puan_sayac;
     
@@ -34,7 +34,7 @@ public class CardKontrolcu : MonoBehaviour{
         }
 
         Instance = this;
-        uiCamera = Camera.main;
+        _uiCamera = Camera.main;
         
         _audioSource_puan_sayac = gameObject.AddComponent<AudioSource>();
         _audioSource_puan_sayac.playOnAwake = false;
@@ -47,10 +47,10 @@ public class CardKontrolcu : MonoBehaviour{
 
     // Karttaki taşları kontrol edip yan yana  perler varmı bakalım
     public async Task KarttakiPerleriBul(){
-        SiraliAyniRenkliGruplar.Clear();
-        SiraliFarkliRenkliGruplar.Clear();
-        AyniRakamAyniRenkliGruplar.Clear();
-        AyniRakamFarkliRenkliGruplar.Clear();
+        _siraliAyniRenkliGruplar.Clear();
+        _siraliFarkliRenkliGruplar.Clear();
+        _ayniRakamAyniRenkliGruplar.Clear();
+        _ayniRakamFarkliRenkliGruplar.Clear();
 
         GameObject[] taslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
 
@@ -65,7 +65,7 @@ public class CardKontrolcu : MonoBehaviour{
             SiraliAyniRenkliGrup.Clear();
             await TasManeger.Instance.TasIstances[tas].SiraliAyniRenkGrubunaDahilOl();
             if (SiraliAyniRenkliGrup.Count > 2) {
-                SiraliAyniRenkliGruplar.Add(new List<GameObject>(SiraliAyniRenkliGrup));
+                _siraliAyniRenkliGruplar.Add(new List<GameObject>(SiraliAyniRenkliGrup));
                 foreach (var item in SiraliAyniRenkliGrup) {
                     TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
                 }
@@ -74,7 +74,7 @@ public class CardKontrolcu : MonoBehaviour{
             SiraliFarkliRenkliGrup.Clear();
             await TasManeger.Instance.TasIstances[tas].SiraliFarkliRenkGrubunaDahilOl();
             if (SiraliFarkliRenkliGrup.Count > 2) {
-                SiraliFarkliRenkliGruplar.Add(new List<GameObject>(SiraliFarkliRenkliGrup));
+                _siraliFarkliRenkliGruplar.Add(new List<GameObject>(SiraliFarkliRenkliGrup));
                 foreach (var item in SiraliFarkliRenkliGrup) {
                     TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
                 }
@@ -83,7 +83,7 @@ public class CardKontrolcu : MonoBehaviour{
             AyniRakamAyniRenkliGrup.Clear();
             await TasManeger.Instance.TasIstances[tas].AyniRakamAyniRenkGrubunaDahilOl();
             if (AyniRakamAyniRenkliGrup.Count > 2) {
-                AyniRakamAyniRenkliGruplar.Add(new List<GameObject>(AyniRakamAyniRenkliGrup));
+                _ayniRakamAyniRenkliGruplar.Add(new List<GameObject>(AyniRakamAyniRenkliGrup));
                 foreach (var item in AyniRakamAyniRenkliGrup) {
                     TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
                 }
@@ -92,7 +92,7 @@ public class CardKontrolcu : MonoBehaviour{
             AyniRakamFarkliRenkli.Clear();
             await TasManeger.Instance.TasIstances[tas].AyniRakamFarkliRenkGrubunaDahilOl();
             if (AyniRakamFarkliRenkli.Count > 2) {
-                AyniRakamFarkliRenkliGruplar.Add(new List<GameObject>(AyniRakamFarkliRenkli));
+                _ayniRakamFarkliRenkliGruplar.Add(new List<GameObject>(AyniRakamFarkliRenkli));
                 foreach (var item in AyniRakamFarkliRenkli) {
                     TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
                 }
@@ -100,28 +100,28 @@ public class CardKontrolcu : MonoBehaviour{
         }
 
         PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan = 0;
-        foreach (var grup in SiraliAyniRenkliGruplar) {
+        foreach (var grup in _siraliAyniRenkliGruplar) {
             foreach (var item in grup) {
                 TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
                 StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
             }
         }
 
-        foreach (var grup in SiraliFarkliRenkliGruplar) {
+        foreach (var grup in _siraliFarkliRenkliGruplar) {
             foreach (var item in grup) {
                 TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
                 StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
             }
         }
 
-        foreach (var grup in AyniRakamAyniRenkliGruplar) {
+        foreach (var grup in _ayniRakamAyniRenkliGruplar) {
             foreach (var item in grup) {
                 TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
                 StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
             }
         }
 
-        foreach (var grup in AyniRakamFarkliRenkliGruplar) {
+        foreach (var grup in _ayniRakamFarkliRenkliGruplar) {
             foreach (var item in grup) { 
                 TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
                 StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
@@ -146,12 +146,12 @@ public class CardKontrolcu : MonoBehaviour{
         _audioSource_puan_sayac.Play();
         
         // floatingText
-        Vector3 targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
+        Vector3 targetPosition = _uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
         textMesh.text =   PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
         if (PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan>0) {
             textMesh.text = "+" + textMesh.text;
         } 
-        textMesh.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0, 0, 0));
+        textMesh.transform.position = _uiCamera.WorldToScreenPoint(new Vector3(0, 0, 0));
         textMesh.transform.DOMoveY(targetPosition.y, 2f).SetEase(Ease.OutQuad);
         var color = textMesh.color;
         color.a = 1f;

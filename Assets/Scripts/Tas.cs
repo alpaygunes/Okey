@@ -11,7 +11,7 @@ public class Tas : MonoBehaviour{
     public GameObject SagindakiKomsuTas;
     private Rigidbody2D _rigidbody;
     public bool birCardPerineDahil = false;
-    [FormerlySerializedAs("_zeminSpriteRenderer")] public SpriteRenderer ZeminSpriteRenderer;
+    public SpriteRenderer ZeminSpriteRenderer;
     private Vector3 _skorTxtPosition;
     public Camera uiCamera;
     private Object _collider;
@@ -19,7 +19,7 @@ public class Tas : MonoBehaviour{
     private AudioSource _audioSource_down;
     private AudioSource _audioSource_up;
     private AudioSource _audioSource_patla;
-    public IstakaCebi CepInstance = null;
+    public IstakaCebi cepInstance = null;
     
 
 
@@ -70,10 +70,10 @@ public class Tas : MonoBehaviour{
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / Istaka.Instance.CepSayisi;
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++) {
-            var cep = Istaka.Instance.CepList[i];
-            var cepScript = cep.GetComponent<IstakaCebi>();
+            var cepScript = Istaka.Instance.CepList[i];
+            //var cepScript = cep.GetComponent<IstakaCebi>();
             if (cepScript.Dolu == false) {
-                transform.DOMove(cep.transform.position, _animasyonSuresi * .5f)
+                transform.DOMove(cepScript.transform.position, _animasyonSuresi * .5f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => _audioSource_up.Play()));
                 gameObject.transform.position += new Vector3(0, 0, -1);
@@ -82,9 +82,8 @@ public class Tas : MonoBehaviour{
                 gameObject.transform.localScale = new Vector3(colonWidth, colonWidth) * 0.9f;
                 cepScript.Dolu = true;
                 cepScript.TasInstance = this;
-                CepInstance = cepScript;
-                gameObject.tag = "CEPTEKI_TAS"; 
-                //Istaka.Instance.TasinRakami.Add(i, gameObject.GetComponent<Tas>().rakam);
+                cepInstance = cepScript;
+                gameObject.tag = "CEPTEKI_TAS";  
                 Counter.Instance.KontrolIcinGeriSaymayaBasla();
                 _audioSource_down.Play();  
                 break;

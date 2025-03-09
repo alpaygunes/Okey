@@ -127,6 +127,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
     }
 
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void BonuslariVer(){
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
 
