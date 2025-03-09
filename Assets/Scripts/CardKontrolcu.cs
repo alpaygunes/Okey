@@ -147,7 +147,10 @@ public class CardKontrolcu : MonoBehaviour{
         
         // floatingText
         Vector3 targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
-        textMesh.text = "+" + PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        textMesh.text =   PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        if (PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan>0) {
+            textMesh.text = "+" + textMesh.text;
+        } 
         textMesh.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0, 0, 0));
         textMesh.transform.DOMoveY(targetPosition.y, 2f).SetEase(Ease.OutQuad);
         var color = textMesh.color;
