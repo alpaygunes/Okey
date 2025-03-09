@@ -56,11 +56,9 @@ public class TasManeger : MonoBehaviour{
     {
         IstakaKontrolcu.Instance.SiraliGruplariBelirle();
         IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiAyniRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
         IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         IstakaKontrolcu.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
-        /* ****
-        */
     }
 }

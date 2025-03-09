@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public class Istaka : MonoBehaviour
 {
-    public int CepSayisi { get; set; } = 10;
+    public int CepSayisi { get; set; } = 4;
     public List<GameObject> CepList = new List<GameObject>();
     public Dictionary<int, GameObject> Taslar = new Dictionary<int, GameObject>();
     public Dictionary<int, int> TasinRakami = new Dictionary<int, int>();
