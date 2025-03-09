@@ -80,9 +80,10 @@ public class Tas : MonoBehaviour{
                 Destroy(_collider);
                 gameObject.transform.localScale = new Vector3(colonWidth, colonWidth) * 0.9f;
                 cepScript.Dolu = true;
+                cepScript.TasInstance = this;
                 gameObject.tag = "CEPTEKI_TAS";
-                Istaka.Instance.Taslar.Add(i, gameObject);
-                Istaka.Instance.TasinRakami.Add(i, gameObject.GetComponent<Tas>().rakam);
+                Istaka.Instance.TasInstances.Add(gameObject, this);
+                Istaka.Instance.CepVeTas.Add(cep.gameObject,gameObject);
                 Counter.Instance.KontrolIcinGeriSaymayaBasla();
                 _audioSource_down.Play();  
                 break;

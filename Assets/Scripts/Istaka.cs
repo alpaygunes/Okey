@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Istaka : MonoBehaviour
 {
-    public int CepSayisi { get; set; } = 5;
-    public List<GameObject> CepList = new List<GameObject>();
-    public Dictionary<int, GameObject> Taslar = new Dictionary<int, GameObject>();
-    public Dictionary<int, int> TasinRakami = new Dictionary<int, int>();
+    public int CepSayisi { get; set; } = 10;
+    public Dictionary<int,IstakaCebi> CepList = new Dictionary<int,IstakaCebi>();
+    public Dictionary<GameObject, GameObject> CepVeTas = new Dictionary<GameObject, GameObject>();
+    public Dictionary<GameObject, Tas> TasInstances = new Dictionary<GameObject, Tas>();
+     
     public static Istaka Instance { get; private set; }
 
     void Awake()
@@ -40,8 +42,8 @@ public class Istaka : MonoBehaviour
             var cep = Instantiate(Cep, new Vector3(x, transform.position.y, -2), Quaternion.identity); 
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
             cep.transform.localScale *= .7f;
-            cep.transform.SetParent(PlatformManager.Instance.transform);
-            CepList.Add(cep);
+            cep.transform.SetParent(PlatformManager.Instance.transform); 
+            CepList.Add(i,cep.GetComponent<IstakaCebi>());
         }
     }
 }

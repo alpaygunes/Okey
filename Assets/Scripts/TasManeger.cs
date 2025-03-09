@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 public class TasManeger : MonoBehaviour{
     public List<GameObject> TasList = new List<GameObject>();
-    private RangeInt _renkAraligi = new RangeInt(1, 37);
-    private RangeInt _rakamAraligi = new RangeInt(1, 10);
+    private RangeInt _renkAraligi = new RangeInt(1, 5);
+    private RangeInt _rakamAraligi = new RangeInt(1, 5);
     public Dictionary<GameObject, Tas> TasIstances = new Dictionary<GameObject, Tas>();
     public static TasManeger Instance { get; private set; }
     
@@ -56,9 +56,11 @@ public class TasManeger : MonoBehaviour{
     {
         IstakaKontrolcu.Instance.SiraliGruplariBelirle();
         IstakaKontrolcu.Instance.BenzerRakamGruplariniBelirle();
-        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
-        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.SiraliGruplarinIcindekiAyniRenkGruplariniBelirle();
+        IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle();
         IstakaKontrolcu.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         IstakaKontrolcu.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
+        /* ****
+        */
     }
 }

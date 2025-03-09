@@ -42,7 +42,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         BonusFarkliRenkAyniRakam.Clear();
         BonusFarkliRenkArdisikRakam.Clear();
 
-        Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>();
+        Dictionary<GameObject, GameObject> perdekiTumTaslarDic = new Dictionary<GameObject, GameObject>();
         PerlerdenKazanilanPuan = 0;
         //SiraliRakamRenkGruplari sahneye diz 
         foreach (var grupList in IstakaKontrolcu.Instance.SiraliRakamAyniRenkGruplari) {
@@ -98,8 +98,9 @@ public class PuanlamaKontrolcu : MonoBehaviour{
 
         // perdeki itemleri sıralayalım
         _merkezeKayGecikmesi = 0;
-        SortedDictionary<int, GameObject> siralanmisTumPerTaslari =
-            new SortedDictionary<int, GameObject>(perdekiTumTaslarDic);
+        var siralanmisTumPerTaslari = perdekiTumTaslarDic;
+        // SortedDictionary<GameObject, GameObject> siralanmisTumPerTaslari =
+        //     new SortedDictionary<GameObject, GameObject>(perdekiTumTaslarDic);
         foreach (var tas in siralanmisTumPerTaslari) {
             _merkezeKayGecikmesi += 0.2f;
             TasManeger.Instance.TasIstances[tas.Value].PuaniVerMerkezeKay(_merkezeKayGecikmesi);
@@ -110,8 +111,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
 
     IEnumerator SkorTMPleriGuncelle(){
         IstakaKontrolcu.Instance.GruplariTemizle();
-        yield return new WaitForSeconds(_merkezeKayGecikmesi);
-        //IstakaKontrolcu.Instance.GruplariTemizle();
+        yield return new WaitForSeconds(_merkezeKayGecikmesi); 
         toplamPuan += PerlerdenKazanilanPuan;
 
         // floatingText 
