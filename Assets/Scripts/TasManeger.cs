@@ -25,7 +25,7 @@ public class TasManeger : MonoBehaviour{
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
             var Tas = Instantiate(tare, new Vector3(0, 0, -1), Quaternion.identity);
             var rakam = Random.Range(GameManager.Instance.RakamAraligi.start, GameManager.Instance.RakamAraligi.end);
-            Color color = RenklerYonetimi.RenkSozlugu[Random.Range(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end + 1)];
+            Color color = Renkler.RenkSozlugu[Random.Range(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end + 1)];
             Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
             Tas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite;
             Tas.GetComponentInChildren<Tas>().rakam = rakam;
@@ -44,6 +44,7 @@ public class TasManeger : MonoBehaviour{
                     if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
                         TasIstances[hit.collider.gameObject].BosCebeYerles();
                         PerleriKontrolEt(); 
+                        PerKontrol.IstakaKontrol();
                     }
                 }
             }

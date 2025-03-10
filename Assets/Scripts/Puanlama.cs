@@ -4,8 +4,8 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class PuanlamaKontrolcu : MonoBehaviour{
-    public static PuanlamaKontrolcu Instance { get; private set; }
+public class Puanlama : MonoBehaviour{
+    public static Puanlama Instance { get; private set; }
     private TextMeshProUGUI textMesh0; 
     private TextMeshProUGUI textMesh1;
     public TextMeshProUGUI toplamPuanTMP; 
@@ -246,20 +246,20 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         yield return new WaitForSeconds(1);
 
         // puan artış animasyonu
-        var startScore = PuanlamaKontrolcu.Instance.toplamPuan;
-        var currentScore = PuanlamaKontrolcu.Instance.toplamPuan + PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
-        DOTween.To(() => startScore, x => PuanlamaKontrolcu.Instance.toplamPuanTMP.text = x.ToString(), currentScore,
+        var startScore = Puanlama.Instance.toplamPuan;
+        var currentScore = Puanlama.Instance.toplamPuan + Puanlama.Instance.PerlerdenKazanilanPuan;
+        DOTween.To(() => startScore, x => Puanlama.Instance.toplamPuanTMP.text = x.ToString(), currentScore,
             1f).SetEase(Ease.OutQuad);
-        PuanlamaKontrolcu.Instance.toplamPuan += PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
-        PuanlamaKontrolcu.Instance.toplamPuanTMP.transform.DOPunchPosition(new Vector3(Screen.width*.01f, Screen.height*.02f, 0f), 1f, 30, 0.5f);
+        Puanlama.Instance.toplamPuan += Puanlama.Instance.PerlerdenKazanilanPuan;
+        Puanlama.Instance.toplamPuanTMP.transform.DOPunchPosition(new Vector3(Screen.width*.01f, Screen.height*.02f, 0f), 1f, 30, 0.5f);
 
         // sayaç sesi
         _audioSource_puan_sayac.Play();
         
         // floatingText
         Vector3 targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
-        textMesh1.text =   PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
-        if (PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan>0) {
+        textMesh1.text =   Puanlama.Instance.PerlerdenKazanilanPuan.ToString();
+        if (Puanlama.Instance.PerlerdenKazanilanPuan>0) {
             textMesh1.text = "+" + textMesh1.text;
         } 
         textMesh1.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0, 0, 0));
@@ -279,7 +279,7 @@ public class PuanlamaKontrolcu : MonoBehaviour{
                 BonuslariVer();
         }
         else {
-            Istaka.Instance.PersizFullIstakayiBosalt();
+            Istaka.Instance.PersizFullIstakayiBosalt(); 
         }
         Card.Instance.KarttakiPerleriBul();
         _kartdakiPerleriIsle();

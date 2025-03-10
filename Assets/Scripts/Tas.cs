@@ -104,7 +104,7 @@ public class Tas : MonoBehaviour{
             .Append(transform.DOScale(transform.localScale * 2, _animasyonSuresi * .5f))
             .Append(transform.DOScale(ilkScale * .25f, _animasyonSuresi * .5f));
         StartCoroutine(KillSelf());
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
+        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;
     }
 
     public IEnumerator RakamiPuanaEkle(float gecikme){
@@ -112,7 +112,7 @@ public class Tas : MonoBehaviour{
         Invoke("Patla", Random.value*2);
         yield return new WaitForSeconds(gecikme); 
         DestroySelf();
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan += rakam;
+        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;
     }
     
     public IEnumerator CezaliRakamiCikar(float gecikme){
@@ -120,7 +120,7 @@ public class Tas : MonoBehaviour{
         Invoke("Patla", Random.value*2);
         yield return new WaitForSeconds(gecikme); 
         DestroySelf();
-        PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan -= rakam;
+        Puanlama.Instance.PerlerdenKazanilanPuan -= rakam;
     }
 
     void Patla(){

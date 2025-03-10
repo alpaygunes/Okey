@@ -39,7 +39,7 @@ public class Counter : MonoBehaviour{
             transform.position += new Vector3(Card.Instance.transform.localScale.x / GeriSayimSuresi, 0, 0);
         } 
         transform.position = _startPos;  
-        PuanlamaKontrolcu.Instance.PuanlamaYap();
+        Puanlama.Instance.PuanlamaYap();
 
     }
 }
