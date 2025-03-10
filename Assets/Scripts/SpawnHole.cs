@@ -23,7 +23,7 @@ public class SpawnHole : MonoBehaviour{
             TasManeger.Instance.TasList.RemoveAt(0);
             siradakiTas.gameObject.transform.position = transform.position;
             siradakiTas.gameObject.transform.localScale = transform.localScale * .85f;
-            siradakiTas.transform.SetParent(PlatformManager.Instance.transform);
+            siradakiTas.transform.SetParent(GameManager.Instance.transform);
             siradakiTas.tag = "CARDTAKI_TAS";
             TasManeger.Instance.TasIstances.Add(siradakiTas, siradakiTas.gameObject.GetComponent<Tas>());
             siradakiTas.SetActive(true);

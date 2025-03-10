@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 343139322}
   - component: {fileID: 343139321}
   m_Layer: 0
-  m_Name: Game
+  m_Name: GameManeger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,7 +280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3251a291c1651a6bb847a5a6c616cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  card: {fileID: 2088673481}
   spawnHolesList: []
 --- !u!4 &343139322
 Transform:
@@ -875,7 +874,7 @@ Transform:
   m_GameObject: {fileID: 1131855344}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -6.92, z: -0.2}
+  m_LocalPosition: {x: 0, y: -7.92, z: -0.2}
   m_LocalScale: {x: 9, y: 1.6361103, z: 1.0442}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1070,54 +1069,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.84}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1482152802
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1482152804}
-  - component: {fileID: 1482152803}
-  m_Layer: 0
-  m_Name: CardKontrolcu
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1482152803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482152802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c171b15b07061a281acaaa4eb6e4ead8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SiraliAyniRenkliGrup: []
-  SiraliFarkliRenkliGrup: []
-  AyniRakamAyniRenkliGrup: []
-  AyniRakamFarkliRenkli: []
---- !u!4 &1482152804
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1482152802}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.369452, y: -3.4639668, z: -0.20151685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1723,10 +1674,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2088673481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53a5d0aac7f06863282e9e3ec3abdf24, type: 3}
+  m_Script: {fileID: 11500000, guid: c171b15b07061a281acaaa4eb6e4ead8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Size: {x: 0, y: 0}
+  SiraliAyniRenkliGrup: []
+  SiraliFarkliRenkliGrup: []
+  AyniRakamAyniRenkliGrup: []
+  AyniRakamFarkliRenkli: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1744,4 +1699,3 @@ SceneRoots:
   - {fileID: 1416006419}
   - {fileID: 864947302}
   - {fileID: 1368803295}
-  - {fileID: 1482152804}

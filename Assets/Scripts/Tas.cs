@@ -19,7 +19,7 @@ public class Tas : MonoBehaviour{
     private AudioSource _audioSource_down;
     private AudioSource _audioSource_up;
     private AudioSource _audioSource_patla;
-    public IstakaCebi cepInstance = null;
+    public Cep cepInstance = null;
     
 
 
@@ -68,7 +68,7 @@ public class Tas : MonoBehaviour{
 
     public void BosCebeYerles(){ 
         Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = cardSize.x / Istaka.Instance.CepSayisi;
+        float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++) {
             var cepScript = Istaka.Instance.CepList[i];
             //var cepScript = cep.GetComponent<IstakaCebi>();
@@ -155,8 +155,7 @@ public class Tas : MonoBehaviour{
 
     private void Update(){
         if (gameObject.CompareTag("CARDTAKI_TAS")) {
-            Card.Instance.TaslarHareketli = (_rigidbody.linearVelocity.magnitude > 0.01f);
-            //TasManeger.Instance.TasSecileBilir = (_rigidbody.linearVelocity.magnitude < 0.5f);;
+            Card.Instance.TaslarHareketli = (_rigidbody.linearVelocity.magnitude > 0.01f); 
         }
         else {
             Card.Instance.TaslarHareketli = false;
@@ -166,7 +165,7 @@ public class Tas : MonoBehaviour{
 
     public async Task SiraliAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
-        CardKontrolcu.Instance.SiraliAyniRenkliGrup.Add(gameObject);
+        Card.Instance.SiraliAyniRenkliGrup.Add(gameObject);
         if (SagindakiKomsuTas) {
             var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
             var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam;
@@ -178,9 +177,8 @@ public class Tas : MonoBehaviour{
 
     public async Task SiraliFarkliRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
-        bool gruptaAyniRenkYok = true;
-        //grupta zaten aynı renk varsa per olmaz . Çık
-        foreach (var gruptakiTas in CardKontrolcu.Instance.SiraliFarkliRenkliGrup) {
+        bool gruptaAyniRenkYok = true; 
+        foreach (var gruptakiTas in Card.Instance.SiraliFarkliRenkliGrup) {
             if (TasManeger.Instance.TasIstances[gruptakiTas].renk == renk) {
                 gruptaAyniRenkYok = false;
                 break;
@@ -188,7 +186,7 @@ public class Tas : MonoBehaviour{
         }
 
         if (gruptaAyniRenkYok) {
-            CardKontrolcu.Instance.SiraliFarkliRenkliGrup.Add(gameObject);
+            Card.Instance.SiraliFarkliRenkliGrup.Add(gameObject);
             if (SagindakiKomsuTas) {
                 var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
                 var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam;
@@ -201,7 +199,7 @@ public class Tas : MonoBehaviour{
 
     public async Task AyniRakamAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
-        CardKontrolcu.Instance.AyniRakamAyniRenkliGrup.Add(gameObject);
+        Card.Instance.AyniRakamAyniRenkliGrup.Add(gameObject);
         if (SagindakiKomsuTas) {
             var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
             var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam;
@@ -215,7 +213,7 @@ public class Tas : MonoBehaviour{
         if (birCardPerineDahil) return;
         bool gruptaAyniRenkYok = true;
         //grupta zaten aynı renk varsa per olmaz . Çık
-        foreach (var gruptakiTas in CardKontrolcu.Instance.AyniRakamFarkliRenkli) {
+        foreach (var gruptakiTas in Card.Instance.AyniRakamFarkliRenkli) {
             if (TasManeger.Instance.TasIstances[gruptakiTas].renk == renk) {
                 gruptaAyniRenkYok = false;
                 break;
@@ -223,7 +221,7 @@ public class Tas : MonoBehaviour{
         }
 
         if (gruptaAyniRenkYok) {
-            CardKontrolcu.Instance.AyniRakamFarkliRenkli.Add(gameObject);
+            Card.Instance.AyniRakamFarkliRenkli.Add(gameObject);
             if (SagindakiKomsuTas) {
                 var sagdakininRengi = TasManeger.Instance.TasIstances[SagindakiKomsuTas].renk;
                 var sagdakininRakami = TasManeger.Instance.TasIstances[SagindakiKomsuTas].rakam;

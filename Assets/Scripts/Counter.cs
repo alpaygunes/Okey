@@ -38,17 +38,8 @@ public class Counter : MonoBehaviour{
             _timeLeft--;
             transform.position += new Vector3(Card.Instance.transform.localScale.x / GeriSayimSuresi, 0, 0);
         } 
-        transform.position = _startPos; 
-        if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
-            || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
-            || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
-            || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
-            PuanlamaKontrolcu.Instance.PerdekiTaslariToparla();
-            PuanlamaKontrolcu.Instance.BonuslariVer();
-        }
-        else {
-           Istaka.Instance.PersizFullIstakayiBosalt();
-        }
-        CardKontrolcu.Instance.KarttakiPerleriBul();
+        transform.position = _startPos;  
+        PuanlamaKontrolcu.Instance.PuanlamaYap();
+
     }
 }

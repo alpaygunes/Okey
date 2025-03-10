@@ -4,8 +4,8 @@ using System.Linq;
 using UnityEngine;
 
 public class Istaka : MonoBehaviour{
-    public int CepSayisi { get; set; } = 10;
-    public List<IstakaCebi> CepList = new List<IstakaCebi>();
+    
+    public List<Cep> CepList = new List<Cep>();
     public static Istaka Instance;
     public List<Dictionary<int, GameObject>> SiraliGruplar = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> BenzerRakamGruplari = new List<Dictionary<int, GameObject>>();
@@ -45,22 +45,22 @@ public class Istaka : MonoBehaviour{
 
     void CepleriOlustur(){
         float istakaGenisligi = GetComponent<SpriteRenderer>().bounds.size.x;
-        float aralikMesafesi = istakaGenisligi / CepSayisi;
-        for (int i = 0; i < CepSayisi; i++) {
+        float aralikMesafesi = istakaGenisligi / GameManager.Instance.CepSayisi;
+        for (int i = 0; i < GameManager.Instance.CepSayisi; i++) {
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - istakaGenisligi * .5f;
             GameObject Cep = Resources.Load<GameObject>("Prefabs/IstakaCebi");
             var cep = Instantiate(Cep, new Vector3(x, transform.position.y, -2), Quaternion.identity);
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
             cep.transform.localScale *= .7f;
-            cep.transform.SetParent(PlatformManager.Instance.transform);
-            CepList.Add(cep.GetComponent<IstakaCebi>());
+            cep.transform.SetParent(GameManager.Instance.transform);
+            CepList.Add(cep.GetComponent<Cep>());
         }
     }
 
     public void PersizFullIstakayiBosalt(){
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         var ceptekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
-        if (DoluCepSayisi() == CepSayisi) { 
+        if (DoluCepSayisi() == GameManager.Instance.CepSayisi) { 
             foreach (var cepInstance in CepList) {
                 var AIstance = cepInstance.TasInstance;
                 foreach (var cardtakiTas in cardtakiTaslar) {
@@ -85,7 +85,7 @@ public class Istaka : MonoBehaviour{
         Dictionary<int, GameObject> siraliGrup = new Dictionary<int, GameObject>();
         // Istakadaki cepleri tek tek kontrole delim.
         for (int i = 0; i < CepList.Count; i++) {
-            IstakaCebi cepInstance = CepList[i];
+            Cep cepInstance = CepList[i];
             _yeniGrupOlustur = false;
             //Cepte taş var mı ?
             if (cepInstance.TasInstance) {
@@ -96,7 +96,7 @@ public class Istaka : MonoBehaviour{
 
                 // sonraki ile ardışık mı ?
                 try {
-                    IstakaCebi sonrakiCepInstance = CepList[i + 1];
+                    Cep sonrakiCepInstance = CepList[i + 1];
                     if (cepInstance.TasInstance.rakam == sonrakiCepInstance.TasInstance.rakam - 1) {
                         siraliGrup.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
                     }
@@ -125,7 +125,7 @@ public class Istaka : MonoBehaviour{
         Dictionary<int, GameObject> benzerRakamGrubu = new Dictionary<int, GameObject>();
         // Istakadaki cepleri tek tek kontrole delim.
         for (int i = 0; i < CepList.Count; i++) {
-            IstakaCebi cepInstance = CepList[i];
+            Cep cepInstance = CepList[i];
             _yeniGrupOlustur = false;
             //Cepte taş var mı ?
             if (cepInstance.TasInstance) {
@@ -136,7 +136,7 @@ public class Istaka : MonoBehaviour{
 
                 // sonraki ile ardışık mı ?
                 try {
-                    IstakaCebi sonrakiCepInstance = CepList[i + 1];
+                    Cep sonrakiCepInstance = CepList[i + 1];
                     if (cepInstance.TasInstance.rakam == sonrakiCepInstance.TasInstance.rakam) {
                         benzerRakamGrubu.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
                     }
@@ -159,7 +159,7 @@ public class Istaka : MonoBehaviour{
         } // for end 
     }
 
-    public void SiraliGruplarinIcindekiRenkGruplariniBelirle(){
+    public void SiraliGruplarinIcindekiAyniRenkGruplariniBelirle(){
         SiraliRakamAyniRenkGruplari.Clear();
         Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>();
         for (int i = 0; i < SiraliGruplar.Count; i++) {
@@ -201,7 +201,7 @@ public class Istaka : MonoBehaviour{
         } // end for
     }
 
-    public void AyniRakamGruplarinIcindekiRenkGruplariniBelirle(){
+    public void AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle(){
         AyniRakamAyniRenkGruplari.Clear();
         Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>();
         for (int i = 0; i < BenzerRakamGruplari.Count; i++) {
@@ -289,7 +289,7 @@ public class Istaka : MonoBehaviour{
             } // end for 
         } // end for 
     }
-
+    
     public void SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(){
         SiraliRakamHepsiFarkliRenkGruplari.Clear();
         Dictionary<int, GameObject> farkliRenklilerGrubu = new Dictionary<int, GameObject>();
@@ -310,8 +310,7 @@ public class Istaka : MonoBehaviour{
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
                         foreach (var item in farkliRenklilerGrubu) {
                             if (TasManeger.Instance.TasIstances[sonrakiTasA].renk
-                                == TasManeger.Instance.TasIstances[item.Value].renk) {
-                                //aynı renk zaten var
+                                == TasManeger.Instance.TasIstances[item.Value].renk) { 
                                 _yeniGrupOlustur = true;
                                 break;
                             }
@@ -330,7 +329,6 @@ public class Istaka : MonoBehaviour{
                     if (farkliRenklilerGrubu.Count > 2) {
                         SiraliRakamHepsiFarkliRenkGruplari.Add(new Dictionary<int, GameObject>(farkliRenklilerGrubu));
                     }
-
                     farkliRenklilerGrubu.Clear();
                 }
             } // end for 

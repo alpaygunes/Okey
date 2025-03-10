@@ -6,9 +6,7 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class TasManeger : MonoBehaviour{
-    public List<GameObject> TasList = new List<GameObject>();
-    private RangeInt _renkAraligi = new RangeInt(1, 5);
-    private RangeInt _rakamAraligi = new RangeInt(1, 5);
+    public List<GameObject> TasList = new List<GameObject>(); 
     public Dictionary<GameObject, Tas> TasIstances = new Dictionary<GameObject, Tas>();
     public static TasManeger Instance { get; private set; }
     
@@ -23,11 +21,11 @@ public class TasManeger : MonoBehaviour{
     }
 
     public void TaslariHazirla(){
-        for (int i = 0; i < PlatformManager.Instance._tasCount; i++) {
+        for (int i = 0; i < GameManager.Instance.TasCount; i++) {
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
             var Tas = Instantiate(tare, new Vector3(0, 0, -1), Quaternion.identity);
-            var rakam = Random.Range(_rakamAraligi.start, _rakamAraligi.end);
-            Color color = RenklerYonetimi.RenkSozlugu[Random.Range(_renkAraligi.start, _renkAraligi.end + 1)];
+            var rakam = Random.Range(GameManager.Instance.RakamAraligi.start, GameManager.Instance.RakamAraligi.end);
+            Color color = RenklerYonetimi.RenkSozlugu[Random.Range(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end + 1)];
             Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
             Tas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite;
             Tas.GetComponentInChildren<Tas>().rakam = rakam;
@@ -56,8 +54,8 @@ public class TasManeger : MonoBehaviour{
     {
         Istaka.Instance.SiraliGruplariBelirle();
         Istaka.Instance.BenzerRakamGruplariniBelirle();
-        Istaka.Instance.SiraliGruplarinIcindekiRenkGruplariniBelirle();
-        Istaka.Instance.AyniRakamGruplarinIcindekiRenkGruplariniBelirle();
+        Istaka.Instance.SiraliGruplarinIcindekiAyniRenkGruplariniBelirle();
+        Istaka.Instance.AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle();
         Istaka.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         Istaka.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
     }

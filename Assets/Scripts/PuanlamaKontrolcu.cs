@@ -6,15 +6,15 @@ using UnityEngine;
 
 public class PuanlamaKontrolcu : MonoBehaviour{
     public static PuanlamaKontrolcu Instance { get; private set; }
-    private TextMeshProUGUI textMesh;
-
-    public TextMeshProUGUI toplamPuanTMP;
-
-    //private Transform textMeshTransFrm;
+    private TextMeshProUGUI textMesh0; 
+    private TextMeshProUGUI textMesh1;
+    public TextMeshProUGUI toplamPuanTMP; 
     public int PerlerdenKazanilanPuan = 1;
     private float _merkezeKayGecikmesi;
     public int toplamPuan;
-    private Camera uiCamera;
+    private Camera uiCamera; 
+    
+    private AudioSource _audioSource_puan_sayac;
 
     List<Tas> BonusAyniRenkAyniRakam = new List<Tas>();
     List<Tas> BonusFarkliRenkAyniRakam = new List<Tas>();
@@ -28,15 +28,20 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         }
 
         Instance = this;
-        uiCamera = Camera.main;
+        uiCamera = Camera.main; 
+        
+        _audioSource_puan_sayac = gameObject.AddComponent<AudioSource>();
+        _audioSource_puan_sayac.playOnAwake = false;
+        _audioSource_puan_sayac.clip = Resources.Load<AudioClip>("Sounds/puan_sayac");
     }
 
     private void Start(){
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
-        textMesh = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
+        textMesh0 = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
+        textMesh1 = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>();
     }
 
-    public void PerdekiTaslariToparla(){
+    public void IstakadakiPerdekiTaslariToparla(){
         BonusAyniRenkArdisikRakam.Clear();
         BonusAyniRenkAyniRakam.Clear();
         BonusFarkliRenkAyniRakam.Clear();
@@ -116,18 +121,16 @@ public class PuanlamaKontrolcu : MonoBehaviour{
         // floatingText 
         if (toplamPuan > 0) {
             Vector3 _targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
-            textMesh.text = "+" + PerlerdenKazanilanPuan.ToString();
-            textMesh.transform.position = uiCamera.WorldToScreenPoint(Istaka.Instance.transform.position);
-            textMesh.transform.DOMoveY(_targetPosition.y, 2f).SetEase(Ease.OutQuad);
-            var color = textMesh.color;
+            textMesh0.text = "+" + PerlerdenKazanilanPuan.ToString();
+            textMesh0.transform.position = uiCamera.WorldToScreenPoint(Istaka.Instance.transform.position);
+            textMesh0.transform.DOMoveY(_targetPosition.y, 2f).SetEase(Ease.OutQuad);
+            var color = textMesh0.color;
             color.a = 1f;
-            textMesh.color = color;
-            textMesh.DOFade(0, 3f);
+            textMesh0.color = color;
+            textMesh0.DOFade(0, 3f);
         }
     }
-
-
-    // ReSharper disable Unity.PerformanceAnalysis
+    
     public void BonuslariVer(){
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
 
@@ -205,5 +208,80 @@ public class PuanlamaKontrolcu : MonoBehaviour{
                 }
             }
         }
+    }
+
+    public void _kartdakiPerleriIsle(){
+        PerlerdenKazanilanPuan = 0;
+        foreach (var grup in Card.Instance._siraliAyniRenkliGruplar) {
+            foreach (var item in grup) {
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
+            }
+        }
+
+        foreach (var grup in Card.Instance._siraliFarkliRenkliGruplar) {
+            foreach (var item in grup) {
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
+            }
+        }
+
+        foreach (var grup in Card.Instance._ayniRakamAyniRenkliGruplar) {
+            foreach (var item in grup) {
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
+            }
+        }
+
+        foreach (var grup in Card.Instance._ayniRakamFarkliRenkliGruplar) {
+            foreach (var item in grup) { 
+                TasManeger.Instance.TasIstances[item].ZeminSpriteRenderer.color = Color.green;
+                StartCoroutine(TasManeger.Instance.TasIstances[item].RakamiPuanaEkle(1));
+            }
+        }
+        StartCoroutine(SkorTMPleriGuncelle1());
+    }
+    
+    IEnumerator SkorTMPleriGuncelle1(){
+        yield return new WaitForSeconds(1);
+
+        // puan artış animasyonu
+        var startScore = PuanlamaKontrolcu.Instance.toplamPuan;
+        var currentScore = PuanlamaKontrolcu.Instance.toplamPuan + PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
+        DOTween.To(() => startScore, x => PuanlamaKontrolcu.Instance.toplamPuanTMP.text = x.ToString(), currentScore,
+            1f).SetEase(Ease.OutQuad);
+        PuanlamaKontrolcu.Instance.toplamPuan += PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan;
+        PuanlamaKontrolcu.Instance.toplamPuanTMP.transform.DOPunchPosition(new Vector3(Screen.width*.01f, Screen.height*.02f, 0f), 1f, 30, 0.5f);
+
+        // sayaç sesi
+        _audioSource_puan_sayac.Play();
+        
+        // floatingText
+        Vector3 targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
+        textMesh1.text =   PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan.ToString();
+        if (PuanlamaKontrolcu.Instance.PerlerdenKazanilanPuan>0) {
+            textMesh1.text = "+" + textMesh1.text;
+        } 
+        textMesh1.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0, 0, 0));
+        textMesh1.transform.DOMoveY(targetPosition.y, 2f).SetEase(Ease.OutQuad);
+        var color = textMesh1.color;
+        color.a = 1f;
+        textMesh1.color = color;
+        textMesh1.DOFade(0, 3f);
+    }
+
+    public void PuanlamaYap(){
+        if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
+               || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
+               || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
+               || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
+                IstakadakiPerdekiTaslariToparla();
+                BonuslariVer();
+        }
+        else {
+            Istaka.Instance.PersizFullIstakayiBosalt();
+        }
+        Card.Instance.KarttakiPerleriBul();
+        _kartdakiPerleriIsle();
     }
 }
