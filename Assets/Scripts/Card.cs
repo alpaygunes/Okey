@@ -51,45 +51,45 @@ public class Card : MonoBehaviour{
 
         // önceki işaretlemeleri iptal edelim.
         foreach (var tas in taslar) {
-            TasManeger.Instance.TasIstances[tas].birCardPerineDahil = false;
+            TasManeger.Instance.TasInstances[tas].birCardPerineDahil = false;
         }
 
         for (int i = 0; i < taslar.Length; i++) {
             var tas = taslar[i];
 
             SiraliAyniRenkliGrup.Clear();
-            await TasManeger.Instance.TasIstances[tas].SiraliAyniRenkGrubunaDahilOl();
+            await TasManeger.Instance.TasInstances[tas].SiraliAyniRenkGrubunaDahilOl();
             if (SiraliAyniRenkliGrup.Count > 2) {
                 _siraliAyniRenkliGruplar.Add(new List<GameObject>(SiraliAyniRenkliGrup));
                 foreach (var item in SiraliAyniRenkliGrup) {
-                    TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
+                    TasManeger.Instance.TasInstances[item].birCardPerineDahil = true;
                 }
             }
 
             SiraliFarkliRenkliGrup.Clear();
-            await TasManeger.Instance.TasIstances[tas].SiraliFarkliRenkGrubunaDahilOl();
+            await TasManeger.Instance.TasInstances[tas].SiraliFarkliRenkGrubunaDahilOl();
             if (SiraliFarkliRenkliGrup.Count > 2) {
                 _siraliFarkliRenkliGruplar.Add(new List<GameObject>(SiraliFarkliRenkliGrup));
                 foreach (var item in SiraliFarkliRenkliGrup) {
-                    TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
+                    TasManeger.Instance.TasInstances[item].birCardPerineDahil = true;
                 }
             }
 
             AyniRakamAyniRenkliGrup.Clear();
-            await TasManeger.Instance.TasIstances[tas].AyniRakamAyniRenkGrubunaDahilOl();
+            await TasManeger.Instance.TasInstances[tas].AyniRakamAyniRenkGrubunaDahilOl();
             if (AyniRakamAyniRenkliGrup.Count > 2) {
                 _ayniRakamAyniRenkliGruplar.Add(new List<GameObject>(AyniRakamAyniRenkliGrup));
                 foreach (var item in AyniRakamAyniRenkliGrup) {
-                    TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
+                    TasManeger.Instance.TasInstances[item].birCardPerineDahil = true;
                 }
             }
 
             AyniRakamFarkliRenkli.Clear();
-            await TasManeger.Instance.TasIstances[tas].AyniRakamFarkliRenkGrubunaDahilOl();
+            await TasManeger.Instance.TasInstances[tas].AyniRakamFarkliRenkGrubunaDahilOl();
             if (AyniRakamFarkliRenkli.Count > 2) {
                 _ayniRakamFarkliRenkliGruplar.Add(new List<GameObject>(AyniRakamFarkliRenkli));
                 foreach (var item in AyniRakamFarkliRenkli) {
-                    TasManeger.Instance.TasIstances[item].birCardPerineDahil = true;
+                    TasManeger.Instance.TasInstances[item].birCardPerineDahil = true;
                 }
             }
         }

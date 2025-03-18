@@ -101,3 +101,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dolu: 0
+  TasInstance: {fileID: 0}
+  ID: 0

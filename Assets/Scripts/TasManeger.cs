@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class TasManeger : MonoBehaviour{
     public List<GameObject> TasList = new List<GameObject>(); 
-    public Dictionary<GameObject, Tas> TasIstances = new Dictionary<GameObject, Tas>();
+    public Dictionary<GameObject, Tas> TasInstances = new Dictionary<GameObject, Tas>();
     public static TasManeger Instance { get; private set; }
     
 
@@ -42,7 +42,7 @@ public class TasManeger : MonoBehaviour{
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
                 if (hit.collider) {
                     if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
-                        TasIstances[hit.collider.gameObject].BosCebeYerles();
+                        TasInstances[hit.collider.gameObject].BosCebeYerles();
                         PerleriKontrolEt(); 
                         PerKontrol.IstakaKontrol();
                     }

@@ -52,6 +52,7 @@ public class Istaka : MonoBehaviour{
             var cep = Instantiate(Cep, new Vector3(x, transform.position.y, -2), Quaternion.identity);
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
             cep.transform.localScale *= .7f;
+            cep.GetComponent<Cep>().ID = i;
             cep.transform.SetParent(GameManager.Instance.transform);
             CepList.Add(cep.GetComponent<Cep>());
         }
@@ -64,7 +65,7 @@ public class Istaka : MonoBehaviour{
             foreach (var cepInstance in CepList) {
                 var AIstance = cepInstance.TasInstance;
                 foreach (var cardtakiTas in cardtakiTaslar) {
-                    var BInstance = TasManeger.Instance.TasIstances[cardtakiTas];
+                    var BInstance = TasManeger.Instance.TasInstances[cardtakiTas];
                     if (BInstance.rakam == AIstance.rakam || BInstance.renk == AIstance.renk) {
                         BInstance.ZeminSpriteRenderer.color = Color.red;
                         StartCoroutine(BInstance.CezaliRakamiCikar(1));
@@ -177,8 +178,8 @@ public class Istaka : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
                         // rengi aynı mı ?
-                        if (TasManeger.Instance.TasIstances[tas].renk ==
-                            TasManeger.Instance.TasIstances[sonrakiTasA].renk) {
+                        if (TasManeger.Instance.TasInstances[tas].renk ==
+                            TasManeger.Instance.TasInstances[sonrakiTasA].renk) {
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else {
@@ -219,8 +220,8 @@ public class Istaka : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
                         // rengi aynı mı ?
-                        if (TasManeger.Instance.TasIstances[tas].renk ==
-                            TasManeger.Instance.TasIstances[sonrakiTasA].renk) {
+                        if (TasManeger.Instance.TasInstances[tas].renk ==
+                            TasManeger.Instance.TasInstances[sonrakiTasA].renk) {
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else {
@@ -262,8 +263,8 @@ public class Istaka : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
                         foreach (var item in farkliRenklilerGrubu) {
-                            if (TasManeger.Instance.TasIstances[sonrakiTasA].renk
-                                == TasManeger.Instance.TasIstances[item.Value].renk) {
+                            if (TasManeger.Instance.TasInstances[sonrakiTasA].renk
+                                == TasManeger.Instance.TasInstances[item.Value].renk) {
                                 //aynı renk zaten var
                                 _yeniGrupOlustur = true;
                                 break;
@@ -309,8 +310,8 @@ public class Istaka : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
                         foreach (var item in farkliRenklilerGrubu) {
-                            if (TasManeger.Instance.TasIstances[sonrakiTasA].renk
-                                == TasManeger.Instance.TasIstances[item.Value].renk) { 
+                            if (TasManeger.Instance.TasInstances[sonrakiTasA].renk
+                                == TasManeger.Instance.TasInstances[item.Value].renk) { 
                                 _yeniGrupOlustur = true;
                                 break;
                             }
