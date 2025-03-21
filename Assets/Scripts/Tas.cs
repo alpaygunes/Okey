@@ -21,6 +21,7 @@ public class Tas : MonoBehaviour{
     private AudioSource _audioSource_patla;
     public Cep cepInstance = null;  
     public Tweener tweener = null;
+    public Vector3 localScale;
 
     private void Awake(){
         gameObject.SetActive(false);
@@ -49,6 +50,8 @@ public class Tas : MonoBehaviour{
         _audioSource_patla = gameObject.AddComponent<AudioSource>();
         _audioSource_patla.playOnAwake = false;
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
+
+        localScale = transform.localScale;
     }
     
     private void OnDestroy(){  
@@ -82,16 +85,13 @@ public class Tas : MonoBehaviour{
                 gameObject.tag = "CEPTEKI_TAS";
                 Counter.Instance.KontrolIcinGeriSaymayaBasla();
                 _audioSource_down.Play();
-                resetTween();
+                Sallanma();
                 break;
             }
         }
     }
 
-    public void resetTween(){
-        tweener.Kill();
-        transform.Find("Zemin").localScale = Vector3.one;
-    }
+ 
 
     public void PuaniVerMerkezeKay(float gecikme){
         StartCoroutine(CeptekiTasinRakaminiPuanaEkle(gecikme));
@@ -236,9 +236,21 @@ public class Tas : MonoBehaviour{
     }
 
     public void Sallan(){
-        if (CompareTag("CARDTAKI_TAS")){
-            var zemin = transform.Find("Zemin");
-            tweener = zemin.transform.DOScale( 1.6f, 1.5f ).SetEase( Ease.InOutSine ).SetLoops( -1, LoopType.Yoyo );
+        if (CompareTag("CARDTAKI_TAS")){ 
+            tweener = transform.DOScale( 1.5f, .1f )
+                .SetEase( Ease.InOutSine )
+                .SetLoops( -1, LoopType.Yoyo )
+                .SetAutoKill(true);
         }
+    }
+
+    public void Sallanma(){
+        if (tweener != null && tweener.IsActive()) 
+        { 
+            tweener.Complete();
+            tweener.Kill();   
+            tweener = null;
+        }
+
     }
 }
