@@ -1,39 +1,67 @@
+using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public static class PerKontrol{
-    private static Cep _istakadakiIlkBosCep;
-    private static GameObject[] carddakiTaslar;
-    private static List<List<Cep>> ucluCepler = new List<List<Cep>>();
+public class PerIcinTasTavsiye : MonoBehaviour{
+    
+    public static PerIcinTasTavsiye Instance;
+    private  Cep _istakadakiIlkBosCep;
+    private  GameObject[] carddakiTaslar;
+    private  List<List<Cep>> ucluCepler = new List<List<Cep>>();
+    private  Coroutine _countdownCoroutine;
+    private  float GeriSayimSuresi{ get; set; } = 2.5f;
 
-    public static void IstakaKontrol(){
+    private static Dictionary<int, Dictionary<string, object>> AranacakKriterler = new Dictionary<int, Dictionary<string, object>>();
+    
+    private void Awake(){
+        if (Instance == null){
+            Instance = this;
+        }else{
+            Destroy(gameObject);
+        }
+    }
+    
+    public  void Basla(){
+        if (_countdownCoroutine != null){
+            StopCoroutine(_countdownCoroutine);
+        }
+        _countdownCoroutine = StartCoroutine(CountdownRoutine());
+    }
+
+    public void Sallanma(){
         carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var tas in carddakiTaslar){
             TasManeger.Instance.TasInstances[tas].Sallanma();
         }
+    }
 
-        for (int i = 0; i < Istaka.Instance.CepList.Count; i++){
-            if (Istaka.Instance.CepList[i].TasInstance == null){
-                _istakadakiIlkBosCep = Istaka.Instance.CepList[i];
-                //_istakadakiIlkBosCep.transform.localScale = new Vector2(0.69f, 0.69f);
-                //_istakadakiIlkBosCep.transform.localScale = new Vector2(0.5f, 0.5f);
-                //_istakadakiIlkBosCep.transform.GetComponent<SpriteRenderer>().color = Color.blue;
-                break;
-            }
+    private  IEnumerator CountdownRoutine(){
+        float _timeLeft = GeriSayimSuresi;
+        while (_timeLeft > 0){
+            yield return new WaitForSeconds(1f);
+            _timeLeft--;
         }
-
-        // foreach (var c in Istaka.Instance.CepList){
-        //     c.transform.localScale = new Vector2(0.5f, 0.5f);
-        // }
-
+        TasBul();
+    }
+    
+    private  void TasBul(){
+        _istakadakiIlkBosCep = IstakaKontrol();
         uclukleriBelirle(_istakadakiIlkBosCep);
         uclugeUygunKurallariBelirle();
         kurallarauygunIlkTasiBul();
     }
+    
+    private  Cep IstakaKontrol(){
+        carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
+        for (int i = 0; i < Istaka.Instance.CepList.Count; i++){
+            if (Istaka.Instance.CepList[i].TasInstance == null){
+                return Istaka.Instance.CepList[i];
+            }
+        }
+        return null;
+    }
 
-    private static void kurallarauygunIlkTasiBul(){
+    private  void kurallarauygunIlkTasiBul(){
         List<Tas> aranantaslar = new List<Tas>();
         aranantaslar.Clear();
         foreach (var kriter in AranacakKriterler){
@@ -42,7 +70,7 @@ public static class PerKontrol{
             Color yasakliRenk0 = default;
             Color yasakliRenk1 = default;
             Cep hedefCep = null;
-            
+
 
             foreach (var tas in carddakiTaslar){
                 bool rakamTamam = false;
@@ -74,21 +102,16 @@ public static class PerKontrol{
                 }
                 else if (rakamTamam && tasakliRenklerTamam){
                     aranantaslar.Add(TasManeger.Instance.TasInstances[tas]);
-                } 
+                }
             } // foreach
         } // foreeach
 
         foreach (var bulunanTas in aranantaslar){
             bulunanTas.Sallan();
-            bulunanTas.transform.localScale = bulunanTas.localScale;
         }
     }
 
-
-    private static Dictionary<int, Dictionary<string, object>> AranacakKriterler =
-        new Dictionary<int, Dictionary<string, object>>();
-
-    private static void uclugeUygunKurallariBelirle(){
+    private  void uclugeUygunKurallariBelirle(){
         AranacakKriterler.Clear();
         Dictionary<string, object> kriter = new Dictionary<string, object>();
         foreach (var ucluk in ucluCepler){
@@ -111,22 +134,17 @@ public static class PerKontrol{
                     if (arananRakam > 0){
                         if (ucluk[1].TasInstance.renk == ucluk[2].TasInstance.renk){
                             arananRenk = ucluk[1].TasInstance.renk;
-                            kriter.Add("arananRenk", arananRenk);
-                            Debug.Log($"arananRenk {arananRenk}");
+                            kriter.Add("arananRenk", arananRenk); 
                         }
                         else{
                             yasakliRenk0 = ucluk[1].TasInstance.renk;
                             yasakliRenk1 = ucluk[2].TasInstance.renk;
                             kriter.Add("yasakliRenk0", yasakliRenk0);
-                            kriter.Add("yasakliRenk1", yasakliRenk1);
-                            Debug.Log($"yasakliRenk0 {yasakliRenk0}");
-                            Debug.Log($"yasakliRenk1 {yasakliRenk1}");
+                            kriter.Add("yasakliRenk1", yasakliRenk1); 
                         }
 
                         kriter.Add("hedefCep", ucluk[0]);
-                        kriter.Add("arananRakam", arananRakam);
-                        Debug.Log($"hedefCep {ucluk[0].ID}");
-                        Debug.Log($"arananRakam {arananRakam}");
+                        kriter.Add("arananRakam", arananRakam); 
                         AranacakKriterler.Add(AranacakKriterler.Count, new Dictionary<string, object>(kriter));
                     }
                 }
@@ -146,21 +164,17 @@ public static class PerKontrol{
                         if (ucluk[0].TasInstance.renk == ucluk[2].TasInstance.renk){
                             arananRenk = ucluk[0].TasInstance.renk;
                             kriter.Add("arananRenk", arananRenk);
-                            Debug.Log($"arananRenk {arananRenk}");
+                             
                         }
                         else{
                             yasakliRenk0 = ucluk[0].TasInstance.renk;
                             yasakliRenk1 = ucluk[2].TasInstance.renk;
                             kriter.Add("yasakliRenk0", yasakliRenk0);
-                            kriter.Add("yasakliRenk1", yasakliRenk1);
-                            Debug.Log($"yasakliRenk0 {yasakliRenk0}");
-                            Debug.Log($"yasakliRenk1 {yasakliRenk1}");
+                            kriter.Add("yasakliRenk1", yasakliRenk1); 
                         }
 
                         kriter.Add("hedefCep", ucluk[1]);
-                        kriter.Add("arananRakam", arananRakam);
-                        Debug.Log($"hedefCep {ucluk[1].ID}");
-                        Debug.Log($"arananRakam {arananRakam}");
+                        kriter.Add("arananRakam", arananRakam); 
                         AranacakKriterler.Add(AranacakKriterler.Count, new Dictionary<string, object>(kriter));
                     }
                 }
@@ -179,22 +193,17 @@ public static class PerKontrol{
                     if (arananRakam > 0){
                         if (ucluk[0].TasInstance.renk == ucluk[1].TasInstance.renk){
                             arananRenk = ucluk[0].TasInstance.renk;
-                            kriter.Add("arananRenk", arananRenk);
-                            Debug.Log($"arananRenk {arananRenk}");
+                            kriter.Add("arananRenk", arananRenk); 
                         }
                         else{
                             yasakliRenk0 = ucluk[0].TasInstance.renk;
                             yasakliRenk1 = ucluk[1].TasInstance.renk;
                             kriter.Add("yasakliRenk0", yasakliRenk0);
-                            kriter.Add("yasakliRenk1", yasakliRenk1);
-                            Debug.Log($"yasakliRenk0 {yasakliRenk0}");
-                            Debug.Log($"yasakliRenk1 {yasakliRenk1}");
+                            kriter.Add("yasakliRenk1", yasakliRenk1); 
                         }
 
                         kriter.Add("hedefCep", ucluk[2]);
-                        kriter.Add("arananRakam", arananRakam);
-                        Debug.Log($"hedefCep {ucluk[2].ID}");
-                        Debug.Log($"arananRakam {arananRakam}");
+                        kriter.Add("arananRakam", arananRakam); 
                         AranacakKriterler.Add(AranacakKriterler.Count, new Dictionary<string, object>(kriter));
                     }
                 }
@@ -202,7 +211,8 @@ public static class PerKontrol{
         } // foreach
     }
 
-    static void uclukleriBelirle(Cep cep){
+    void uclukleriBelirle(Cep cep){
+        if (cep == null) return;
         List<Cep> ucluk = new List<Cep>();
         ucluCepler.Clear();
 
@@ -214,7 +224,7 @@ public static class PerKontrol{
             ucluk.Clear();
         }
 
-        if (cep.ID + 1 < Istaka.Instance.CepList.Count){
+        if (cep.ID + 1 < Istaka.Instance.CepList.Count && cep.ID > 0){
             ucluk.Add(Istaka.Instance.CepList[cep.ID - 1]);
             ucluk.Add(Istaka.Instance.CepList[cep.ID]);
             ucluk.Add(Istaka.Instance.CepList[cep.ID + 1]);
@@ -229,12 +239,6 @@ public static class PerKontrol{
             ucluCepler.Add(new List<Cep>(ucluk));
             ucluk.Clear();
         }
-
-
-        // foreach (var u in ucluCepler){
-        //     u[0].transform.localScale = new Vector2(1f, 1f);
-        //     u[1].transform.localScale = new Vector2(1f, 1f);
-        //     u[2].transform.localScale = new Vector2(1f, 1f);
-        // }
+        
     }
 }
