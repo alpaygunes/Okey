@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 1599945804}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: MULTYPLAYER
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 2034837422}
   m_Layer: 5
   m_Name: Play
-  m_TagString: PLAY
+  m_TagString: MULTYPLAYER
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
