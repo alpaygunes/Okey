@@ -9,6 +9,7 @@ public class Puanlama : MonoBehaviour{
     private TextMeshProUGUI textMesh0; 
     private TextMeshProUGUI textMesh1;
     public TextMeshProUGUI toplamPuanTMP; 
+    private TextMeshProUGUI hamleSayisiTMP; 
     public int PerlerdenKazanilanPuan = 1;
     private float _merkezeKayGecikmesi;
     public int toplamPuan;
@@ -37,6 +38,7 @@ public class Puanlama : MonoBehaviour{
 
     private void Start(){
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
+        hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
         textMesh0 = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
         textMesh1 = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>();
     }
@@ -246,20 +248,21 @@ public class Puanlama : MonoBehaviour{
         yield return new WaitForSeconds(1);
 
         // puan artış animasyonu
-        var startScore = Puanlama.Instance.toplamPuan;
-        var currentScore = Puanlama.Instance.toplamPuan + Puanlama.Instance.PerlerdenKazanilanPuan;
-        DOTween.To(() => startScore, x => Puanlama.Instance.toplamPuanTMP.text = x.ToString(), currentScore,
+        var startScore = Instance.toplamPuan;
+        var currentScore = Instance.toplamPuan + Instance.PerlerdenKazanilanPuan;
+        DOTween.To(() => startScore, x => Instance.toplamPuanTMP.text = x.ToString(), currentScore,
             1f).SetEase(Ease.OutQuad);
-        Puanlama.Instance.toplamPuan += Puanlama.Instance.PerlerdenKazanilanPuan;
-        Puanlama.Instance.toplamPuanTMP.transform.DOPunchPosition(new Vector3(Screen.width*.01f, Screen.height*.02f, 0f), 1f, 30, 0.5f);
-
+        Instance.toplamPuan += Instance.PerlerdenKazanilanPuan;
+        Instance.toplamPuanTMP.transform.DOPunchPosition(new Vector3(Screen.width*.01f, Screen.height*.02f, 0f), 1f, 30, 0.5f);
+        hamleSayisiTMP.text = GameManager.Instance.HamleSayisi.ToString();
+        
         // sayaç sesi
         _audioSource_puan_sayac.Play();
         
         // floatingText
         Vector3 targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
-        textMesh1.text =   Puanlama.Instance.PerlerdenKazanilanPuan.ToString();
-        if (Puanlama.Instance.PerlerdenKazanilanPuan>0) {
+        textMesh1.text =   Instance.PerlerdenKazanilanPuan.ToString();
+        if (Instance.PerlerdenKazanilanPuan>0) {
             textMesh1.text = "+" + textMesh1.text;
         } 
         textMesh1.transform.position = uiCamera.WorldToScreenPoint(new Vector3(0, 0, 0));

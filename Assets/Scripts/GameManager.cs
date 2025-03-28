@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour{
     public readonly RangeInt RakamAraligi = new RangeInt(1, 10);
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string Seed;
+    public int HamleSayisi = 0;
 
     public static GameManager Instance{ get; private set; }
 
@@ -28,8 +29,7 @@ public class GameManager : MonoBehaviour{
         TasManeger.Instance.TaslariHazirla();
         KutulariHazirla();
     }
-
-
+    
     private void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / _colonCount;

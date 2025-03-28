@@ -1,9 +1,10 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class Counter : MonoBehaviour{
     public static Counter Instance;
-    public float GeriSayimSuresi{ get; set; } = 5.0f;
+    public float GeriSayimSuresi{ get; set; } = 3.0f;
     private Vector3 _startPos;
     private Coroutine _countdownCoroutine;
 
@@ -27,19 +28,32 @@ public class Counter : MonoBehaviour{
         if (_countdownCoroutine != null){
             transform.position = _startPos;
             StopCoroutine(_countdownCoroutine);
+            if (tweener!=null){
+                tweener.Kill();
+                tweener = null;
+            } 
         } 
         _countdownCoroutine = StartCoroutine(CountdownRoutine());
     }
 
-    private IEnumerator CountdownRoutine(){ 
+    private Tweener tweener = null;
+    private IEnumerator CountdownRoutine(){
+        
         float _timeLeft = GeriSayimSuresi;
+        
+        if (tweener==null){
+            tweener = transform.DOMoveX(Card.Instance.transform.localScale.x, GeriSayimSuresi).SetEase(Ease.Linear);
+        } 
+        
         while (_timeLeft > 0){
             yield return new WaitForSeconds(1f);
-            _timeLeft--;
-            transform.position += new Vector3(Card.Instance.transform.localScale.x / GeriSayimSuresi, 0, 0);
+            _timeLeft--; 
         } 
+        
+        tweener.Kill();
+        tweener = null;
         transform.position = _startPos;  
         Puanlama.Instance.PuanlamaYap();
-
+        GameManager.Instance.HamleSayisi++;
     }
 }
