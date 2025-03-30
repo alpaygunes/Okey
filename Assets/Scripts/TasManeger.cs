@@ -60,8 +60,7 @@ public class TasManeger : MonoBehaviour{
         Istaka.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         Istaka.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
     }
-
-
+    
     public class Data{
         public int number;
         public int color;

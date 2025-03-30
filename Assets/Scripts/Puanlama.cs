@@ -21,6 +21,8 @@ public class Puanlama : MonoBehaviour{
     List<Tas> BonusFarkliRenkAyniRakam = new List<Tas>();
     List<Tas> BonusAyniRenkArdisikRakam = new List<Tas>();
     List<Tas> BonusFarkliRenkArdisikRakam = new List<Tas>();
+    
+ 
 
     void Awake(){
         if (Instance != null && Instance != this) {
@@ -44,6 +46,7 @@ public class Puanlama : MonoBehaviour{
     }
 
     public void IstakadakiPerdekiTaslariToparla(){
+        
         BonusAyniRenkArdisikRakam.Clear();
         BonusAyniRenkAyniRakam.Clear();
         BonusFarkliRenkAyniRakam.Clear();
@@ -109,28 +112,10 @@ public class Puanlama : MonoBehaviour{
             new SortedDictionary<int, GameObject>(perdekiTumTaslarDic);
         foreach (var tas in siralanmisTumPerTaslari) {
             _merkezeKayGecikmesi += 0.2f;
-            TasManeger.Instance.TasInstances[tas.Value].PuaniVerMerkezeKay(_merkezeKayGecikmesi);
+            TasManeger.Instance.TasInstances[tas.Value].PuaniVerMerkezeKay(_merkezeKayGecikmesi); 
         }
 
         StartCoroutine(SkorTMPleriGuncelle());
-    }
-
-    IEnumerator SkorTMPleriGuncelle(){
-        Istaka.Instance.GruplariTemizle();
-        yield return new WaitForSeconds(_merkezeKayGecikmesi); 
-        toplamPuan += PerlerdenKazanilanPuan;
-
-        // floatingText 
-        if (toplamPuan > 0) {
-            Vector3 _targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
-            textMesh0.text = "+" + PerlerdenKazanilanPuan.ToString();
-            textMesh0.transform.position = uiCamera.WorldToScreenPoint(Istaka.Instance.transform.position);
-            textMesh0.transform.DOMoveY(_targetPosition.y, 2f).SetEase(Ease.OutQuad);
-            var color = textMesh0.color;
-            color.a = 1f;
-            textMesh0.color = color;
-            textMesh0.DOFade(0, 3f);
-        }
     }
     
     public void BonuslariVer(){
@@ -212,6 +197,24 @@ public class Puanlama : MonoBehaviour{
         }
     }
 
+    IEnumerator SkorTMPleriGuncelle(){
+        Istaka.Instance.GruplariTemizle();
+        yield return new WaitForSeconds(_merkezeKayGecikmesi); 
+        toplamPuan += PerlerdenKazanilanPuan;
+
+        // floatingText 
+        if (toplamPuan > 0) {
+            Vector3 _targetPosition = uiCamera.WorldToScreenPoint(new Vector3(0, 2, 0));
+            textMesh0.text = "+" + PerlerdenKazanilanPuan.ToString();
+            textMesh0.transform.position = uiCamera.WorldToScreenPoint(Istaka.Instance.transform.position);
+            textMesh0.transform.DOMoveY(_targetPosition.y, 2f).SetEase(Ease.OutQuad);
+            var color = textMesh0.color;
+            color.a = 1f;
+            textMesh0.color = color;
+            textMesh0.DOFade(0, 3f);
+        }
+    }
+    
     public void _kartdakiPerleriIsle(){
         PerlerdenKazanilanPuan = 0;
         foreach (var grup in Card.Instance._siraliAyniRenkliGruplar) {
