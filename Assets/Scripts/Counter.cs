@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Counter : MonoBehaviour{
     public static Counter Instance;
-    public float GeriSayimSuresi{ get; set; } = 3.0f;
+    public float GeriSayimSuresi;
     private Vector3 _startPos;
     private Coroutine _countdownCoroutine;
 
@@ -17,7 +17,8 @@ public class Counter : MonoBehaviour{
     }
 
     private void Start(){
-        _startPos = transform.position; 
+        _startPos = transform.position;
+        GeriSayimSuresi = GameManager.Instance.GeriSayimSuresi;
     }
 
     public void KontrolIcinGeriSaymayaBasla(){

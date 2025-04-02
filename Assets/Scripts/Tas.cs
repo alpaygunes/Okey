@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class Tas : MonoBehaviour{
     public Tweener tweener = null;
     public Vector3 zeminlocalScale;
     public GameObject zemin;
+    public Dictionary<int,Tas> BonusOlarakEslesenTaslar = new Dictionary<int,Tas>();
 
     private void Awake(){
         zemin = GameObject.Find("Zemin");
@@ -93,58 +95,58 @@ public class Tas : MonoBehaviour{
             }
         }
     }
+ 
 
-
-    public void PuaniVerMerkezeKay(float gecikme){
-        StartCoroutine(CeptekiTasinRakaminiPuanaEkle(gecikme));
-    }
-
-    IEnumerator CeptekiTasinRakaminiPuanaEkle(float gecikme){
+    public IEnumerator TaslarinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
+        float sure = 1;
+        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;  
+        _audioSource_patla.Play(); 
         Vector3 ilkScale = transform.localScale;
-        transform.DOMove(_skorTxtPosition, _animasyonSuresi);
+        transform.DOMove(_skorTxtPosition, sure);
         Sequence mySequence = DOTween.Sequence();
         mySequence
-            .Append(transform.DOScale(transform.localScale * 2, _animasyonSuresi * .5f))
-            .Append(transform.DOScale(ilkScale * .25f, _animasyonSuresi * .5f));
-        StartCoroutine(KillSelf());
-        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;
+            .Append(transform.DOScale(transform.localScale * 2, sure * .5f))
+            .Append(transform.DOScale(ilkScale * .25f, sure * .5f))
+            .OnComplete(() => { 
+                transform.DOKill();
+                Destroy(gameObject);
+                enabled = false;
+                TasManeger.Instance.TasInstances.Remove(gameObject);
+            });
+        foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
+            if ( bonusTaslari.Value ){
+                bonusTaslari.Value.RakamiPuanaEkle(); 
+            }
+        }
+        Puanlama.Instance.SkorBoardiGuncelle(); 
+    }
+    
+
+    public void RakamiPuanaEkle(){ 
+        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;   
+        Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity); 
+        Destroy(gameObject); 
+        this.enabled = false;
+        TasManeger.Instance.TasInstances.Remove(gameObject); 
     }
 
-    public IEnumerator RakamiPuanaEkle(float gecikme){
-        gameObject.tag = "CARD_PERINDEKI_TAS";
-        Invoke("Patla", Random.value * 2);
+    public IEnumerator CezaliRakamiCikar(float gecikme){ 
         yield return new WaitForSeconds(gecikme);
-        DestroySelf();
-        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;
-    }
-
-    public IEnumerator CezaliRakamiCikar(float gecikme){
-        gameObject.tag = "CARD_PERINDEKI_TAS";
-        Invoke("Patla", Random.value * 2);
-        yield return new WaitForSeconds(gecikme);
-        DestroySelf();
+        if (gameObject){
+            Destroy(gameObject); 
+        }
+        this.enabled = false;
+        TasManeger.Instance.TasInstances.Remove(gameObject);
         Puanlama.Instance.PerlerdenKazanilanPuan -= rakam;
-    }
-
-    void Patla(){
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
-        _audioSource_patla.Play();
     }
 
-    IEnumerator KillSelf(){
-        yield return new WaitForSeconds(_animasyonSuresi);
-        transform.DOKill();
-        Destroy(gameObject);
-        this.enabled = false;
-        TasManeger.Instance.TasInstances.Remove(gameObject);
-    }
+ 
 
-    public void DestroySelf(){
-        Destroy(gameObject);
-        this.enabled = false;
-        TasManeger.Instance.TasInstances.Remove(gameObject);
-    }
+ 
+
+ 
 
     void OnTriggerStay2D(Collider2D other){
         if (other.gameObject.CompareTag("CARDTAKI_TAS")){

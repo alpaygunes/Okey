@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour{
+    public readonly float GeriSayimSuresi = 5f;
     private readonly int _colonCount = 5;
     public readonly int TasCount = 100;
     public readonly int CepSayisi = 5;
     public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
-    public readonly RangeInt RakamAraligi = new RangeInt(1, 10);
+    public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string Seed;
     public int HamleSayisi = 0;
