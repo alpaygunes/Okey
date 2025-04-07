@@ -265,9 +265,9 @@ public class Istaka : MonoBehaviour{
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
                         foreach (var item in farkliRenklilerGrubu) {
                             if (TasManeger.Instance.TasInstances[sonrakiTasA].renk
-                                == TasManeger.Instance.TasInstances[item.Value].renk) {
-                                //aynı renk zaten var
+                                == TasManeger.Instance.TasInstances[item.Value].renk) { 
                                 _yeniGrupOlustur = true;
+                                j--;
                                 break;
                             }
                         }

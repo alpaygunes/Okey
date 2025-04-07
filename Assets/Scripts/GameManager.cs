@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour{
      public string Seed;
      public int HamleSayisi = 0;
      [NonSerialized]  public bool PerKontrolDugmesiOlsun = true;
-     [NonSerialized]  public bool OtomatikPerkontrolu = false;
+     [NonSerialized]  public bool OtomatikPerkontrolu = true;
 
     public static GameManager Instance{ get; private set; }
 

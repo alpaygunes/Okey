@@ -36,7 +36,7 @@ public class Counter : MonoBehaviour{
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
-               || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){  
+               || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
                 CountdownRoutine();
         }
         else{
@@ -46,6 +46,7 @@ public class Counter : MonoBehaviour{
 
 
     public void CountdownRoutine(){  
+        PerIcinTasTavsiye.Instance.Sallanma();
         if (tweener == null){
             tweener = progress.transform.DOMoveX(8, GeriSayimSuresi)
                 .SetEase(Ease.Linear).OnComplete(() => {

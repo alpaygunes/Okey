@@ -229,8 +229,7 @@ public class Puanlama : MonoBehaviour{
         
     }
     
-    public void PuanlamaYap(){
-        PerIcinTasTavsiye.Instance.Sallanma();
+    public void PuanlamaYap(){ 
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
