@@ -12,6 +12,7 @@ public class Istaka : MonoBehaviour{
     public List<Dictionary<int, GameObject>> SiraliRakamAyniRenkGruplari = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> AyniRakamAyniRenkGruplari = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> AyniRakamHepsiFarkliRenkGruplari = new List<Dictionary<int, GameObject>>();
+    public GameObject Body;
 
     public List<Dictionary<int, GameObject>> SiraliRakamHepsiFarkliRenkGruplari =
         new List<Dictionary<int, GameObject>>();
@@ -25,6 +26,7 @@ public class Istaka : MonoBehaviour{
         else {
             Destroy(gameObject);
         }
+        Body = transform.Find("Body").gameObject;
     }
 
     private void Start(){
@@ -44,23 +46,22 @@ public class Istaka : MonoBehaviour{
     }
 
     void CepleriOlustur(){
-        float istakaGenisligi = GetComponent<SpriteRenderer>().bounds.size.x;
+        float istakaGenisligi = Body.GetComponent<SpriteRenderer>().bounds.size.x;
         float aralikMesafesi = istakaGenisligi / GameManager.Instance.CepSayisi;
         for (int i = 0; i < GameManager.Instance.CepSayisi; i++) {
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - istakaGenisligi * .5f;
             GameObject Cep = Resources.Load<GameObject>("Prefabs/IstakaCebi");
-            var cep = Instantiate(Cep, new Vector3(x, transform.position.y, -2), Quaternion.identity);
+            var cep = Instantiate(Cep, new Vector3(x, Body.transform.position.y, -2), Quaternion.identity);
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
             cep.transform.localScale *= .7f;
             cep.GetComponent<Cep>().ID = i;
-            cep.transform.SetParent(GameManager.Instance.transform);
+            cep.transform.SetParent(Body.transform);
             CepList.Add(cep.GetComponent<Cep>());
         }
     }
 
     public void PersizFullIstakayiBosalt(){
-        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-        var ceptekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
+        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
         if (DoluCepSayisi() == GameManager.Instance.CepSayisi) { 
             foreach (var cepInstance in CepList) {
                 var AIstance = cepInstance.TasInstance;
@@ -75,7 +76,7 @@ public class Istaka : MonoBehaviour{
                 AIstance.ZeminSpriteRenderer.color = Color.red;
                 StartCoroutine(AIstance.CezaliRakamiCikar(1));
 
-                cepInstance.Dolu = false;
+                //cepInstance.Dolu = false;
                 cepInstance.TasInstance = null;
             } 
         }
@@ -342,7 +343,7 @@ public class Istaka : MonoBehaviour{
             var grup = SiraliRakamAyniRenkGruplari[i];
             foreach (var item in grup) {
                 var cepins = CepList[item.Key];
-                cepins.Dolu = false;
+                //cepins.Dolu = false;
                 cepins.TasInstance = null;
             }
         }
@@ -352,7 +353,7 @@ public class Istaka : MonoBehaviour{
             var grup = AyniRakamAyniRenkGruplari[i];
             foreach (var item in grup) {
                 var cepins = CepList[item.Key];
-                cepins.Dolu = false;
+                //cepins.Dolu = false;
                 cepins.TasInstance = null;
             }
         }
@@ -363,7 +364,7 @@ public class Istaka : MonoBehaviour{
             var grup = AyniRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup) {
                 var cepins = CepList[item.Key];
-                cepins.Dolu = false;
+                //cepins.Dolu = false;
                 cepins.TasInstance = null;
             }
         }
@@ -373,7 +374,7 @@ public class Istaka : MonoBehaviour{
             var grup = SiraliRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup) { 
                 var cepins = CepList[item.Key];
-                cepins.Dolu = false;
+                //cepins.Dolu = false;
                 cepins.TasInstance = null;
             }
         }

@@ -1,60 +1,71 @@
 using System.Collections;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Counter : MonoBehaviour{
     public static Counter Instance;
     public float GeriSayimSuresi;
     private Vector3 _startPos;
     private Coroutine _countdownCoroutine;
+    private GameObject progress;
+    public GameObject Button; 
+    private Tweener tweener = null;
 
     private void Awake(){
         if (Instance == null){
             Instance = this;
-        }else{
+        }
+        else{
             Destroy(gameObject);
         }
     }
 
     private void Start(){
-        _startPos = transform.position;
+        Button = transform.Find("Button").gameObject;
+        Button.SetActive(GameManager.Instance.PerKontrolDugmesiOlsun);
         GeriSayimSuresi = GameManager.Instance.GeriSayimSuresi;
+        progress = GameObject.Find("Progress");
+        _startPos = progress.transform.position;
     }
 
-    public void KontrolIcinGeriSaymayaBasla(){
-        if (Istaka.Instance.DoluCepSayisi() < 3) {
-            return;
-        } 
+    public void GeriSayimAnimasyonunuBaslat(){ 
+        if (!GameManager.Instance.OtomatikPerkontrolu) return;
         
-        if (_countdownCoroutine != null){
-            transform.position = _startPos;
-            StopCoroutine(_countdownCoroutine);
-            if (tweener!=null){
-                tweener.Kill();
-                tweener = null;
-            } 
-        } 
-        _countdownCoroutine = StartCoroutine(CountdownRoutine());
+        if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
+               || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
+               || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
+               || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){  
+                CountdownRoutine();
+        }
+        else{
+            Istaka.Instance.PersizFullIstakayiBosalt();
+        }
     }
 
-    private Tweener tweener = null;
-    private IEnumerator CountdownRoutine(){
-        
-        float _timeLeft = GeriSayimSuresi;
-        
-        if (tweener==null){
-            tweener = transform.DOMoveX(Card.Instance.transform.localScale.x, GeriSayimSuresi).SetEase(Ease.Linear);
+
+    public void CountdownRoutine(){  
+        if (tweener == null){
+            tweener = progress.transform.DOMoveX(8, GeriSayimSuresi)
+                .SetEase(Ease.Linear).OnComplete(() => {
+                    tweener.Kill();
+                    tweener = null;
+                    progress.transform.position = _startPos;
+                    Puanlama.Instance.PuanlamaYap(); 
+                });;
+        }
+        else{
+            TweenReset();
+            CountdownRoutine();
         } 
-        
-        while (_timeLeft > 0){
-            yield return new WaitForSeconds(1f);
-            _timeLeft--; 
-        } 
-        
-        tweener.Kill();
-        tweener = null;
-        transform.position = _startPos;  
-        Puanlama.Instance.PuanlamaYap();
-        GameManager.Instance.HamleSayisi++;
+    }
+
+    public void TweenReset(){
+        if (tweener != null){
+            tweener.Kill();
+            tweener = null;
+            progress.transform.position = _startPos;
+        }  
     }
 }

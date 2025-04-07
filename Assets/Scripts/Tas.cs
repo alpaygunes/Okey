@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 
 public class Tas : MonoBehaviour{
     public int rakam;
@@ -24,13 +26,12 @@ public class Tas : MonoBehaviour{
     public Tweener tweener = null;
     public Vector3 zeminlocalScale;
     public GameObject zemin;
-    public Dictionary<int,Tas> BonusOlarakEslesenTaslar = new Dictionary<int,Tas>();
+    public Dictionary<int,Tas> BonusOlarakEslesenTaslar = new Dictionary<int,Tas>(); 
 
     private void Awake(){
         zemin = GameObject.Find("Zemin");
         gameObject.SetActive(false);
         ZeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
-
         uiCamera = Camera.main;
         _skorTxtPosition = uiCamera.ScreenToWorldPoint(
             new Vector3(GameObject.Find("Skor").transform.position.x,
@@ -55,7 +56,7 @@ public class Tas : MonoBehaviour{
         _audioSource_patla.playOnAwake = false;
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
 
-        zeminlocalScale = zemin.transform.localScale;
+        zeminlocalScale = zemin.transform.localScale;  
     }
 
     private void OnDestroy(){
@@ -68,6 +69,14 @@ public class Tas : MonoBehaviour{
                 }
             }
         }
+
+        if (cepInstance){
+            cepInstance.Dolu = false;
+        }
+
+        var kalanTas = Int32.Parse(Puanlama.Instance.KalanTasOraniTMP.text);
+        kalanTas--;
+        Puanlama.Instance.KalanTasOraniTMP.text = kalanTas.ToString();
     }
 
     public void BosCebeYerles(){
@@ -86,17 +95,16 @@ public class Tas : MonoBehaviour{
                 cepScript.Dolu = true;
                 cepScript.TasInstance = this;
                 cepInstance = cepScript;
-                gameObject.tag = "CEPTEKI_TAS";
-                Counter.Instance.KontrolIcinGeriSaymayaBasla();
+                gameObject.tag = "CEPTEKI_TAS"; 
                 zemin.transform.localScale = zeminlocalScale;
                 _audioSource_down.Play();
                 Sallanma();
+                TasManeger.Instance.PerleriKontrolEt();
                 break;
             }
         }
     }
  
-
     public IEnumerator TaslarinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         float sure = 1;
@@ -108,7 +116,7 @@ public class Tas : MonoBehaviour{
         mySequence
             .Append(transform.DOScale(transform.localScale * 2, sure * .5f))
             .Append(transform.DOScale(ilkScale * .25f, sure * .5f))
-            .OnComplete(() => { 
+            .OnComplete(() => {  
                 transform.DOKill();
                 Destroy(gameObject);
                 enabled = false;
@@ -122,7 +130,6 @@ public class Tas : MonoBehaviour{
         Puanlama.Instance.SkorBoardiGuncelle(); 
     }
     
-
     public void RakamiPuanaEkle(){ 
         Puanlama.Instance.PerlerdenKazanilanPuan += rakam;   
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity); 
@@ -141,13 +148,7 @@ public class Tas : MonoBehaviour{
         Puanlama.Instance.PerlerdenKazanilanPuan -= rakam;
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
     }
-
- 
-
- 
-
- 
-
+    
     void OnTriggerStay2D(Collider2D other){
         if (other.gameObject.CompareTag("CARDTAKI_TAS")){
             EdgeCollider2D edgeCollider = GetComponent<EdgeCollider2D>();
@@ -248,6 +249,7 @@ public class Tas : MonoBehaviour{
     }
 
     public void Sallanma(){
+        zemin.transform.localScale = zeminlocalScale;
         if (tweener != null && tweener.IsActive()){
             tweener.Complete();
             tweener.Kill();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using DG.Tweening.Core;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class Puanlama : MonoBehaviour{
     private TextMeshProUGUI textMesh1;
     public TextMeshProUGUI toplamPuanTMP; 
     private TextMeshProUGUI hamleSayisiTMP;
+    public TextMeshProUGUI KalanTasOraniTMP;
     public int PerlerdenKazanilanPuan = 1;
     public int toplamPuan;
     private Camera uiCamera; 
@@ -40,8 +42,10 @@ public class Puanlama : MonoBehaviour{
     private void Start(){
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
+        KalanTasOraniTMP = GameObject.Find("KalanTasOrani").GetComponent<TextMeshProUGUI>();
         textMesh0 = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
         textMesh1 = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>();
+        Puanlama.Instance.KalanTasOraniTMP.text = GameManager.Instance.TasCount.ToString();
     }
 
     public void IstakadakiPerdekiTaslariToparla(){
@@ -221,30 +225,40 @@ public class Puanlama : MonoBehaviour{
                 TasManeger.Instance.TasInstances[item].ZeminSpriteRenderer.color = Color.green;
                 TasManeger.Instance.TasInstances[item].RakamiPuanaEkle();
             }
-        }
-        //StartCoroutine(Puanlama.Instance.SkorTMPleriGuncelle1());
+        } 
         
     }
     
     public void PuanlamaYap(){
+        PerIcinTasTavsiye.Instance.Sallanma();
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
                || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
                 IstakadakiPerdekiTaslariToparla();
                 BonuslariVer();
-        }
-        else {
-            Istaka.Instance.PersizFullIstakayiBosalt(); 
-        }
+                GameManager.Instance.HamleSayisi++;
+        } 
         Card.Instance.KarttakiPerleriBul();
         _kartdakiPerleriIsle();
     }
 
     public void SkorBoardiGuncelle(){
         hamleSayisiTMP.text = GameManager.Instance.HamleSayisi.ToString();
-        Puanlama.Instance.toplamPuan += Puanlama.Instance.PerlerdenKazanilanPuan; 
-        Puanlama.Instance.toplamPuanTMP.text = Puanlama.Instance.toplamPuan .ToString();
-        Puanlama.Instance.PerlerdenKazanilanPuan = 0;
+        Instance.toplamPuan += Instance.PerlerdenKazanilanPuan; 
+        Instance.toplamPuanTMP.text = Instance.toplamPuan .ToString();
+        Instance.PerlerdenKazanilanPuan = 0;
+    }
+
+    public void HemenPuanlamaYap(){ 
+        if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
+               || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
+               || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
+               || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){ 
+            PuanlamaYap(); 
+        }
+        else{
+            Istaka.Instance.PersizFullIstakayiBosalt();
+        }
     }
 }

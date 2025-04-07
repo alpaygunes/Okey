@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine; 
 
@@ -17,6 +18,7 @@ public class TasManeger : MonoBehaviour{
         
        
     }
+ 
 
     public void TaslariHazirla(){
         List<Data> generatedData = GenerateDataList(GameManager.Instance.Seed);
@@ -31,34 +33,37 @@ public class TasManeger : MonoBehaviour{
             Tas.GetComponentInChildren<Tas>().rakam = rakam;
             Tas.GetComponentInChildren<Tas>().renk = color;
             TasList.Add(Tas);
-        }
+        } 
     }
 
     void Update(){
-        if (Input.touchCount > 0){
+        // taşlar düşerken Istakayı gizle 
+        if (Input.touchCount > 0){ 
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began){
                 Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
                 if (hit.collider){
                     if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
-                        TasInstances[hit.collider.gameObject].BosCebeYerles();
-                        PerleriKontrolEt();
-                        PerIcinTasTavsiye.Instance.Basla();
-                        PerIcinTasTavsiye.Instance.Sallanma();
+                        TasInstances[hit.collider.gameObject].BosCebeYerles(); 
+                        PerIcinTasTavsiye.Instance.Basla(); 
+                    }else if (hit.collider.gameObject == Counter.Instance.Button){ 
+                        Counter.Instance.TweenReset();
+                        Puanlama.Instance.HemenPuanlamaYap(); 
                     }
                 }
             }
         }
     }
 
-    private void PerleriKontrolEt(){
+    public void PerleriKontrolEt(){
         Istaka.Instance.SiraliGruplariBelirle();
         Istaka.Instance.BenzerRakamGruplariniBelirle();
         Istaka.Instance.SiraliGruplarinIcindekiAyniRenkGruplariniBelirle();
         Istaka.Instance.AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle();
         Istaka.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         Istaka.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
+        Counter.Instance.GeriSayimAnimasyonunuBaslat(); 
     }
     
     public class Data{
