@@ -97,7 +97,8 @@ public class Tas : MonoBehaviour{
                 cepInstance = cepScript;
                 gameObject.tag = "CEPTEKI_TAS"; 
                 zemin.transform.localScale = zeminlocalScale;
-                _audioSource_down.Play(); 
+                _audioSource_down.Play();
+                Sallanma();
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
             }

@@ -46,7 +46,7 @@ public class TasManeger : MonoBehaviour{
                 if (hit.collider){
                     if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
                         TasInstances[hit.collider.gameObject].BosCebeYerles(); 
-                        PerIcinTasTavsiye.Instance.Basla();
+                        PerIcinTasTavsiye.Instance.Basla(); 
                     }else if (hit.collider.gameObject == Counter.Instance.Button){ 
                         Counter.Instance.TweenReset();
                         Puanlama.Instance.HemenPuanlamaYap(); 

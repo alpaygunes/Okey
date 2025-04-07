@@ -236,7 +236,8 @@ public class Puanlama : MonoBehaviour{
                || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
                 IstakadakiPerdekiTaslariToparla();
                 BonuslariVer();
-                GameManager.Instance.HamleSayisi++;
+                GameManager.Instance.HamleSayisi++; 
+                PerIcinTasTavsiye.Instance.Sallanma();
         } 
         Card.Instance.KarttakiPerleriBul();
         _kartdakiPerleriIsle();
