@@ -98,7 +98,8 @@ public class Tas : MonoBehaviour{
                 gameObject.tag = "CEPTEKI_TAS"; 
                 zemin.transform.localScale = zeminlocalScale;
                 _audioSource_down.Play();
-                Sallanma();
+                Sallanma(); 
+                PerIcinTasTavsiye.Instance.Sallanma();
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
             }

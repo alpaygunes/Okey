@@ -46,7 +46,7 @@ public class Counter : MonoBehaviour{
 
 
     public void CountdownRoutine(){  
-        PerIcinTasTavsiye.Instance.Sallanma();
+        //PerIcinTasTavsiye.Instance.Sallanma();
         if (tweener == null){
             tweener = progress.transform.DOMoveX(8, GeriSayimSuresi)
                 .SetEase(Ease.Linear).OnComplete(() => {

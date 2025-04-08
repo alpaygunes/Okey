@@ -237,7 +237,7 @@ public class Puanlama : MonoBehaviour{
                 IstakadakiPerdekiTaslariToparla();
                 BonuslariVer();
                 GameManager.Instance.HamleSayisi++; 
-                PerIcinTasTavsiye.Instance.Sallanma();
+                //PerIcinTasTavsiye.Instance.Sallanma();
         } 
         Card.Instance.KarttakiPerleriBul();
         _kartdakiPerleriIsle();

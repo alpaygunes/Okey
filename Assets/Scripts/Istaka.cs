@@ -266,6 +266,9 @@ public class Istaka : MonoBehaviour{
                         foreach (var item in farkliRenklilerGrubu) {
                             if (TasManeger.Instance.TasInstances[sonrakiTasA].renk
                                 == TasManeger.Instance.TasInstances[item.Value].renk) { 
+                                if (item.Key != sonrakiKey-1){
+                                    j--;
+                                }
                                 _yeniGrupOlustur = true; 
                                 break;
                             }
@@ -311,8 +314,11 @@ public class Istaka : MonoBehaviour{
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)) {
                         foreach (var item in farkliRenklilerGrubu) {
                             if (TasManeger.Instance.TasInstances[sonrakiTasA].renk
-                                == TasManeger.Instance.TasInstances[item.Value].renk) { 
-                                _yeniGrupOlustur = true; 
+                                == TasManeger.Instance.TasInstances[item.Value].renk) {
+                                _yeniGrupOlustur = true;  
+                                if (item.Key != sonrakiKey-1){
+                                    j--;
+                                }
                                 break;
                             }
                         }
