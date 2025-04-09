@@ -91,15 +91,14 @@ public class Tas : MonoBehaviour{
                 gameObject.transform.position += new Vector3(0, 0, -1);
                 Destroy(_rigidbody);
                 Destroy(_collider);
-                gameObject.transform.localScale = new Vector3(colonWidth, colonWidth) * 0.9f;
+                transform.localScale = new Vector3(colonWidth, colonWidth) * 0.9f;
                 cepScript.Dolu = true;
                 cepScript.TasInstance = this;
                 cepInstance = cepScript;
-                gameObject.tag = "CEPTEKI_TAS"; 
-                zemin.transform.localScale = zeminlocalScale;
-                _audioSource_down.Play();
-                Sallanma(); 
                 PerIcinTasTavsiye.Instance.Sallanma();
+                tag = "CEPTEKI_TAS"; 
+                zemin.transform.localScale = zeminlocalScale;
+                _audioSource_down.Play(); 
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
             }

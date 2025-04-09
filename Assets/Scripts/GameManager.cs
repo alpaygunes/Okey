@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour{
      public readonly int TasCount = 100;
      public readonly int CepSayisi = 5;
      public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
-     public readonly RangeInt RakamAraligi = new RangeInt(1, 10);
+     public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
      public List<GameObject> spawnHolesList = new List<GameObject>();
      public string Seed;
      public int HamleSayisi = 0;
@@ -58,6 +58,25 @@ public class GameManager : MonoBehaviour{
                 float positionY = -(cardSize.y * .5f) + colonWidth * 0.5f + ((satirSayisi - satir) * colonWidth);
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
                 kutu.transform.localScale = new Vector2(colonWidth, colonWidth);
+            }
+        }
+    }
+    
+    void Update(){ 
+        if (Input.touchCount > 0){ 
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began){
+                Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
+                RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+                if (hit.collider){
+                    if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
+                        TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles(); 
+                        PerIcinTasTavsiye.Instance.Basla(); 
+                    }else if (hit.collider.gameObject == Counter.Instance.Button){ 
+                        Counter.Instance.TweenReset();
+                        Puanlama.Instance.ButtonlaPuanlamaYap(); 
+                    }
+                }
             }
         }
     }

@@ -45,15 +45,14 @@ public class Counter : MonoBehaviour{
     }
 
 
-    public void CountdownRoutine(){  
-        //PerIcinTasTavsiye.Instance.Sallanma();
+    public void CountdownRoutine(){   
         if (tweener == null){
-            tweener = progress.transform.DOMoveX(8, GeriSayimSuresi)
+            tweener = progress.transform.DOMoveX(Card.Instance.Size.x*.5f, GeriSayimSuresi)
                 .SetEase(Ease.Linear).OnComplete(() => {
                     tweener.Kill();
                     tweener = null;
                     progress.transform.position = _startPos;
-                    Puanlama.Instance.PuanlamaYap(); 
+                    Puanlama.Instance.Puanla(); 
                 });;
         }
         else{

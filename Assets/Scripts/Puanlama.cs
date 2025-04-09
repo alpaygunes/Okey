@@ -229,7 +229,7 @@ public class Puanlama : MonoBehaviour{
         
     }
     
-    public void PuanlamaYap(){ 
+    public void Puanla(){ 
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
@@ -237,7 +237,7 @@ public class Puanlama : MonoBehaviour{
                 IstakadakiPerdekiTaslariToparla();
                 BonuslariVer();
                 GameManager.Instance.HamleSayisi++; 
-                //PerIcinTasTavsiye.Instance.Sallanma();
+                PerIcinTasTavsiye.Instance.Sallanma();
         } 
         Card.Instance.KarttakiPerleriBul();
         _kartdakiPerleriIsle();
@@ -250,12 +250,12 @@ public class Puanlama : MonoBehaviour{
         Instance.PerlerdenKazanilanPuan = 0;
     }
 
-    public void HemenPuanlamaYap(){ 
+    public void ButtonlaPuanlamaYap(){ 
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
                || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){ 
-            PuanlamaYap(); 
+            Puanla(); 
         }
         else{
             Istaka.Instance.PersizFullIstakayiBosalt();
