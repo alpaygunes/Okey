@@ -24,8 +24,10 @@ public class MainMenu : MonoBehaviour{
 
             if (results.Count > 0){
                 GameObject clickedObject = results[0].gameObject;
-                if (clickedObject.CompareTag("MULTYPLAYER")){ 
-                    SceneManager.LoadScene("MultyPlayer");
+                if (clickedObject.CompareTag("RANDOMSEED")){ 
+                    SceneManager.LoadScene("RandomSeed");
+                }else if (clickedObject.name == "LobyBtn"){
+                    SceneManager.LoadScene("LobbyManager");
                 }
             }
         }
