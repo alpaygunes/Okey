@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Netcode;
@@ -10,30 +11,31 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour{
-    
     public static LobbyManager Instance;
 
-    public string LobiID;
     public string RelayID;
     public string RelayIDForJoin;
     public string LobiIDforJoin;
-    
+
     private LobbyEventCallbacks _callbacks;
     private ILobbyEvents _lobbyEventsSubscription;
-    private Lobby currentLobby;
-    private bool _isRelayActive =false;
+    public Lobby currentLobby;
+    private bool _isRelayActive = false;
+    private string playerId = null;
+    private int maxPlayers = 4;
+    private string lobbyName = "okey"; 
+    private Coroutine heartbeatCoroutine;
 
     async void Awake(){
-        if (Instance == null) {
+        if (Instance == null){
             Instance = this;
         }
-        else {
+        else{
             Destroy(gameObject);
         }
-        
+
         try{
             await UnityServices.InitializeAsync();
             await AnonimGiris();
@@ -43,22 +45,12 @@ public class LobbyManager : MonoBehaviour{
         }
     }
 
-    public void LobiOlusturForButton(){
-        _ =  CreateLobi();
-    }
-
-    public void JoinLobiForButton(){
-        _ = JoinLobbyByCode();
-    }
-
     async Task AnonimGiris(){
         try{
             AuthenticationService.Instance.ClearSessionToken();
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            Debug.Log("Sign in anonymously succeeded!");
-
-            // Shows how to get the playerID
             Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
+            playerId = AuthenticationService.Instance.PlayerId;
         }
         catch (AuthenticationException ex){
             Debug.LogException(ex);
@@ -68,65 +60,127 @@ public class LobbyManager : MonoBehaviour{
         }
     }
 
-    public async Task CreateLobi(){ 
-        string lobbyName = "LobiAdi";
-        int maxPlayers = 4;
-        CreateLobbyOptions options = new CreateLobbyOptions();
-        options.IsPrivate = false;
-
-        currentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
-        Debug.Log("Created lobby: " + currentLobby.LobbyCode);
-        LobiID = currentLobby.LobbyCode;
-        
-        // boş relay kodu . tetikleme için
-        // 1. UpdateLobbyAsync işleminin başarılı olduğunu doğrulayın
-        await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, new UpdateLobbyOptions
-        {
-            Data = new Dictionary<string, DataObject>
-            {
-                { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, "BOSKOD") }
-            }
-        });
-        
-    }
-
-    public async Task JoinLobbyByCode(){
-        string lobbyCode = LobiIDforJoin.Trim();
-        if (string.IsNullOrEmpty(lobbyCode)) return;
+    public async Task CreateLobi(){
+        if (playerId == null){
+            await AnonimGiris();
+        }
 
         try{
-            var joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-            currentLobby = joinedLobby; 
+            if (currentLobby != null){
+                await LobbyService.Instance.DeleteLobbyAsync(currentLobby.Id);
+                StopHeartbeat();
+            }
+            
+            var playerData = new Dictionary<string, PlayerDataObject>
+            {
+                { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, "HostIsmi") }
+            };
+
+            var player = new Player(
+                id: AuthenticationService.Instance.PlayerId,
+                data: playerData
+            );
+
+            var options = new CreateLobbyOptions
+            {
+                IsPrivate = false,
+                Player = player  
+            };
+ 
+            currentLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
+            StartHeartbeat();
+            LobbyListUI.Instance.CreatedLobiCodeTxt.text = currentLobby.LobbyCode;
+            await SubscribeToLobbyEvents();
+
+            await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, new UpdateLobbyOptions
+            {
+                Data = new Dictionary<string, DataObject>
+                {
+                    { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, "BOSKOD") }
+                }
+            });
+        }
+        catch (Exception e){
+            Debug.Log("CreateLobi Hata : " + e.Message);
+        }
+    }
+
+    public async Task<QueryResponse> GetLobbyList()
+    {
+        try
+        {
+            QueryLobbiesOptions options = new QueryLobbiesOptions
+            {
+                Filters = new List<QueryFilter>
+                {
+                    new QueryFilter(
+                        field: QueryFilter.FieldOptions.AvailableSlots,
+                        op: QueryFilter.OpOptions.GT,
+                        value: "0"
+                    )
+                }
+            };
+
+            QueryResponse response = await LobbyService.Instance.QueryLobbiesAsync(options); 
+            return response;
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError($"Lobi listesi alınırken hata oluştu: {e.Message}");
+            return null; // Veya hata fırlatmak istersen throw;
+        }
+    }
+
+    public async Task JoinLobbyByID(string lobbyID){ 
+        if (string.IsNullOrEmpty(lobbyID)) return;
+        
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+
+        try{
+ 
+            var options = new JoinLobbyByIdOptions
+            {
+                Player = new Player
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "ALPAY") }
+                    }
+                }
+            };
+            
+            
+            var joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyID,options);
+            currentLobby = joinedLobby;
             Debug.Log("Lobby'ye katıldı: " + joinedLobby.LobbyCode);
-
-
-
+            
+  
             Debug.Log(" Abonelik başlatılıyor 0");
             _callbacks = new LobbyEventCallbacks();
             _callbacks.DataChanged += (data) => {
                 Debug.Log("Lobby veri değişikliği algılandı!");
-                if (data.TryGetValue("RelayCode", out var newRelayData)) {
+                if (data.TryGetValue("RelayCode", out var newRelayData)){
                     string newRelayCode = newRelayData.Value.Value;
                     Debug.Log($"Alınan relay kodu: {newRelayCode}");
-                    if (RelayIDForJoin != newRelayCode) {
+                    if (RelayIDForJoin != newRelayCode){
                         RelayIDForJoin = newRelayCode;
                         Debug.Log("Yeni relay kodu alındı (event): " + newRelayCode);
                         if (newRelayCode != "BOSKOD" && !_isRelayActive){
                             _ = StartClientWithRelay(newRelayCode, "dtls");
-                        } 
+                        }
                     }
-                } else {
+                }
+                else{
                     Debug.LogWarning("Lobby verisinde RelayCode bulunamadı!");
                 }
-            }; 
+            };
 
             Debug.Log(" Abonelik başlatılıyor...");
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(joinedLobby.Id, _callbacks);
             Debug.Log(" Event aboneliği tamamlandı.");
-            
- 
-            
-            
             
             if (joinedLobby.Data.TryGetValue("RelayCode", out var relayData) &&
                 !string.IsNullOrEmpty(relayData.Value)){
@@ -136,15 +190,94 @@ public class LobbyManager : MonoBehaviour{
                     await StartClientWithRelay(relayCode, "dtls");
                 }
             }
-
         }
         catch (LobbyServiceException e){
             Debug.LogError("Lobby join hatası: " + e.Message);
         }
     }
+    
+    public async Task SubscribeToLobbyEvents()
+    { 
+        var callbacks = new LobbyEventCallbacks();
+        callbacks.PlayerJoined += players =>
+        {
+            foreach (var p in players)
+            {
+                var id = p.Player.Id;
+                Debug.Log($"Katılan Oyuncu ID: {id}");
+            }
+            LobbyListUI.Instance.RefreshPlayerList();  
+        };
+        
+        callbacks.PlayerLeft += players =>
+        {
+            foreach (var p in players)
+            { 
+                Debug.Log($"Katılan Oyuncu ID: {p}");
+            }
+            LobbyListUI.Instance.RefreshPlayerList();  
+        };
+        await LobbyService.Instance.SubscribeToLobbyEventsAsync(currentLobby.Id, callbacks);
+    }
+    
+    
 
+    public void StartHeartbeat()
+    {
+        if (heartbeatCoroutine == null)
+        {
+            heartbeatCoroutine = StartCoroutine(SendHeartbeatRoutine());
+        }
+    }
+
+    public void StopHeartbeat()
+    {
+        if (heartbeatCoroutine != null)
+        {
+            StopCoroutine(heartbeatCoroutine);
+            heartbeatCoroutine = null;
+        }
+    }
+
+    private IEnumerator SendHeartbeatRoutine()
+    {
+        while (true)
+        {
+            if (currentLobby != null)
+            {
+                LobbyService.Instance.SendHeartbeatPingAsync(currentLobby.Id);
+                Debug.Log("💓 Heartbeat gönderildi");
+            }
+            yield return new WaitForSeconds(15f); // her 15 saniyede bir ping
+        }
+    }
 
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
     public void StartHostWithRelayForButton(){
         _ = StartHostWithRelay(2, "dtls");
     }
@@ -168,7 +301,7 @@ public class LobbyManager : MonoBehaviour{
         }
 
 
-        try{ 
+        try{
             var allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
             NetworkManager.Singleton.GetComponent<UnityTransport>()
                 .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
@@ -185,10 +318,10 @@ public class LobbyManager : MonoBehaviour{
                 }
             });
             Debug.Log($"Lobby güncellendi, Relay kodu: {relayCode}"); // Başarılı olduğunu doğrulayın
-            
+
             // 2. Lobby'nin güncel halini alarak relay kodunun gerçekten güncellenip güncellenmediğini kontrol edin
             var updatedLobby = await LobbyService.Instance.GetLobbyAsync(currentLobby.Id);
-            if (updatedLobby.Data.TryGetValue("RelayCode", out var updatedRelayData)) {
+            if (updatedLobby.Data.TryGetValue("RelayCode", out var updatedRelayData)){
                 Debug.Log($"Güncel lobby'deki relay kodu: {updatedRelayData.Value}");
             }
 
@@ -201,12 +334,11 @@ public class LobbyManager : MonoBehaviour{
     }
 
     public void StartClientWithRelayForButton(){
-        _= StartClientWithRelay(RelayIDForJoin, "dtls");
+        _ = StartClientWithRelay(RelayIDForJoin, "dtls");
     }
 
     public async Task StartClientWithRelay(string joinCode, string connectionType){
-        try{ 
-
+        try{
             var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
             NetworkManager.Singleton.GetComponent<UnityTransport>()
