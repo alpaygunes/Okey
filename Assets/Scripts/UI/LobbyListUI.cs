@@ -1,7 +1,9 @@
 using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
 using TextElement = UnityEngine.UIElements.TextElement;
@@ -17,6 +19,7 @@ public class LobbyListUI : MonoBehaviour{
     public VisualElement CreateLobby;
     public QueryResponse response; 
     public VisualElement PlayerList;
+    public Button StartRelay;
 
     private void Awake(){
         if (Instance == null){
@@ -36,9 +39,11 @@ public class LobbyListUI : MonoBehaviour{
         CreateLobbyBtn = rootElement.Q<Button>("CreateLobbyBtn");
         CreatedLobiCodeTxt = rootElement.Q<TextElement>("CreatedLobiCodeTxt");
         PlayerList = rootElement.Q<VisualElement>("PlayerList");
+        StartRelay = rootElement.Q<Button>("StartRelay");
+        StartRelay.style.display = DisplayStyle.None;
 
         // Lobby Yaratma Butonu
-        CreateLobbyBtn.clicked += () => { LobbyManager.Instance.CreateLobi(); };
+        CreateLobbyBtn.clicked += () => { _ = LobbyManager.Instance.CreateLobi(); };
 
         // Lobby Create Penceresi
         CrtLobBtn.clicked += () => {
@@ -73,11 +78,20 @@ public class LobbyListUI : MonoBehaviour{
                 }
             }
         };
+        
+        //start Relay
+        StartRelay.clicked += async () => {
+            var maxConnections = 2;
+            await LobbyManager.Instance.StartHostWithRelay(maxConnections);  
+        };
     } 
+    
+
     
     public void RefreshPlayerList()
     {
         var players = LobbyManager.Instance.currentLobby.Players;
+        StartRelay.style.display = players == null?DisplayStyle.None:DisplayStyle.Flex;
         PlayerList.Clear();
         foreach (var player in players)
         {
@@ -95,7 +109,5 @@ public class LobbyListUI : MonoBehaviour{
             PlayerList.Add(label);
         }
     }
-    
-    
     
 }

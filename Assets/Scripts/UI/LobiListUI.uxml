@@ -8,6 +8,7 @@
         <ui:Button text="Oluştur" name="CreateLobbyBtn" style="-unity-text-align: middle-center; white-space: nowrap;" />
         <ui:Label text="-" name="CreatedLobiCodeTxt" style="-unity-text-align: middle-left; justify-content: center; align-self: center; font-size: 28px;" />
         <ui:VisualElement name="PlayerList" style="flex-grow: 1;" />
+        <ui:Button text="Başlat" name="StartRelay" />
     </ui:VisualElement>
     <ui:VisualElement name="PublicList" style="flex-grow: 1; width: 100%; background-color: rgb(140, 109, 135); height: 90%; flex-direction: row; align-items: flex-end; align-self: flex-start; position: absolute; top: 64px;">
         <ui:VisualElement name="ListRow" class="lobbyListRow">
