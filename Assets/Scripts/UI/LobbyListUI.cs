@@ -1,9 +1,7 @@
-using System.Threading.Tasks;
-using Unity.Netcode;
+using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine; 
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
 using TextElement = UnityEngine.UIElements.TextElement;
@@ -20,6 +18,7 @@ public class LobbyListUI : MonoBehaviour{
     public QueryResponse response; 
     public VisualElement PlayerList;
     public Button StartRelay;
+    public bool joinedToLobby = false;
 
     private void Awake(){
         if (Instance == null){
@@ -61,24 +60,37 @@ public class LobbyListUI : MonoBehaviour{
                 PublicList.Clear(); 
                 for (int i = 0; i < response.Results.Count; i++){
                     var lobby = response.Results[i];
+                    if (LobbyManager.Instance.CurrentLobby?.HostId 
+                        == AuthenticationService.Instance.PlayerId) continue;
                     var lobbyID = lobby.Id;
                     var row = new VisualElement();
                     var label = new Label();
-                    label.text = $"{lobby.Name} - {lobby.Players.Count}/{lobby.MaxPlayers}";
-                    var button = new Button();
-                    button.text = "Katıl";
-                    button.clicked += async () => {
-                        await LobbyManager.Instance.JoinLobbyByID(lobbyID);
+                    label.text = $"{lobby.Name} - {lobby.Players.Count}/{lobby.MaxPlayers}"; 
+                    var katilBtn = new Button();
+                    var ayrilBtn = new Button();
+                    ayrilBtn.text = "Ayrıl";
+                    ayrilBtn.style.display = DisplayStyle.None;
+                    ayrilBtn.clicked += async () => {
+                        await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id, AuthenticationService.Instance.PlayerId);
+                        ayrilBtn.style.display =  DisplayStyle.None;
+                        katilBtn.style.display = DisplayStyle.Flex;
                     };
-
+ 
+                    katilBtn.text = "Katıl";
+                    katilBtn.clicked += async () => {
+                        joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID); 
+                        ayrilBtn.style.display = joinedToLobby?DisplayStyle.Flex:DisplayStyle.None;
+                        katilBtn.style.display = joinedToLobby?DisplayStyle.None:DisplayStyle.Flex;
+                    }; 
                     row.Add(label);
-                    row.Add(button);
+                    row.Add(katilBtn);
+                    row.Add(ayrilBtn);
                     PublicList.Add(row);
                     row.AddToClassList("lobbyListRow"); 
                 }
             }
         };
-        
+         
         //start Relay
         StartRelay.clicked += async () => {
             var maxConnections = 2;
@@ -90,7 +102,7 @@ public class LobbyListUI : MonoBehaviour{
     
     public void RefreshPlayerList()
     {
-        var players = LobbyManager.Instance.currentLobby.Players;
+        var players = LobbyManager.Instance.CurrentLobby.Players;
         StartRelay.style.display = players == null?DisplayStyle.None:DisplayStyle.Flex;
         PlayerList.Clear();
         foreach (var player in players)
@@ -106,6 +118,8 @@ public class LobbyListUI : MonoBehaviour{
                 : "Bilinmeyen Oyuncu";
 
             var label = new Label(name);
+            
+            PlayerList.Add(label);
             PlayerList.Add(label);
         }
     }
