@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using DG.Tweening.Core;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Puanlama : MonoBehaviour{
     public static Puanlama Instance { get; private set; }
@@ -12,16 +14,28 @@ public class Puanlama : MonoBehaviour{
     public TextMeshProUGUI toplamPuanTMP; 
     private TextMeshProUGUI hamleSayisiTMP;
     public TextMeshProUGUI KalanTasOraniTMP;
-    public int PerlerdenKazanilanPuan = 1;
-    public int toplamPuan;
-    private Camera uiCamera; 
-    
-    private AudioSource _audioSource_puan_sayac;
-
+    public int PerlerdenKazanilanPuan = 1; 
+    private Camera uiCamera;  
+    private AudioSource _audioSource_puan_sayac; 
     List<Tas> BonusAyniRenkAyniRakam = new List<Tas>();
     List<Tas> BonusFarkliRenkAyniRakam = new List<Tas>();
     List<Tas> BonusAyniRenkArdisikRakam = new List<Tas>();
     List<Tas> BonusFarkliRenkArdisikRakam = new List<Tas>();
+    
+    public event Action<int> OnToplamPuanChanged;
+    private int _toplamPuan;
+    public int ToplamPuan
+    {
+        get => _toplamPuan;
+        set
+        {
+            if (_toplamPuan != value)
+            {
+                _toplamPuan = value;
+                OnToplamPuanChanged?.Invoke(_toplamPuan); // Event tetikleniyor
+            }
+        }
+    }
 
     private SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
 
@@ -40,6 +54,9 @@ public class Puanlama : MonoBehaviour{
     }
 
     private void Start(){
+        OnToplamPuanChanged += (_toplamPuan) => {
+            NetwokDataManager.Instance.RequestToplamPuanGuncelleServerRpc(_toplamPuan);
+        };
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
         KalanTasOraniTMP = GameObject.Find("KalanTasOrani").GetComponent<TextMeshProUGUI>();
@@ -239,15 +256,15 @@ public class Puanlama : MonoBehaviour{
                 GameManager.Instance.HamleSayisi++; 
                 PerIcinTasTavsiye.Instance.Sallanma();
         } 
-        Card.Instance.KarttakiPerleriBul();
+        _ = Card.Instance.KarttakiPerleriBul();
         _kartdakiPerleriIsle();
     }
 
     public void SkorBoardiGuncelle(){
         hamleSayisiTMP.text = GameManager.Instance.HamleSayisi.ToString();
-        Instance.toplamPuan += Instance.PerlerdenKazanilanPuan; 
-        Instance.toplamPuanTMP.text = Instance.toplamPuan .ToString();
-        Instance.PerlerdenKazanilanPuan = 0;
+        Instance.ToplamPuan += Instance.PerlerdenKazanilanPuan; 
+        Instance.toplamPuanTMP.text = Instance.ToplamPuan .ToString();
+        Instance.PerlerdenKazanilanPuan = 0; 
     }
 
     public void ButtonlaPuanlamaYap(){ 

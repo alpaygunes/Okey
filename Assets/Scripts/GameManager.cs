@@ -11,12 +11,27 @@ public class GameManager : MonoBehaviour{
      public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
      public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
      public List<GameObject> spawnHolesList = new List<GameObject>();
-     public string Seed;
-     public int HamleSayisi = 0;
+     public string Seed; 
      [NonSerialized]  public bool PerKontrolDugmesiOlsun = true;
      [NonSerialized]  public bool OtomatikPerkontrolu = true;
 
     public static GameManager Instance{ get; private set; }
+    
+    
+    public event Action<int> OnHamleSayisiChanged;
+    private int _hamleSayisi;
+    public int HamleSayisi
+    {
+        get => _hamleSayisi;
+        set
+        {
+            if (_hamleSayisi != value)
+            {
+                _hamleSayisi = value;
+                OnHamleSayisiChanged?.Invoke(_hamleSayisi); // Event tetikleniyor
+            }
+        }
+    }
 
     void Awake(){
         if (Instance != null && Instance != this){
@@ -26,7 +41,10 @@ public class GameManager : MonoBehaviour{
         Instance = this; 
     }
 
-    private void Start(){
+    private void Start(){ 
+        OnHamleSayisiChanged += (_hamleSayisi) => {
+            NetwokDataManager.Instance.RequestHamleSayisiGuncelleServerRpc(_hamleSayisi);
+        };
         Seed  = PlayerPrefs.GetString("Seed"); 
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();

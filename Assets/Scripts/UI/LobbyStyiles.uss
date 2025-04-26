@@ -1,0 +1,10 @@
+.lobbyListRow {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: auto;
+    align-self: flex-start;
+    justify-content: space-between;
+    margin-left: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+}

@@ -16,7 +16,7 @@ using UnityEngine.SceneManagement;
 public class LobbyManager : NetworkBehaviour{
     public static LobbyManager Instance;
 
-    public string RelayID;
+    //public string RelayID;
     public string RelayIDForJoin;
 
     private LobbyEventCallbacks _callbacks;
@@ -195,7 +195,6 @@ public class LobbyManager : NetworkBehaviour{
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(currentLobby.Id, callbacks);
     }
 
-
     public void StartHeartbeat(){
         if (heartbeatCoroutine == null){
             heartbeatCoroutine = StartCoroutine(SendHeartbeatRoutine());
@@ -246,7 +245,7 @@ public class LobbyManager : NetworkBehaviour{
                 .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
 
             var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            RelayID = relayCode;
+            //RelayID = relayCode;
 
             // Lobby'nin relay koduyla güncellenmesi
             await LobbyService.Instance.UpdateLobbyAsync(currentLobby.Id, new UpdateLobbyOptions
@@ -296,7 +295,7 @@ public class LobbyManager : NetworkBehaviour{
     }
 
     public override void OnNetworkSpawn(){
-        Debug.Log("OnNetworkSpawn Client bağlandı, host'a haber veriliyor...");
+        //Debug.Log("OnNetworkSpawn Client bağlandı, host'a haber veriliyor...");
         if (!IsOwner) return;
         HostaClientinBaglandiginiBildirServerRpc();
     }
@@ -312,10 +311,10 @@ public class LobbyManager : NetworkBehaviour{
     [ServerRpc]
     void HerkesteOyunBaslasinServerRpc(ulong clientId){
         connectedClients.Add(clientId);
-        Debug.Log($"Client {clientId} bağlandı. Toplam: {connectedClients.Count}");
+        //Debug.Log($"Client {clientId} bağlandı. Toplam: {connectedClients.Count}");
     
-        if (connectedClients.Count > 1){
-            Debug.Log("Tüm client'lar bağlandı, oyunu başlatıyoruz!");
+        if (connectedClients.Count > 0){
+            //Debug.Log("Tüm client'lar bağlandı, oyunu başlatıyoruz!");
             StartGameClientRpc();
         }
     }
@@ -323,6 +322,6 @@ public class LobbyManager : NetworkBehaviour{
     [ClientRpc]
     void StartGameClientRpc(){
         var status = NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
-        Debug.Log($"Sahne yükleme durumu: {status}");
+        //Debug.Log($"Sahne yükleme durumu: {status}");
     }
 }
