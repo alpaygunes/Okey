@@ -29,7 +29,7 @@ public class LobbyManager : NetworkBehaviour{
     private Coroutine _heartbeatCoroutine; 
     private HashSet<ulong> _connectedClients = new HashSet<ulong>();
 
-    async void Awake(){
+    private async void Awake(){
         if (Instance == null){
             Instance = this;
         }
@@ -87,7 +87,6 @@ public class LobbyManager : NetworkBehaviour{
                 Player = player, 
                 Data = new Dictionary<string, DataObject>
                 {
-                    //{ "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, "BOSKOD") },
                     { "oyunTipi", new DataObject(DataObject.VisibilityOptions.Public, OyunKurallari.Instance.GuncelOyunTipi.ToString()) }
                 }
             };
@@ -96,15 +95,7 @@ public class LobbyManager : NetworkBehaviour{
             StartHeartbeat();
             LobbyListUI.Instance.CreatedLobiCodeTxt.text = CurrentLobby.LobbyCode;
             await SubscribeToLobbyEvents();
-
-            // await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
-            // {
-            //     Data = new Dictionary<string, DataObject>
-            //     {
-            //         { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, "BOSKOD") },
-            //         { "oyunTipi", new DataObject(DataObject.VisibilityOptions.Public, OyunKurallari.Instance.GuncelOyunTipi.ToString()) }
-            //     }
-            // });
+            
         }
         catch (Exception e){
             Debug.Log(e.Message);
@@ -135,8 +126,7 @@ public class LobbyManager : NetworkBehaviour{
     }
 
     public async Task<bool> JoinLobbyByID(string lobbyID){
-        if (string.IsNullOrEmpty(lobbyID)) return false;
-
+        if (string.IsNullOrEmpty(lobbyID)) return false; 
         if (!AuthenticationService.Instance.IsSignedIn){
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
@@ -157,14 +147,14 @@ public class LobbyManager : NetworkBehaviour{
             var joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyID, options);
             CurrentLobby = joinedLobby;
 
-            // eğer lobyde data değişmi olursa tetiklenen Listener
+            // eğer lobyde data değişimi olursa tetiklenen Listener
             _callbacks = new LobbyEventCallbacks();
             _callbacks.DataChanged += (data) => {
                 if (data.TryGetValue("RelayCode", out var newRelayData)){
                     string newRelayCode = newRelayData.Value.Value;
                     if (RelayIDForJoin != newRelayCode){
                         RelayIDForJoin = newRelayCode;
-                        if (newRelayCode != "BOSKOD" && !_isRelayActive){
+                        if (!_isRelayActive){
                             _ = StartClientWithRelay(newRelayCode, "dtls");
                         }
                     }
@@ -172,15 +162,17 @@ public class LobbyManager : NetworkBehaviour{
             };
 
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(joinedLobby.Id, _callbacks);
-
             // ilk girişte lobideki datayı al
-            if (joinedLobby.Data.TryGetValue("RelayCode", out var relayData) &&
+            if (joinedLobby.Data.TryGetValue("oyunTipi", out var relayData) &&
                 !string.IsNullOrEmpty(relayData.Value)){
-                string relayCode = relayData.Value;
-                RelayIDForJoin = relayCode;
-                if (relayCode != "BOSKOD" && !_isRelayActive){
-                    await StartClientWithRelay(relayCode, "dtls");
+                if (Enum.TryParse<OyunKurallari.OyunTipleri>(relayData.Value, out var oyunTipi))
+                {
+                    OyunKurallari.Instance.GuncelOyunTipi = oyunTipi; 
                 }
+                else
+                {
+                    Debug.LogWarning("Geçersiz oyun tipi: " + relayData.Value); 
+                } 
             }  
         }
         catch (LobbyServiceException e){  
@@ -244,9 +236,6 @@ public class LobbyManager : NetworkBehaviour{
             return; // Host başlatılamazsa null döndür
         }
 
-        foreach (var player in CurrentLobby.Players){
-        }
-
         // Mevcut relay varsa kapat
         if (_isRelayActive || NetworkManager.Singleton.IsListening){
             NetworkManager.Singleton.Shutdown();
@@ -258,9 +247,8 @@ public class LobbyManager : NetworkBehaviour{
             var allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
             NetworkManager.Singleton.GetComponent<UnityTransport>()
                 .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
-
-            var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId); 
-
+            var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            
             // Lobby'nin relay koduyla güncellenmesi
             await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
             {
@@ -269,11 +257,6 @@ public class LobbyManager : NetworkBehaviour{
                     { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, relayCode) }
                 }
             });
-
-            // Güncellemeyi doğrula
-            // var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            // if (updatedLobby.Data.TryGetValue("RelayCode", out var updatedRelayData)){
-            // }
 
             _isRelayActive = true;
             NetworkManager.Singleton.StartHost();
@@ -316,12 +299,9 @@ public class LobbyManager : NetworkBehaviour{
         HerkesteOyunBaslasinServerRpc(rpcParams.Receive.SenderClientId);
     }
     
-     
-    
     [ServerRpc]
     void HerkesteOyunBaslasinServerRpc(ulong clientId){
         _connectedClients.Add(clientId);
-    
         if (_connectedClients.Count > 0){
             StartGameClientRpc();
         }
@@ -329,6 +309,7 @@ public class LobbyManager : NetworkBehaviour{
     
     [ClientRpc]
     void StartGameClientRpc(){
-        var status = NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }
+ 
 }

@@ -2,57 +2,53 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour{ 
-   
-     public readonly float GeriSayimSuresi = 5f;
-     private readonly int _colonCount = 5;
-     public readonly int TasCount = 100;
-     public readonly int CepSayisi = 5;
-     public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
-     public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
-     public List<GameObject> spawnHolesList = new List<GameObject>();
-     public string Seed; 
-     [NonSerialized]  public bool PerKontrolDugmesiOlsun = true;
-     [NonSerialized]  public bool OtomatikPerkontrolu = true; 
-
+public class GameManager : MonoBehaviour{
+    public readonly float GeriSayimSuresi = 5f;
+    private readonly int _colonCount = 5;
+    public readonly int TasCount = 100;
+    public readonly int CepSayisi = 5;
+    public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
+    public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
+    public List<GameObject> spawnHolesList = new List<GameObject>();
+    public string Seed;
+    [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
+    [NonSerialized] public bool OtomatikPerkontrolu = true;
     public static GameManager Instance{ get; private set; }
-    
-    
+
     public event Action<int> OnHamleSayisiChanged;
     private int _hamleSayisi;
-    public int HamleSayisi
-    {
+
+    public int HamleSayisi{
         get => _hamleSayisi;
-        set
-        {
-            if (_hamleSayisi != value)
-            {
+        set{
+            if (_hamleSayisi != value){
                 _hamleSayisi = value;
                 OnHamleSayisiChanged?.Invoke(_hamleSayisi); // Event tetikleniyor
             }
         }
     }
 
-    
 
     void Awake(){
         if (Instance != null && Instance != this){
             Destroy(this);
             return;
-        } 
-        Instance = this; 
+        }
+
+        Instance = this;
     }
 
-    private void Start(){ 
+    private void Start(){
         OnHamleSayisiChanged += (_hamleSayisi) => {
             NetwokDataManager.Instance?.RequestHamleSayisiGuncelleServerRpc(_hamleSayisi);
+            OyunKurallari.Instance.DurumuKontrolEt();
         };
-        Seed  = PlayerPrefs.GetString("Seed"); 
+        Seed = PlayerPrefs.GetString("Seed");
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
         KutulariHazirla();
     }
-    
+
     private void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / _colonCount;
@@ -81,20 +77,21 @@ public class GameManager : MonoBehaviour{
             }
         }
     }
-    
-    void Update(){ 
-        if (Input.touchCount > 0){ 
+
+    void Update(){
+        if (Input.touchCount > 0){
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began){
                 Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
                 RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
                 if (hit.collider){
                     if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
-                        TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles(); 
-                        PerIcinTasTavsiye.Instance.Basla(); 
-                    }else if (hit.collider.gameObject == Counter.Instance.Button){ 
+                        TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
+                        PerIcinTasTavsiye.Instance.Basla();
+                    }
+                    else if (hit.collider.gameObject == Counter.Instance.Button){
                         Counter.Instance.TweenReset();
-                        Puanlama.Instance.ButtonlaPuanlamaYap(); 
+                        Puanlama.Instance.ButtonlaPuanlamaYap();
                     }
                 }
             }

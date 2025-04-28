@@ -5,7 +5,8 @@ using UnityEngine;
 public class NetwokDataManager : NetworkBehaviour{
     public static NetwokDataManager Instance;
 
-    private void Awake(){
+    private void Awake(){ 
+        DontDestroyOnLoad(this.gameObject);
         if (Instance == null){
             Instance = this;
         }
@@ -78,5 +79,15 @@ public class NetwokDataManager : NetworkBehaviour{
 
     private void OnPlayerDataChanged(PlayerData previous, PlayerData current){
         Debug.Log($"Data Updated! Name: {current.playerName}, Score: {current.score}, Health: {current.health}");
+    }
+    
+    public void HamleLimitiDoldu(){
+        HamleLimitiDolduServerRpc();
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void HamleLimitiDolduServerRpc(ServerRpcParams rpcParams = default){
+        OyunKurallari.Instance._hamleLimitiDolanClientIDleri.Add(rpcParams.Receive.SenderClientId);
+        Debug.Log($" rpcParams.Receive.SenderClientId {rpcParams.Receive.SenderClientId}");
     }
 }

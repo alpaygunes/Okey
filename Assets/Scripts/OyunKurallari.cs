@@ -1,14 +1,17 @@
 using System;
+using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class OyunKurallari:MonoBehaviour
+public class OyunKurallari:NetworkBehaviour
 {
     public static OyunKurallari Instance;
     public OyunTipleri GuncelOyunTipi { get; set; }
     public int HamleLimit { get; private set; }
     public int SkorLimiti { get; private set; }
-    public float ZamanLimiti { get; private set; } 
+    public float ZamanLimiti { get; private set; }
+    public HashSet<ulong> _hamleLimitiDolanClientIDleri = new HashSet<ulong>();
     
     public enum OyunTipleri
     {
@@ -38,7 +41,7 @@ public class OyunKurallari:MonoBehaviour
         switch (GuncelOyunTipi)
         {
             case OyunTipleri.HamleLimitli:
-                HamleLimit = 5;
+                HamleLimit = 2;
                 SkorLimiti = 0;
                 ZamanLimiti = 0;
                 break;
@@ -68,4 +71,14 @@ public class OyunKurallari:MonoBehaviour
                 break;
         }
     }
+
+    public  void DurumuKontrolEt(){
+        if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
+            if (GameManager.Instance.HamleSayisi>=HamleLimit){
+                NetwokDataManager.Instance.HamleLimitiDoldu();
+            }
+        } 
+    }
+    
+
 }
