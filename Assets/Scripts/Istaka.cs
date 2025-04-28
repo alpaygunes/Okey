@@ -107,6 +107,7 @@ public class Istaka : MonoBehaviour{
                     }
                 }
                 catch (Exception e) {
+                    Debug.Log(e.Message);
                     _yeniGrupOlustur = true;
                 }
             }
@@ -146,7 +147,8 @@ public class Istaka : MonoBehaviour{
                         _yeniGrupOlustur = true;
                     }
                 }
-                catch (Exception e) {
+                catch (Exception e) { 
+                    Debug.Log(e.Message);
                     _yeniGrupOlustur = true;
                 }
             }

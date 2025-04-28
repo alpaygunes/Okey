@@ -41,7 +41,8 @@ public class LobbyManager : NetworkBehaviour{
             await UnityServices.InitializeAsync();
             await AnonimGiris();
         }
-        catch (Exception e){
+        catch (Exception e){ 
+            Debug.Log(e.Message);
         }
     }
 
@@ -52,8 +53,10 @@ public class LobbyManager : NetworkBehaviour{
             _playerId = AuthenticationService.Instance.PlayerId;
         }
         catch (AuthenticationException ex){
+            Debug.Log(ex.Message);
         }
         catch (RequestFailedException ex){
+            Debug.Log(ex.Message);
         }
     }
 
@@ -81,7 +84,12 @@ public class LobbyManager : NetworkBehaviour{
             var options = new CreateLobbyOptions
             {
                 IsPrivate = false,
-                Player = player
+                Player = player, 
+                Data = new Dictionary<string, DataObject>
+                {
+                    //{ "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, "BOSKOD") },
+                    { "oyunTipi", new DataObject(DataObject.VisibilityOptions.Public, OyunKurallari.Instance.GuncelOyunTipi.ToString()) }
+                }
             };
 
             CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, _maxPlayers, options);
@@ -89,15 +97,17 @@ public class LobbyManager : NetworkBehaviour{
             LobbyListUI.Instance.CreatedLobiCodeTxt.text = CurrentLobby.LobbyCode;
             await SubscribeToLobbyEvents();
 
-            await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
-            {
-                Data = new Dictionary<string, DataObject>
-                {
-                    { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, "BOSKOD") }
-                }
-            });
+            // await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
+            // {
+            //     Data = new Dictionary<string, DataObject>
+            //     {
+            //         { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, "BOSKOD") },
+            //         { "oyunTipi", new DataObject(DataObject.VisibilityOptions.Public, OyunKurallari.Instance.GuncelOyunTipi.ToString()) }
+            //     }
+            // });
         }
         catch (Exception e){
+            Debug.Log(e.Message);
         }
     }
 
@@ -119,6 +129,7 @@ public class LobbyManager : NetworkBehaviour{
             return response;
         }
         catch (LobbyServiceException e){
+            Debug.Log(e.Message);
             return null; // Veya hata fırlatmak istersen throw;
         }
     }
@@ -146,7 +157,7 @@ public class LobbyManager : NetworkBehaviour{
             var joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyID, options);
             CurrentLobby = joinedLobby;
 
-
+            // eğer lobyde data değişmi olursa tetiklenen Listener
             _callbacks = new LobbyEventCallbacks();
             _callbacks.DataChanged += (data) => {
                 if (data.TryGetValue("RelayCode", out var newRelayData)){
@@ -162,6 +173,7 @@ public class LobbyManager : NetworkBehaviour{
 
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(joinedLobby.Id, _callbacks);
 
+            // ilk girişte lobideki datayı al
             if (joinedLobby.Data.TryGetValue("RelayCode", out var relayData) &&
                 !string.IsNullOrEmpty(relayData.Value)){
                 string relayCode = relayData.Value;
@@ -171,7 +183,8 @@ public class LobbyManager : NetworkBehaviour{
                 }
             }  
         }
-        catch (LobbyServiceException e){ 
+        catch (LobbyServiceException e){  
+            Debug.Log(e.Message);
             return false;
         }
         return true;
@@ -258,9 +271,9 @@ public class LobbyManager : NetworkBehaviour{
             });
 
             // Güncellemeyi doğrula
-            var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            if (updatedLobby.Data.TryGetValue("RelayCode", out var updatedRelayData)){
-            }
+            // var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
+            // if (updatedLobby.Data.TryGetValue("RelayCode", out var updatedRelayData)){
+            // }
 
             _isRelayActive = true;
             NetworkManager.Singleton.StartHost();
@@ -275,7 +288,7 @@ public class LobbyManager : NetworkBehaviour{
  
         }
         catch (Exception ex){
-            return;
+            Debug.Log(ex.Message);
         }
     }
 
@@ -289,6 +302,7 @@ public class LobbyManager : NetworkBehaviour{
             Debug.Log("Client Relaya Bağlandı");
         }
         catch (Exception ex){
+            Debug.Log(ex.Message);
         }
     }
 

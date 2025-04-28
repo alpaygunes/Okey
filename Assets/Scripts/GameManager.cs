@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour{
      public List<GameObject> spawnHolesList = new List<GameObject>();
      public string Seed; 
      [NonSerialized]  public bool PerKontrolDugmesiOlsun = true;
-     [NonSerialized]  public bool OtomatikPerkontrolu = true;
+     [NonSerialized]  public bool OtomatikPerkontrolu = true; 
 
     public static GameManager Instance{ get; private set; }
     
@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour{
         }
     }
 
+    
+
     void Awake(){
         if (Instance != null && Instance != this){
             Destroy(this);
@@ -43,7 +45,7 @@ public class GameManager : MonoBehaviour{
 
     private void Start(){ 
         OnHamleSayisiChanged += (_hamleSayisi) => {
-            NetwokDataManager.Instance.RequestHamleSayisiGuncelleServerRpc(_hamleSayisi);
+            NetwokDataManager.Instance?.RequestHamleSayisiGuncelleServerRpc(_hamleSayisi);
         };
         Seed  = PlayerPrefs.GetString("Seed"); 
         CreateSpawnHoles();

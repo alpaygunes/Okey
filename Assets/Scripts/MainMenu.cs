@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UIElements.Button; 
 
 public class MainMenu : MonoBehaviour{
+    public Button HamleLimitliBtn; 
 
-
+    private void Start(){ 
+        VisualElement rootElement = GetComponent<UIDocument>().rootVisualElement;
+        HamleLimitliBtn = rootElement.Q<Button>("HamleLimitliBtn"); 
+        HamleLimitliBtn.clicked += () => { 
+            OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.HamleLimitli;
+            SceneManager.LoadScene("LobbyManager");
+        };
+    }
 
     void Update(){
         if (Input.touchCount > 0 || Input.GetMouseButtonDown(0)){
@@ -26,9 +36,7 @@ public class MainMenu : MonoBehaviour{
                 GameObject clickedObject = results[0].gameObject;
                 if (clickedObject.CompareTag("RANDOMSEED")){ 
                     SceneManager.LoadScene("RandomSeed");
-                }else if (clickedObject.name == "LobyBtn"){
-                    SceneManager.LoadScene("LobbyManager");
-                }
+                } 
             }
         }
     }

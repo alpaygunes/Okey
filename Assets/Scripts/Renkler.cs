@@ -5,9 +5,7 @@ using UnityEngine;
 public static class Renkler
 {
     public static Dictionary<int, Color32> RenkSozlugu = new Dictionary<int, Color32>();
- 
-
-
+    
     static Renkler()
     {
         RenkSozlugu.Add(RenkSozlugu.Count,new Color32(252, 106, 98, 255));

@@ -55,7 +55,7 @@ public class Puanlama : MonoBehaviour{
 
     private void Start(){
         OnToplamPuanChanged += (_toplamPuan) => {
-            NetwokDataManager.Instance.RequestToplamPuanGuncelleServerRpc(_toplamPuan);
+            NetwokDataManager.Instance?.RequestToplamPuanGuncelleServerRpc(_toplamPuan);
         };
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
