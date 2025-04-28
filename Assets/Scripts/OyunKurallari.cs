@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class OyunKurallari:NetworkBehaviour
@@ -76,6 +77,8 @@ public class OyunKurallari:NetworkBehaviour
         if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
             if (GameManager.Instance.HamleSayisi>=HamleLimit){
                 NetwokDataManager.Instance.HamleLimitiDoldu();
+                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.durdu;
+                SceneManager.LoadScene("OyunSonu",LoadSceneMode.Additive);
             }
         } 
     }

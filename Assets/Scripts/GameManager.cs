@@ -14,9 +14,15 @@ public class GameManager : MonoBehaviour{
     [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
     [NonSerialized] public bool OtomatikPerkontrolu = true;
     public static GameManager Instance{ get; private set; }
-
     public event Action<int> OnHamleSayisiChanged;
     private int _hamleSayisi;
+    public OynanmaDurumu OyunDurumu; 
+        
+    public enum OynanmaDurumu
+    {
+        durdu,
+        oynaniyor, 
+    }
 
     public int HamleSayisi{
         get => _hamleSayisi;
@@ -28,8 +34,8 @@ public class GameManager : MonoBehaviour{
         }
     }
 
-
     void Awake(){
+        OyunDurumu = OynanmaDurumu.oynaniyor;
         if (Instance != null && Instance != this){
             Destroy(this);
             return;
@@ -79,6 +85,7 @@ public class GameManager : MonoBehaviour{
     }
 
     void Update(){
+        if (OyunDurumu == OynanmaDurumu.durdu) return;
         if (Input.touchCount > 0){
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began){
