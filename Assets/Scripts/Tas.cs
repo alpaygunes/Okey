@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
@@ -27,6 +28,7 @@ public class Tas : MonoBehaviour{
     public Vector3 zeminlocalScale;
     public GameObject zemin;
     public Dictionary<int,Tas> BonusOlarakEslesenTaslar = new Dictionary<int,Tas>(); 
+    public bool NetworkDatayaEklendi = false;
 
     private void Awake(){
         zemin = GameObject.Find("Zemin");
@@ -108,7 +110,7 @@ public class Tas : MonoBehaviour{
     public IEnumerator TaslarinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         float sure = 1;
-        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;  
+        //Puanlama.Instance.PerlerdenKazanilanPuan += rakam;  
         _audioSource_patla.Play(); 
         Vector3 ilkScale = transform.localScale;
         transform.DOMove(_skorTxtPosition, sure);
@@ -127,14 +129,13 @@ public class Tas : MonoBehaviour{
                 bonusTaslari.Value.RakamiPuanaEkle(); 
             }
         }
-        Puanlama.Instance.SkorBoardiGuncelle(); 
+        
     }
     
-    public void RakamiPuanaEkle(){ 
-        Puanlama.Instance.PerlerdenKazanilanPuan += rakam;   
+    public void RakamiPuanaEkle(){  
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity); 
         Destroy(gameObject); 
-        this.enabled = false;
+        enabled = false;
         TasManeger.Instance.TasInstances.Remove(gameObject); 
     }
 
@@ -143,9 +144,8 @@ public class Tas : MonoBehaviour{
         if (gameObject){
             Destroy(gameObject); 
         }
-        this.enabled = false;
-        TasManeger.Instance.TasInstances.Remove(gameObject);
-        Puanlama.Instance.PerlerdenKazanilanPuan -= rakam;
+        enabled = false;
+        TasManeger.Instance.TasInstances.Remove(gameObject); 
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
     }
     

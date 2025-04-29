@@ -12,7 +12,7 @@ public class OyunKurallari:NetworkBehaviour
     public int HamleLimit { get; private set; }
     public int SkorLimiti { get; private set; }
     public float ZamanLimiti { get; private set; }
-    public HashSet<ulong> _hamleLimitiDolanClientIDleri = new HashSet<ulong>();
+    public Dictionary<ulong, int> _hamleLimitiDolanClientIDlerinSayisi = new Dictionary<ulong, int>();
     
     public enum OyunTipleri
     {

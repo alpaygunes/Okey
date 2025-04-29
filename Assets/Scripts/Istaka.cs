@@ -61,6 +61,7 @@ public class Istaka : MonoBehaviour{
     }
 
     public void PersizFullIstakayiBosalt(){
+        int cezaliPuan = 0;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
         if (DoluCepSayisi() == GameManager.Instance.CepSayisi) { 
             foreach (var cepInstance in CepList) {
@@ -70,16 +71,18 @@ public class Istaka : MonoBehaviour{
                     if (BInstance.rakam == AIstance.rakam || BInstance.renk == AIstance.renk) {
                         BInstance.ZeminSpriteRenderer.color = Color.red;
                         StartCoroutine(BInstance.CezaliRakamiCikar(1));
+                        cezaliPuan += BInstance.rakam;
                     }
                 }
     
-                AIstance.ZeminSpriteRenderer.color = Color.red;
+                AIstance.ZeminSpriteRenderer.color = Color.red; 
+                cezaliPuan += AIstance.rakam;
                 StartCoroutine(AIstance.CezaliRakamiCikar(1));
-
-                //cepInstance.Dolu = false;
                 cepInstance.TasInstance = null;
             } 
-        }
+            Puanlama.Instance.ToplamPuan -= cezaliPuan;
+        } 
+        
     }
 
     public void SiraliGruplariBelirle(){

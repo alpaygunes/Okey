@@ -52,10 +52,10 @@ public class NetwokDataManager : NetworkBehaviour{
     }
     
     [ServerRpc(RequireOwnership = false)]
-    public void RequestToplamPuanGuncelleServerRpc(int toplamPuan)
+    public void RequestToplamPuanGuncelleServerRpc(int netwokrDataToplamPuan)
     {
         var data = playerData.Value;
-        data.score = toplamPuan;
+        data.score = netwokrDataToplamPuan;
         playerData.Value = data;
 
         Debug.Log($"TOPLAM PUAN güncellendi: {data.score}");
@@ -87,7 +87,7 @@ public class NetwokDataManager : NetworkBehaviour{
     
     [ServerRpc(RequireOwnership = false)]
     public void HamleLimitiDolduServerRpc(ServerRpcParams rpcParams = default){
-        OyunKurallari.Instance._hamleLimitiDolanClientIDleri.Add(rpcParams.Receive.SenderClientId);
-        Debug.Log($" rpcParams.Receive.SenderClientId {rpcParams.Receive.SenderClientId}");
+        OyunKurallari.Instance._hamleLimitiDolanClientIDlerinSayisi[rpcParams.Receive.SenderClientId] = Puanlama.Instance.ToplamPuan;
+        Debug.Log($" CLIENT ID : {rpcParams.Receive.SenderClientId}  PUAN : {Puanlama.Instance.ToplamPuan}");
     }
 }

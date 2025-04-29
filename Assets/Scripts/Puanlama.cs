@@ -14,7 +14,7 @@ public class Puanlama : MonoBehaviour{
     public TextMeshProUGUI toplamPuanTMP; 
     private TextMeshProUGUI hamleSayisiTMP;
     public TextMeshProUGUI KalanTasOraniTMP;
-    public int PerlerdenKazanilanPuan = 1; 
+    //public int PerlerdenKazanilanPuan = 1; 
     private Camera uiCamera;  
     private AudioSource _audioSource_puan_sayac; 
     List<Tas> BonusAyniRenkAyniRakam = new List<Tas>();
@@ -22,7 +22,7 @@ public class Puanlama : MonoBehaviour{
     List<Tas> BonusAyniRenkArdisikRakam = new List<Tas>();
     List<Tas> BonusFarkliRenkArdisikRakam = new List<Tas>();
     
-    public event Action<int> OnToplamPuanChanged;
+    public event Action<int> OnNetworkDataIicinPuanChanged;
     private int _toplamPuan;
     public int ToplamPuan
     {
@@ -32,13 +32,15 @@ public class Puanlama : MonoBehaviour{
             if (_toplamPuan != value)
             {
                 _toplamPuan = value;
-                OnToplamPuanChanged?.Invoke(_toplamPuan); // Event tetikleniyor
+                Instance.SkorBoardiGuncelle();
+                OnNetworkDataIicinPuanChanged?.Invoke(_toplamPuan); // Event tetikleniyor
             }
         }
     }
-
+    
+    
     private SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
-
+    
     void Awake(){
         if (Instance != null && Instance != this) {
             Destroy(this);
@@ -54,15 +56,15 @@ public class Puanlama : MonoBehaviour{
     }
 
     private void Start(){
-        OnToplamPuanChanged += (_toplamPuan) => {
-            NetwokDataManager.Instance?.RequestToplamPuanGuncelleServerRpc(_toplamPuan);
+        OnNetworkDataIicinPuanChanged += (_netwokrDataToplamPuan) => { 
+            NetwokDataManager.Instance?.RequestToplamPuanGuncelleServerRpc(_netwokrDataToplamPuan);
         };
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
         KalanTasOraniTMP = GameObject.Find("KalanTasOrani").GetComponent<TextMeshProUGUI>();
         textMesh0 = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
         textMesh1 = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>();
-        Puanlama.Instance.KalanTasOraniTMP.text = GameManager.Instance.TasCount.ToString();
+        KalanTasOraniTMP.text = GameManager.Instance.TasCount.ToString();
     }
 
     public void IstakadakiPerdekiTaslariToparla(){
@@ -74,8 +76,7 @@ public class Puanlama : MonoBehaviour{
         
         siralanmisTumPerTaslari = new SortedDictionary<int, GameObject>();
 
-        Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>();
-        PerlerdenKazanilanPuan = 0;
+        Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>(); 
         //SiraliRakamRenkGruplari sahneye diz 
         foreach (var grupList in Istaka.Instance.SiraliRakamAyniRenkGruplari) {
             foreach (var item in grupList) {
@@ -202,20 +203,35 @@ public class Puanlama : MonoBehaviour{
                 }
             }
         }
+        
+        // networke göndermek için animasyon vb gecikme leri beklemeden kaznılan net puan 
+        int nwrkPuan = 0;
+        foreach (var tas in siralanmisTumPerTaslari){
+            //taşın kendisi 
+            nwrkPuan += TasManeger.Instance.TasInstances[tas.Value].rakam;
+            // perdeki taşın carddaki eşleşenleri
+            foreach (var bonusTaslari in TasManeger.Instance.TasInstances[tas.Value].BonusOlarakEslesenTaslar){
+                if (bonusTaslari.Value && !bonusTaslari.Value.NetworkDatayaEklendi){
+                    bonusTaslari.Value.NetworkDatayaEklendi = true;
+                    nwrkPuan += bonusTaslari.Value.rakam;
+                }
+            }
+        } 
+        ToplamPuan += nwrkPuan;
+        
+        // --- son
 
         float gecikme = 0f;
         foreach (var tas in siralanmisTumPerTaslari){ 
             StartCoroutine(TasManeger.Instance.TasInstances[tas.Value].TaslarinRakaminiPuanaEkle(gecikme));
             gecikme++;
         } 
-        Istaka.Instance.GruplariTemizle();
         
-        
-        
+        Istaka.Instance.GruplariTemizle(); 
     }
 
     public void _kartdakiPerleriIsle(){
-        PerlerdenKazanilanPuan = 0;
+         
         foreach (var grup in Card.Instance._siraliAyniRenkliGruplar) {
             foreach (var item in grup) {
                 TasManeger.Instance.TasInstances[item].ZeminSpriteRenderer.color = Color.green;
@@ -261,11 +277,11 @@ public class Puanlama : MonoBehaviour{
     }
 
     public void SkorBoardiGuncelle(){
-        hamleSayisiTMP.text = GameManager.Instance.HamleSayisi.ToString();
-        Instance.ToplamPuan += Instance.PerlerdenKazanilanPuan; 
-        Instance.toplamPuanTMP.text = Instance.ToplamPuan .ToString();
-        Instance.PerlerdenKazanilanPuan = 0; 
+        hamleSayisiTMP.text = GameManager.Instance.HamleSayisi.ToString(); 
+        toplamPuanTMP.text = ToplamPuan .ToString();
     }
+
+  
 
     public void ButtonlaPuanlamaYap(){ 
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
