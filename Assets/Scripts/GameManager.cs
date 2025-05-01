@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour{
         
     public enum OynanmaDurumu
     {
-        durdu,
+        bitti,
         oynaniyor, 
     }
 
@@ -85,23 +85,63 @@ public class GameManager : MonoBehaviour{
     }
 
     void Update(){
-        if (OyunDurumu == OynanmaDurumu.durdu) return;
-        if (Input.touchCount > 0){
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began){
-                Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
-                RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-                if (hit.collider){
-                    if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
-                        TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
-                        PerIcinTasTavsiye.Instance.Basla();
-                    }
-                    else if (hit.collider.gameObject == Counter.Instance.Button){
-                        Counter.Instance.TweenReset();
-                        Puanlama.Instance.ButtonlaPuanlamaYap();
-                    }
+        if (OyunDurumu == OynanmaDurumu.bitti) return;
+        
+        
+        // if (Input.touchCount > 0){
+        //     Touch touch = Input.GetTouch(0);
+        //     if (touch.phase == TouchPhase.Began){
+        //         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
+        //         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+        //         if (hit.collider){
+        //             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
+        //                 TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
+        //                 PerIcinTasTavsiye.Instance.Basla();
+        //             }
+        //             else if (hit.collider.gameObject == Counter.Instance.Button){
+        //                 Counter.Instance.TweenReset();
+        //                 Puanlama.Instance.ButtonlaPuanlamaYap();
+        //             }
+        //         }
+        //     }
+        // }
+        
+        
+#if UNITY_ANDROID || UNITY_IOS
+    if (Input.touchCount > 0)
+    {
+        Touch touch = Input.GetTouch(0);
+        if (touch.phase == TouchPhase.Began)
+        {
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
+            RaycastVeIslem(worldPoint);
+        }
+    }
+#else
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastVeIslem(worldPoint);
+        }
+#endif
+        
+        void RaycastVeIslem(Vector2 worldPoint)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+            if (hit.collider != null)
+            {
+                if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
+                    TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
+                    PerIcinTasTavsiye.Instance.Basla();
+                }
+                else if (hit.collider.gameObject == Counter.Instance.Button){
+                    Counter.Instance.TweenReset();
+                    Puanlama.Instance.ButtonlaPuanlamaYap();
                 }
             }
         }
+        
+        
+        
     }
 }

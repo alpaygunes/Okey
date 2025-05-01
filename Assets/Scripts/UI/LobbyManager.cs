@@ -28,8 +28,10 @@ public class LobbyManager : NetworkBehaviour{
     private string _lobbyName = "okey";
     private Coroutine _heartbeatCoroutine; 
     private HashSet<ulong> _connectedClients = new HashSet<ulong>();
+    public string myDisplayName;
 
     private async void Awake(){
+        myDisplayName = "Player_" + NetworkManager.Singleton.LocalClientId;
         if (Instance == null){
             Instance = this;
         }
@@ -138,7 +140,7 @@ public class LobbyManager : NetworkBehaviour{
                 {
                     Data = new Dictionary<string, PlayerDataObject>
                     {
-                        { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "ALPAY") }
+                        { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, myDisplayName) }
                     }
                 }
             };

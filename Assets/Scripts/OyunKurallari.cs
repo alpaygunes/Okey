@@ -12,7 +12,8 @@ public class OyunKurallari:NetworkBehaviour
     public int HamleLimit { get; private set; }
     public int SkorLimiti { get; private set; }
     public float ZamanLimiti { get; private set; }
-    public Dictionary<ulong, int> _hamleLimitiDolanClientIDlerinSayisi = new Dictionary<ulong, int>();
+    public Dictionary<ulong, int> _hamleLimitiDolanClientIDlerinDic = new Dictionary<ulong, int>();
+    public Dictionary<ulong, Dictionary<string, string>> SkorListesiDic = new();
     
     public enum OyunTipleri
     {
@@ -76,9 +77,9 @@ public class OyunKurallari:NetworkBehaviour
     public  void DurumuKontrolEt(){
         if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
             if (GameManager.Instance.HamleSayisi>=HamleLimit){
-                NetwokDataManager.Instance.HamleLimitiDoldu();
-                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.durdu;
+                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti;
                 SceneManager.LoadScene("OyunSonu",LoadSceneMode.Additive);
+                NetwokDataManager.Instance.HamleLimitiDoldu();
             }
         } 
     }

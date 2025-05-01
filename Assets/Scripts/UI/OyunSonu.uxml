@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="SonucListesi" style="flex-grow: 1; align-items: center; justify-content: center;">
+        <ui:Button text="OyunBitti" />
+    </ui:VisualElement>
+</ui:UXML>

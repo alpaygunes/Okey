@@ -19,6 +19,7 @@ public class LobbyListUI : MonoBehaviour{
     public VisualElement PlayerList;
     public Button StartRelay;
     public bool joinedToLobby = false;
+    private VisualElement rootElement;
 
     private void Awake(){
         if (Instance == null){
@@ -30,7 +31,7 @@ public class LobbyListUI : MonoBehaviour{
     }
 
     private void OnEnable(){
-        VisualElement rootElement = GetComponent<UIDocument>().rootVisualElement;
+        rootElement = GetComponent<UIDocument>().rootVisualElement;
         PublicList = rootElement.Q<VisualElement>("PublicList");
         CreateLobby = rootElement.Q<VisualElement>("CreateLobby");
         CrtLobBtn = rootElement.Q<Button>("CrtLobBtn");

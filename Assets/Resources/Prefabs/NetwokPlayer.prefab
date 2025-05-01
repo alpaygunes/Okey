@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2656197099117898897}
   - component: {fileID: -6629389562402431370}
   - component: {fileID: 9114382030115930029}
+  - component: {fileID: -6998599844695560046}
   m_Layer: 0
   m_Name: NetwokPlayer
   m_TagString: Untagged
@@ -190,3 +191,15 @@ MonoBehaviour:
           byte0059: 0
           byte0060: 0
           byte0061: 0
+--- !u!114 &-6998599844695560046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2272045343390177029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2a202be42a0fa0348850bf17f2c0059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
