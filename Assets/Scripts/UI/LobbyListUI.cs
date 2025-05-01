@@ -120,8 +120,7 @@ public class LobbyListUI : MonoBehaviour{
 
             var label = new Label(name);
             
-            PlayerList.Add(label);
-            PlayerList.Add(label);
+            PlayerList.Add(label); 
         }
     }
     

@@ -69,13 +69,13 @@ public class Istaka : MonoBehaviour{
                 foreach (var cardtakiTas in cardtakiTaslar) {
                     var BInstance = TasManeger.Instance.TasInstances[cardtakiTas];
                     if (BInstance.rakam == AIstance.rakam || BInstance.renk == AIstance.renk) {
-                        BInstance.ZeminSpriteRenderer.color = Color.red;
+                        BInstance.zeminSpriteRenderer.color = Color.red;
                         StartCoroutine(BInstance.CezaliRakamiCikar(1));
                         cezaliPuan += BInstance.rakam;
                     }
                 }
     
-                AIstance.ZeminSpriteRenderer.color = Color.red; 
+                AIstance.zeminSpriteRenderer.color = Color.red; 
                 cezaliPuan += AIstance.rakam;
                 StartCoroutine(AIstance.CezaliRakamiCikar(1));
                 cepInstance.TasInstance = null;

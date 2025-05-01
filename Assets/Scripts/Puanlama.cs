@@ -58,11 +58,13 @@ public class Puanlama : MonoBehaviour{
             HamleSayisi++;
             var skor = ToplamPuan;
             var _hameleSayisi = HamleSayisi;
+            var clientName = LobbyManager.Instance.myDisplayName; 
             Instance.SkorBoardiGuncelle();
             OyunKurallari.Instance.DurumuKontrolEt();
-            NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi);
+            NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName);
         };
-        
+        // boş bir değişim yaratalım. skorlsitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
+        NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(0,0,LobbyManager.Instance.myDisplayName);
  
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
@@ -239,28 +241,28 @@ public class Puanlama : MonoBehaviour{
          
         foreach (var grup in Card.Instance._siraliAyniRenkliGruplar) {
             foreach (var item in grup) {
-                TasManeger.Instance.TasInstances[item].ZeminSpriteRenderer.color = Color.green;
+                TasManeger.Instance.TasInstances[item].zeminSpriteRenderer.color = Color.green;
                 TasManeger.Instance.TasInstances[item].RakamiPuanaEkle();
             }
         }
 
         foreach (var grup in Card.Instance._siraliFarkliRenkliGruplar) {
             foreach (var item in grup) {
-                TasManeger.Instance.TasInstances[item].ZeminSpriteRenderer.color = Color.green;
+                TasManeger.Instance.TasInstances[item].zeminSpriteRenderer.color = Color.green;
                 TasManeger.Instance.TasInstances[item].RakamiPuanaEkle();
             }
         }
 
         foreach (var grup in Card.Instance._ayniRakamAyniRenkliGruplar) {
             foreach (var item in grup) {
-                TasManeger.Instance.TasInstances[item].ZeminSpriteRenderer.color = Color.green;
+                TasManeger.Instance.TasInstances[item].zeminSpriteRenderer.color = Color.green;
                 TasManeger.Instance.TasInstances[item].RakamiPuanaEkle();
             }
         }
 
         foreach (var grup in Card.Instance._ayniRakamFarkliRenkliGruplar) {
             foreach (var item in grup) { 
-                TasManeger.Instance.TasInstances[item].ZeminSpriteRenderer.color = Color.green;
+                TasManeger.Instance.TasInstances[item].zeminSpriteRenderer.color = Color.green;
                 TasManeger.Instance.TasInstances[item].RakamiPuanaEkle();
             }
         } 

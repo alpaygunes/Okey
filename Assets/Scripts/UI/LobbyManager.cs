@@ -30,8 +30,9 @@ public class LobbyManager : NetworkBehaviour{
     private HashSet<ulong> _connectedClients = new HashSet<ulong>();
     public string myDisplayName;
 
-    private async void Awake(){
-        myDisplayName = "Player_" + NetworkManager.Singleton.LocalClientId;
+    private async void Awake(){ 
+        myDisplayName = "Player_" +  UnityEngine.Random.Range(1,50); 
+        
         if (Instance == null){
             Instance = this;
         }
@@ -46,6 +47,8 @@ public class LobbyManager : NetworkBehaviour{
         catch (Exception e){ 
             Debug.Log(e.Message);
         }
+        
+        
     }
 
     async Task AnonimGiris(){
@@ -190,7 +193,7 @@ public class LobbyManager : NetworkBehaviour{
         {
             // SUNUCUDAN GÜNCEL LOBBY'Yİ AL
             var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            LobbyManager.Instance.CurrentLobby = updatedLobby;
+            CurrentLobby = updatedLobby;
             LobbyListUI.Instance.RefreshPlayerList();  
         };
         
@@ -198,7 +201,7 @@ public class LobbyManager : NetworkBehaviour{
         {
             // SUNUCUDAN GÜNCEL LOBBY'Yİ AL
             var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
-            LobbyManager.Instance.CurrentLobby = updatedLobby;
+            CurrentLobby = updatedLobby;
             LobbyListUI.Instance.RefreshPlayerList();  
         };
         await LobbyService.Instance.SubscribeToLobbyEventsAsync(CurrentLobby.Id, callbacks);
@@ -222,15 +225,11 @@ public class LobbyManager : NetworkBehaviour{
             if (CurrentLobby != null){
                 LobbyService.Instance.SendHeartbeatPingAsync(CurrentLobby.Id);
             }
-
             yield return new WaitForSeconds(15f); // her 15 saniyede bir ping
         }
     }
 
-
-    
-    
-    
+ 
     
     
     public async Task StartHostWithRelay(int maxConnections){

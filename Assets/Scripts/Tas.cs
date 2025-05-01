@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DG.Tweening;
-using NUnit.Framework.Constraints;
+using DG.Tweening; 
 using UnityEngine;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
@@ -11,12 +10,12 @@ using Object = UnityEngine.Object;
 public class Tas : MonoBehaviour{
     public int rakam;
     public Color renk;
-    private float _animasyonSuresi = 1f;
-    public GameObject SagindakiKomsuTas;
+    private float animasyonSuresi = 1f;
+    public GameObject sagindakiKomsuTas;
     private Rigidbody2D _rigidbody;
     public bool birCardPerineDahil = false;
-    public SpriteRenderer ZeminSpriteRenderer;
-    private Vector3 _skorTxtPosition;
+    public SpriteRenderer zeminSpriteRenderer;
+    private Vector3 skorTxtPosition;
     public Camera uiCamera;
     private Object _collider;
     private GameObject destroyEffectPrefab;
@@ -33,9 +32,9 @@ public class Tas : MonoBehaviour{
     private void Awake(){
         zemin = GameObject.Find("Zemin");
         gameObject.SetActive(false);
-        ZeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
+        zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
         uiCamera = Camera.main;
-        _skorTxtPosition = uiCamera.ScreenToWorldPoint(
+        skorTxtPosition = uiCamera.ScreenToWorldPoint(
             new Vector3(GameObject.Find("Skor").transform.position.x,
                 GameObject.Find("Skor").transform.position.y, 30f));
     }
@@ -43,7 +42,7 @@ public class Tas : MonoBehaviour{
     private void Start(){
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        ZeminSpriteRenderer.color = renk;
+        zeminSpriteRenderer.color = renk;
         destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof");
 
         _audioSource_down = gameObject.AddComponent<AudioSource>();
@@ -87,7 +86,7 @@ public class Tas : MonoBehaviour{
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++){
             var cepScript = Istaka.Instance.CepList[i];
             if (cepScript.Dolu == false){
-                transform.DOMove(cepScript.transform.position, _animasyonSuresi * .5f)
+                transform.DOMove(cepScript.transform.position, animasyonSuresi * .5f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => _audioSource_up.Play()));
                 gameObject.transform.position += new Vector3(0, 0, -1);
@@ -113,7 +112,7 @@ public class Tas : MonoBehaviour{
         //Puanlama.Instance.PerlerdenKazanilanPuan += rakam;  
         _audioSource_patla.Play(); 
         Vector3 ilkScale = transform.localScale;
-        transform.DOMove(_skorTxtPosition, sure);
+        transform.DOMove(skorTxtPosition, sure);
         Sequence mySequence = DOTween.Sequence();
         mySequence
             .Append(transform.DOScale(transform.localScale * 2, sure * .5f))
@@ -154,7 +153,7 @@ public class Tas : MonoBehaviour{
             EdgeCollider2D edgeCollider = GetComponent<EdgeCollider2D>();
             if (edgeCollider != null && edgeCollider.IsTouching(other)){
                 if (other is BoxCollider2D){
-                    SagindakiKomsuTas = other.gameObject;
+                    sagindakiKomsuTas = other.gameObject;
                 }
             }
         }
@@ -173,11 +172,11 @@ public class Tas : MonoBehaviour{
     public async Task SiraliAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         Card.Instance.SiraliAyniRenkliGrup.Add(gameObject);
-        if (SagindakiKomsuTas){
-            var sagdakininRengi = TasManeger.Instance.TasInstances[SagindakiKomsuTas].renk;
-            var sagdakininRakami = TasManeger.Instance.TasInstances[SagindakiKomsuTas].rakam;
+        if (sagindakiKomsuTas){
+            var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
+            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
             if (sagdakininRengi == renk && sagdakininRakami == rakam + 1){
-                await TasManeger.Instance.TasInstances[SagindakiKomsuTas].SiraliAyniRenkGrubunaDahilOl();
+                await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliAyniRenkGrubunaDahilOl();
             }
         }
     }
@@ -194,11 +193,11 @@ public class Tas : MonoBehaviour{
 
         if (gruptaAyniRenkYok){
             Card.Instance.SiraliFarkliRenkliGrup.Add(gameObject);
-            if (SagindakiKomsuTas){
-                var sagdakininRengi = TasManeger.Instance.TasInstances[SagindakiKomsuTas].renk;
-                var sagdakininRakami = TasManeger.Instance.TasInstances[SagindakiKomsuTas].rakam;
+            if (sagindakiKomsuTas){
+                var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
+                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
                 if (sagdakininRengi != renk && sagdakininRakami == rakam + 1){
-                    await TasManeger.Instance.TasInstances[SagindakiKomsuTas].SiraliFarkliRenkGrubunaDahilOl();
+                    await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliFarkliRenkGrubunaDahilOl();
                 }
             }
         }
@@ -207,11 +206,11 @@ public class Tas : MonoBehaviour{
     public async Task AyniRakamAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         Card.Instance.AyniRakamAyniRenkliGrup.Add(gameObject);
-        if (SagindakiKomsuTas){
-            var sagdakininRengi = TasManeger.Instance.TasInstances[SagindakiKomsuTas].renk;
-            var sagdakininRakami = TasManeger.Instance.TasInstances[SagindakiKomsuTas].rakam;
+        if (sagindakiKomsuTas){
+            var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
+            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
             if (sagdakininRengi == renk && sagdakininRakami == rakam){
-                await TasManeger.Instance.TasInstances[SagindakiKomsuTas].AyniRakamAyniRenkGrubunaDahilOl();
+                await TasManeger.Instance.TasInstances[sagindakiKomsuTas].AyniRakamAyniRenkGrubunaDahilOl();
             }
         }
     }
@@ -229,11 +228,11 @@ public class Tas : MonoBehaviour{
 
         if (gruptaAyniRenkYok){
             Card.Instance.AyniRakamFarkliRenkli.Add(gameObject);
-            if (SagindakiKomsuTas){
-                var sagdakininRengi = TasManeger.Instance.TasInstances[SagindakiKomsuTas].renk;
-                var sagdakininRakami = TasManeger.Instance.TasInstances[SagindakiKomsuTas].rakam;
+            if (sagindakiKomsuTas){
+                var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
+                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
                 if (sagdakininRengi != renk && sagdakininRakami == rakam){
-                    await TasManeger.Instance.TasInstances[SagindakiKomsuTas].AyniRakamFarkliRenkGrubunaDahilOl();
+                    await TasManeger.Instance.TasInstances[sagindakiKomsuTas].AyniRakamFarkliRenkGrubunaDahilOl();
                 }
             }
         }

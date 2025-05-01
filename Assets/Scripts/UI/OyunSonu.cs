@@ -1,5 +1,6 @@
-using System;
+using System.Linq;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,9 +8,8 @@ using UnityEngine.UIElements;
 public class OyunSonu : MonoBehaviour{
     private VisualElement rootElement;
     private VisualElement SonucListesi;
-    public static OyunSonu Instance;  
-    
- 
+    public static OyunSonu Instance;
+
 
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -21,21 +21,26 @@ public class OyunSonu : MonoBehaviour{
     }
 
     public void SonucListesiniGoster(NetworkList<NetwokDataManager.PlayerData> _oyuncuListesi){
-        Debug.Log($"  LİSTE HAZIRLANIYOR  ");
-        //Debug.Log($"Oyuncu {oyuncu.ClientId} - Skor: {oyuncu.Skor}, Hamle: {oyuncu.HamleSayisi}");
         SonucListesi.Clear();
+        // Burada yeni bir kopya liste oluştur 
+        var localList = new List<NetwokDataManager.PlayerData>();
         foreach (var oyuncu in _oyuncuListesi){
+            localList.Add(oyuncu);
+        } 
+        // Bu kopyayı sıralıyoruz
+        var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
+
+        foreach (var oyuncu in siraliListe){
             ulong clientID = oyuncu.ClientId;
-            ulong myDisplayName = oyuncu.ClientId;
+            FixedString64Bytes clientName = oyuncu.ClientName;
             int puan = oyuncu.Skor;
             int HamleSayisi = oyuncu.HamleSayisi;
             var listeOgesi = new Button();
             listeOgesi.text = clientID.ToString();
-            listeOgesi.text += " " + myDisplayName;
-            listeOgesi.text += " " + puan;
-            listeOgesi.text += " " + HamleSayisi;
-            SonucListesi.Add(listeOgesi);
-            Debug.Log($" {clientID.ToString()}  --- {clientID.ToString()}  ");
+            listeOgesi.text += " ClientName :" + clientName;
+            listeOgesi.text += " Puan :" + puan;
+            listeOgesi.text += " HamleSayisi :" + HamleSayisi;
+            SonucListesi.Add(listeOgesi); 
         }
     }
 
