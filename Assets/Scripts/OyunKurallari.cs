@@ -76,10 +76,9 @@ public class OyunKurallari:NetworkBehaviour
 
     public  void DurumuKontrolEt(){
         if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
-            if (GameManager.Instance.HamleSayisi>=HamleLimit){
+            if (Puanlama.Instance.HamleSayisi>=HamleLimit){
                 GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti;
-                SceneManager.LoadScene("OyunSonu",LoadSceneMode.Additive);
-                NetwokDataManager.Instance.HamleLimitiDoldu();
+                SceneManager.LoadScene("OyunSonu",LoadSceneMode.Additive); 
             }
         } 
     }

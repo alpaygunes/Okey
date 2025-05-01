@@ -51,9 +51,9 @@ public class Counter : MonoBehaviour{
                 .SetEase(Ease.Linear).OnComplete(() => {
                     tweener.Kill();
                     tweener = null;
-                    progress.transform.position = _startPos;
-                    Puanlama.Instance.Puanla(); 
+                    progress.transform.position = _startPos; 
                 });;
+            Puanlama.Instance.Puanla(); 
         }
         else{
             TweenReset();

@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour{
     [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
     [NonSerialized] public bool OtomatikPerkontrolu = true;
     public static GameManager Instance{ get; private set; }
-    public event Action<int> OnHamleSayisiChanged;
-    private int _hamleSayisi;
+    
+    
     public OynanmaDurumu OyunDurumu; 
         
     public enum OynanmaDurumu
@@ -24,15 +24,7 @@ public class GameManager : MonoBehaviour{
         oynaniyor, 
     }
 
-    public int HamleSayisi{
-        get => _hamleSayisi;
-        set{
-            if (_hamleSayisi != value){
-                _hamleSayisi = value;
-                OnHamleSayisiChanged?.Invoke(_hamleSayisi); // Event tetikleniyor
-            }
-        }
-    }
+
 
     void Awake(){
         OyunDurumu = OynanmaDurumu.oynaniyor;
@@ -44,11 +36,7 @@ public class GameManager : MonoBehaviour{
         Instance = this;
     }
 
-    private void Start(){
-        OnHamleSayisiChanged += (_hamleSayisi) => {
-            NetwokDataManager.Instance?.RequestHamleSayisiGuncelleServerRpc(_hamleSayisi);
-            OyunKurallari.Instance.DurumuKontrolEt();
-        };
+    private void Start(){ 
         Seed = PlayerPrefs.GetString("Seed");
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();

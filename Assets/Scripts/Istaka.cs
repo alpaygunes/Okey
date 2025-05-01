@@ -99,10 +99,11 @@ public class Istaka : MonoBehaviour{
                     siraliGrup.Add(i, cepInstance.TasInstance.gameObject);
                 }
 
+                
                 // sonraki ile ardışık mı ?
                 try {
                     Cep sonrakiCepInstance = CepList[i + 1];
-                    if (cepInstance.TasInstance.rakam == sonrakiCepInstance.TasInstance.rakam - 1) {
+                    if (cepInstance.TasInstance.rakam == sonrakiCepInstance?.TasInstance?.rakam - 1) {
                         siraliGrup.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
                     }
                     else {
@@ -126,7 +127,7 @@ public class Istaka : MonoBehaviour{
  
     }
 
-    public void BenzerRakamGruplariniBelirle(){
+    public void BenzerRakamGruplariniBelirle(){ 
         BenzerRakamGruplari.Clear();
         Dictionary<int, GameObject> benzerRakamGrubu = new Dictionary<int, GameObject>();
         // Istakadaki cepleri tek tek kontrole delim.
@@ -143,7 +144,7 @@ public class Istaka : MonoBehaviour{
                 // sonraki ile ardışık mı ?
                 try {
                     Cep sonrakiCepInstance = CepList[i + 1];
-                    if (cepInstance.TasInstance.rakam == sonrakiCepInstance.TasInstance.rakam) {
+                    if (cepInstance.TasInstance.rakam == sonrakiCepInstance?.TasInstance?.rakam) {
                         benzerRakamGrubu.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
                     }
                     else {

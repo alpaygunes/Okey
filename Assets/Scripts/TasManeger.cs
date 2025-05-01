@@ -7,19 +7,14 @@ public class TasManeger : MonoBehaviour{
     public Dictionary<GameObject, Tas> TasInstances = new Dictionary<GameObject, Tas>();
     public static TasManeger Instance{ get; private set; }
     
-
     void Awake(){
         if (Instance != null && Instance != this){
             Destroy(this);
             return;
-        }
-
-        Instance = this;
-        
-       
+        } 
+        Instance = this; 
     }
- 
-
+  
     public void TaslariHazirla(){
         List<Data> generatedData = GenerateDataList(GameManager.Instance.Seed);
 
@@ -35,9 +30,7 @@ public class TasManeger : MonoBehaviour{
             TasList.Add(Tas);
         } 
     }
-
-
-
+ 
     public void PerleriKontrolEt(){
         Istaka.Instance.SiraliGruplariBelirle();
         Istaka.Instance.BenzerRakamGruplariniBelirle();
@@ -66,8 +59,7 @@ public class TasManeger : MonoBehaviour{
             int number = random.Next(GameManager.Instance.RakamAraligi.start,  GameManager.Instance.RakamAraligi.end );
             int color = random.Next(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end);
             dataList.Add(new Data(number, color));
-        }
-
+        } 
         return dataList;
     }
 }

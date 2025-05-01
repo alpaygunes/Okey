@@ -21,7 +21,7 @@ public class Puanlama : MonoBehaviour{
     List<Tas> BonusFarkliRenkAyniRakam = new List<Tas>();
     List<Tas> BonusAyniRenkArdisikRakam = new List<Tas>();
     List<Tas> BonusFarkliRenkArdisikRakam = new List<Tas>();
-    
+    public int HamleSayisi;
     public event Action<int> OnNetworkDataIicinPuanChanged;
     private int _toplamPuan;
     public int ToplamPuan
@@ -31,13 +31,11 @@ public class Puanlama : MonoBehaviour{
         {
             if (_toplamPuan != value)
             {
-                _toplamPuan = value;
-                Instance.SkorBoardiGuncelle();
+                _toplamPuan = value; 
                 OnNetworkDataIicinPuanChanged?.Invoke(_toplamPuan); // Event tetikleniyor
             }
         }
-    }
-    
+    } 
     
     private SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
     
@@ -57,8 +55,15 @@ public class Puanlama : MonoBehaviour{
 
     private void Start(){
         OnNetworkDataIicinPuanChanged += (_netwokrDataToplamPuan) => { 
-            NetwokDataManager.Instance?.RequestToplamPuanGuncelleServerRpc(_netwokrDataToplamPuan);
+            HamleSayisi++;
+            var skor = ToplamPuan;
+            var _hameleSayisi = HamleSayisi;
+            Instance.SkorBoardiGuncelle();
+            OyunKurallari.Instance.DurumuKontrolEt();
+            NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi);
         };
+        
+ 
         toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
         hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
         KalanTasOraniTMP = GameObject.Find("KalanTasOrani").GetComponent<TextMeshProUGUI>();
@@ -268,8 +273,7 @@ public class Puanlama : MonoBehaviour{
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
                || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
                 IstakadakiPerdekiTaslariToparla();
-                BonuslariVer();
-                GameManager.Instance.HamleSayisi++; 
+                BonuslariVer(); 
                 PerIcinTasTavsiye.Instance.Sallanma();
         } 
         _ = Card.Instance.KarttakiPerleriBul();
@@ -277,7 +281,7 @@ public class Puanlama : MonoBehaviour{
     }
 
     public void SkorBoardiGuncelle(){
-        hamleSayisiTMP.text = GameManager.Instance.HamleSayisi.ToString(); 
+        hamleSayisiTMP.text = HamleSayisi.ToString(); 
         toplamPuanTMP.text = ToplamPuan .ToString();
     }
 
