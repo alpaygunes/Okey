@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
@@ -11,6 +12,7 @@ public class LobbyListUI : MonoBehaviour{
     public static LobbyListUI Instance;
     public Button CreateLobbyBtn;
     public Button CrtLobBtn;
+    public Button CloseLobbyBtn;
     public Button LobyListBtn;
     public TextElement CreatedLobiCodeTxt;
     public VisualElement PublicList;
@@ -20,6 +22,8 @@ public class LobbyListUI : MonoBehaviour{
     public Button StartRelay;
     public bool joinedToLobby = false;
     private VisualElement rootElement;
+    public Button katilBtn;
+    public Button ayrilBtn;
 
     private void Awake(){
         if (Instance == null){
@@ -37,13 +41,19 @@ public class LobbyListUI : MonoBehaviour{
         CrtLobBtn = rootElement.Q<Button>("CrtLobBtn");
         LobyListBtn = rootElement.Q<Button>("LobyListBtn");
         CreateLobbyBtn = rootElement.Q<Button>("CreateLobbyBtn");
+        CloseLobbyBtn = rootElement.Q<Button>("CloseLobby");
         CreatedLobiCodeTxt = rootElement.Q<TextElement>("CreatedLobiCodeTxt");
         PlayerList = rootElement.Q<VisualElement>("PlayerList");
         StartRelay = rootElement.Q<Button>("StartRelay");
         StartRelay.style.display = DisplayStyle.None;
 
         // Lobby Yaratma Butonu
-        CreateLobbyBtn.clicked += () => { _ = LobbyManager.Instance.CreateLobi(); };
+        CreateLobbyBtn.style.display = (LobbyManager.Instance?.CurrentLobby == null)?DisplayStyle.Flex:DisplayStyle.None;
+        CreateLobbyBtn.clicked += () => { _ = LobbyManager.Instance?.LobbyCreate(); };
+        
+        // Lobby Kapatma Butonu 
+        CloseLobbyBtn.style.display = (LobbyManager.Instance?.CurrentLobby == null)?DisplayStyle.None:DisplayStyle.Flex;
+        CloseLobbyBtn.clicked += () => {    LobbyManager.Instance?.OyunculariCikartVeLobiyiSil(LobbyManager.Instance?.CurrentLobby.Id); }; 
 
         // Lobby Create Penceresi
         CrtLobBtn.clicked += () => {
@@ -52,53 +62,74 @@ public class LobbyListUI : MonoBehaviour{
         };
 
         // loby listesi Penceresi
-        LobyListBtn.clicked += async () => {
-            PublicList.visible = true;
-            CreateLobby.visible = false;
-
-            response = await LobbyManager.Instance.GetLobbyList();
-            if (response != null){
-                PublicList.Clear(); 
-                for (int i = 0; i < response.Results.Count; i++){
-                    var lobby = response.Results[i];
-                    if (LobbyManager.Instance.CurrentLobby?.HostId 
-                        == AuthenticationService.Instance.PlayerId) continue;
-                    var lobbyID = lobby.Id;
-                    var row = new VisualElement();
-                    var label = new Label();
-                    label.text = $"{lobby.Name} - {lobby.Players.Count}/{lobby.MaxPlayers}"; 
-                    var katilBtn = new Button();
-                    var ayrilBtn = new Button();
-                    ayrilBtn.text = "Ayrıl";
-                    ayrilBtn.style.display = DisplayStyle.None;
-                    ayrilBtn.clicked += async () => {
-                        await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id, AuthenticationService.Instance.PlayerId);
-                        ayrilBtn.style.display =  DisplayStyle.None;
-                        katilBtn.style.display = DisplayStyle.Flex;
-                    };
- 
-                    katilBtn.text = "Katıl";
-                    katilBtn.clicked += async () => {
-                        joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID); 
-                        ayrilBtn.style.display = joinedToLobby?DisplayStyle.Flex:DisplayStyle.None;
-                        katilBtn.style.display = joinedToLobby?DisplayStyle.None:DisplayStyle.Flex;
-                    }; 
-                    row.Add(label);
-                    row.Add(katilBtn);
-                    row.Add(ayrilBtn);
-                    PublicList.Add(row);
-                    row.AddToClassList("lobbyListRow"); 
-                }
-            }
-        };
+        LobyListBtn.clicked += OnLobbyListButtonClicked;
          
         //start Relay
         StartRelay.clicked += async () => {
-            var maxConnections = 2;
+            var maxConnections = 4;
             await LobbyManager.Instance.StartHostWithRelay(maxConnections);  
         };
-    } 
+    }
+
+    public async void OnLobbyListButtonClicked()
+    {
+        PublicList.visible = true;
+        CreateLobby.visible = false;
+
+        response = await LobbyManager.Instance.GetLobbyList();
+        if (response != null)
+        {
+            PublicList.Clear();
+            for (int i = 0; i < response.Results.Count; i++)
+            {
+                var lobby = response.Results[i];
+                if (LobbyManager.Instance.CurrentLobby?.HostId == AuthenticationService.Instance.PlayerId)
+                    continue;
+
+                var row = CreateLobbyRow(lobby);
+                PublicList.Add(row);
+                row.AddToClassList("lobbyListRow");
+            }
+        }
+    }
+
+    private VisualElement CreateLobbyRow(Lobby lobby)
+    {
+        var lobbyID = lobby.Id;
+        var row = new VisualElement();
+        var label = new Label
+        {
+            text = $"{lobby.Name} - {lobby.Players.Count}/{lobby.MaxPlayers}"
+        };
+
+        katilBtn = new Button { text = "Katıl" };
+        ayrilBtn = new Button { text = "Ayrıl", style = { display = DisplayStyle.None } };
+
+        katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID, katilBtn, ayrilBtn);
+        ayrilBtn.clicked += async () => await OnLeaveLobbyClicked(katilBtn, ayrilBtn);
+
+        row.Add(label);
+        row.Add(katilBtn);
+        row.Add(ayrilBtn);
+
+        return row;
+    }
+
+    private async Task OnJoinLobbyClicked(string lobbyID, Button katilBtn, Button ayrilBtn)
+    {
+        bool joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
+        ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
+        katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
+    }
     
+    private async Task OnLeaveLobbyClicked(Button katilBtn, Button ayrilBtn)
+    {
+        if (LobbyManager.Instance.CurrentLobby == null) return;
+
+        await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id, AuthenticationService.Instance.PlayerId);
+        ayrilBtn.style.display = DisplayStyle.None;
+        katilBtn.style.display = DisplayStyle.Flex;
+    }
 
     
     public void RefreshPlayerList()

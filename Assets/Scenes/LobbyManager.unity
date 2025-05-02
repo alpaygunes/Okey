@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  RelayIDForJoin: 
+  relayIDForJoin: 
   myDisplayName: 
 --- !u!114 &1297433735
 MonoBehaviour:
