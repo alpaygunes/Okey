@@ -166,7 +166,6 @@ public class LobbyManager : NetworkBehaviour{
             clientCallbacks.DataChanged += LobiVerisiDegisti; 
             clientCallbacks.PlayerLeft += OnClientPlayerLeft; 
             clientCallbacks.LobbyChanged += OnLobbyChangedForBtn;
-            
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(joinedLobby.Id, clientCallbacks);
             
             // ilk girişte lobideki datayı al
@@ -195,32 +194,23 @@ public class LobbyManager : NetworkBehaviour{
 
 
     private async Task OnLobbyChanged(ILobbyChanges changes)
-    {
-        Debug.Log("Lobi değişikliği algılandı.");
-        
+    {  
         // Data değişikliklerini kontrol et
         if (changes != null && changes.Data.Value != null)
-        {
-            // Unity Lobby API'nin versiyonuna bağlı olarak doğru property'yi kullan
-            var lobbyData = changes.Data.Value;
-            
+        { 
+            var lobbyData = changes.Data.Value; 
             if (lobbyData != null && lobbyData.ContainsKey("lobby_message"))
             {
-                string messageValue = lobbyData["lobby_message"].Value.Value;
-                Debug.Log($"Lobi mesajı değeri: {messageValue}");
-                
-                // Eğer mesaj "lobby_kapanacak" ise, lobiden çık
+                string messageValue = lobbyData["lobby_message"].Value.Value;  
                 if (messageValue == "lobby_kapanacak")
-                {
-                    Debug.Log("Lobi kapanacak mesajı alındı, çıkış yapılıyor...");
-                    //StartCoroutine(LeaveLobbyAndGoToMenu());
-                    
-                   // BURDA KALDIN. AYRIL BUTONUNA LİCK OLAYINI GÖNDER. YADA ŞUANKİ METODU BAŞKA BİR FONSİYON İÇİNDE FARMALA. BURADAN ÇAĞIR.
-                    var evt = new MouseDownEvent();
-                    evt.target = LobbyListUI.Instance.ayrilBtn;
-                    LobbyListUI.Instance.ayrilBtn.SendEvent(evt);
-                    await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, playerId);  
+                { 
+                    Debug.Log("1 Lobi kapanacak mesajı alındı, çıkış yapılıyor...");
+                    LobbyListUI.Instance.PublicList.Clear();
+                    Debug.Log("PublicList.Clear()");
+                    await LobbyListUI.Instance.LobidenAyril();
+                    LobbyListUI.Instance.OnLobbyListButtonClicked();
                     CurrentLobby = null;
+                    Debug.Log(" CurrentLobby " + CurrentLobby);
                 }
             }
         }
@@ -443,10 +433,9 @@ public class LobbyManager : NetworkBehaviour{
             }
             CurrentLobby = null;
             StopHeartbeat();
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.LogError($"Lobi silinirken bir hata oluştu: {e.Message}");
+            
+        } catch (LobbyServiceException e) {
+            Debug.LogError($" Lobi silinirken bir hata oluştu: {e.Message}");
         }
     }
 

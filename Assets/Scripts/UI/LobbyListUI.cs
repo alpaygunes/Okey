@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
@@ -62,7 +63,7 @@ public class LobbyListUI : MonoBehaviour{
         };
 
         // loby listesi Penceresi
-        LobyListBtn.clicked += OnLobbyListButtonClicked;
+        LobyListBtn.clicked +=   OnLobbyListButtonClicked;
          
         //start Relay
         StartRelay.clicked += async () => {
@@ -73,6 +74,7 @@ public class LobbyListUI : MonoBehaviour{
 
     public async void OnLobbyListButtonClicked()
     {
+        Debug.Log("OnLobbyListButtonClicked .");
         PublicList.visible = true;
         CreateLobby.visible = false;
 
@@ -106,7 +108,7 @@ public class LobbyListUI : MonoBehaviour{
         ayrilBtn = new Button { text = "Ayrıl", style = { display = DisplayStyle.None } };
 
         katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID, katilBtn, ayrilBtn);
-        ayrilBtn.clicked += async () => await OnLeaveLobbyClicked(katilBtn, ayrilBtn);
+        ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();
 
         row.Add(label);
         row.Add(katilBtn);
@@ -122,16 +124,25 @@ public class LobbyListUI : MonoBehaviour{
         katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
     }
     
-    private async Task OnLeaveLobbyClicked(Button katilBtn, Button ayrilBtn)
+    private async Task OnLeaveLobbyClicked()
     {
-        if (LobbyManager.Instance.CurrentLobby == null) return;
-
-        await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id, AuthenticationService.Instance.PlayerId);
-        ayrilBtn.style.display = DisplayStyle.None;
-        katilBtn.style.display = DisplayStyle.Flex;
+        await LobidenAyril();
     }
 
-    
+    public async Task LobidenAyril(){   
+        try{
+            await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id, AuthenticationService.Instance.PlayerId);
+            ayrilBtn.style.display = DisplayStyle.None;
+            katilBtn.style.display = DisplayStyle.Flex;
+            Debug.Log(" LobidenAyril Ayrıldı");
+        }
+        catch (Exception e){
+            Console.WriteLine($"LobidenAyril başarısız {e.Message}" ); 
+        }
+
+    }
+
+
     public void RefreshPlayerList()
     {
         var players = LobbyManager.Instance.CurrentLobby.Players;
