@@ -4,7 +4,7 @@
         <ui:Button text="Liste" name="LobyListBtn" />
         <ui:Button text="Lobi Oluştur" name="CrtLobBtn" />
     </ui:VisualElement>
-    <ui:VisualElement name="PublicList" style="flex-grow: 1; width: 100%; background-color: rgb(140, 109, 135); height: 90%; flex-direction: row; align-items: flex-end; align-self: flex-start; position: absolute; top: 64px;">
+    <ui:VisualElement name="LobbyList" style="flex-grow: 1; width: 100%; background-color: rgb(140, 109, 135); height: 90%; flex-direction: row; align-items: flex-end; align-self: flex-start; position: absolute; top: 64px;">
         <ui:VisualElement name="ListRow" class="lobbyListRow">
             <ui:Label text="Label" style="align-content: auto; justify-content: center; align-items: auto; margin-top: 0; height: 100%; -unity-text-align: middle-left; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
             <ui:Button text="Button" style="align-content: center;" />
