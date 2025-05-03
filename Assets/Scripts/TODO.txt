@@ -1,3 +1,1 @@
-1 - Perler kontrole dilip puanlama yapılırken. hangi renk , hangi sayı eşleştiylse card daki o taşlar belirtilsin. 
-    Pedeki ilk taşın eşleşmeşleri gösterildikten sonra ikinci taşın eşleşmeleri gösterilsin. sonuna kadar hepsi gösterilsin.
-    iki sn sürsün bu.
+1 - Lobide "Katıl Düğmesi" ne tıklanınca lobi doluysa oyuncu uyarılmalı.

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NetwokDataManager : NetworkBehaviour{
     public static NetwokDataManager Instance;
@@ -16,6 +18,7 @@ public class NetwokDataManager : NetworkBehaviour{
         else
             Destroy(gameObject);
     }
+
 
     public override void OnNetworkSpawn(){
         if (IsServer){

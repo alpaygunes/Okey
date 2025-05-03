@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour{
     public readonly float GeriSayimSuresi = 5f;
@@ -10,14 +11,13 @@ public class GameManager : MonoBehaviour{
     public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
     public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
     public List<GameObject> spawnHolesList = new List<GameObject>();
-    public string Seed;
+    public string seed;
     [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
     [NonSerialized] public bool OtomatikPerkontrolu = true;
     public static GameManager Instance{ get; private set; }
     
     
     public OynanmaDurumu OyunDurumu; 
-        
     public enum OynanmaDurumu
     {
         bitti,
@@ -37,7 +37,9 @@ public class GameManager : MonoBehaviour{
     }
 
     private void Start(){ 
-        Seed = PlayerPrefs.GetString("Seed");
+        seed = LobbyManager.Instance.GameSeed;
+        //seed = PlayerPrefs.GetString("Seed");
+        Debug.Log("SEED  --  "+seed);
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
         KutulariHazirla();
@@ -76,23 +78,7 @@ public class GameManager : MonoBehaviour{
         if (OyunDurumu == OynanmaDurumu.bitti) return;
         
         
-        // if (Input.touchCount > 0){
-        //     Touch touch = Input.GetTouch(0);
-        //     if (touch.phase == TouchPhase.Began){
-        //         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
-        //         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-        //         if (hit.collider){
-        //             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
-        //                 TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
-        //                 PerIcinTasTavsiye.Instance.Basla();
-        //             }
-        //             else if (hit.collider.gameObject == Counter.Instance.Button){
-        //                 Counter.Instance.TweenReset();
-        //                 Puanlama.Instance.ButtonlaPuanlamaYap();
-        //             }
-        //         }
-        //     }
-        // }
+
         
         
 #if UNITY_ANDROID || UNITY_IOS
@@ -127,9 +113,6 @@ public class GameManager : MonoBehaviour{
                     Puanlama.Instance.ButtonlaPuanlamaYap();
                 }
             }
-        }
-        
-        
-        
+        }  
     }
 }

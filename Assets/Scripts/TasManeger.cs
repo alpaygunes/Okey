@@ -16,7 +16,7 @@ public class TasManeger : MonoBehaviour{
     }
   
     public void TaslariHazirla(){
-        List<Data> generatedData = GenerateDataList(GameManager.Instance.Seed);
+        List<Data> generatedData = GenerateDataList(GameManager.Instance.seed);
 
         foreach (var data in generatedData){ 
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");

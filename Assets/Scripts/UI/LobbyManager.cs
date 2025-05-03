@@ -17,9 +17,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class LobbyManager : NetworkBehaviour{
-    public static LobbyManager Instance;
-
-
+    public static LobbyManager Instance; 
     public string relayIDForJoin;
     private LobbyEventCallbacks clientCallbacks;
     public Lobby CurrentLobby;
@@ -32,7 +30,7 @@ public class LobbyManager : NetworkBehaviour{
     public string myDisplayName;
     private LobbyEventCallbacks HostCallBacks;
     private Coroutine lobbyUpdateCoroutine;
-
+    public string GameSeed;  
 
     private async void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
@@ -112,6 +110,7 @@ public class LobbyManager : NetworkBehaviour{
             HostCallBacks = new LobbyEventCallbacks();
             HostCallBacks.PlayerJoined += OnPlayerJoined;
             HostCallBacks.PlayerLeft += OnPlayerLeft;
+            HostCallBacks.DataChanged += LobiVerisiDegisti;
             await LobbyService.Instance.SubscribeToLobbyEventsAsync(CurrentLobby.Id, HostCallBacks);
             // lobiden düşen olabilir. listeyi güncelleme için belli aralıklarda çalışan coruotin
             if (lobbyUpdateCoroutine == null){
@@ -243,16 +242,29 @@ public class LobbyManager : NetworkBehaviour{
     }
 
     private void LobiVerisiDegisti(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> data){
-        if (data.TryGetValue("RelayCode", out var newRelayData)){
-            string newRelayCode = newRelayData.Value.Value;
+        // GAmeSeedini al
+        if (data.TryGetValue("GameSeed", out var GameSeedData)){
+            string gameSeedData = GameSeedData.Value.Value;
+            if (!isRelayActive){
+                GameSeed = gameSeedData;
+                Debug.Log("CLIENT RANDOM SEED ALINDI: " + GameSeed + "");
+            }
+        }
+        
+        // Relay kodunu al ve relayı başlat
+        if (data.TryGetValue("RelayCode", out var relayCodeData)){
+            string newRelayCode = relayCodeData.Value.Value;
             if (relayIDForJoin != newRelayCode){
-                relayIDForJoin = newRelayCode;
+                relayIDForJoin = newRelayCode;  
                 if (!isRelayActive){
+                    Debug.Log("Relay kodu alındı");
                     _ = StartClientWithRelay(newRelayCode, "dtls");
                 }
             }
-        }
+        } 
     }
+    
+ 
 
     private void OnClientPlayerLeft(List<int> playerIds){
         Debug.Log("Ben lobiden atıldım mı kontrol ediliyor...");
@@ -307,47 +319,58 @@ public class LobbyManager : NetworkBehaviour{
     }
 
 
-    public async Task StartHostWithRelay(int maxConnections){
-        if (CurrentLobby.HostId != AuthenticationService.Instance.PlayerId){
-            return; // Host başlatılamazsa null döndür
+    public async Task StartHostWithRelay(int maxConnections)
+    {
+        if (CurrentLobby.HostId != AuthenticationService.Instance.PlayerId)
+        {
+            return;
         }
 
-        // Mevcut relay varsa kapat
-        if (isRelayActive || NetworkManager.Singleton.IsListening){
+        if (isRelayActive || NetworkManager.Singleton.IsListening)
+        {
             NetworkManager.Singleton.Shutdown();
             isRelayActive = false;
-            await Task.Delay(300); // Kapatma işleminin tamamlanması için kısa bir bekleme
+            await Task.Delay(300);
         }
 
-        try{
+        try
+        {
             var allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
             NetworkManager.Singleton.GetComponent<UnityTransport>()
                 .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
             var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
             // Lobby'nin relay koduyla güncellenmesi
+            GameSeed = GetRandomSeed();
             await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
             {
                 Data = new Dictionary<string, DataObject>
                 {
-                    { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, relayCode) }
+                    { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, relayCode) },
+                    { "GameSeed" , new DataObject(DataObject.VisibilityOptions.Public , GameSeed)}
                 }
             });
 
             isRelayActive = true;
             NetworkManager.Singleton.StartHost();
-
-            if (NetworkManager.Singleton == null){
-                return;
-            }
-
-            if (!IsOwner || !IsServer){
-                return;
-            }
+            Debug.Log("Host Relay Başlatıldı");
         }
-        catch (Exception ex){
+        catch (Exception ex)
+        {
             Debug.Log(ex.Message);
         }
+    }
+
+    private string GetRandomSeed(){ 
+        int length = 4;
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        System.Random random = new System.Random();
+        var seed = new string(Enumerable.Range(0, length)
+            .Select(_ => chars[random.Next(chars.Length)])
+            .ToArray()); 
+        Debug.Log("RANDOM SEED OLUŞTURULDU: " + seed + "");
+        return  seed;
     }
 
     public async Task StartClientWithRelay(string joinCode, string connectionType){
@@ -357,12 +380,14 @@ public class LobbyManager : NetworkBehaviour{
                 .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
 
             NetworkManager.Singleton.StartClient();
-            Debug.Log("Client Relaya Bağlandı");
+            Debug.Log("Client Relaya Bağlandı");  
         }
         catch (Exception ex){
             Debug.Log(ex.Message);
         }
     }
+    
+ 
 
     public override void OnNetworkSpawn(){
         if (!IsOwner) return;
@@ -410,7 +435,8 @@ public class LobbyManager : NetworkBehaviour{
 
                 if (HostCallBacks != null){
                     HostCallBacks.PlayerJoined -= OnPlayerJoined;
-                    HostCallBacks.PlayerLeft -= OnPlayerLeft;
+                    HostCallBacks.PlayerLeft -= OnPlayerLeft; 
+                    HostCallBacks.DataChanged -= LobiVerisiDegisti;
                 } 
                 CurrentLobby = null;
                 StopHeartbeat();
