@@ -75,8 +75,7 @@ public class LobbyListUI : MonoBehaviour{
 
         //start Relay
         StartRelay.clicked += async () => {
-            var maxConnections = 4;
-            await LobbyManager.Instance.StartHostWithRelay(maxConnections);
+            await LobbyManager.Instance.StartHostWithRelay();
         };
     }
 
@@ -156,9 +155,14 @@ public class LobbyListUI : MonoBehaviour{
     }
 
     private async Task OnJoinLobbyClicked(string lobbyID, Button katilBtn, Button ayrilBtn){
-        bool joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
-        ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
-        katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
+        try{
+            bool joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
+            ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
+            katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
+        }
+        catch (Exception e){
+            Console.WriteLine($"Hata OnJoinLobbyClicked içinde {e.Message}"); 
+        }
     }
 
     private async Task OnLeaveLobbyClicked(){

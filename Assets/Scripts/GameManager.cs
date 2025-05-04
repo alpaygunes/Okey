@@ -36,9 +36,14 @@ public class GameManager : MonoBehaviour{
         Instance = this;
     }
 
-    private void Start(){ 
-        seed = LobbyManager.Instance.GameSeed;
-        //seed = PlayerPrefs.GetString("Seed");
+    private void Start(){
+        if (LobbyManager.Instance){
+            seed = LobbyManager.Instance.GameSeed;
+        }
+        else{
+            //seed = PlayerPrefs.GetString("Seed");
+            seed = "1234";
+        }
         Debug.Log("SEED  --  "+seed);
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();

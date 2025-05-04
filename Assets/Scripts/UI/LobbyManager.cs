@@ -174,6 +174,15 @@ public class LobbyManager : NetworkBehaviour{
     public async Task<bool> JoinLobbyByID(string lobbyID){
         if (string.IsNullOrEmpty(lobbyID)) return false;  
         try{
+            // 1. Lobi bilgilerini al (henüz katılmadan)
+            var lobbyInfo = await LobbyService.Instance.GetLobbyAsync(lobbyID);
+        
+            // 2. Mevcut oyuncu sayısı ile maxPlayers’ı karşılaştır
+            if (lobbyInfo.Players.Count >= lobbyInfo.MaxPlayers) {
+                Debug.Log("Lobi dolu, katılamazsınız.");
+                return false;
+            }
+            
             var options = new JoinLobbyByIdOptions
             {
                 Player = new Player
@@ -186,8 +195,7 @@ public class LobbyManager : NetworkBehaviour{
                         }
                     }
                 }
-            };
-
+            }; 
 
             var joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyID, options);
             CurrentLobby = joinedLobby;
@@ -319,7 +327,7 @@ public class LobbyManager : NetworkBehaviour{
     }
 
 
-    public async Task StartHostWithRelay(int maxConnections)
+    public async Task StartHostWithRelay()
     {
         if (CurrentLobby.HostId != AuthenticationService.Instance.PlayerId)
         {
@@ -335,7 +343,7 @@ public class LobbyManager : NetworkBehaviour{
 
         try
         {
-            var allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+            var allocation = await RelayService.Instance.CreateAllocationAsync(maxPlayers);
             NetworkManager.Singleton.GetComponent<UnityTransport>()
                 .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
             var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
@@ -402,15 +410,37 @@ public class LobbyManager : NetworkBehaviour{
     [ServerRpc]
     void HerkesteOyunBaslasinServerRpc(ulong clientId){
         connectedClients.Add(clientId);
-        if (connectedClients.Count > 0){
-            StartGameClientRpc();
-        }
+        StartGameClientRpc();
     }
 
     [ClientRpc]
-    void StartGameClientRpc(){
+    void StartGameClientRpc(){ 
+        Debug.Log("StartGameClientRpc çağrıldı");
+
+        if (IsHost)
+        {
+            // Sadece host bu kontrolü yapacak
+            StartCoroutine(HostBeklesinVeOyunBaslasin());
+        }
+        else
+        {
+            // Diğer client'lar direkt sahne yükleyebilir (istersen senkronizasyon eklersin)
+            NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
+            Debug.Log("Client sahne bekliyor (veya yükleniyor)");
+        }
+    } 
+    
+    private IEnumerator HostBeklesinVeOyunBaslasin()
+    {
+        Debug.Log("Host oyuncu sayısını bekliyor...");
+
+        // 2 oyuncuya (host + 1 client) ulaşılana kadar bekle
+        yield return new WaitUntil(() => NetworkManager.Singleton.ConnectedClients.Count >= 2);
+
+        Debug.Log("Oyuncu sayısı 2 oldu. Sahne yükleniyor...");
         NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }
+
 
     //  /////////////////////////////////////////  LOBBY SİLME İŞLEMLERİ ////////////////////////////////////
 

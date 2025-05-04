@@ -1,1 +1,2 @@
 1 - Lobide "Katıl Düğmesi" ne tıklanınca lobi doluysa oyuncu uyarılmalı.
+2 - Multyplayer sahnesi gereksiz artık. GameSeed lobimanager içinde oluşturup kullanılıyor.

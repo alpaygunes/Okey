@@ -52,8 +52,9 @@ public class Counter : MonoBehaviour{
                     tweener.Kill();
                     tweener = null;
                     progress.transform.position = _startPos; 
+                    Puanlama.Instance.Puanla(); 
                 });;
-            Puanlama.Instance.Puanla(); 
+            
         }
         else{
             TweenReset();

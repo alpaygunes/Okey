@@ -58,7 +58,10 @@ public class Puanlama : MonoBehaviour{
             HamleSayisi++;
             var skor = ToplamPuan;
             var _hameleSayisi = HamleSayisi;
-            var clientName = LobbyManager.Instance.myDisplayName; 
+            string clientName = "Bos_clientName";
+            if (LobbyManager.Instance){
+                clientName = LobbyManager.Instance.myDisplayName; 
+            }
             Instance.SkorBoardiGuncelle();
             OyunKurallari.Instance.DurumuKontrolEt();
             NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName);
