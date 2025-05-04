@@ -14,6 +14,7 @@ using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class LobbyManager : NetworkBehaviour{
@@ -23,24 +24,27 @@ public class LobbyManager : NetworkBehaviour{
     public Lobby CurrentLobby;
     private bool isRelayActive = false;
     private string playerId = null;
-    private const int maxPlayers = 4;
+    private const int MaxPlayers = 4;
     private const string LobbyName = "okey";
     private Coroutine heartbeatCoroutine;
     private readonly HashSet<ulong> connectedClients = new HashSet<ulong>();
     public string myDisplayName;
-    private LobbyEventCallbacks HostCallBacks;
+    private LobbyEventCallbacks hostCallBacks;
     private Coroutine lobbyUpdateCoroutine;
-    public string GameSeed;  
+    public string gameSeed;  
 
     private async void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
 
-        if (Instance == null){
-            Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            return;
         }
-        else{
-            Destroy(gameObject);
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
+
 
         try{
             await UnityServices.InitializeAsync();
@@ -100,18 +104,18 @@ public class LobbyManager : NetworkBehaviour{
                 }
             };
 
-            CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(LobbyName, maxPlayers, options);
+            CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(LobbyName, MaxPlayers, options);
             StartHeartbeat();
             LobbyListUI.Instance.CreatedLobiCodeTxt.text = CurrentLobby.LobbyCode;
             LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex;
             LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
 
-            HostCallBacks = new LobbyEventCallbacks();
-            HostCallBacks.PlayerJoined += OnPlayerJoined;
-            HostCallBacks.PlayerLeft += OnPlayerLeft;
-            HostCallBacks.DataChanged += LobiVerisiDegisti;
-            await LobbyService.Instance.SubscribeToLobbyEventsAsync(CurrentLobby.Id, HostCallBacks);
+            hostCallBacks = new LobbyEventCallbacks();
+            hostCallBacks.PlayerJoined += OnPlayerJoined;
+            hostCallBacks.PlayerLeft += OnPlayerLeft;
+            hostCallBacks.DataChanged += LobiVerisiDegisti;
+            await LobbyService.Instance.SubscribeToLobbyEventsAsync(CurrentLobby.Id, hostCallBacks);
             // lobiden düşen olabilir. listeyi güncelleme için belli aralıklarda çalışan coruotin
             if (lobbyUpdateCoroutine == null){
                 lobbyUpdateCoroutine = StartCoroutine(UpdateLobbyLoop());
@@ -254,8 +258,8 @@ public class LobbyManager : NetworkBehaviour{
         if (data.TryGetValue("GameSeed", out var GameSeedData)){
             string gameSeedData = GameSeedData.Value.Value;
             if (!isRelayActive){
-                GameSeed = gameSeedData;
-                Debug.Log("CLIENT RANDOM SEED ALINDI: " + GameSeed + "");
+                gameSeed = gameSeedData;
+                Debug.Log("CLIENT RANDOM SEED ALINDI: " + gameSeed + "");
             }
         }
         
@@ -343,19 +347,19 @@ public class LobbyManager : NetworkBehaviour{
 
         try
         {
-            var allocation = await RelayService.Instance.CreateAllocationAsync(maxPlayers);
+            var allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
             NetworkManager.Singleton.GetComponent<UnityTransport>()
                 .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
             var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
             // Lobby'nin relay koduyla güncellenmesi
-            GameSeed = GetRandomSeed();
+            gameSeed = GetRandomSeed();
             await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
             {
                 Data = new Dictionary<string, DataObject>
                 {
                     { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, relayCode) },
-                    { "GameSeed" , new DataObject(DataObject.VisibilityOptions.Public , GameSeed)}
+                    { "GameSeed" , new DataObject(DataObject.VisibilityOptions.Public , gameSeed)}
                 }
             });
 
@@ -463,10 +467,10 @@ public class LobbyManager : NetworkBehaviour{
                 LobbyListUI.Instance.CreatedLobiCodeTxt.text = null;
                 LobbyListUI.Instance.PlayerList.Clear();
 
-                if (HostCallBacks != null){
-                    HostCallBacks.PlayerJoined -= OnPlayerJoined;
-                    HostCallBacks.PlayerLeft -= OnPlayerLeft; 
-                    HostCallBacks.DataChanged -= LobiVerisiDegisti;
+                if (hostCallBacks != null){
+                    hostCallBacks.PlayerJoined -= OnPlayerJoined;
+                    hostCallBacks.PlayerLeft -= OnPlayerLeft; 
+                    hostCallBacks.DataChanged -= LobiVerisiDegisti;
                 } 
                 CurrentLobby = null;
                 StopHeartbeat();

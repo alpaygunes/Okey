@@ -6,12 +6,8 @@ using UnityEngine.Serialization;
 
 public class Counter : MonoBehaviour{
     public static Counter Instance;
-    private float GeriSayimSuresi;
-    //private Vector3 _startPos;
-    public Coroutine _countdownCoroutine;
-    //private GameObject progress;
-    //public GameObject Button; 
-    //private Tweener tweener = null;
+    private float GeriSayimSuresi; 
+    public Coroutine _countdownCoroutine; 
 
     private void Awake(){
         if (Instance == null){
@@ -22,12 +18,8 @@ public class Counter : MonoBehaviour{
         }
     }
 
-    private void Start(){
-        //Button = transform.Find("Button").gameObject;
-        //Button.SetActive(GameManager.Instance.PerKontrolDugmesiOlsun);
-        GeriSayimSuresi = GameManager.Instance.GeriSayimSuresi;
-        //progress = GameObject.Find("Progress");
-        //_startPos = progress.transform.position;
+    private void Start(){ 
+        GeriSayimSuresi = GameManager.Instance.GeriSayimSuresi; 
     }
 
     public void GeriSayimAnimasyonunuBaslat(){ 

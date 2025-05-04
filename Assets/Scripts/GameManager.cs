@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour{
 
     private void Start(){
         if (LobbyManager.Instance){
-            seed = LobbyManager.Instance.GameSeed;
+            seed = LobbyManager.Instance.gameSeed;
         }
         else{
             //seed = PlayerPrefs.GetString("Seed");
@@ -113,10 +113,6 @@ public class GameManager : MonoBehaviour{
                     TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
                     PerIcinTasTavsiye.Instance.Basla();
                 }
-                //else if (hit.collider.gameObject == Counter.Instance.Button){
-                    //Counter.Instance.TweenReset();
-                    //Puanlama.Instance.ButtonlaPuanlamaYap();
-                //}
             }
         }  
     }
