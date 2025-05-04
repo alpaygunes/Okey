@@ -180,7 +180,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3755812
 Transform:
   m_ObjectHideFlags: 0
@@ -634,7 +634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &624114091
 Transform:
   m_ObjectHideFlags: 0
@@ -858,7 +858,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &735725119
 Transform:
   m_ObjectHideFlags: 0
@@ -1111,6 +1111,8 @@ GameObject:
   m_Component:
   - component: {fileID: 812520132}
   - component: {fileID: 812520131}
+  - component: {fileID: 812520133}
+  - component: {fileID: 812520134}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -1152,6 +1154,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &812520133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812520130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 981f7555b35e314759f4db0f8aac3c08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &812520134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812520130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f021963cd53a9a299823d4c5fec8da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GeriSayimSuresi: 0
+  Button: {fileID: 0}
 --- !u!1 &864947298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1198,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &864947299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1540,8 +1568,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f4aa4f9651bb582e9ae17cea759c03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toplamPuanTMP: {fileID: 0}
-  KalanTasOraniTMP: {fileID: 0}
   HamleSayisi: 0
 --- !u!4 &1416006419
 Transform:
@@ -1977,7 +2003,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1964857373
 Transform:
   m_ObjectHideFlags: 0
@@ -2057,14 +2083,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1986846673}
-  - component: {fileID: 1986846674}
   m_Layer: 0
   m_Name: Counter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1986846673
 Transform:
   m_ObjectHideFlags: 0
@@ -2082,20 +2107,6 @@ Transform:
   - {fileID: 735725119}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1986846674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1986846672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f021963cd53a9a299823d4c5fec8da4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GeriSayimSuresi: 0
-  Button: {fileID: 0}
 --- !u!1 &1993495528
 GameObject:
   m_ObjectHideFlags: 0

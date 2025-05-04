@@ -34,9 +34,10 @@ public class Tas : MonoBehaviour{
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
         uiCamera = Camera.main;
-        skorTxtPosition = uiCamera.ScreenToWorldPoint(
-            new Vector3(GameObject.Find("Skor").transform.position.x,
-                GameObject.Find("Skor").transform.position.y, 30f));
+        // skorTxtPosition = uiCamera.ScreenToWorldPoint(
+        //     new Vector3(GameObject.Find("Skor").transform.position.x,
+        //         GameObject.Find("Skor").transform.position.y, 30f));
+        skorTxtPosition = new Vector3(0, 0, 0);
     }
 
     private void Start(){
@@ -75,9 +76,10 @@ public class Tas : MonoBehaviour{
             cepInstance.Dolu = false;
         }
 
-        var kalanTas = Int32.Parse(Puanlama.Instance.KalanTasOraniTMP.text);
+        var kalanTas = Int32.Parse(OyunSahnesiUI.Instance.KalanTasSayisi.text);
         kalanTas--;
-        Puanlama.Instance.KalanTasOraniTMP.text = kalanTas.ToString();
+        //Puanlama.Instance.KalanTasOraniTMP.text = kalanTas.ToString();
+        OyunSahnesiUI.Instance.KalanTasSayisi.text = kalanTas.ToString();
     }
 
     public void BosCebeYerles(){

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour{
-    public readonly float GeriSayimSuresi = 5f;
+    public readonly float GeriSayimSuresi = 100f; // sadece bir rakam. sn değil.
     private readonly int _colonCount = 5;
     public readonly int TasCount = 100;
     public readonly int CepSayisi = 5;
@@ -113,10 +113,10 @@ public class GameManager : MonoBehaviour{
                     TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
                     PerIcinTasTavsiye.Instance.Basla();
                 }
-                else if (hit.collider.gameObject == Counter.Instance.Button){
-                    Counter.Instance.TweenReset();
-                    Puanlama.Instance.ButtonlaPuanlamaYap();
-                }
+                //else if (hit.collider.gameObject == Counter.Instance.Button){
+                    //Counter.Instance.TweenReset();
+                    //Puanlama.Instance.ButtonlaPuanlamaYap();
+                //}
             }
         }  
     }

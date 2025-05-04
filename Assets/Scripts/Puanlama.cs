@@ -9,11 +9,11 @@ using UnityEngine.Serialization;
 
 public class Puanlama : MonoBehaviour{
     public static Puanlama Instance { get; private set; }
-    private TextMeshProUGUI textMesh0; 
-    private TextMeshProUGUI textMesh1;
-    public TextMeshProUGUI toplamPuanTMP; 
-    private TextMeshProUGUI hamleSayisiTMP;
-    public TextMeshProUGUI KalanTasOraniTMP;
+    //private TextMeshProUGUI textMesh0; 
+    //private TextMeshProUGUI textMesh1;
+    //public TextMeshProUGUI toplamPuanTMP; 
+    //private TextMeshProUGUI hamleSayisiTMP;
+    //public TextMeshProUGUI KalanTasOraniTMP;
     //public int PerlerdenKazanilanPuan = 1; 
     private Camera uiCamera;  
     private AudioSource _audioSource_puan_sayac; 
@@ -63,18 +63,22 @@ public class Puanlama : MonoBehaviour{
                 clientName = LobbyManager.Instance.myDisplayName; 
             }
             Instance.SkorBoardiGuncelle();
-            OyunKurallari.Instance.DurumuKontrolEt();
-            NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName);
+            if (OyunKurallari.Instance){
+                OyunKurallari.Instance.DurumuKontrolEt();
+                NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName);
+            } 
+            
         };
         // boş bir değişim yaratalım. skorlsitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
         NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(0,0,LobbyManager.Instance.myDisplayName);
  
-        toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
-        hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
-        KalanTasOraniTMP = GameObject.Find("KalanTasOrani").GetComponent<TextMeshProUGUI>();
-        textMesh0 = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
-        textMesh1 = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>();
-        KalanTasOraniTMP.text = GameManager.Instance.TasCount.ToString();
+        //toplamPuanTMP = GameObject.Find("Skor").GetComponent<TextMeshProUGUI>();
+        //hamleSayisiTMP = GameObject.Find("HamleSayisi").GetComponent<TextMeshProUGUI>();
+        //KalanTasOraniTMP = GameObject.Find("KalanTasOrani").GetComponent<TextMeshProUGUI>();
+        //textMesh0 = GameObject.Find("FlatingText0").GetComponent<TextMeshProUGUI>();
+        //textMesh1 = GameObject.Find("FlatingText1").GetComponent<TextMeshProUGUI>();
+        //KalanTasOraniTMP.text = GameManager.Instance.TasCount.ToString();
+        OyunSahnesiUI.Instance.KalanTasSayisi.text = GameManager.Instance.TasCount.ToString();
     }
 
     public void IstakadakiPerdekiTaslariToparla(){
@@ -286,13 +290,17 @@ public class Puanlama : MonoBehaviour{
     }
 
     public void SkorBoardiGuncelle(){
-        hamleSayisiTMP.text = HamleSayisi.ToString(); 
-        toplamPuanTMP.text = ToplamPuan .ToString();
+        //hamleSayisiTMP.text = HamleSayisi.ToString(); 
+        //toplamPuanTMP.text = ToplamPuan .ToString();
+        OyunSahnesiUI.Instance.Skor.text = ToplamPuan.ToString();
+        OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi.ToString();
     }
 
-  
-
     public void ButtonlaPuanlamaYap(){ 
+        if (Counter.Instance._countdownCoroutine != null){
+            Counter.Instance.StopCoroutine(Counter.Instance._countdownCoroutine);
+        }
+        
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
