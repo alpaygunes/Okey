@@ -5,5 +5,3 @@ public class Cep : MonoBehaviour{
     public Tas TasInstance = null;
     public int ID;
 }
-
-

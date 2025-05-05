@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5671100608469356914}
   - component: {fileID: 9032506515582925061}
-  - component: {fileID: -5854131044588425903}
+  - component: {fileID: 3778792208067024583}
   m_Layer: 0
   m_Name: IstakaCebi
   m_TagString: Untagged
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-5854131044588425903
+--- !u!114 &3778792208067024583
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
