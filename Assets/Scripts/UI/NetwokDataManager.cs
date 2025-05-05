@@ -24,8 +24,7 @@ public class NetwokDataManager : NetworkBehaviour{
         if (IsServer){
             // Host olduğunda ilk client kendisi olur
             NetworkManager.Singleton.OnServerStarted += () => {
-                foreach (var client in NetworkManager.Singleton.ConnectedClientsList){
-                    Debug.Log($"Host client Addoyuncu yapıldı {client.ClientId}");
+                foreach (var client in NetworkManager.Singleton.ConnectedClientsList){ 
                     AddOyuncu(client.ClientId);
                 }
                 NetworkManager.Singleton.OnClientConnectedCallback += AddOyuncu;
@@ -37,8 +36,7 @@ public class NetwokDataManager : NetworkBehaviour{
         }
     }
 
-    private void AddOyuncu(ulong clientId){
-        Debug.Log($" AddOyuncu  {clientId} OyuncuListesi.count {OyuncuListesi.Count}");
+    private void AddOyuncu(ulong clientId){  
         if (!OyuncuVarMi(clientId)){
             OyuncuListesi.Add(new PlayerData
             {
@@ -60,22 +58,22 @@ public class NetwokDataManager : NetworkBehaviour{
     }
 
 
-    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
+    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){    
         if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.bitti){
             StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }
     
     
-    private IEnumerator SkorListesiniYavasGuncelle(){
+    private IEnumerator SkorListesiniYavasGuncelle(){ 
         yield return new WaitUntil(() => OyunSonu.Instance != null);
         OyunSonu.Instance.SonucListesiniGoster(OyuncuListesi); 
     }
-    
+     
     
     [ServerRpc(RequireOwnership = false)]
-    public void SkorVeHamleGuncelleServerRpc(  int skor, int hamleSayisi,FixedString64Bytes clientName, ServerRpcParams rpcParams = default){
-        Debug.Log($" SkorVeHamleGuncelleServerRpc  {OyuncuListesi.Count} OyuncuListesi.count {OyuncuListesi.Count}");
+    public void SkorVeHamleGuncelleServerRpc(  int skor, int hamleSayisi,FixedString64Bytes clientName, ServerRpcParams rpcParams = default){  
+ 
         for (int i = 0; i < OyuncuListesi.Count; i++){
             if (OyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId ){ 
                 OyuncuListesi[i] = new PlayerData

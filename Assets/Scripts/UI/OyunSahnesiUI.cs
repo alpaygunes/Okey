@@ -31,14 +31,11 @@ public class OyunSahnesiUI : MonoBehaviour
         KontrolEt = rootElement.Q<Button>("KontrolEt");
         Exit = rootElement.Q<Button>("Exit");
         GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari");
+         
+        KontrolEt.clicked += ButtonlaPuanlamaYap; 
         
-        // Lobby Create Penceresi
-        KontrolEt.clicked += ButtonlaPuanlamaYap;
-        
-        // Lobby Create Penceresi
-        Exit.clicked += async () => {
-            SceneManager.LoadScene("LobbyManager");
-            await LobbyListUI.Instance.LobidenAyril();
+        Exit.clicked += () => {
+            LobbyManager.Instance.CikmakIisteginiGonder(); 
         };
 
         KontrolEt.visible = GameManager.Instance.PerKontrolDugmesiOlsun;

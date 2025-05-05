@@ -28,7 +28,7 @@ public class LobbyListUI : MonoBehaviour{
     private VisualElement rootElement;
     public Button katilBtn;
     public Button ayrilBtn;
-    private Coroutine lobbyListUpdateCoroutine;
+    public Coroutine lobbyListUpdateCoroutine;
 
     private void Awake(){
         if (Instance == null){
@@ -36,6 +36,12 @@ public class LobbyListUI : MonoBehaviour{
         }
         else{
             Destroy(gameObject);
+        }
+    }
+
+    private void OnDisable(){
+        if (lobbyListUpdateCoroutine!=null){ 
+            StopCoroutine(lobbyListUpdateCoroutine); 
         }
     }
 
@@ -85,8 +91,7 @@ public class LobbyListUI : MonoBehaviour{
         OnLobbyListButtonClicked(); 
     }
 
-    public async void OnLobbyListButtonClicked(){
-        Debug.Log("OnLobbyListButtonClicked ."); 
+    public async void OnLobbyListButtonClicked(){ 
         try{
             response = await LobbyManager.Instance.GetLobbyList();
             if (response != null){
@@ -100,8 +105,7 @@ public class LobbyListUI : MonoBehaviour{
                     row.AddToClassList("lobbyListRow");
                     
                     var player = lobby.Players.FirstOrDefault(p => p.Id == AuthenticationService.Instance.PlayerId);
-                    if ( player != null){
-                        Debug.Log("Player zaten JOİN");
+                    if ( player != null){ 
                         ayrilBtn.style.display = DisplayStyle.Flex;
                         katilBtn.style.display = DisplayStyle.None;
                     }
@@ -174,8 +178,10 @@ public class LobbyListUI : MonoBehaviour{
             await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id,
                 AuthenticationService.Instance.PlayerId);
             ayrilBtn.style.display = DisplayStyle.None;
-            katilBtn.style.display = DisplayStyle.Flex;
-            Debug.Log(" LobidenAyril Ayrıldı");
+            katilBtn.style.display = DisplayStyle.Flex; 
+            
+            // abonelikleri bitir
+            LobbyManager.Instance.AbonelikeriBitir();
         }
         catch (Exception e){
             Console.WriteLine($"LobidenAyril başarısız {e.Message}");

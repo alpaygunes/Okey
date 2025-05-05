@@ -76,11 +76,11 @@ public class OyunKurallari:NetworkBehaviour
         }
     }
 
-    public  void DurumuKontrolEt(){
+    public  void DurumuKontrolEt(){ 
         if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
             if (Puanlama.Instance.HamleSayisi >= HamleLimit){
-                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti;
-                SceneManager.LoadScene("OyunSonu",LoadSceneMode.Additive);
+                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
+                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             }
         } 
     }
