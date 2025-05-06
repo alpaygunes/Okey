@@ -1,15 +1,12 @@
-using System;
 using System.Collections;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine; 
 
 public class NetworkDataManager : NetworkBehaviour{
-    public static NetworkDataManager Instance;
-
-    // ✅ Doğrudan burada başlat
-    private NetworkList<PlayerData> OyuncuListesi = new NetworkList<PlayerData>();
+    public static NetworkDataManager Instance; 
+    private NetworkList<PlayerData> oyuncuListesi = new NetworkList<PlayerData>();
+    private Coroutine skorListesiniYavasGuncelleCoroutine;
 
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -20,7 +17,6 @@ public class NetworkDataManager : NetworkBehaviour{
         Instance = this;
         DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
     }
-
 
     public override void OnNetworkSpawn(){
         if (IsServer){
@@ -34,17 +30,22 @@ public class NetworkDataManager : NetworkBehaviour{
         }
 
         if (IsClient){
-            OyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi; 
+            oyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi; 
         }
     }
 
     private void OnDisable(){
-        OyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi; 
+        if (skorListesiniYavasGuncelleCoroutine!=null){
+            StopCoroutine(skorListesiniYavasGuncelleCoroutine);
+        }
+        NetworkManager.Singleton.OnClientConnectedCallback -= AddOyuncu;
+        oyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi; 
+        Debug.Log("NetworkDataManager OnDisable");
     }
 
     private void AddOyuncu(ulong clientId){  
         if (!OyuncuVarMi(clientId)){
-            OyuncuListesi.Add(new PlayerData
+            oyuncuListesi.Add(new PlayerData
             {
                 ClientId = clientId,
                 Skor = 0,
@@ -55,8 +56,8 @@ public class NetworkDataManager : NetworkBehaviour{
     }
 
     private bool OyuncuVarMi(ulong clientId){
-        for (int i = 0; i < OyuncuListesi.Count; i++){
-            if (OyuncuListesi[i].ClientId == clientId){
+        for (int i = 0; i < oyuncuListesi.Count; i++){
+            if (oyuncuListesi[i].ClientId == clientId){
                 return true;
             }
         }
@@ -65,24 +66,24 @@ public class NetworkDataManager : NetworkBehaviour{
 
 
     private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){    
-        if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.bitti){
-            StartCoroutine(SkorListesiniYavasGuncelle());
+        if (GameManager.Instance?.oyunDurumu == GameManager.OynanmaDurumu.bitti){
+            skorListesiniYavasGuncelleCoroutine  = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }
     
     
     private IEnumerator SkorListesiniYavasGuncelle(){ 
         yield return new WaitUntil(() => OyunSonu.Instance != null);
-        OyunSonu.Instance.SonucListesiniGoster(OyuncuListesi); 
+        OyunSonu.Instance.SonucListesiniGoster(oyuncuListesi); 
     }
      
     
     [ServerRpc(RequireOwnership = false)]
     public void SkorVeHamleGuncelleServerRpc(  int skor, int hamleSayisi,FixedString64Bytes clientName, ServerRpcParams rpcParams = default){  
  
-        for (int i = 0; i < OyuncuListesi.Count; i++){
-            if (OyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId ){ 
-                OyuncuListesi[i] = new PlayerData
+        for (int i = 0; i < oyuncuListesi.Count; i++){
+            if (oyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId ){ 
+                oyuncuListesi[i] = new PlayerData
                 {
                     ClientId = rpcParams.Receive.SenderClientId,
                     Skor = skor,

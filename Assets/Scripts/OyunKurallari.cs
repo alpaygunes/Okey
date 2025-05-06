@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Unity.Netcode;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+using Unity.Netcode; 
 
 public class OyunKurallari:NetworkBehaviour
 {
@@ -12,7 +8,7 @@ public class OyunKurallari:NetworkBehaviour
     public int HamleLimit { get; private set; }
     public int SkorLimiti { get; private set; }
     public float ZamanLimiti { get; private set; }
-    public Dictionary<ulong, int> _hamleLimitiDolanClientIDlerinDic = new Dictionary<ulong, int>();
+    //public Dictionary<ulong, int> _hamleLimitiDolanClientIDlerinDic = new Dictionary<ulong, int>();
     public Dictionary<ulong, Dictionary<string, string>> SkorListesiDic = new();
     
     public enum OyunTipleri
@@ -59,7 +55,7 @@ public class OyunKurallari:NetworkBehaviour
             case OyunTipleri.ZamanLimitli:
                 HamleLimit = 0;
                 SkorLimiti = 0;
-                ZamanLimiti = 120f;
+                ZamanLimiti = 120;
                 break;
 
             case OyunTipleri.RakibeGonder:
@@ -76,14 +72,14 @@ public class OyunKurallari:NetworkBehaviour
         }
     }
 
-    public  void DurumuKontrolEt(){ 
-        if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
-            if (Puanlama.Instance.HamleSayisi >= HamleLimit){
-                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
-                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-            }
-        } 
-    }
+    // public  void DurumuKontrolEt(){ 
+    //     if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
+    //         if (Puanlama.Instance.HamleSayisi >= HamleLimit){
+    //             GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
+    //             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+    //         }
+    //     } 
+    // }
     
 
 }

@@ -62,8 +62,7 @@ public class LobbyListUI : MonoBehaviour{
         StartRelay.style.display = DisplayStyle.None;
 
         // Lobby Yaratma Butonu
-        CreateLobbyBtn.style.display =
-            (LobbyManager.Instance?.CurrentLobby == null) ? DisplayStyle.Flex : DisplayStyle.None;
+        CreateLobbyBtn.style.display = (LobbyManager.Instance?.CurrentLobby == null) ? DisplayStyle.Flex : DisplayStyle.None;
         CreateLobbyBtn.clicked += () => { _ = LobbyManager.Instance?.LobbyCreate(); };
 
         // Lobby Kapatma Butonu 

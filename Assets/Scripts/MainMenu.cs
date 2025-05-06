@@ -7,14 +7,31 @@ using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button; 
 
 public class MainMenu : MonoBehaviour{
-    public Button HamleLimitliBtn; 
+    private Button HamleLimitliBtn; 
+    private Button ZamanLimitliBtn; 
 
     private void OnEnable(){ 
         VisualElement rootElement = GetComponent<UIDocument>().rootVisualElement;
-        HamleLimitliBtn = rootElement.Q<Button>("HamleLimitliBtn"); 
-        HamleLimitliBtn.clicked += () => { 
+        HamleLimitliBtn = rootElement.Q<Button>("HamleLimitliBtn");
+        HamleLimitliBtn.clicked += SearchHamleLimitliGame;
+        
+        ZamanLimitliBtn = rootElement.Q<Button>("ZamanLimitliBtn");
+        ZamanLimitliBtn.clicked += SearchZamanLimitliGame;
+    }
+
+    private void SearchZamanLimitliGame(){
+        OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.ZamanLimitli;
+        SceneManager.LoadScene("LobbyManager");
+    }
+
+    private void SearchHamleLimitliGame(){ 
             OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.HamleLimitli;
             SceneManager.LoadScene("LobbyManager");
-        };
-    } 
+    }
+
+    private void OnDisable(){
+        HamleLimitliBtn.clicked -= SearchHamleLimitliGame;
+        ZamanLimitliBtn.clicked -= SearchZamanLimitliGame;
+        Debug.Log("MainMenu OnDisable");
+    }
 }

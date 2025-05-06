@@ -15,36 +15,34 @@ public class GameManager : MonoBehaviour{
     [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
     [NonSerialized] public bool OtomatikPerkontrolu = true;
     public static GameManager Instance{ get; private set; }
-    
-    
-    public OynanmaDurumu OyunDurumu; 
-    public enum OynanmaDurumu
-    {
+
+
+    public OynanmaDurumu oyunDurumu;
+
+    public enum OynanmaDurumu{
         bitti,
-        oynaniyor, 
+        oynaniyor,
     }
 
 
-
     void Awake(){
-        OyunDurumu = OynanmaDurumu.oynaniyor;
-        
+        oyunDurumu = OynanmaDurumu.oynaniyor; 
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
 
-        Instance = this; 
+        Instance = this;
     }
 
     private void Start(){
         if (LobbyManager.Instance){
             seed = LobbyManager.Instance.gameSeed;
         }
-        else{
-            //seed = PlayerPrefs.GetString("Seed");
+        else{ 
             seed = "1234";
-        } 
+        }
+
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
         KutulariHazirla();
@@ -80,12 +78,9 @@ public class GameManager : MonoBehaviour{
     }
 
     void Update(){
-        if (OyunDurumu == OynanmaDurumu.bitti) return;
-        
-        
+        if (oyunDurumu == OynanmaDurumu.bitti) return;
 
-        
-        
+
 #if UNITY_ANDROID || UNITY_IOS
     if (Input.touchCount > 0)
     {
@@ -97,23 +92,20 @@ public class GameManager : MonoBehaviour{
         }
     }
 #else
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.GetMouseButtonDown(0)){
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastVeIslem(worldPoint);
         }
 #endif
-        
-        void RaycastVeIslem(Vector2 worldPoint)
-        {
+
+        void RaycastVeIslem(Vector2 worldPoint){
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-            if (hit.collider != null)
-            {
+            if (hit.collider != null){
                 if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
                     TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
                     PerIcinTasTavsiye.Instance.Basla();
                 }
             }
-        }  
+        }
     }
 }

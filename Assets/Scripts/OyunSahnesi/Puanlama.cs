@@ -33,6 +33,8 @@ public class Puanlama : MonoBehaviour{
         }
     } 
     
+    public int OyununBitimineKalanZaman{ get; set; }
+    
     private SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
     
     void Awake(){
@@ -62,7 +64,7 @@ public class Puanlama : MonoBehaviour{
             } 
             Instance.SkorBoardiGuncelle();
             if (OyunKurallari.Instance){ 
-                OyunKurallari.Instance.DurumuKontrolEt();
+                BasarilariKontrolEt();
                 NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
             } 
             
@@ -71,6 +73,23 @@ public class Puanlama : MonoBehaviour{
         NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(1,0,LobbyManager.Instance.myDisplayName);
         OyunSahnesiUI.Instance.KalanTasSayisi.text = GameManager.Instance.TasCount.ToString();
     }
+
+    private void BasarilariKontrolEt(){
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
+            if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
+                GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
+                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+            }
+        } 
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
+            if (OyununBitimineKalanZaman<=0){
+                GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
+                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+            }
+        } 
+    }
+
+
 
     public void IstakadakiPerdekiTaslariToparla(){
         
@@ -288,8 +307,8 @@ public class Puanlama : MonoBehaviour{
     }
 
     public void ButtonlaPuanlamaYap(){ 
-        if (Counter.Instance._countdownCoroutine != null){
-            Counter.Instance.StopCoroutine(Counter.Instance._countdownCoroutine);
+        if (Counter.Instance.CountdownCoroutine != null){
+            Counter.Instance.StopCoroutine(Counter.Instance.CountdownCoroutine);
         }
         
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
