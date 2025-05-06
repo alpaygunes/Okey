@@ -29,20 +29,23 @@ public class LobbyListUI : MonoBehaviour{
     public Button katilBtn;
     public Button ayrilBtn;
     public Coroutine lobbyListUpdateCoroutine;
+    const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 10f;
 
     private void Awake(){
-        if (Instance == null){
-            Instance = this;
+        if (Instance != null && Instance != this){
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            return;
         }
-        else{
-            Destroy(gameObject);
-        }
+
+        Instance = this; 
     }
 
     private void OnDisable(){
         if (lobbyListUpdateCoroutine!=null){ 
             StopCoroutine(lobbyListUpdateCoroutine); 
         }
+        
+        LobyListBtn.clicked -= OnLobbyListButtonClickedWrapper;
     }
 
     private void OnEnable(){
@@ -122,16 +125,12 @@ public class LobbyListUI : MonoBehaviour{
 
         if (lobbyListUpdateCoroutine==null){
             lobbyListUpdateCoroutine = StartCoroutine(LobbyListUpdateLoop());
-        } else { 
-            StopCoroutine(lobbyListUpdateCoroutine);
-            lobbyListUpdateCoroutine = null;
-        }
-        
+        }  
     }
 
     private IEnumerator LobbyListUpdateLoop(){
         while (true){
-            yield return new WaitForSeconds(10f); // her 10 saniyede bir bekle 
+            yield return new WaitForSeconds(LOBBY_LISTESINI_GUNCELLEME_PERYODU); // her 10 saniyede bir bekle 
             OnLobbyListButtonClicked();
         }
     }

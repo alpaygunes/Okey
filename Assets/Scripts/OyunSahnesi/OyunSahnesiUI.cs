@@ -15,12 +15,12 @@ public class OyunSahnesiUI : MonoBehaviour
     public ProgressBar GeriSayimBari;
     
     private void Awake(){
-        if (Instance == null){
-            Instance = this;
+        if (Instance != null && Instance != this){
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            return;
         }
-        else{
-            Destroy(gameObject);
-        }
+
+        Instance = this; 
     }
 
     private void OnEnable(){

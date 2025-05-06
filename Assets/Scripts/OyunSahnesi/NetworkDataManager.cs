@@ -5,18 +5,20 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NetwokDataManager : NetworkBehaviour{
-    public static NetwokDataManager Instance;
+public class NetworkDataManager : NetworkBehaviour{
+    public static NetworkDataManager Instance;
 
     // ✅ Doğrudan burada başlat
-    public NetworkList<PlayerData> OyuncuListesi = new NetworkList<PlayerData>();
+    private NetworkList<PlayerData> OyuncuListesi = new NetworkList<PlayerData>();
 
     private void Awake(){
-        DontDestroyOnLoad(this.gameObject);
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
+        if (Instance != null && Instance != this){
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
     }
 
 
@@ -34,6 +36,10 @@ public class NetwokDataManager : NetworkBehaviour{
         if (IsClient){
             OyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi; 
         }
+    }
+
+    private void OnDisable(){
+        OyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi; 
     }
 
     private void AddOyuncu(ulong clientId){  

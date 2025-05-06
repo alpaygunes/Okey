@@ -14,11 +14,12 @@ public class PerIcinTasTavsiye : MonoBehaviour{
     private static Dictionary<int, Dictionary<string, object>> AranacakKriterler = new Dictionary<int, Dictionary<string, object>>();
     
     private void Awake(){
-        if (Instance == null){
-            Instance = this;
-        }else{
-            Destroy(gameObject);
+        if (Instance != null && Instance != this){
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            return;
         }
+
+        Instance = this; 
     }
     
     public  void Basla(){

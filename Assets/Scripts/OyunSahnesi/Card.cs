@@ -24,10 +24,13 @@ public class Card : MonoBehaviour{
     
 
     void Awake(){
-        if (Instance != null && Instance != this) {
-            Destroy(this);
+        
+        if (Instance != null && Instance != this){
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
+
+        Instance = this; 
 
         Instance = this; 
         Size = GetComponent<SpriteRenderer>().bounds.size; 

@@ -36,10 +36,12 @@ public class Puanlama : MonoBehaviour{
     private SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
     
     void Awake(){
-        if (Instance != null && Instance != this) {
-            Destroy(this);
+        if (Instance != null && Instance != this){
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
+
+        Instance = this; 
 
         Instance = this;
         uiCamera = Camera.main; 
@@ -61,12 +63,12 @@ public class Puanlama : MonoBehaviour{
             Instance.SkorBoardiGuncelle();
             if (OyunKurallari.Instance){ 
                 OyunKurallari.Instance.DurumuKontrolEt();
-                NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
+                NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
             } 
             
         };
         // boş bir değişim yaratalım. skorlsitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
-        NetwokDataManager.Instance?.SkorVeHamleGuncelleServerRpc(1,0,LobbyManager.Instance.myDisplayName);
+        NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(1,0,LobbyManager.Instance.myDisplayName);
         OyunSahnesiUI.Instance.KalanTasSayisi.text = GameManager.Instance.TasCount.ToString();
     }
 

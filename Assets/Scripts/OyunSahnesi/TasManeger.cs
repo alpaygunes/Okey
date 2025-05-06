@@ -9,9 +9,10 @@ public class TasManeger : MonoBehaviour{
     
     void Awake(){
         if (Instance != null && Instance != this){
-            Destroy(this);
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
-        } 
+        }
+
         Instance = this; 
     }
   

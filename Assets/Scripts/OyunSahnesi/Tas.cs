@@ -33,10 +33,7 @@ public class Tas : MonoBehaviour{
         zemin = GameObject.Find("Zemin");
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
-        uiCamera = Camera.main;
-        // skorTxtPosition = uiCamera.ScreenToWorldPoint(
-        //     new Vector3(GameObject.Find("Skor").transform.position.x,
-        //         GameObject.Find("Skor").transform.position.y, 30f));
+        uiCamera = Camera.main; 
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 

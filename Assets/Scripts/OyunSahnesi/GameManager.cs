@@ -28,12 +28,13 @@ public class GameManager : MonoBehaviour{
 
     void Awake(){
         OyunDurumu = OynanmaDurumu.oynaniyor;
+        
         if (Instance != null && Instance != this){
-            Destroy(this);
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
 
-        Instance = this;
+        Instance = this; 
     }
 
     private void Start(){

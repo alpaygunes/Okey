@@ -20,10 +20,10 @@ public class OyunSonu : MonoBehaviour{
         Instance = this;
     }
 
-    public void SonucListesiniGoster(NetworkList<NetwokDataManager.PlayerData> _oyuncuListesi){ 
+    public void SonucListesiniGoster(NetworkList<NetworkDataManager.PlayerData> _oyuncuListesi){ 
         SonucListesi.Clear();
         // Burada yeni bir kopya liste oluştur 
-        var localList = new List<NetwokDataManager.PlayerData>();
+        var localList = new List<NetworkDataManager.PlayerData>();
         foreach (var oyuncu in _oyuncuListesi){
             localList.Add(oyuncu);
         } 
