@@ -95,9 +95,7 @@ public class GameManager : MonoBehaviour{
         if (OyununBitimiIcinGeriSayRoutineCoroutin!=null){
             StopCoroutine(OyununBitimiIcinGeriSayRoutineCoroutin);
             OyununBitimiIcinGeriSayRoutineCoroutin = null;
-        }
-        
-
+        } 
         Puanlama.Instance.LimitleriKontrolEt();
     }
 
@@ -131,4 +129,6 @@ public class GameManager : MonoBehaviour{
             }
         }
     }
+
+ 
 }

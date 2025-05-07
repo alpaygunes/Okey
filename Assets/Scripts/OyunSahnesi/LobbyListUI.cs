@@ -36,7 +36,6 @@ public class LobbyListUI : MonoBehaviour{
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
-
         Instance = this; 
     }
 
@@ -44,7 +43,6 @@ public class LobbyListUI : MonoBehaviour{
         if (lobbyListUpdateCoroutine!=null){ 
             StopCoroutine(lobbyListUpdateCoroutine); 
         }
-        
         LobyListBtn.clicked -= OnLobbyListButtonClickedWrapper;
     }
 
@@ -66,8 +64,7 @@ public class LobbyListUI : MonoBehaviour{
         CreateLobbyBtn.clicked += () => { _ = LobbyManager.Instance?.LobbyCreate(); };
 
         // Lobby Kapatma Butonu 
-        CloseLobbyBtn.style.display =
-            (LobbyManager.Instance?.CurrentLobby == null) ? DisplayStyle.None : DisplayStyle.Flex;
+        CloseLobbyBtn.style.display = (LobbyManager.Instance?.CurrentLobby == null) ? DisplayStyle.None : DisplayStyle.Flex;
         CloseLobbyBtn.clicked += () => {
             LobbyManager.Instance?.OyunculariCikartVeLobiyiSil(LobbyManager.Instance?.CurrentLobby.Id);
         };
@@ -85,6 +82,10 @@ public class LobbyListUI : MonoBehaviour{
         StartRelay.clicked += async () => {
             await LobbyManager.Instance.StartHostWithRelay();
         };
+
+        if (LobbyManager.Instance?.CurrentLobby!=null){
+            CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
+        }
     }
 
     public void OnLobbyListButtonClickedWrapper(){
@@ -133,7 +134,6 @@ public class LobbyListUI : MonoBehaviour{
             OnLobbyListButtonClicked();
         }
     }
- 
     
     private VisualElement CreateLobbyRow(Lobby lobby){
         var lobbyID = lobby.Id;

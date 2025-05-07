@@ -36,7 +36,7 @@ public class OyunSahnesiUI : MonoBehaviour
         KontrolEt.clicked += ButtonlaPuanlamaYap; 
         KontrolEt.visible = GameManager.Instance.PerKontrolDugmesiOlsun;
         Exit.clicked += () => {
-            LobbyManager.Instance.CikmakIisteginiGonder();
+            _ = LobbyManager.Instance.CikmakIisteginiGonder();
         }; 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             GeriSayim.text = OyunKurallari.Instance.ZamanLimiti.ToString(); 

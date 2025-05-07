@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class OyunSonu : MonoBehaviour{
+public class OyunSonu : NetworkBehaviour{
     private VisualElement rootElement;
-    private VisualElement SonucListesi;
+    private VisualElement sonucListesi;
+    private VisualElement footer;
     public Button YeniOyunuBaslat;
     public Button Quit;
     public Button Hazirim;
@@ -18,21 +20,19 @@ public class OyunSonu : MonoBehaviour{
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
     public void SonucListesiniGoster(){
         NetworkList<NetworkDataManager.PlayerData> oyuncuListesi = NetworkDataManager.Instance.oyuncuListesi;;
-        SonucListesi.Clear();
+        sonucListesi.Clear();
         // Burada yeni bir kopya liste oluştur 
         var localList = new List<NetworkDataManager.PlayerData>();
         foreach (var oyuncu in oyuncuListesi){
             localList.Add(oyuncu);
         } 
         // Bu kopyayı sıralıyoruz
-        var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
-        Debug.Log($"SiraliListe {siraliListe.Count}");
+        var siraliListe = localList.OrderByDescending(p => p.Skor).ToList(); 
         foreach (var oyuncu in siraliListe){
             ulong clientID = oyuncu.ClientId;
             FixedString64Bytes clientName = oyuncu.ClientName;
@@ -43,21 +43,24 @@ public class OyunSonu : MonoBehaviour{
             listeOgesi.text += " ClientName :" + clientName;
             listeOgesi.text += " Puan :" + puan;
             listeOgesi.text += " HamleSayisi :" + HamleSayisi;
-            SonucListesi.Add(listeOgesi); 
+            sonucListesi.Add(listeOgesi); 
         }
     }
 
     private void OnEnable(){
         rootElement = GetComponent<UIDocument>().rootVisualElement;
-        SonucListesi = rootElement.Q<VisualElement>("SonucListesi");
-        YeniOyunuBaslat = rootElement.Q<Button>("YeniOyunuBaslat");
+        sonucListesi = rootElement.Q<VisualElement>("SonucListesi"); 
+        footer = rootElement.Q<VisualElement>("Footer");
+        YeniOyunuBaslat = footer.Q<Button>("YeniOyunuBaslat");
         Quit = rootElement.Q<Button>("Quit");
-        Hazirim = rootElement.Q<Button>("Hazirim");
- 
+        Hazirim = rootElement.Q<Button>("Hazirim"); 
         YeniOyunuBaslat.clicked += OnYeniOyunuBaslatClick;
+        
+        YeniOyunuBaslat.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     private void OnYeniOyunuBaslatClick(){
-        
+        NetworkDataManager.Instance.OyunuYenidenBaslatServerRpc(); 
     }
+ 
 }

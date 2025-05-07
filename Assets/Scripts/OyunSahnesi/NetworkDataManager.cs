@@ -1,7 +1,8 @@
 using System.Collections;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NetworkDataManager : NetworkBehaviour{
     public static NetworkDataManager Instance;
@@ -110,5 +111,15 @@ public class NetworkDataManager : NetworkBehaviour{
         public bool Equals(PlayerData other){
             return ClientId == other.ClientId;
         }
+    }
+ 
+    [ServerRpc]
+    public void OyunuYenidenBaslatServerRpc(){
+        oyuncuListesi.Clear();
+        Debug.Log(" NetworkDataManager.Instance.oyuncuListesi TEMIZLENDI");
+        if (IsHost){ 
+            Debug.Log(" Oyun Sahnesine Geçildi");
+            NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
+        } 
     }
 }

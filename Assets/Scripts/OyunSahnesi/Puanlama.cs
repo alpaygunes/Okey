@@ -63,8 +63,7 @@ public class Puanlama : MonoBehaviour{
             } 
             Instance.SkorBoardiGuncelle();
             if (OyunKurallari.Instance){ 
-                LimitleriKontrolEt();
-                Debug.Log($"LimitleriKontrolEt {skor}");
+                LimitleriKontrolEt(); 
                 NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
             } 
             
