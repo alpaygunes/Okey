@@ -19,19 +19,18 @@ public class MainMenu : MonoBehaviour{
         ZamanLimitliBtn.clicked += SearchZamanLimitliGame;
     }
 
+    private void SearchHamleLimitliGame(){ 
+        OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.HamleLimitli;
+        SceneManager.LoadScene("LobbyManager");
+    }
+
     private void SearchZamanLimitliGame(){
         OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.ZamanLimitli;
         SceneManager.LoadScene("LobbyManager");
     }
 
-    private void SearchHamleLimitliGame(){ 
-            OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.HamleLimitli;
-            SceneManager.LoadScene("LobbyManager");
-    }
-
     private void OnDisable(){
         HamleLimitliBtn.clicked -= SearchHamleLimitliGame;
-        ZamanLimitliBtn.clicked -= SearchZamanLimitliGame;
-        Debug.Log("MainMenu OnDisable");
+        ZamanLimitliBtn.clicked -= SearchZamanLimitliGame; 
     }
 }

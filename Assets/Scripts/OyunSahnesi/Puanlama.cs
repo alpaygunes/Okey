@@ -32,8 +32,7 @@ public class Puanlama : MonoBehaviour{
             }
         }
     } 
-    
-    public int OyununBitimineKalanZaman{ get; set; }
+     
     
     private SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
     
@@ -64,7 +63,8 @@ public class Puanlama : MonoBehaviour{
             } 
             Instance.SkorBoardiGuncelle();
             if (OyunKurallari.Instance){ 
-                BasarilariKontrolEt();
+                LimitleriKontrolEt();
+                Debug.Log($"LimitleriKontrolEt {skor}");
                 NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
             } 
             
@@ -74,7 +74,7 @@ public class Puanlama : MonoBehaviour{
         OyunSahnesiUI.Instance.KalanTasSayisi.text = GameManager.Instance.TasCount.ToString();
     }
 
-    private void BasarilariKontrolEt(){
+    public void LimitleriKontrolEt(){
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
                 GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
@@ -82,9 +82,11 @@ public class Puanlama : MonoBehaviour{
             }
         } 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
-            if (OyununBitimineKalanZaman<=0){
+            if (GameManager.Instance.OyununBitimineKalanZaman<=0){
                 GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
-                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive); 
+                NetworkDataManager.Instance.skorListesiniYavasGuncelleCoroutine  = NetworkDataManager.Instance.StartCoroutine(NetworkDataManager.Instance.SkorListesiniYavasGuncelle());
+
             }
         } 
     }
@@ -307,8 +309,8 @@ public class Puanlama : MonoBehaviour{
     }
 
     public void ButtonlaPuanlamaYap(){ 
-        if (Counter.Instance.CountdownCoroutine != null){
-            Counter.Instance.StopCoroutine(Counter.Instance.CountdownCoroutine);
+        if (PuanlamaCounter.Instance.CountdownCoroutine != null){
+            PuanlamaCounter.Instance.StopCoroutine(PuanlamaCounter.Instance.CountdownCoroutine);
         }
         
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 

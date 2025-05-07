@@ -7,7 +7,7 @@ public class OyunKurallari:NetworkBehaviour
     public OyunTipleri GuncelOyunTipi { get; set; }
     public int HamleLimit { get; private set; }
     public int SkorLimiti { get; private set; }
-    public float ZamanLimiti { get; private set; }
+    public int ZamanLimiti { get; private set; }
     //public Dictionary<ulong, int> _hamleLimitiDolanClientIDlerinDic = new Dictionary<ulong, int>();
     public Dictionary<ulong, Dictionary<string, string>> SkorListesiDic = new();
     
@@ -31,12 +31,8 @@ public class OyunKurallari:NetworkBehaviour
         DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
     }
 
-    public OyunKurallari()
-    { 
-        InitializeSettings();
-    }
 
-    private void InitializeSettings()
+    public void InitializeSettings()
     {
         switch (GuncelOyunTipi)
         {
@@ -55,7 +51,7 @@ public class OyunKurallari:NetworkBehaviour
             case OyunTipleri.ZamanLimitli:
                 HamleLimit = 0;
                 SkorLimiti = 0;
-                ZamanLimiti = 120;
+                ZamanLimiti = 20;
                 break;
 
             case OyunTipleri.RakibeGonder:
@@ -71,15 +67,5 @@ public class OyunKurallari:NetworkBehaviour
                 break;
         }
     }
-
-    // public  void DurumuKontrolEt(){ 
-    //     if (GuncelOyunTipi == OyunTipleri.HamleLimitli){
-    //         if (Puanlama.Instance.HamleSayisi >= HamleLimit){
-    //             GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
-    //             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-    //         }
-    //     } 
-    // }
-    
-
+ 
 }

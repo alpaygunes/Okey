@@ -8,8 +8,10 @@ using UnityEngine.UIElements;
 public class OyunSonu : MonoBehaviour{
     private VisualElement rootElement;
     private VisualElement SonucListesi;
-    public static OyunSonu Instance;
-
+    public Button YeniOyunuBaslat;
+    public Button Quit;
+    public Button Hazirim;
+    public static OyunSonu Instance; 
 
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -20,16 +22,17 @@ public class OyunSonu : MonoBehaviour{
         Instance = this;
     }
 
-    public void SonucListesiniGoster(NetworkList<NetworkDataManager.PlayerData> _oyuncuListesi){ 
+    public void SonucListesiniGoster(){
+        NetworkList<NetworkDataManager.PlayerData> oyuncuListesi = NetworkDataManager.Instance.oyuncuListesi;;
         SonucListesi.Clear();
         // Burada yeni bir kopya liste oluştur 
         var localList = new List<NetworkDataManager.PlayerData>();
-        foreach (var oyuncu in _oyuncuListesi){
+        foreach (var oyuncu in oyuncuListesi){
             localList.Add(oyuncu);
         } 
         // Bu kopyayı sıralıyoruz
         var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
-
+        Debug.Log($"SiraliListe {siraliListe.Count}");
         foreach (var oyuncu in siraliListe){
             ulong clientID = oyuncu.ClientId;
             FixedString64Bytes clientName = oyuncu.ClientName;
@@ -47,5 +50,14 @@ public class OyunSonu : MonoBehaviour{
     private void OnEnable(){
         rootElement = GetComponent<UIDocument>().rootVisualElement;
         SonucListesi = rootElement.Q<VisualElement>("SonucListesi");
+        YeniOyunuBaslat = rootElement.Q<Button>("YeniOyunuBaslat");
+        Quit = rootElement.Q<Button>("Quit");
+        Hazirim = rootElement.Q<Button>("Hazirim");
+ 
+        YeniOyunuBaslat.clicked += OnYeniOyunuBaslatClick;
+    }
+
+    private void OnYeniOyunuBaslatClick(){
+        
     }
 }

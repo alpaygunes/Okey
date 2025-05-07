@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour{
-    public readonly float GeriSayimSuresi = 100f; // sadece bir rakam. sn değil.
+    public readonly float PuanlamaIcinGeriSayimSuresi = 100f; // sadece bir rakam. sn değil.
     private readonly int _colonCount = 5;
     public readonly int TasCount = 100;
     public readonly int CepSayisi = 5;
@@ -15,16 +16,14 @@ public class GameManager : MonoBehaviour{
     [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
     [NonSerialized] public bool OtomatikPerkontrolu = true;
     public static GameManager Instance{ get; private set; }
-
-
+    public int OyununBitimineKalanZaman=0;  
     public OynanmaDurumu oyunDurumu;
-
+    public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public enum OynanmaDurumu{
         bitti,
         oynaniyor,
     }
-
-
+    
     void Awake(){
         oyunDurumu = OynanmaDurumu.oynaniyor; 
         if (Instance != null && Instance != this){
@@ -46,8 +45,12 @@ public class GameManager : MonoBehaviour{
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
         KutulariHazirla();
+        if (OyunKurallari.Instance.GuncelOyunTipi==OyunKurallari.OyunTipleri.ZamanLimitli){
+            OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
+        }
     }
 
+ 
     private void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / _colonCount;
@@ -76,6 +79,27 @@ public class GameManager : MonoBehaviour{
             }
         }
     }
+    
+    private IEnumerator OyununBitimiIcinGeriSayRoutine(){
+        OyununBitimineKalanZaman = 120;
+        if (OyunKurallari.Instance){
+            OyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti; 
+        }
+        while (OyununBitimineKalanZaman > 0)
+        {
+            OyunSahnesiUI.Instance.GeriSayim.text = OyununBitimineKalanZaman.ToString();
+            yield return new WaitForSeconds(1f);
+            OyununBitimineKalanZaman--;
+        } 
+        OyunSahnesiUI.Instance.GeriSayim.text = "0";
+        if (OyununBitimiIcinGeriSayRoutineCoroutin!=null){
+            StopCoroutine(OyununBitimiIcinGeriSayRoutineCoroutin);
+            OyununBitimiIcinGeriSayRoutineCoroutin = null;
+        }
+        
+
+        Puanlama.Instance.LimitleriKontrolEt();
+    }
 
     void Update(){
         if (oyunDurumu == OynanmaDurumu.bitti) return;
@@ -96,8 +120,7 @@ public class GameManager : MonoBehaviour{
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastVeIslem(worldPoint);
         }
-#endif
-
+#endif 
         void RaycastVeIslem(Vector2 worldPoint){
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
             if (hit.collider != null){

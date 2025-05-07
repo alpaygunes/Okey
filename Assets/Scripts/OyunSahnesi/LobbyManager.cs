@@ -32,7 +32,7 @@ public class LobbyManager : NetworkBehaviour{
     private Coroutine lobbyUpdateCoroutine;
     public string gameSeed;
     private bool IsGameStarted = false;  
-    const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f; 
+    const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
 
     private async void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
@@ -128,6 +128,9 @@ public class LobbyManager : NetworkBehaviour{
                 StopCoroutine(lobbyUpdateCoroutine);
                 lobbyUpdateCoroutine = null;
             }
+            
+            // host yanlız başına oynarsa diye başka bir esprisi yok
+            OyunKurallari.Instance.InitializeSettings();
         }
         catch (Exception e){
             Debug.Log(e.Message);
@@ -225,8 +228,8 @@ public class LobbyManager : NetworkBehaviour{
             // ilk girişte lobideki datayı al
             if (joinedLobby.Data.TryGetValue("oyunTipi", out var relayData) &&
                 !string.IsNullOrEmpty(relayData.Value)){
-                if (Enum.TryParse<OyunKurallari.OyunTipleri>(relayData.Value, out var oyunTipi)){
-                    OyunKurallari.Instance.GuncelOyunTipi = oyunTipi;
+                if (Enum.TryParse<OyunKurallari.OyunTipleri>(relayData.Value, out var oyunTipi)){ 
+                    OyunKurallari.Instance.InitializeSettings();
                 }
                 else{
                     Debug.LogWarning("Geçersiz oyun tipi: " + relayData.Value);
@@ -406,13 +409,9 @@ public class LobbyManager : NetworkBehaviour{
 
 
     public override void OnNetworkSpawn(){
-        if (IsHost){
-            Debug.Log("HOST OYUNUJ BAŞLATTI");
+        if (IsHost){ 
             NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
-        }
-        else{
-            Debug.Log("CLIENTLER OnNetworkSpawn oldu");
-        }
+        } 
     } 
 
     //  /////////////////////////////////////////  LOBBY SİLME İŞLEMLERİ ////////////////////////////////////
@@ -499,8 +498,7 @@ public class LobbyManager : NetworkBehaviour{
             clientCallbacks.DataChanged -= LobiVerisiDegisti;
             clientCallbacks.PlayerLeft -= OnClientPlayerLeft;
             clientCallbacks.LobbyChanged -= OnLobbyChangedForBtn;
-            clientCallbacks = null; // Callback referansını temizle (isteğe bağlı)
-            Debug.Log("Lobby events aboneliği başarıyla kaldırıldı.");
+            clientCallbacks = null; // Callback referansını temizle (isteğe bağlı) 
         }
     }
 }

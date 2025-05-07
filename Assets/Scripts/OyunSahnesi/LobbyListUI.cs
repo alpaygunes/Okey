@@ -158,7 +158,7 @@ public class LobbyListUI : MonoBehaviour{
 
     private async Task OnJoinLobbyClicked(string lobbyID, Button katilBtn, Button ayrilBtn){
         try{
-            bool joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
+            joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
             ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
             katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
         }

@@ -5,8 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Counter : MonoBehaviour{
-    public static Counter Instance;
+public class PuanlamaCounter : MonoBehaviour{
+    public static PuanlamaCounter Instance;
     private float puanlamaIcinGeriSayimSuresi; 
     public Coroutine CountdownCoroutine; 
 
@@ -19,7 +19,7 @@ public class Counter : MonoBehaviour{
     }
 
     private void Start(){ 
-        puanlamaIcinGeriSayimSuresi = GameManager.Instance.GeriSayimSuresi; 
+        puanlamaIcinGeriSayimSuresi = GameManager.Instance.PuanlamaIcinGeriSayimSuresi; 
     }
 
     private void OnDestroy(){

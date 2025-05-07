@@ -4,9 +4,9 @@ using Unity.Netcode;
 using UnityEngine; 
 
 public class NetworkDataManager : NetworkBehaviour{
-    public static NetworkDataManager Instance; 
-    private NetworkList<PlayerData> oyuncuListesi = new NetworkList<PlayerData>();
-    private Coroutine skorListesiniYavasGuncelleCoroutine;
+    public static NetworkDataManager Instance;
+    public NetworkList<PlayerData> oyuncuListesi = new NetworkList<PlayerData>();
+    public Coroutine skorListesiniYavasGuncelleCoroutine;
 
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -39,8 +39,7 @@ public class NetworkDataManager : NetworkBehaviour{
             StopCoroutine(skorListesiniYavasGuncelleCoroutine);
         }
         NetworkManager.Singleton.OnClientConnectedCallback -= AddOyuncu;
-        oyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi; 
-        Debug.Log("NetworkDataManager OnDisable");
+        oyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;  
     }
 
     private void AddOyuncu(ulong clientId){  
@@ -70,11 +69,11 @@ public class NetworkDataManager : NetworkBehaviour{
             skorListesiniYavasGuncelleCoroutine  = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }
-    
-    
-    private IEnumerator SkorListesiniYavasGuncelle(){ 
+
+
+    public IEnumerator SkorListesiniYavasGuncelle(){ 
         yield return new WaitUntil(() => OyunSonu.Instance != null);
-        OyunSonu.Instance.SonucListesiniGoster(oyuncuListesi); 
+        OyunSonu.Instance.SonucListesiniGoster(); 
     }
      
     
