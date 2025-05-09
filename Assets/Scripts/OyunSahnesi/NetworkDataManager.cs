@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Netcode;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,16 +16,18 @@ public class NetworkDataManager : NetworkBehaviour{
 
     private void Awake(){
         if (Instance != null && Instance != this){
-            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            Destroy(gameObject); // Yeni olanı yok et
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
+        DontDestroyOnLoad(gameObject);
     }
+
 
     public override void OnNetworkSpawn(){
         if (IsServer){
+            
             // Host olduğunda ilk client kendisi olur
             NetworkManager.Singleton.OnServerStarted += () => {
                 foreach (var client in NetworkManager.Singleton.ConnectedClientsList){ 
@@ -28,61 +35,99 @@ public class NetworkDataManager : NetworkBehaviour{
                 }
                 NetworkManager.Singleton.OnClientConnectedCallback += AddOyuncu;
             };
+             
+            // Host kendi kaydını da gecikmeli eklesin
+            StartCoroutine(GecikmeliOyuncuEkle(NetworkManager.Singleton.LocalClientId));
         }
 
         if (IsClient){
-            oyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi; 
+            oyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi;
         }
+    } 
+
+    private IEnumerator GecikmeliOyuncuEkle(ulong clientId){ 
+        yield return new WaitUntil(() => IsSpawned && oyuncuListesi != null);
+        AddOyuncu(clientId);
     }
+
+
+ 
 
     private void OnDisable(){
-        if (skorListesiniYavasGuncelleCoroutine!=null){
+        if (IsServer && NetworkManager.Singleton != null){
+            NetworkManager.Singleton.OnClientConnectedCallback -= AddOyuncu;
+        }
+
+        if (skorListesiniYavasGuncelleCoroutine != null){
             StopCoroutine(skorListesiniYavasGuncelleCoroutine);
         }
-        NetworkManager.Singleton.OnClientConnectedCallback -= AddOyuncu;
-        oyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;  
+
+        oyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;
     }
 
-    private void AddOyuncu(ulong clientId){  
-        if (!OyuncuVarMi(clientId)){
-            oyuncuListesi.Add(new PlayerData
-            {
-                ClientId = clientId,
-                Skor = 0,
-                HamleSayisi = 0,
-                ClientName = LobbyManager.Instance.myDisplayName,
-            }); 
+    private void AddOyuncu(ulong clientId){
+        try{
+            if (!IsSpawned){
+                Debug.LogWarning("AddOyuncu() çağrıldı ama NetworkDataManager henüz spawn edilmemiş.");
+                return;
+            }
+
+            if (oyuncuListesi == null){
+                Debug.LogError("oyuncuListesi null! OnNetworkSpawn henüz çalışmadı.");
+                return;
+            }
+
+            string displayName = LobbyManager.Instance != null ? LobbyManager.Instance.myDisplayName : "Unknown";
+
+            if (!OyuncuVarMi(clientId)){
+                oyuncuListesi.Add(new PlayerData
+                {
+                    ClientId = clientId,
+                    Skor = 0,
+                    HamleSayisi = 0,
+                    ClientName = displayName,
+                });
+            }
+        }catch (Exception e){
+            Debug.LogError($"AddOyuncu içinde hata {e.Message}");
         }
     }
 
+
     private bool OyuncuVarMi(ulong clientId){
+        if (oyuncuListesi == null || !IsSpawned){
+            Debug.LogWarning("Oyuncu listesi hazır değil veya nesne spawn edilmedi.");
+            return false;
+        }
+
         for (int i = 0; i < oyuncuListesi.Count; i++){
             if (oyuncuListesi[i].ClientId == clientId){
                 return true;
             }
         }
+
         return false;
     }
 
 
-    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){    
+    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
         if (GameManager.Instance?.oyunDurumu == GameManager.OynanmaDurumu.bitti){
-            skorListesiniYavasGuncelleCoroutine  = StartCoroutine(SkorListesiniYavasGuncelle());
+            skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }
 
 
-    public IEnumerator SkorListesiniYavasGuncelle(){ 
+    public IEnumerator SkorListesiniYavasGuncelle(){
         yield return new WaitUntil(() => OyunSonu.Instance != null);
-        OyunSonu.Instance.SonucListesiniGoster(); 
+        OyunSonu.Instance.SonucListesiniGoster();
     }
-     
-    
+
+
     [ServerRpc(RequireOwnership = false)]
-    public void SkorVeHamleGuncelleServerRpc(  int skor, int hamleSayisi,FixedString64Bytes clientName, ServerRpcParams rpcParams = default){  
- 
+    public void SkorVeHamleGuncelleServerRpc(int skor, int hamleSayisi, FixedString64Bytes clientName,
+        ServerRpcParams rpcParams = default){
         for (int i = 0; i < oyuncuListesi.Count; i++){
-            if (oyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId ){ 
+            if (oyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
                 oyuncuListesi[i] = new PlayerData
                 {
                     ClientId = rpcParams.Receive.SenderClientId,
@@ -112,14 +157,28 @@ public class NetworkDataManager : NetworkBehaviour{
             return ClientId == other.ClientId;
         }
     }
- 
+
     [ServerRpc]
-    public void OyunuYenidenBaslatServerRpc(){
-        oyuncuListesi.Clear();
-        Debug.Log(" NetworkDataManager.Instance.oyuncuListesi TEMIZLENDI");
-        if (IsHost){ 
-            Debug.Log(" Oyun Sahnesine Geçildi");
+    public  void OyunuYenidenBaslatServerRpc(){
+        YeniSeediLobbyeGonder();
+        if (IsHost){
             NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
-        } 
+        }
+    }
+
+    private async void YeniSeediLobbyeGonder(){
+        var gameSeed = LobbyManager.Instance.GetRandomSeed();
+        try{
+            await LobbyService.Instance.UpdateLobbyAsync(LobbyManager.Instance.CurrentLobby.Id, new UpdateLobbyOptions
+            {
+                Data = new Dictionary<string, DataObject>
+                { 
+                    { "GameSeed", new DataObject(DataObject.VisibilityOptions.Public, gameSeed) }, 
+                }
+            });
+        }
+        catch (Exception e){
+           Debug.Log($"YeniSeediLobbyeGonder içinde HATA {e.Message}");
+        }
     }
 }

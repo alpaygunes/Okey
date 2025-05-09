@@ -2,8 +2,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models; 
 using UnityEngine.UIElements;
 
 public class OyunSonu : NetworkBehaviour{
@@ -59,7 +59,7 @@ public class OyunSonu : NetworkBehaviour{
         YeniOyunuBaslat.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    private void OnYeniOyunuBaslatClick(){
+    private void OnYeniOyunuBaslatClick(){ 
         NetworkDataManager.Instance.OyunuYenidenBaslatServerRpc(); 
     }
  

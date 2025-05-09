@@ -242,7 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnHolesList: []
   seed: 
-  OyunDurumu: 0
+  OyununBitimineKalanZaman: 0
+  oyunDurumu: 0
 --- !u!4 &343139322
 Transform:
   m_ObjectHideFlags: 0

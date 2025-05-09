@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour{
     }
     
     void Awake(){
+        Debug.Log("Netcode Listening? " + NetworkManager.Singleton?.IsListening); 
+
         oyunDurumu = OynanmaDurumu.oynaniyor; 
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et

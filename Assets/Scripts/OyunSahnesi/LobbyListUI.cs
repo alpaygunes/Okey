@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections; 
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
@@ -158,6 +157,7 @@ public class LobbyListUI : MonoBehaviour{
 
     private async Task OnJoinLobbyClicked(string lobbyID, Button katilBtn, Button ayrilBtn){
         try{
+            
             joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
             ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
             katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
