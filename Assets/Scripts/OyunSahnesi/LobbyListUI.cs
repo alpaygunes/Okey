@@ -6,6 +6,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
 using TextElement = UnityEngine.UIElements.TextElement;
@@ -16,10 +17,11 @@ public class LobbyListUI : MonoBehaviour{
     public Button CreateLobbyBtn;
     public Button CrtLobBtn;
     public Button CloseLobbyBtn;
-    public Button LobyListBtn;
+    public Button HostListBtn;
+    public Button QuitToMainMenu;
     public TextElement CreatedLobiCodeTxt;
-    public VisualElement LobiList;
-    public VisualElement CreateLobby;
+    public VisualElement HostList;
+    public VisualElement CreateHostWindow;
     public QueryResponse response;
     public VisualElement PlayerList;
     public Button StartRelay;
@@ -28,7 +30,10 @@ public class LobbyListUI : MonoBehaviour{
     public Button katilBtn;
     public Button ayrilBtn;
     public Coroutine lobbyListUpdateCoroutine;
+    public bool benLobininSahibiyim = false;
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 10f;
+    
+ 
 
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -42,54 +47,88 @@ public class LobbyListUI : MonoBehaviour{
         if (lobbyListUpdateCoroutine!=null){ 
             StopCoroutine(lobbyListUpdateCoroutine); 
         }
-        LobyListBtn.clicked -= OnLobbyListButtonClickedWrapper;
+        HostListBtn.clicked -= OnLobbyListButtonClickedWrapper;
     }
 
     private void OnEnable(){
         rootElement = GetComponent<UIDocument>().rootVisualElement;
-        LobiList = rootElement.Q<VisualElement>("LobbyList");
-        CreateLobby = rootElement.Q<VisualElement>("CreateLobby");
+        HostList = rootElement.Q<VisualElement>("LobbyList");
+        CreateHostWindow = rootElement.Q<VisualElement>("CreateHostWindow");
         CrtLobBtn = rootElement.Q<Button>("CrtLobBtn");
-        LobyListBtn = rootElement.Q<Button>("LobyListBtn");
+        HostListBtn = rootElement.Q<Button>("HostListBtn");
         CreateLobbyBtn = rootElement.Q<Button>("CreateLobbyBtn");
         CloseLobbyBtn = rootElement.Q<Button>("CloseLobby");
         CreatedLobiCodeTxt = rootElement.Q<TextElement>("CreatedLobiCodeTxt");
         PlayerList = rootElement.Q<VisualElement>("PlayerList");
         StartRelay = rootElement.Q<Button>("StartRelay");
-        StartRelay.style.display = DisplayStyle.None;
-
+        QuitToMainMenu = rootElement.Q<Button>("QuitToMainMenu");
+        StartRelay.style.display = DisplayStyle.None; 
+        benLobininSahibiyim = LobbyManager.Instance.CurrentLobby?.HostId == AuthenticationService.Instance.PlayerId;
+        
         // Lobby Yaratma Butonu
-        CreateLobbyBtn.style.display = (LobbyManager.Instance?.CurrentLobby == null) ? DisplayStyle.Flex : DisplayStyle.None;
+        CreateLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.None : DisplayStyle.Flex;
         CreateLobbyBtn.clicked += () => { _ = LobbyManager.Instance?.LobbyCreate(); };
 
         // Lobby Kapatma Butonu 
-        CloseLobbyBtn.style.display = (LobbyManager.Instance?.CurrentLobby == null) ? DisplayStyle.None : DisplayStyle.Flex;
+        CloseLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.Flex : DisplayStyle.None;
         CloseLobbyBtn.clicked += () => {
             LobbyManager.Instance?.OyunculariCikartVeLobiyiSil(LobbyManager.Instance?.CurrentLobby.Id);
         };
 
         // Lobby Create Penceresi
         CrtLobBtn.clicked += () => {
-            CreateLobby.visible = true;
-            LobiList.visible = false;
+            CreateHostWindow.visible = true;
+            HostList.visible = false;
         };
 
         // loby listesi Penceresi
-        LobyListBtn.clicked += OnLobbyListButtonClickedWrapper;
+        HostListBtn.clicked += OnLobbyListButtonClickedWrapper;
 
         //start Relay
         StartRelay.clicked += async () => {
             await LobbyManager.Instance.StartHostWithRelay();
         };
-
+        
+        //AnaMenüye Dön
+        QuitToMainMenu.clicked += AnaMenuyeDon;
+        
         if (LobbyManager.Instance?.CurrentLobby!=null){
-            CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
+            if (benLobininSahibiyim){
+                CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
+                RefreshPlayerList();
+            }
+            else{ 
+                CreateHostWindow.visible = false;
+                HostList.visible = true;
+                OnLobbyListButtonClicked(); 
+            }
         }
     }
 
+    private async void AnaMenuyeDon(){
+        if (LobbyManager.Instance?.CurrentLobby != null){
+            if (benLobininSahibiyim){
+                LobbyManager.Instance?.OyunculariCikartVeLobiyiSil(LobbyManager.Instance?.CurrentLobby.Id);
+            }
+            else{
+                await LobidenAyril(); 
+            }
+        }
+
+        if (LobbyManager.Instance?.lobbyUpdateCoroutine != null){
+            LobbyManager.Instance.StopCoroutine(LobbyManager.Instance.lobbyUpdateCoroutine);
+            LobbyManager.Instance.lobbyUpdateCoroutine = null;
+        }
+
+        HostList.Clear();
+        PlayerList.Clear();
+        CreatedLobiCodeTxt.text = null;
+        SceneManager.LoadScene("MainMenu");
+    }
+
     public void OnLobbyListButtonClickedWrapper(){
-        LobiList.visible = true;
-        CreateLobby.visible = false;
+        HostList.visible = true;
+        CreateHostWindow.visible = false;
         OnLobbyListButtonClicked(); 
     }
 
@@ -97,13 +136,13 @@ public class LobbyListUI : MonoBehaviour{
         try{
             response = await LobbyManager.Instance.GetLobbyList();
             if (response != null){
-                LobiList.Clear();
+                HostList.Clear();
                 for (int i = 0; i < response.Results.Count; i++){
                     var lobby = response.Results[i];
                     if (LobbyManager.Instance.CurrentLobby?.HostId == AuthenticationService.Instance.PlayerId)
                         continue; 
-                    var row = CreateLobbyRow(lobby);
-                    LobiList.Add(row);
+                    var row = HostListRow(lobby);
+                    HostList.Add(row);
                     row.AddToClassList("lobbyListRow");
                     
                     var player = lobby.Players.FirstOrDefault(p => p.Id == AuthenticationService.Instance.PlayerId);
@@ -134,7 +173,7 @@ public class LobbyListUI : MonoBehaviour{
         }
     }
     
-    private VisualElement CreateLobbyRow(Lobby lobby){
+    private VisualElement HostListRow(Lobby lobby){
         var lobbyID = lobby.Id;
         var row = new VisualElement();
         var label = new Label
@@ -172,13 +211,15 @@ public class LobbyListUI : MonoBehaviour{
     }
 
     public async Task LobidenAyril(){
+        if (LobbyManager.Instance.CurrentLobby == null)
+            return;
         try{
             await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id,
                 AuthenticationService.Instance.PlayerId);
             ayrilBtn.style.display = DisplayStyle.None;
-            katilBtn.style.display = DisplayStyle.Flex; 
-            
-            // abonelikleri bitir
+            katilBtn.style.display = DisplayStyle.Flex;
+            HostListBtn.style.display = DisplayStyle.Flex;
+            LobbyManager.Instance.CurrentLobby = null; 
             LobbyManager.Instance.AbonelikeriBitir();
         }
         catch (Exception e){
@@ -186,7 +227,7 @@ public class LobbyListUI : MonoBehaviour{
         }
     }
     
-    public void RefreshPlayerList(){
+    public void RefreshPlayerList(){  
         var players = LobbyManager.Instance.CurrentLobby.Players;
         StartRelay.style.display = players == null ? DisplayStyle.None : DisplayStyle.Flex;
         PlayerList.Clear();

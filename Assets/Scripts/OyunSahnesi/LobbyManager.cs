@@ -21,15 +21,17 @@ public class LobbyManager : NetworkBehaviour{
     public static LobbyManager Instance;
     public string relayIDForJoin;
     private LobbyEventCallbacks clientCallbacks;
+
     public Lobby CurrentLobby;
-   // private bool isRelayActive = false;
+
+    // private bool isRelayActive = false;
     private string playerId = null;
     private const int MaxPlayers = 10;
     private const string LobbyName = "okey";
     private Coroutine heartbeatCoroutine;
     public string myDisplayName;
     private LobbyEventCallbacks hostCallBacks;
-    private Coroutine lobbyUpdateCoroutine;
+    public Coroutine lobbyUpdateCoroutine;
     public string gameSeed;
     private bool IsGameStarted = false;
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
@@ -73,9 +75,9 @@ public class LobbyManager : NetworkBehaviour{
             Debug.Log(ex.Message);
         }
     }
- 
 
-    private void OnDisable(){
+
+    private void OnDisable(){ 
         StopHeartbeat();
     }
 
@@ -86,8 +88,13 @@ public class LobbyManager : NetworkBehaviour{
 
         try{
             if (CurrentLobby != null){
-                await LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
-                StopHeartbeat();
+                if (IsHost){
+                    await LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
+                    StopHeartbeat();
+                }
+                else{
+                    await LobbyListUI.Instance.LobidenAyril();
+                }
             }
 
             var playerData = new Dictionary<string, PlayerDataObject>
@@ -121,6 +128,8 @@ public class LobbyManager : NetworkBehaviour{
             LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex;
             LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
+            LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None; 
+            LobbyListUI.Instance.benLobininSahibiyim = true;
 
             hostCallBacks = new LobbyEventCallbacks();
             hostCallBacks.PlayerJoined += OnPlayerJoined;
@@ -204,7 +213,7 @@ public class LobbyManager : NetworkBehaviour{
                 return false;
             }
             else{
-                Debug.Log("Oyun henüz başlamadı.");
+                //Debug.Log("Oyun henüz başlamadı.");
             }
 
 
@@ -262,7 +271,7 @@ public class LobbyManager : NetworkBehaviour{
             if (lobbyData != null && lobbyData.ContainsKey("lobby_message")){
                 string messageValue = lobbyData["lobby_message"].Value.Value;
                 if (messageValue == "lobby_kapanacak"){
-                    LobbyListUI.Instance.LobiList.Clear();
+                    LobbyListUI.Instance.HostList.Clear();
                     await LobbyListUI.Instance.LobidenAyril();
                     LobbyListUI.Instance.OnLobbyListButtonClicked();
                     CurrentLobby = null;
@@ -347,7 +356,7 @@ public class LobbyManager : NetworkBehaviour{
         try{
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening){
                 NetworkManager.Singleton.Shutdown();
-               // isRelayActive = false;
+                // isRelayActive = false;
 
                 // Şu satırı ekle: Shutdown tamamlanana kadar bekle
                 while (NetworkManager.Singleton.IsListening)
@@ -433,7 +442,7 @@ public class LobbyManager : NetworkBehaviour{
             nm.GetComponent<UnityTransport>().SetRelayServerData(
                 AllocationUtils.ToRelayServerData(allocation, connectionType));
 
-            Debug.Log("Client başlatılıyor...");
+            //Debug.Log("Client başlatılıyor...");
             nm.StartClient();
         }
         catch (Exception ex){
@@ -470,6 +479,7 @@ public class LobbyManager : NetworkBehaviour{
                 LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.None;
                 LobbyListUI.Instance.CreatedLobiCodeTxt.text = null;
                 LobbyListUI.Instance.PlayerList.Clear();
+                LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.Flex;
 
                 if (hostCallBacks != null){
                     hostCallBacks.PlayerJoined -= OnPlayerJoined;
@@ -524,7 +534,7 @@ public class LobbyManager : NetworkBehaviour{
         await Task.Yield(); // veya küçük gecikme
 
 
-        Debug.Log("NetcodeBootstrapper.CleanUp()");
+        //Debug.Log("NetcodeBootstrapper.CleanUp()");
         NetcodeBootstrapper.CleanUp();
         SceneManager.LoadScene("MainMenu");
     }

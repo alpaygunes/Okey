@@ -1,11 +1,11 @@
 *1 - Lobide "Katıl Düğmesi" ne tıklanınca lobi doluysa oyuncu uyarılmalı.
 *2 - Multiplayer sahnesi gereksiz artık. GameSeed lobimanager içinde oluşturup kullanılıyor.
-
 *3 - Client OYunsahnesini kapatır neler olacak. bunu önce servere bildir. server yapsın .... 
 *4 - Client Oyunu tamament kapatıp relaydan koparsa neler olacak. ...
 
-5 - Bir client lobiden ayrılıp kendisi lobi oluşturup host olursa Loby Listeleme routini hala çalışıyor. 
+5 - Bir client lobiden ayrılıp kendisi lobi oluşturup host olursa Loby Listeleme coroutini hala çalışıyor. 
     Bunu durdur.
+    
 6 - Eğer bir clientin lobysi varsa lobi listeleyemesiz ve Listeleme coroutini dursun. 
 
 7 - Client oyundan çıktıktan sonra kedisi host açarsa diğerleri bunu listeleyemiyor. Bunun sebebini bul

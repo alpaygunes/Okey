@@ -68,12 +68,12 @@ public class NetworkDataManager : NetworkBehaviour{
     private void AddOyuncu(ulong clientId){
         try{
             if (!IsSpawned){
-                Debug.LogWarning("AddOyuncu() çağrıldı ama NetworkDataManager henüz spawn edilmemiş.");
+                //Debug.LogWarning("AddOyuncu() çağrıldı ama NetworkDataManager henüz spawn edilmemiş.");
                 return;
             }
 
             if (oyuncuListesi == null){
-                Debug.LogError("oyuncuListesi null! OnNetworkSpawn henüz çalışmadı.");
+                //Debug.LogError("oyuncuListesi null! OnNetworkSpawn henüz çalışmadı.");
                 return;
             }
 
@@ -180,5 +180,6 @@ public class NetworkDataManager : NetworkBehaviour{
         catch (Exception e){
            Debug.Log($"YeniSeediLobbyeGonder içinde HATA {e.Message}");
         }
-    }
+    } 
+
 }
