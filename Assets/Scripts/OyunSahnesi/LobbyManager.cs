@@ -5,16 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
+using Unity.Services.Authentication; 
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+using UnityEngine; 
+using UnityEngine.SceneManagement; 
 using UnityEngine.UIElements;
 
 public class LobbyManager : NetworkBehaviour{
@@ -24,8 +21,7 @@ public class LobbyManager : NetworkBehaviour{
 
     public Lobby CurrentLobby;
 
-    // private bool isRelayActive = false;
-    private string playerId = null;
+    // private bool isRelayActive = false; 
     private const int MaxPlayers = 10;
     private const string LobbyName = "okey";
     private Coroutine heartbeatCoroutine;
@@ -38,7 +34,7 @@ public class LobbyManager : NetworkBehaviour{
     public GameObject networkPlayerPrefab;
 
 
-    private async void Awake(){
+    private void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
 
         if (Instance != null && Instance != this){
@@ -50,42 +46,17 @@ public class LobbyManager : NetworkBehaviour{
         DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
 
 
-        try{
-            if (UnityServices.State != ServicesInitializationState.Initialized){
-                await UnityServices.InitializeAsync();
-            }
-
-            await AnonimGiris();
-        }
-        catch (Exception e){
-            Debug.Log(e.Message);
-        }
+ 
     }
 
-    async Task AnonimGiris(){
-        try{
-            AuthenticationService.Instance.ClearSessionToken();
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-            playerId = AuthenticationService.Instance.PlayerId;
-        }
-        catch (AuthenticationException ex){
-            Debug.Log(ex.Message);
-        }
-        catch (RequestFailedException ex){
-            Debug.Log(ex.Message);
-        }
-    }
+
 
 
     private void OnDisable(){ 
         StopHeartbeat();
     }
 
-    public async Task LobbyCreate(){
-        if (playerId == null){
-            await AnonimGiris();
-        }
-
+    public async Task LobbyCreate(){  
         try{
             if (CurrentLobby != null){
                 if (IsHost){

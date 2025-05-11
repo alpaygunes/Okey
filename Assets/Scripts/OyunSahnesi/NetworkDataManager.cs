@@ -126,17 +126,22 @@ public class NetworkDataManager : NetworkBehaviour{
     [ServerRpc(RequireOwnership = false)]
     public void SkorVeHamleGuncelleServerRpc(int skor, int hamleSayisi, FixedString64Bytes clientName,
         ServerRpcParams rpcParams = default){
-        for (int i = 0; i < oyuncuListesi.Count; i++){
-            if (oyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
-                oyuncuListesi[i] = new PlayerData
-                {
-                    ClientId = rpcParams.Receive.SenderClientId,
-                    Skor = skor,
-                    HamleSayisi = hamleSayisi,
-                    ClientName = clientName,
-                };
-                break;
+        try{
+            for (int i = 0; i < oyuncuListesi.Count; i++){
+                if (oyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
+                    oyuncuListesi[i] = new PlayerData
+                    {
+                        ClientId = rpcParams.Receive.SenderClientId,
+                        Skor = skor,
+                        HamleSayisi = hamleSayisi,
+                        ClientName = clientName,
+                    };
+                    break;
+                }
             }
+        }
+        catch (Exception e){
+            Debug.Log($"SkorVeHamleGuncelleServerRpc HATA : {e.Message}");
         }
     }
 

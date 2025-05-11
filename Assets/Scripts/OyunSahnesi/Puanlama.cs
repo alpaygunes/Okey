@@ -61,7 +61,7 @@ public class Puanlama : MonoBehaviour{
             if (LobbyManager.Instance){
                 clientName = LobbyManager.Instance.myDisplayName; 
             } 
-            Instance.SkorBoardiGuncelle();
+            SkorBoardiGuncelle();
             if (OyunKurallari.Instance){ 
                 LimitleriKontrolEt(); 
                 NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
@@ -83,8 +83,18 @@ public class Puanlama : MonoBehaviour{
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             if (GameManager.Instance.OyununBitimineKalanZaman<=0){
                 GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
-                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive); 
-                NetworkDataManager.Instance.skorListesiniYavasGuncelleCoroutine  = NetworkDataManager.Instance.StartCoroutine(NetworkDataManager.Instance.SkorListesiniYavasGuncelle());
+                SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+                if (NetworkDataManager.Instance.oyuncuListesi != null){
+                    IEnumerator enumerator;
+                    try{
+                        enumerator = NetworkDataManager.Instance.SkorListesiniYavasGuncelle();
+                        NetworkDataManager.Instance.skorListesiniYavasGuncelleCoroutine  
+                            = NetworkDataManager.Instance.StartCoroutine(enumerator);
+                    }
+                    catch (Exception e){
+                        Debug.Log($"Host ayrışmış olabilir . LimitleriKontrolEt HATA : {e.Message}"); 
+                    }
+                }
 
             }
         } 

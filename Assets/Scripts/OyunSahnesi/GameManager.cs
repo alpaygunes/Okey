@@ -87,8 +87,7 @@ public class GameManager : MonoBehaviour{
         if (OyunKurallari.Instance){
             OyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti; 
         }
-        while (OyununBitimineKalanZaman > 0)
-        {
+        while (OyununBitimineKalanZaman > 0){
             OyunSahnesiUI.Instance.GeriSayim.text = OyununBitimineKalanZaman.ToString();
             yield return new WaitForSeconds(1f);
             OyununBitimineKalanZaman--;

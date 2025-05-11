@@ -1,9 +1,11 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models; 
+using Unity.Services.Lobbies.Models;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class OyunSonu : NetworkBehaviour{
@@ -24,26 +26,33 @@ public class OyunSonu : NetworkBehaviour{
     }
 
     public void SonucListesiniGoster(){
-        NetworkList<NetworkDataManager.PlayerData> oyuncuListesi = NetworkDataManager.Instance.oyuncuListesi;;
-        sonucListesi.Clear();
-        // Burada yeni bir kopya liste oluştur 
-        var localList = new List<NetworkDataManager.PlayerData>();
-        foreach (var oyuncu in oyuncuListesi){
-            localList.Add(oyuncu);
-        } 
-        // Bu kopyayı sıralıyoruz
-        var siraliListe = localList.OrderByDescending(p => p.Skor).ToList(); 
-        foreach (var oyuncu in siraliListe){
-            ulong clientID = oyuncu.ClientId;
-            FixedString64Bytes clientName = oyuncu.ClientName;
-            int puan = oyuncu.Skor;
-            int HamleSayisi = oyuncu.HamleSayisi;
-            var listeOgesi = new Button();
-            listeOgesi.text = clientID.ToString();
-            listeOgesi.text += " ClientName :" + clientName;
-            listeOgesi.text += " Puan :" + puan;
-            listeOgesi.text += " HamleSayisi :" + HamleSayisi;
-            sonucListesi.Add(listeOgesi); 
+        try{
+            NetworkList<NetworkDataManager.PlayerData> oyuncuListesi = NetworkDataManager.Instance.oyuncuListesi;
+      
+            sonucListesi.Clear();
+            // Burada yeni bir kopya liste oluştur 
+            var localList = new List<NetworkDataManager.PlayerData>();
+            foreach (var oyuncu in oyuncuListesi){
+                localList.Add(oyuncu);
+            }
+
+            // Bu kopyayı sıralıyoruz
+            var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
+            foreach (var oyuncu in siraliListe){
+                ulong clientID = oyuncu.ClientId;
+                FixedString64Bytes clientName = oyuncu.ClientName;
+                int puan = oyuncu.Skor;
+                int HamleSayisi = oyuncu.HamleSayisi;
+                var listeOgesi = new Button();
+                listeOgesi.text = clientID.ToString();
+                listeOgesi.text += " ClientName :" + clientName;
+                listeOgesi.text += " Puan :" + puan;
+                listeOgesi.text += " HamleSayisi :" + HamleSayisi;
+                sonucListesi.Add(listeOgesi);
+            }
+        }
+        catch(Exception e){
+            Debug.Log($"SonucListesiniGoster içinde HATA : {e.Message}");
         }
     }
 

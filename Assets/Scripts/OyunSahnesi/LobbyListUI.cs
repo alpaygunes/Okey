@@ -95,6 +95,7 @@ public class LobbyListUI : MonoBehaviour{
         if (LobbyManager.Instance?.CurrentLobby!=null){
             if (benLobininSahibiyim){
                 CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
+                HostListBtn.style.display = DisplayStyle.None;
                 RefreshPlayerList();
             }
             else{ 
@@ -147,8 +148,8 @@ public class LobbyListUI : MonoBehaviour{
                     
                     var player = lobby.Players.FirstOrDefault(p => p.Id == AuthenticationService.Instance.PlayerId);
                     if ( player != null){ 
-                        ayrilBtn.style.display = DisplayStyle.Flex;
-                        katilBtn.style.display = DisplayStyle.None;
+                        ayrilBtn.style.display = DisplayStyle.None;
+                        katilBtn.style.display = DisplayStyle.Flex;
                     }
                 }
 
@@ -184,7 +185,7 @@ public class LobbyListUI : MonoBehaviour{
         katilBtn = new Button { text = "Katıl" };
         ayrilBtn = new Button { text = "Ayrıl", style = { display = DisplayStyle.None } };
 
-        katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID, katilBtn, ayrilBtn);
+        katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID);
         ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();
 
         row.Add(label);
@@ -194,7 +195,7 @@ public class LobbyListUI : MonoBehaviour{
         return row;
     }
 
-    private async Task OnJoinLobbyClicked(string lobbyID, Button katilBtn, Button ayrilBtn){
+    private async Task OnJoinLobbyClicked(string lobbyID){
         try{
             
             joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
