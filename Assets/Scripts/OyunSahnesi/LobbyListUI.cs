@@ -177,9 +177,14 @@ public class LobbyListUI : MonoBehaviour{
     private VisualElement HostListRow(Lobby lobby){
         var lobbyID = lobby.Id;
         var row = new VisualElement();
+        string oyunTipi = null;
+        if (lobby.Data.TryGetValue("oyunTipi", out var relayData))
+        {
+            oyunTipi = relayData.Value;
+        }
         var label = new Label
         {
-            text = $"{lobby.Name} - {lobby.Players.Count}/{lobby.MaxPlayers}"
+            text = $"{oyunTipi} - {lobby.Players.Count}/{lobby.MaxPlayers}"
         };
 
         katilBtn = new Button { text = "Katıl" };
@@ -187,6 +192,7 @@ public class LobbyListUI : MonoBehaviour{
 
         katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID);
         ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();
+         
 
         row.Add(label);
         row.Add(katilBtn);

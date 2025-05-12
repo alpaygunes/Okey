@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Collections.Generic; 
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Services.Lobbies;
@@ -19,15 +18,12 @@ public class NetworkDataManager : NetworkBehaviour{
             Destroy(gameObject); // Yeni olanı yok et
             return;
         }
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
-
     public override void OnNetworkSpawn(){
         if (IsServer){
-            
             // Host olduğunda ilk client kendisi olur
             NetworkManager.Singleton.OnServerStarted += () => {
                 foreach (var client in NetworkManager.Singleton.ConnectedClientsList){ 
@@ -35,11 +31,9 @@ public class NetworkDataManager : NetworkBehaviour{
                 }
                 NetworkManager.Singleton.OnClientConnectedCallback += AddOyuncu;
             };
-             
             // Host kendi kaydını da gecikmeli eklesin
             StartCoroutine(GecikmeliOyuncuEkle(NetworkManager.Singleton.LocalClientId));
         }
-
         if (IsClient){
             oyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi;
         }
@@ -49,9 +43,6 @@ public class NetworkDataManager : NetworkBehaviour{
         yield return new WaitUntil(() => IsSpawned && oyuncuListesi != null);
         AddOyuncu(clientId);
     }
-
-
- 
 
     private void OnDisable(){
         if (IsServer && NetworkManager.Singleton != null){

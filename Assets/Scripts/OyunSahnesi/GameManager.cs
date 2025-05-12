@@ -47,8 +47,12 @@ public class GameManager : MonoBehaviour{
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
         KutulariHazirla();
-        if (OyunKurallari.Instance.GuncelOyunTipi==OyunKurallari.OyunTipleri.ZamanLimitli){
+        Debug.Log($"OyunKurallari.Instance. GuncelOyunTipi {OyunKurallari.Instance.GuncelOyunTipi}");
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
+        }
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+            Debug.Log("GorevYap Oyun Tipi Seçilmiş. Host görev oluşturup göndermeli.");
         }
     }
 

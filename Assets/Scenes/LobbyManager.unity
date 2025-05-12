@@ -397,6 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joinedToLobby: 0
+  benLobininSahibiyim: 0
 --- !u!114 &1297433735
 MonoBehaviour:
   m_ObjectHideFlags: 0

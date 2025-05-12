@@ -2,5 +2,6 @@
     <ui:VisualElement style="flex-grow: 1; justify-content: center; align-self: center;">
         <ui:Button text="Hamle Limitli" name="HamleLimitliBtn" />
         <ui:Button text="Süre Limitli&#10;" name="ZamanLimitliBtn" />
+        <ui:Button text="Görev Yap" name="GorevYap" />
     </ui:VisualElement>
 </ui:UXML>

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using Unity.Services.Authentication; 
+using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
-using UnityEngine; 
-using UnityEngine.SceneManagement; 
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class LobbyManager : NetworkBehaviour{
@@ -44,19 +44,13 @@ public class LobbyManager : NetworkBehaviour{
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
-
-
- 
     }
-
-
-
-
-    private void OnDisable(){ 
+ 
+    private void OnDisable(){
         StopHeartbeat();
     }
 
-    public async Task LobbyCreate(){  
+    public async Task LobbyCreate(){
         try{
             if (CurrentLobby != null){
                 if (IsHost){
@@ -94,12 +88,11 @@ public class LobbyManager : NetworkBehaviour{
 
             CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(LobbyName, MaxPlayers, options);
             StartHeartbeat();
-            LobbyListUI.Instance.CreatedLobiCodeTxt.text =
-                OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- " + CurrentLobby.LobbyCode;
+            LobbyListUI.Instance.CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- " + CurrentLobby.LobbyCode;
             LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex;
             LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
-            LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None; 
+            LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.benLobininSahibiyim = true;
 
             hostCallBacks = new LobbyEventCallbacks();
@@ -161,7 +154,7 @@ public class LobbyManager : NetworkBehaviour{
         }
         catch (LobbyServiceException e){
             Debug.Log(e.Message);
-            return null; // Veya hata fırlatmak istersen throw;
+            return null;
         }
     }
 
@@ -217,6 +210,7 @@ public class LobbyManager : NetworkBehaviour{
                 !string.IsNullOrEmpty(relayData.Value)){
                 if (Enum.TryParse<OyunKurallari.OyunTipleri>(relayData.Value, out var oyunTipi)){
                     OyunKurallari.Instance.InitializeSettings();
+                    Debug.LogWarning("JoinLobbyByID Oyun Tipi: " + relayData.Value);
                 }
                 else{
                     Debug.LogWarning("Geçersiz oyun tipi: " + relayData.Value);
@@ -269,8 +263,7 @@ public class LobbyManager : NetworkBehaviour{
             }
         }
     }
-
-
+    
     private void OnClientPlayerLeft(List<int> playerIds){
         if (CurrentLobby.Players.Any(p => p.Id == AuthenticationService.Instance.PlayerId)){
             LobbyListUI.Instance.OnLobbyListButtonClicked();

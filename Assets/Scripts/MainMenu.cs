@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button; 
@@ -12,13 +9,12 @@ using Button = UnityEngine.UIElements.Button;
 public class MainMenu : MonoBehaviour{
     private Button HamleLimitliBtn; 
     private Button ZamanLimitliBtn; 
+    private Button GorevYap; 
     
     async void Awake() {
         if (!UnityServices.State.Equals(ServicesInitializationState.Initialized)) {
             await UnityServices.InitializeAsync();
-        }
-
-  
+        } 
         await AnonimGiris();
     }
     
@@ -38,10 +34,11 @@ public class MainMenu : MonoBehaviour{
     private void OnEnable(){ 
         VisualElement rootElement = GetComponent<UIDocument>().rootVisualElement;
         HamleLimitliBtn = rootElement.Q<Button>("HamleLimitliBtn");
-        HamleLimitliBtn.clicked += SearchHamleLimitliGame;
-        
+        HamleLimitliBtn.clicked += SearchHamleLimitliGame; 
         ZamanLimitliBtn = rootElement.Q<Button>("ZamanLimitliBtn");
-        ZamanLimitliBtn.clicked += SearchZamanLimitliGame;
+        ZamanLimitliBtn.clicked += SearchZamanLimitliGame; 
+        GorevYap = rootElement.Q<Button>("GorevYap");
+        GorevYap.clicked += SearchGorevYapGame;
     }
 
     private void SearchHamleLimitliGame(){ 
@@ -53,9 +50,15 @@ public class MainMenu : MonoBehaviour{
         OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.ZamanLimitli;
         SceneManager.LoadScene("LobbyManager");
     }
+    
+    private void SearchGorevYapGame(){ 
+        OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.GorevYap;
+        SceneManager.LoadScene("LobbyManager");
+    }
 
     private void OnDisable(){
         HamleLimitliBtn.clicked -= SearchHamleLimitliGame;
-        ZamanLimitliBtn.clicked -= SearchZamanLimitliGame; 
+        ZamanLimitliBtn.clicked -= SearchZamanLimitliGame;
+        GorevYap.clicked -= SearchGorevYapGame;  
     }
 }

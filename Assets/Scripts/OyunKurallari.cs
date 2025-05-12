@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Unity.Netcode; 
 
 public class OyunKurallari:NetworkBehaviour
@@ -8,14 +7,13 @@ public class OyunKurallari:NetworkBehaviour
     public int HamleLimit { get; private set; }
     public int SkorLimiti { get; private set; }
     public int ZamanLimiti { get; private set; }
-    //public Dictionary<ulong, int> _hamleLimitiDolanClientIDlerinDic = new Dictionary<ulong, int>();
-    public Dictionary<ulong, Dictionary<string, string>> SkorListesiDic = new();
+    public int GorevYap { get; private set; } 
     
     public enum OyunTipleri
     {
         HamleLimitli,
-        SkorLimitli,
         ZamanLimitli,
+        GorevYap,
         RakibeGonder,
     }
 
@@ -23,12 +21,11 @@ public class OyunKurallari:NetworkBehaviour
         
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            Destroy(gameObject); 
             return;
         }
-
         Instance = this;
-        DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
+        DontDestroyOnLoad(gameObject);
     }
 
 
@@ -40,24 +37,28 @@ public class OyunKurallari:NetworkBehaviour
                 HamleLimit = 2;
                 SkorLimiti = 0;
                 ZamanLimiti = 0;
+                GorevYap = 0;
                 break;
 
-            case OyunTipleri.SkorLimitli:
+            case OyunTipleri.GorevYap:
                 HamleLimit = 0;
                 SkorLimiti = 20;
                 ZamanLimiti = 0;
+                GorevYap = 5;
                 break;
 
             case OyunTipleri.ZamanLimitli:
                 HamleLimit = 0;
                 SkorLimiti = 0;
                 ZamanLimiti = 20;
+                GorevYap = 0;
                 break;
 
             case OyunTipleri.RakibeGonder:
                 HamleLimit = 0;
                 SkorLimiti = 0;
                 ZamanLimiti = 0;
+                GorevYap = 0;
                 break;
 
             default:
