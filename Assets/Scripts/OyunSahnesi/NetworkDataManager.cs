@@ -59,12 +59,10 @@ public class NetworkDataManager : NetworkBehaviour{
     private void AddOyuncu(ulong clientId){
         try{
             if (!IsSpawned){
-                //Debug.LogWarning("AddOyuncu() çağrıldı ama NetworkDataManager henüz spawn edilmemiş.");
                 return;
             }
 
             if (oyuncuListesi == null){
-                //Debug.LogError("oyuncuListesi null! OnNetworkSpawn henüz çalışmadı.");
                 return;
             }
 
@@ -87,7 +85,7 @@ public class NetworkDataManager : NetworkBehaviour{
 
     private bool OyuncuVarMi(ulong clientId){
         if (oyuncuListesi == null || !IsSpawned){
-            Debug.LogWarning("Oyuncu listesi hazır değil veya nesne spawn edilmedi.");
+            //Debug.LogWarning("Oyuncu listesi hazır değil veya nesne spawn edilmedi.");
             return false;
         }
 

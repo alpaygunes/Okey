@@ -47,12 +47,15 @@ public class GameManager : MonoBehaviour{
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
         KutulariHazirla();
-        Debug.Log($"OyunKurallari.Instance. GuncelOyunTipi {OyunKurallari.Instance.GuncelOyunTipi}");
+        
+        ///////////////// younun türüne göre sürecin devamına karar veriliyor. ///////////////////////
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
-        }
-        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+        }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
             Debug.Log("GorevYap Oyun Tipi Seçilmiş. Host görev oluşturup göndermeli.");
+            //GorevYoneticisi OnNetworkSpawn() olunca tetiklenir.
+        }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
+            // puanlama sırasında gereken kotrol yapılıyor.
         }
     }
 

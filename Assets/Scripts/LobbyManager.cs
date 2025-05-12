@@ -173,7 +173,7 @@ public class LobbyManager : NetworkBehaviour{
 
             if (lobbyInfo.Data.ContainsKey("isGameStarted") &&
                 lobbyInfo.Data["isGameStarted"].Value == "true"){
-                Debug.Log("Oyun başladı! İstemci bunu biliyor.");
+                //Debug.Log("Oyun başladı! İstemci bunu biliyor.");
                 return false;
             }
             else{
@@ -210,7 +210,7 @@ public class LobbyManager : NetworkBehaviour{
                 !string.IsNullOrEmpty(relayData.Value)){
                 if (Enum.TryParse<OyunKurallari.OyunTipleri>(relayData.Value, out var oyunTipi)){
                     OyunKurallari.Instance.InitializeSettings();
-                    Debug.LogWarning("JoinLobbyByID Oyun Tipi: " + relayData.Value);
+                    //Debug.LogWarning("JoinLobbyByID Oyun Tipi: " + relayData.Value);
                 }
                 else{
                     Debug.LogWarning("Geçersiz oyun tipi: " + relayData.Value);
@@ -393,7 +393,7 @@ public class LobbyManager : NetworkBehaviour{
 
             // 🔒 Eğer bağlantı hâlâ açık ise, kapat
             if (nm.IsListening){
-                Debug.Log("Bağlantı açık, kapatılıyor...");
+                //Debug.Log("Bağlantı açık, kapatılıyor...");
                 nm.Shutdown();
 
                 // 🔄 Shutdown tamamlanana kadar bekle

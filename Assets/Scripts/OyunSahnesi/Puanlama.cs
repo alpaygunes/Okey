@@ -63,7 +63,7 @@ public class Puanlama : MonoBehaviour{
             } 
             SkorBoardiGuncelle();
             if (OyunKurallari.Instance){ 
-                LimitleriKontrolEt(); 
+                LimitleriKontrolEt();
                 NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
             } 
             
@@ -80,6 +80,7 @@ public class Puanlama : MonoBehaviour{
                 SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             }
         } 
+        
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             if (GameManager.Instance.OyununBitimineKalanZaman<=0){
                 GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
@@ -97,7 +98,11 @@ public class Puanlama : MonoBehaviour{
                 }
 
             }
-        } 
+        }
+        
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+            GorevYoneticisi.Instance.GorevKontrol();
+        }
     }
 
 
