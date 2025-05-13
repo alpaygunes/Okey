@@ -106,11 +106,9 @@ public class GorevYoneticisi : NetworkBehaviour{
         if (IsClient){
             SiradakiGoreviSahnedeGoster();
         }
-        var tumGorevleriAl = TumGorevleriAl();
     }
  
-    //----------------------------- GÖREVLERİ OLUŞTURMA ---------------------------------
-
+    //----------------------------- GÖREVLERİ OLUŞTURMA --------------------------------- 
     private enum PerTurleri{
         ArdisikRakamAyniRenk,
         ArdisikRakamFarkliRenk,
@@ -322,14 +320,11 @@ public class GorevYoneticisi : NetworkBehaviour{
         // Yalnızca sunucu ekler
         if (Instance != null && Instance.IsServer)
             Instance.gorevlerNetList.Add(gorev);
-    }
-    
-    public IEnumerable<GorevData> TumGorevleriAl(){
-        foreach (var gorev in gorevlerNetList)
-            yield return gorev;
-    }
-    
+    } 
     // -----------------------------------  SON ---------------------------------------
+    
+    
+    
     private void SiradakiGoreviSahnedeGoster(){
         GorevData gorev = gorevlerNetList[SiradakiGorevSirasNosu];
         FixedList128Bytes<TasData> taslar = gorev.Taslar; 
@@ -366,4 +361,12 @@ public class GorevYoneticisi : NetworkBehaviour{
         
         
     }
+
+    public void GorevYapildimiKontrolEt(){
+        var per = Puanlama.Instance.siralanmisTumPerTaslari;
+        Debug.Log($"GorevYapildimiKontrolEt {per.Count}");
+        
+        yapılmış per ile istenen görevi mukayese et. görev nekadar yapılmış
+    }
+    
 }

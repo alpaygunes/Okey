@@ -34,7 +34,7 @@ public class Puanlama : MonoBehaviour{
     } 
      
     
-    private SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
+    public SortedDictionary<int, GameObject> siralanmisTumPerTaslari;
     
     void Awake(){
         if (Instance != null && Instance != this){
@@ -99,7 +99,7 @@ public class Puanlama : MonoBehaviour{
         }
         
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-            //GorevYoneticisi.Instance.GorevKontrol();
+            GorevYoneticisi.Instance.GorevYapildimiKontrolEt();
         }
     }
 
@@ -113,7 +113,6 @@ public class Puanlama : MonoBehaviour{
         BonusFarkliRenkArdisikRakam.Clear();
         
         siralanmisTumPerTaslari = new SortedDictionary<int, GameObject>();
-
         Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>(); 
         //SiraliRakamRenkGruplari sahneye diz 
         foreach (var grupList in Istaka.Instance.SiraliRakamAyniRenkGruplari) {
