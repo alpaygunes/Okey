@@ -42,9 +42,7 @@ public class Puanlama : MonoBehaviour{
             return;
         }
 
-        Instance = this; 
-
-        Instance = this;
+        Instance = this;  
         uiCamera = Camera.main; 
         
         _audioSource_puan_sayac = gameObject.AddComponent<AudioSource>();
@@ -82,7 +80,7 @@ public class Puanlama : MonoBehaviour{
         } 
         
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
-            if (GameManager.Instance.OyununBitimineKalanZaman<=0){
+            if (GameManager.Instance.oyununBitimineKalanZaman<=0){
                 GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
                 SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 if (NetworkDataManager.Instance.oyuncuListesi != null){
@@ -101,7 +99,7 @@ public class Puanlama : MonoBehaviour{
         }
         
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-            GorevYoneticisi.Instance.GorevKontrol();
+            //GorevYoneticisi.Instance.GorevKontrol();
         }
     }
 

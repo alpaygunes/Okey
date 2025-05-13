@@ -6,7 +6,10 @@ using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
-public class GorevYoneticisi : NetworkBehaviour{
+public class GorevYoneticisi : NetworkBehaviour{ 
+    public static GorevYoneticisi Instance{ get; private set; }
+    private int SiradakiGorevSirasNosu = 0;
+    
     public struct TasData : INetworkSerializable, IEquatable<TasData>{
         public int Rakam;
         public Color32 Renk;
@@ -72,48 +75,82 @@ public class GorevYoneticisi : NetworkBehaviour{
             return hash;
         }
     }
-
-    public static GorevYoneticisi Instance{ get; private set; }
-    private NetworkList<GorevData> gorevler;
+    
+    private NetworkList<GorevData> gorevlerNetList;
+    
     private static readonly int GorevSayisi = 10;
 
     private void Awake(){
-        gorevler = new NetworkList<GorevData>(
+        if (Instance != null && Instance != this){
+            Destroy(gameObject);
+            return;
+        } 
+        Instance = this; 
+        
+        gorevlerNetList = new NetworkList<GorevData>(
             readPerm: NetworkVariableReadPermission.Everyone,
             writePerm: NetworkVariableWritePermission.Server);
     }
 
     public override void OnNetworkSpawn(){
+        
         if (OyunKurallari.Instance.GuncelOyunTipi != OyunKurallari.OyunTipleri.GorevYap){
             return;
         }
-
-        Instance = this;
-
+ 
         if (IsServer){
-            gorevler.Clear();
-            PerHazirla();
+            gorevlerNetList.Clear();
+            GorevHazirla();
         }
 
+        if (IsClient){
+            SiradakiGoreviSahnedeGoster();
+        }
         var tumGorevleriAl = TumGorevleriAl();
     }
+ 
+    //----------------------------- GÖREVLERİ OLUŞTURMA ---------------------------------
 
     private enum PerTurleri{
-        siraliRakamAyniRenk,
-        siraliRakamFarkliRenk,
-        farkliRakamAyniRenk,
-        farkliRakamFarkliRenk,
+        ArdisikRakamAyniRenk,
+        ArdisikRakamFarkliRenk,
+        AyniRakamFarkliRenkPerleri,
+        AyniRakamAyniRenkPerleri,
     }
 
-    private static void PerHazirla(){
-        for (int i = 0; i < GorevSayisi; i++)
-            // GorevSayisi kadar rasgele PerTurleri seçilip  uygun görev hazırlanacak.
-            // Şimdilik rasgele değil.
-            // ArdisikRakamAyniRenkPeriOlustur(); 
-            // AyniRakamFarkliRenkPerleriOlustur();
-            AyniRakamAyniRenkPerleriOlustur();
-    }
+    private static void GorevHazirla(){
+        for (int i = 0; i < GorevSayisi; i++) 
+            switch (RastgelePerTuruSec())
+            {
+                case PerTurleri.ArdisikRakamAyniRenk:
+                    ArdisikRakamAyniRenkPeriOlustur();
+                    break;
 
+                case PerTurleri.ArdisikRakamFarkliRenk:
+                    ArdisikRakamFarkliRenkPeriOlustur();
+                    break;
+
+                case PerTurleri.AyniRakamFarkliRenkPerleri:
+                    AyniRakamFarkliRenkPerleriOlustur();
+                    break;
+
+                case PerTurleri.AyniRakamAyniRenkPerleri:
+                    AyniRakamAyniRenkPerleriOlustur();
+                    break;
+
+                default:
+                    // Beklenmeyen durum (opsiyonel)
+                    break;
+            } 
+    }
+    
+    private static PerTurleri RastgelePerTuruSec()
+    {
+        int elemanSayisi = Enum.GetValues(typeof(PerTurleri)).Length;
+        int rastgeleIndex = UnityEngine.Random.Range(0, elemanSayisi);
+        return (PerTurleri)rastgeleIndex;
+    }
+    
     private static void ArdisikRakamAyniRenkPeriOlustur(){
         GorevData gorev = new GorevData
         {
@@ -136,7 +173,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
         // Sadece sunucu yazabilir
         if (Instance != null && Instance.IsServer)
-            Instance.gorevler.Add(gorev);
+            Instance.gorevlerNetList.Add(gorev);
     }
 
     private static void ArdisikRakamFarkliRenkPeriOlustur(){
@@ -185,7 +222,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
 
         if (Instance != null && Instance.IsServer)
-            Instance.gorevler.Add(gorev);
+            Instance.gorevlerNetList.Add(gorev);
     }
 
     private static void AyniRakamFarkliRenkPerleriOlustur(){
@@ -233,7 +270,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         // Sunucudaysak görevi listeye ekle
         if (Instance != null && Instance.IsServer)
-            Instance.gorevler.Add(gorev);
+            Instance.gorevlerNetList.Add(gorev);
     }
 
     private static void AyniRakamAyniRenkPerleriOlustur(){
@@ -284,15 +321,49 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         // Yalnızca sunucu ekler
         if (Instance != null && Instance.IsServer)
-            Instance.gorevler.Add(gorev);
+            Instance.gorevlerNetList.Add(gorev);
     }
     
     public IEnumerable<GorevData> TumGorevleriAl(){
-        foreach (var gorev in gorevler)
+        foreach (var gorev in gorevlerNetList)
             yield return gorev;
     }
+    
+    // -----------------------------------  SON ---------------------------------------
+    private void SiradakiGoreviSahnedeGoster(){
+        GorevData gorev = gorevlerNetList[SiradakiGorevSirasNosu];
+        FixedList128Bytes<TasData> taslar = gorev.Taslar; 
+        // tas nesnelerini tasList e ekle
+        List<GameObject> tasList = new List<GameObject>();
+        int i = 0;
+        foreach (var gorevTasi in taslar){ 
+            // gorev gameobjectini kooordinatlarına göre sahneye yerleştir
+            var Body = transform.Find("Body").gameObject;
+            float gorvePaneliGenisligi = Body.GetComponent<SpriteRenderer>().bounds.size.x;
+            float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.CepSayisi;
+            float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f; 
+            
+            GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
+            var Tas = Instantiate(tare, new Vector3(x, Body.transform.position.y, -2), Quaternion.identity);
+            int rakam = gorevTasi.Rakam;
+            Color color = gorevTasi.Renk; 
 
-    public void GorevKontrol(){
-        // puan alınca elde edilmiş per sıradak görev ile kotnrol edilir. göreve uygunsa görev yapılmıştır.
+            Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
+            Tas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite;
+            Tas.GetComponentInChildren<Tas>().rakam = rakam;
+            Tas.GetComponentInChildren<Tas>().renk = color;
+            Tas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
+            Tas.transform.localScale *= .7f; 
+            Tas.GetComponent<Tas>().rakam = rakam;
+            Tas.GetComponent<Tas>().renk = color;
+            Tas.transform.SetParent(Body.transform);
+            Tas.SetActive(true);
+            Destroy(Tas.GetComponent<Rigidbody2D>()); 
+            tasList.Add(Tas);
+            i++;
+        } 
+        
+        
+        
     }
 }

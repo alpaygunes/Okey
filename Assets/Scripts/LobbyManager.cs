@@ -45,7 +45,7 @@ public class LobbyManager : NetworkBehaviour{
         Instance = this;
         DontDestroyOnLoad(gameObject); // Bu nesneyi sahne değişimlerinde yok olmaktan koru
     }
- 
+
     private void OnDisable(){
         StopHeartbeat();
     }
@@ -88,7 +88,8 @@ public class LobbyManager : NetworkBehaviour{
 
             CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(LobbyName, MaxPlayers, options);
             StartHeartbeat();
-            LobbyListUI.Instance.CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- " + CurrentLobby.LobbyCode;
+            LobbyListUI.Instance.CreatedLobiCodeTxt.text =
+                OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- " + CurrentLobby.LobbyCode;
             LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex;
             LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
@@ -263,7 +264,7 @@ public class LobbyManager : NetworkBehaviour{
             }
         }
     }
-    
+
     private void OnClientPlayerLeft(List<int> playerIds){
         if (CurrentLobby.Players.Any(p => p.Id == AuthenticationService.Instance.PlayerId)){
             LobbyListUI.Instance.OnLobbyListButtonClicked();
@@ -382,39 +383,27 @@ public class LobbyManager : NetworkBehaviour{
         return seed;
     }
 
-    private bool isClientStarting = false;
-
+ 
     public async Task StartClientRelay(string joinCode, string connectionType){
-        if (isClientStarting) return;
-        isClientStarting = true;
-
+        if (IsHost) return;
         try{
             var nm = NetworkManager.Singleton;
 
-            // 🔒 Eğer bağlantı hâlâ açık ise, kapat
             if (nm.IsListening){
-                //Debug.Log("Bağlantı açık, kapatılıyor...");
                 nm.Shutdown();
 
-                // 🔄 Shutdown tamamlanana kadar bekle
                 while (nm.IsListening)
                     await Task.Delay(100);
             }
 
-            // 🔌 Relay'e bağlan
             var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
             nm.GetComponent<UnityTransport>().SetRelayServerData(
                 AllocationUtils.ToRelayServerData(allocation, connectionType));
-
-            //Debug.Log("Client başlatılıyor...");
             nm.StartClient();
         }
         catch (Exception ex){
             Debug.LogError($"StartClientRelay HATASI: {ex.Message}");
-        }
-        finally{
-            isClientStarting = false;
-        }
+        } 
     }
 
 

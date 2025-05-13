@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour{
     [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
     [NonSerialized] public bool OtomatikPerkontrolu = true;
     public static GameManager Instance{ get; private set; }
-    public int OyununBitimineKalanZaman=0;  
+    public int oyununBitimineKalanZaman=0;  
     public OynanmaDurumu oyunDurumu;
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public enum OynanmaDurumu{
@@ -90,14 +90,14 @@ public class GameManager : MonoBehaviour{
     }
     
     private IEnumerator OyununBitimiIcinGeriSayRoutine(){
-        OyununBitimineKalanZaman = 120;
+        oyununBitimineKalanZaman = 120;
         if (OyunKurallari.Instance){
-            OyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti; 
+            oyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti; 
         }
-        while (OyununBitimineKalanZaman > 0){
-            OyunSahnesiUI.Instance.GeriSayim.text = OyununBitimineKalanZaman.ToString();
+        while (oyununBitimineKalanZaman > 0){
+            OyunSahnesiUI.Instance.GeriSayim.text = oyununBitimineKalanZaman.ToString();
             yield return new WaitForSeconds(1f);
-            OyununBitimineKalanZaman--;
+            oyununBitimineKalanZaman--;
         } 
         OyunSahnesiUI.Instance.GeriSayim.text = "0";
         if (OyununBitimiIcinGeriSayRoutineCoroutin!=null){
