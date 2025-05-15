@@ -51,8 +51,7 @@ public class GameManager : MonoBehaviour{
         ///////////////// younun türüne göre sürecin devamına karar veriliyor. ///////////////////////
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
-        }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-            Debug.Log("GorevYap Oyun Tipi Seçilmiş. Host görev oluşturup göndermeli.");
+        }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){ 
             //GorevYoneticisi OnNetworkSpawn() olunca tetiklenir.
         }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             // puanlama sırasında gereken kotrol yapılıyor.

@@ -77,7 +77,7 @@ public class Puanlama : MonoBehaviour{
                 GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
                 SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             }
-        } 
+        }
         
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             if (GameManager.Instance.oyununBitimineKalanZaman<=0){
@@ -98,7 +98,7 @@ public class Puanlama : MonoBehaviour{
             }
         }
         
-        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap && siralanmisTumPerTaslari != null){ 
             GorevYoneticisi.Instance.GorevYapildimiKontrolEt();
         }
     }
@@ -312,9 +312,7 @@ public class Puanlama : MonoBehaviour{
         _kartdakiPerleriIsle();
     }
 
-    public void SkorBoardiGuncelle(){
-        //hamleSayisiTMP.text = HamleSayisi.ToString(); 
-        //toplamPuanTMP.text = ToplamPuan .ToString();
+    public void SkorBoardiGuncelle(){ 
         OyunSahnesiUI.Instance.Skor.text = ToplamPuan.ToString();
         OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi.ToString();
     }

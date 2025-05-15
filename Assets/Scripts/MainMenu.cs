@@ -59,6 +59,6 @@ public class MainMenu : MonoBehaviour{
     private void OnDisable(){
         HamleLimitliBtn.clicked -= SearchHamleLimitliGame;
         ZamanLimitliBtn.clicked -= SearchZamanLimitliGame;
-        GorevYap.clicked -= SearchGorevYapGame;  
+        GorevYap.clicked -= SearchGorevYapGame;
     }
 }

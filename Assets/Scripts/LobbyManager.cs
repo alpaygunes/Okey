@@ -320,14 +320,12 @@ public class LobbyManager : NetworkBehaviour{
     public async Task StartHostWithRelay(){
         try{
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening){
-                NetworkManager.Singleton.Shutdown();
-                // isRelayActive = false;
-
+                NetworkManager.Singleton.Shutdown();  
                 // Şu satırı ekle: Shutdown tamamlanana kadar bekle
                 while (NetworkManager.Singleton.IsListening)
                     await Task.Delay(100);
-            }
-
+            } 
+            
             // NetworkManager prefab’ı sahnede yoksa instansela
             if (NetworkManager.Singleton == null){
                 Instantiate(networkPlayerPrefab); // Inspector’dan atadığınız prefab
@@ -354,10 +352,7 @@ public class LobbyManager : NetworkBehaviour{
                         { "isGameStarted", new DataObject(DataObject.VisibilityOptions.Public, "true") }
                     }
                 });
-
-                //isRelayActive = true;
-
-                // ✅ Tekrar güvenli kontrol: Hâlâ bir şey açık mı?
+ 
                 if (!NetworkManager.Singleton.IsListening){
                     NetworkManager.Singleton.StartHost();
                 }
@@ -485,11 +480,13 @@ public class LobbyManager : NetworkBehaviour{
             Destroy(nm.gameObject);
 
         await Task.Yield(); // veya küçük gecikme
-
-
-        //Debug.Log("NetcodeBootstrapper.CleanUp()");
+        
         NetcodeBootstrapper.CleanUp();
-        SceneManager.LoadScene("MainMenu");
+        if (IsHost){
+            SceneManager.LoadScene("LobbyManager");
+        }else{
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
 

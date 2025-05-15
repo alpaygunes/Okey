@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 public class GorevYoneticisi : NetworkBehaviour{ 
@@ -322,51 +323,70 @@ public class GorevYoneticisi : NetworkBehaviour{
             Instance.gorevlerNetList.Add(gorev);
     } 
     // -----------------------------------  SON ---------------------------------------
-    
-    
+ 
     
     private void SiradakiGoreviSahnedeGoster(){
+        var body = Instance.transform.Find("Body");
+        if (body == null) return;
+        // öncekileri temizle 
+        for (int j = body.childCount - 1; j >= 0; j--)
+        {
+            var child = body.GetChild(j);
+            Debug.Log($"ADI {child.name}");
+            Destroy(child.gameObject);
+        }
+ 
+        
         GorevData gorev = gorevlerNetList[SiradakiGorevSirasNosu];
-        FixedList128Bytes<TasData> taslar = gorev.Taslar; 
-        // tas nesnelerini tasList e ekle
-        List<GameObject> tasList = new List<GameObject>();
+        FixedList128Bytes<TasData> taslar = gorev.Taslar;
+        // tas nesnelerini tasList e ekle 
         int i = 0;
         foreach (var gorevTasi in taslar){ 
-            // gorev gameobjectini kooordinatlarına göre sahneye yerleştir
-            var Body = transform.Find("Body").gameObject;
-            float gorvePaneliGenisligi = Body.GetComponent<SpriteRenderer>().bounds.size.x;
+            // gorev gameobjectini kooordinatlarına göre sahneye yerleştir 
+            float gorvePaneliGenisligi = body.GetComponent<SpriteRenderer>().bounds.size.x;
             float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.CepSayisi;
-            float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f; 
-            
-            GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
-            var Tas = Instantiate(tare, new Vector3(x, Body.transform.position.y, -2), Quaternion.identity);
+            float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f;
+            GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
+            var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);
             int rakam = gorevTasi.Rakam;
             Color color = gorevTasi.Renk; 
-
             Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
-            Tas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite;
-            Tas.GetComponentInChildren<Tas>().rakam = rakam;
-            Tas.GetComponentInChildren<Tas>().renk = color;
-            Tas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
-            Tas.transform.localScale *= .7f; 
-            Tas.GetComponent<Tas>().rakam = rakam;
-            Tas.GetComponent<Tas>().renk = color;
-            Tas.transform.SetParent(Body.transform);
-            Tas.SetActive(true);
-            Destroy(Tas.GetComponent<Rigidbody2D>()); 
-            tasList.Add(Tas);
+            gTas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite; 
+            gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
+            gTas.transform.localScale *= .7f; 
+            gTas.GetComponent<gTas>().rakam = rakam;
+            gTas.GetComponent<gTas>().renk = color;
+            gTas.transform.SetParent(body.transform);
+            gTas.SetActive(true);
+            gTas.tag = "gTas";
+            gTas.name = "gTas" + i;  
             i++;
-        } 
-        
-        
-        
+        }
     }
 
     public void GorevYapildimiKontrolEt(){
+        var gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
         var per = Puanlama.Instance.siralanmisTumPerTaslari;
-        Debug.Log($"GorevYapildimiKontrolEt {per.Count}");
+
+        int i = 0;
+        foreach (var pTs in per){
+            if (gorevTaslari.Length==i) break;
+            if (pTs.Value==null) break;
+            var pTas = pTs.Value.GetComponent<Tas>();
+            var gTas = gorevTaslari[i];
+            if (pTas.rakam != gTas.Rakam && pTas.renk != gTas.Renk){
+                Debug.Log($"pTas.rakam {pTas.rakam}  pTas.renk {pTas.renk}");
+            }
+            i++;
+        }
         
-        yapılmış per ile istenen görevi mukayese et. görev nekadar yapılmış
+        SiradakiGorevSirasNosu++;
+        SiradakiGoreviSahnedeGoster();
+        OyunSahnesiUI.Instance.GorevSayisiLbl.text = SiradakiGorevSirasNosu +"/"+OyunKurallari.Instance.GorevYap.ToString();  
+        if (SiradakiGorevSirasNosu >= OyunKurallari.Instance.GorevYap){
+            GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
+            SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+        }
     }
     
 }

@@ -30,14 +30,14 @@ public class Tas : MonoBehaviour{
     public bool NetworkDatayaEklendi = false;
 
     private void Awake(){
-        zemin = GameObject.Find("Zemin");
+        zemin = transform.Find("Zemin").gameObject;
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
         uiCamera = Camera.main; 
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 
-    private void Start(){
+    private void Start(){ 
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         zeminSpriteRenderer.color = renk;
@@ -54,8 +54,9 @@ public class Tas : MonoBehaviour{
         _audioSource_patla = gameObject.AddComponent<AudioSource>();
         _audioSource_patla.playOnAwake = false;
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
+        
+        zeminlocalScale = zemin.transform.localScale;
 
-        zeminlocalScale = zemin.transform.localScale;  
     }
 
     private void OnDestroy(){
@@ -237,7 +238,7 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public void Sallan(){
+    public void Sallan(){ 
         if (CompareTag("CARDTAKI_TAS")){
             tweener =  zemin.transform.DOScale(1.2f, .3f)
                 .SetEase(Ease.InOutSine)
