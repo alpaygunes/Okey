@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
+using System.Threading.Tasks;
+using Unity.Services.Lobbies;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class OyunSahnesiUI : MonoBehaviour
@@ -12,11 +11,43 @@ public class OyunSahnesiUI : MonoBehaviour
     public Label KalanTasSayisi;
     public Label HamleSayisi; 
     public Label GeriSayim;
-    public Button Exit;
-    public Button KontrolEt;
+    private Button exit;
+    private Button kontrolEt;
     public ProgressBar GeriSayimBari;
     public Label GorevSayisiLbl;
-    
+    private VisualElement avatars;
+
+ 
+
+    private async Task AvatarlariGoster(){
+        var updatedLobby = await LobbyService.Instance.GetLobbyAsync(LobbyManager.Instance.CurrentLobby.Id);
+        LobbyManager.Instance.CurrentLobby = updatedLobby;
+        avatars.Clear();
+        var Players = LobbyManager.Instance.CurrentLobby.Players;
+        foreach (var player in Players){
+            Button avatarBtn = new Button();
+            string avatarName = player.Data.ContainsKey("avatar")
+                ? player.Data["avatar"].Value
+                : "avatar0";
+            string displayName = player.Data.ContainsKey("DisplayName")
+                ? player.Data["DisplayName"].Value
+                : "NoDisplayName";
+            Sprite avatarSprite = Resources.Load<Sprite>($"avatars/{avatarName}");
+            if (avatarSprite != null)
+                avatarBtn.style.backgroundImage = new StyleBackground(avatarSprite);
+
+            avatarBtn.tooltip = displayName; 
+            avatarBtn.AddToClassList("avatarBtn"); 
+            avatarBtn.RegisterCallback<GeometryChangedEvent>(e =>
+            {
+                float h = avatarBtn.resolvedStyle.height;    
+                avatarBtn.style.width = h;
+            });
+
+            avatars.Add(avatarBtn);
+        }
+    }
+
     private void Awake(){
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
@@ -32,18 +63,19 @@ public class OyunSahnesiUI : MonoBehaviour
         HamleSayisi = rootElement.Q<Label>("HamleSayisi");
         GeriSayim = rootElement.Q<Label>("GeriSayim"); 
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
-        KontrolEt = rootElement.Q<Button>("KontrolEt");
-        Exit = rootElement.Q<Button>("Exit");
+        kontrolEt = rootElement.Q<Button>("KontrolEt");
+        exit = rootElement.Q<Button>("Exit");
         GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari"); 
-        KontrolEt.clicked += ButtonlaPuanlamaYap; 
-        KontrolEt.visible = GameManager.Instance.PerKontrolDugmesiOlsun;
+        avatars = rootElement.Q<VisualElement>("Avtars"); 
+        kontrolEt.clicked += ButtonlaPuanlamaYap; 
+        kontrolEt.visible = GameManager.Instance.PerKontrolDugmesiOlsun;
         GeriSayim.style.display =    DisplayStyle.None;
         GorevSayisiLbl.style.display =    DisplayStyle.None;
         GeriSayim.text = null;
         GorevSayisiLbl.text = null;
         HamleSayisi.text = "0"; 
         
-        Exit.clicked += () => {
+        exit.clicked += () => {
             _ = LobbyManager.Instance.CikmakIisteginiGonder();
         }; 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
@@ -54,6 +86,8 @@ public class OyunSahnesiUI : MonoBehaviour
             GorevSayisiLbl.style.display =    DisplayStyle.Flex;
             GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();  
         }
+        
+        _ = AvatarlariGoster();
     }
      
     public void ButtonlaPuanlamaYap(){

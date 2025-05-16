@@ -32,10 +32,12 @@ public class LobbyManager : NetworkBehaviour{
     private bool IsGameStarted = false;
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
     public GameObject networkPlayerPrefab;
+    private string avadarID;
 
 
     private void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
+        avadarID = "avatar" + UnityEngine.Random.Range(0, 2);
 
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
@@ -188,10 +190,8 @@ public class LobbyManager : NetworkBehaviour{
                 {
                     Data = new Dictionary<string, PlayerDataObject>
                     {
-                        {
-                            "DisplayName",
-                            new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, myDisplayName)
-                        }
+                        { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, myDisplayName) },
+                        { "avatar", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, avadarID) }
                     }
                 }
             };

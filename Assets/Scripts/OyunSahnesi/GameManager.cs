@@ -7,9 +7,9 @@ using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour{
     public readonly float PuanlamaIcinGeriSayimSuresi = 100f; // sadece bir rakam. sn değil.
-    private readonly int _colonCount = 5;
-    public readonly int TasCount = 100;
-    public readonly int CepSayisi = 5;
+    private readonly int _colonCount = 8;
+    public readonly int TasCount = 200;
+    public readonly int CepSayisi = 8;
     public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
     public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
     public List<GameObject> spawnHolesList = new List<GameObject>();
@@ -25,11 +25,10 @@ public class GameManager : MonoBehaviour{
         oynaniyor,
     }
     
-    void Awake(){
-        //Debug.Log("Netcode Listening? " + NetworkManager.Singleton?.IsListening);  
+    void Awake(){ 
         oyunDurumu = OynanmaDurumu.oynaniyor; 
         if (Instance != null && Instance != this){
-            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            Destroy(gameObject);
             return;
         }
 

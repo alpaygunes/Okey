@@ -13,6 +13,7 @@ public class Istaka : MonoBehaviour{
     public List<Dictionary<int, GameObject>> AyniRakamAyniRenkGruplari = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> AyniRakamHepsiFarkliRenkGruplari = new List<Dictionary<int, GameObject>>();
     public GameObject Body;
+    private float posYrate = 0.6f;
 
     public List<Dictionary<int, GameObject>> SiraliRakamHepsiFarkliRenkGruplari =
         new List<Dictionary<int, GameObject>>();
@@ -30,6 +31,8 @@ public class Istaka : MonoBehaviour{
     }
 
     private void Start(){
+        float y = Card.Instance.Size.y;
+        transform.position = new Vector3(0, -y*posYrate, 0);
         CepleriOlustur();
     }
 

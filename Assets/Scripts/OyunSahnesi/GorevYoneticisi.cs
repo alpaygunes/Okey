@@ -10,6 +10,7 @@ using Random = System.Random;
 public class GorevYoneticisi : NetworkBehaviour{ 
     public static GorevYoneticisi Instance{ get; private set; }
     private int SiradakiGorevSirasNosu = 0;
+    private float posYrate = 0.7f;
     
     public struct TasData : INetworkSerializable, IEquatable<TasData>{
         public int Rakam;
@@ -91,6 +92,11 @@ public class GorevYoneticisi : NetworkBehaviour{
         gorevlerNetList = new NetworkList<GorevData>(
             readPerm: NetworkVariableReadPermission.Everyone,
             writePerm: NetworkVariableWritePermission.Server);
+    }
+
+    private void Start(){
+        float y = Card.Instance.Size.y;
+        transform.position = new Vector3(0, -y * posYrate, 0);
     }
 
     public override void OnNetworkSpawn(){
