@@ -25,6 +25,8 @@ public class OyunSonu : NetworkBehaviour{
         Instance = this;
     }
 
+   
+
     public void SonucListesiniGoster(){
         try{
             NetworkList<NetworkDataManager.PlayerData> oyuncuListesi = NetworkDataManager.Instance.oyuncuListesi;
@@ -64,8 +66,13 @@ public class OyunSonu : NetworkBehaviour{
         Quit = rootElement.Q<Button>("Quit");
         Hazirim = rootElement.Q<Button>("Hazirim"); 
         YeniOyunuBaslat.clicked += OnYeniOyunuBaslatClick;
-        
+        Quit.clicked += OnQuitClick;
+        Hazirim.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.None : DisplayStyle.Flex;
         YeniOyunuBaslat.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    private void OnQuitClick(){
+        _ = LobbyManager.Instance.CikmakIisteginiGonder();
     }
 
     private void OnYeniOyunuBaslatClick(){ 

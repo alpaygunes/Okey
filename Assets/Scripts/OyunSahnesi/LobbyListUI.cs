@@ -144,13 +144,7 @@ public class LobbyListUI : MonoBehaviour{
                         continue; 
                     var row = HostListRow(lobby);
                     HostList.Add(row);
-                    row.AddToClassList("lobbyListRow");
-                    
-                    var player = lobby.Players.FirstOrDefault(p => p.Id == AuthenticationService.Instance.PlayerId);
-                    if ( player != null){ 
-                        ayrilBtn.style.display = DisplayStyle.None;
-                        katilBtn.style.display = DisplayStyle.Flex;
-                    }
+                    row.AddToClassList("lobbyListRow"); 
                 }
 
                 if (response.Results.Count == 0){
@@ -175,29 +169,31 @@ public class LobbyListUI : MonoBehaviour{
     }
     
     private VisualElement HostListRow(Lobby lobby){
+        var benLobidemiyim =  lobby.Players.Any(p => p.Id == AuthenticationService.Instance.PlayerId);
+
         var lobbyID = lobby.Id;
         var row = new VisualElement();
         string oyunTipi = null;
-        if (lobby.Data.TryGetValue("oyunTipi", out var relayData))
-        {
+        
+        if (lobby.Data.TryGetValue("oyunTipi", out var relayData)){
             oyunTipi = relayData.Value;
         }
+        
         var label = new Label
         {
             text = $"{oyunTipi} - {lobby.Players.Count}/{lobby.MaxPlayers}"
         };
-
+        
         katilBtn = new Button { text = "Katıl" };
-        ayrilBtn = new Button { text = "Ayrıl", style = { display = DisplayStyle.None } };
+        ayrilBtn = new Button { text = "Ayrıl" };
+        katilBtn.style.display  = benLobidemiyim ? DisplayStyle.None : DisplayStyle.Flex;
+        ayrilBtn.style.display  = benLobidemiyim ? DisplayStyle.Flex : DisplayStyle.None;
 
         katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID);
         ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();
-         
-
         row.Add(label);
         row.Add(katilBtn);
-        row.Add(ayrilBtn);
-
+        row.Add(ayrilBtn); 
         return row;
     }
 

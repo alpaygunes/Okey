@@ -64,9 +64,11 @@ public class Istaka : MonoBehaviour{
         int cezaliPuan = 0;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
         if (DoluCepSayisi() == GameManager.Instance.CepSayisi) { 
-            foreach (var cepInstance in CepList) {
+            foreach (var cepInstance in CepList) { 
+                if (cepInstance is null) break; 
                 var AIstance = cepInstance.TasInstance;
                 foreach (var cardtakiTas in cardtakiTaslar) {
+                    if (cardtakiTas is null) break; 
                     var BInstance = TasManeger.Instance.TasInstances[cardtakiTas];
                     if (BInstance.rakam == AIstance.rakam || BInstance.renk == AIstance.renk) {
                         BInstance.zeminSpriteRenderer.color = Color.red;

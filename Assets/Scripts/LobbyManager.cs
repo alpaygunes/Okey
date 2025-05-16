@@ -463,32 +463,27 @@ public class LobbyManager : NetworkBehaviour{
                         }
                     }
                 });
-        }
-
-        // 2) Ağ oturumunu kapat
-        var nm = NetworkManager.Singleton; // referansı başta al
-        if (nm != null && nm.IsListening){
-            nm.Shutdown();
-
-            // Shutdown’ın gerçekten bittiğini beklemek yerine geri çağırıma da bağlanabilirsiniz
-            while (nm.IsListening)
-                await Task.Delay(100);
-        }
-
-        // 3) Eski NetworkManager’ı yok et
-        if (nm != null)
-            Destroy(nm.gameObject);
-
-        await Task.Yield(); // veya küçük gecikme
-        
-        NetcodeBootstrapper.CleanUp();
-        if (IsHost){
             SceneManager.LoadScene("LobbyManager");
-        }else{
+            return;
+        }
+
+        if (IsClient){  
+            var nm = NetworkManager.Singleton;  
+            if (nm != null && nm.IsListening){
+                nm.Shutdown(); 
+                while (nm.IsListening)
+                    await Task.Delay(100);
+            } 
+            if (nm is not null)
+                Destroy(nm.gameObject);
+            await Task.Yield(); 
+            NetcodeBootstrapper.CleanUp();
             SceneManager.LoadScene("MainMenu");
         }
+        
+ 
+   
     }
-
 
     public void AbonelikeriBitir(){
         if (clientCallbacks != null){
