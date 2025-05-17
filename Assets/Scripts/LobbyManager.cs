@@ -18,10 +18,7 @@ public class LobbyManager : NetworkBehaviour{
     public static LobbyManager Instance;
     public string relayIDForJoin;
     private LobbyEventCallbacks clientCallbacks;
-
-    public Lobby CurrentLobby;
-
-    // private bool isRelayActive = false; 
+    public Lobby CurrentLobby; 
     private const int MaxPlayers = 10;
     private const string LobbyName = "okey";
     private Coroutine heartbeatCoroutine;
@@ -33,8 +30,6 @@ public class LobbyManager : NetworkBehaviour{
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
     public GameObject networkPlayerPrefab;
     private string avadarID;
-
-
     private void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
         avadarID = "avatar" + UnityEngine.Random.Range(0, 2);

@@ -1,0 +1,32 @@
+@import url("project://database/Assets/Scripts/UI/Theme.uss?fileID=7433441132597879392&guid=efda944dc0890303dbae568a6ca188f8&type=3#Theme");
+:root {
+    background-color: var(--mainmenu-page_bg);
+    --buttonlar-arasi-bosluk : 10px;
+}
+
+.btn{
+    width: 75%;
+    height: 64px;
+    padding-left: 19%;
+    background-position-x: 9%;
+    font-size: 16px;
+    background-size:24px;
+    border-radius: 12px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    -unity-text-align: middle-left;
+    -unity-font-style: bold;
+}
+
+.hamle_limitli_btn {
+    background-image: resource('Images/btn_hamle_limitli'); 
+    margin-top:  var(--buttonlar-arasi-bosluk);
+}
+.sure_limitli_btn {
+    background-image: resource('Images/btn_sure_limitli');
+    margin-top:  var(--buttonlar-arasi-bosluk);
+ }
+.gorevli_btn {
+    background-image: resource('Images/btn_gorev');
+    margin-top:  var(--buttonlar-arasi-bosluk);
+}

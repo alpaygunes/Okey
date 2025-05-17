@@ -1,21 +1,23 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/Scripts/UI/oyunSahnesiUI.uss?fileID=7433441132597879392&amp;guid=5e61f6022bd4b281db8299b4ddfec121&amp;type=3#oyunSahnesiUI" />
+    <Style src="project://database/Assets/Scripts/UI/oyunSahnesiUI.uss?fileID=7433441132597879392&amp;guid=5e61f6022bd4b281db8299b4ddfec121&amp;type=3#oyunSahnesiUI[UNSUPPORTED_IN_UI_BUILDER]" />
     <ui:VisualElement style="flex-grow: 1; justify-content: flex-start; align-items: flex-start; align-self: stretch; align-content: flex-start;">
-        <ui:VisualElement name="Footer" style="flex-grow: 1; justify-content: space-around; height: 10%; align-items: center; align-self: center; align-content: auto; position: relative; flex-direction: row; -unity-background-image-tint-color: rgb(229, 150, 150); background-color: rgba(243, 243, 243, 0.28); width: 100%;">
-            <ui:Label text="Label" name="Skor" />
-            <ui:Label text="Label" name="KalanTasSayisi" />
-            <ui:Label text="Label" name="HamleSayisi" />
-            <ui:Label text="GeriSayim" name="GeriSayim" style="font-size: 12px;" />
-            <ui:Label text="GrvSys" name="GorevSayisi" style="font-size: 12px;" />
-            <ui:Button text="X" name="Exit" />
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; width: 100%;">
+            <ui:VisualElement name="Avtars" style="flex-grow: 0; height: 100%; align-items: center; align-self: center; align-content: flex-start; width: 85%; flex-direction: row; justify-content: center; flex-shrink: 0;" />
+            <ui:Button text="X" name="Exit" class="exit" style="background-color: rgb(248, 4, 4); align-self: flex-end;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Avtars" style="flex-grow: 0; height: 10%; background-color: rgba(229, 151, 42, 0.25); align-items: center; align-self: center; align-content: center; width: 100%; flex-direction: row; justify-content: center; flex-shrink: 0;">
-            <ui:Button class="avatarBtn" />
+        <ui:VisualElement name="Footer" style="flex-grow: 1; justify-content: space-around; height: 10%; align-items: center; align-self: center; align-content: auto; position: relative; flex-direction: row; width: 100%;">
+            <ui:Label text="Label" name="Skor" class="label" />
+            <ui:Label text="Label" name="KalanTasSayisi" class="label" />
+            <ui:Label text="Label" name="HamleSayisi" class="label" />
+            <ui:Label text="GeriSayim" name="GeriSayim" class="label" style="font-size: 12px;" />
+            <ui:Label text="GrvSys" name="GorevSayisi" class="label" style="font-size: 12px;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Middle" style="flex-grow: 1; height: 60%; background-color: rgba(243, 181, 93, 0); align-items: center; align-self: center; align-content: center; width: 100%;" />
-        <ui:VisualElement name="Bottom" style="flex-grow: 1; height: 20%; width: 100%; align-self: flex-start; align-items: center; justify-content: space-between; flex-direction: column; flex-wrap: wrap; background-color: rgba(178, 219, 156, 0);">
-            <ui:ProgressBar value="0" name="GeriSayimBari" style="width: 90%; height: auto; font-size: 10px; align-content: center; align-self: center; justify-content: flex-start; align-items: stretch; margin-top: 0; margin-left: 0; margin-bottom: 0;" />
-            <ui:Button text="Button" name="KontrolEt" />
+        <ui:VisualElement name="PregressBarContainer" style="flex-grow: 1; width: 100%; height: 8%; justify-content: center; align-items: center; align-self: center; align-content: center; transform-origin: center; translate: 0 0;">
+            <ui:ProgressBar value="0" name="GeriSayimBari" class="pregresBar" style="flex-direction: column; align-items: stretch; justify-content: center; align-self: center; visibility: visible; display: flex; align-content: center; height: 2px; width: 95%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Middle" style="flex-grow: 1; height: 70%; background-color: rgba(243, 181, 93, 0); align-items: center; align-self: center; align-content: center; width: 100%;" />
+        <ui:VisualElement name="Bottom" style="flex-grow: 1; height: 12%; width: 100%; align-self: flex-start; align-items: center; justify-content: flex-end; flex-direction: column; flex-wrap: wrap;">
+            <ui:Button text="Tamam" name="KontrolEt" class="tamam" style="background-position-x: center 0; -unity-background-scale-mode: scale-and-crop; -unity-text-align: middle-center; position: absolute; bottom: -5px; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 0; border-left-width: 4px; background-color: rgb(166, 0, 12); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 0; border-bottom-left-radius: 0; font-size: 12px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

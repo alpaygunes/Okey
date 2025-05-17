@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour{
     public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string seed;
-    [NonSerialized] public bool PerKontrolDugmesiOlsun = true;
-    [NonSerialized] public bool OtomatikPerkontrolu = true;
+    public bool PerKontrolDugmesiOlsun = true;
+    public bool OtomatikPerkontrolu = false;
     public static GameManager Instance{ get; private set; }
     public int oyununBitimineKalanZaman=0;  
     public OynanmaDurumu oyunDurumu;

@@ -191,6 +191,8 @@ public class LobbyListUI : MonoBehaviour{
 
         katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID);
         ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();
+        katilBtn.AddToClassList("button");
+        ayrilBtn.AddToClassList("button");
         row.Add(label);
         row.Add(katilBtn);
         row.Add(ayrilBtn); 

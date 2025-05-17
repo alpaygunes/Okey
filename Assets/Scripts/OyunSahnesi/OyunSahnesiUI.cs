@@ -13,6 +13,7 @@ public class OyunSahnesiUI : MonoBehaviour
     public Label GeriSayim;
     private Button exit;
     private Button kontrolEt;
+    public VisualElement PregressBarContainer;
     public ProgressBar GeriSayimBari;
     public Label GorevSayisiLbl;
     private VisualElement avatars;
@@ -65,16 +66,20 @@ public class OyunSahnesiUI : MonoBehaviour
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
         kontrolEt = rootElement.Q<Button>("KontrolEt");
         exit = rootElement.Q<Button>("Exit");
-        GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari"); 
+        GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari");  
+        PregressBarContainer = rootElement.Q<VisualElement>("PregressBarContainer"); 
         avatars = rootElement.Q<VisualElement>("Avtars"); 
         kontrolEt.clicked += ButtonlaPuanlamaYap; 
         kontrolEt.visible = GameManager.Instance.PerKontrolDugmesiOlsun;
+        PregressBarContainer.style.display =
+            GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
         GeriSayim.style.display =    DisplayStyle.None;
         GorevSayisiLbl.style.display =    DisplayStyle.None;
+        
+        
         GeriSayim.text = null;
         GorevSayisiLbl.text = null;
         HamleSayisi.text = "0"; 
-        
         exit.clicked += () => {
             _ = LobbyManager.Instance.CikmakIisteginiGonder();
         }; 

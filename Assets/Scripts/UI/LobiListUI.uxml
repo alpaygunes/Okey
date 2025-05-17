@@ -1,21 +1,22 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/LobbyStyiles.uss?fileID=7433441132597879392&amp;guid=422e1b671256356c19e61a0e772cc642&amp;type=3#LobbyStyiles" />
-    <ui:VisualElement name="Menu" style="flex-grow: 1; width: 100%; height: 64px; background-size: 100% 50px; background-color: rgb(219, 112, 34); align-content: center; align-self: flex-start; align-items: flex-end; justify-content: flex-end; flex-direction: row-reverse; position: absolute;">
-        <ui:Button text="Çıkış" name="QuitToMainMenu" />
-        <ui:Button text="Liste" name="HostListBtn" />
-        <ui:Button text="Lobi Oluştur" name="CrtLobBtn" />
+    <Style src="project://database/Assets/Scripts/UI/Theme.uss?fileID=7433441132597879392&amp;guid=efda944dc0890303dbae568a6ca188f8&amp;type=3#Theme" />
+    <ui:VisualElement name="Menu" class="menu" style="flex-direction: row; align-self: center; align-items: center; justify-content: space-around; display: flex; visibility: visible; height: 30%;">
+        <ui:Button text="Çıkış" name="QuitToMainMenu" class="button btn" style="-unity-text-align: middle-center;" />
+        <ui:Button text="Liste" name="HostListBtn" class="button btn" style="-unity-text-align: middle-center;" />
+        <ui:Button text="Lobi Oluştur" name="CrtLobBtn" class="button btn" style="-unity-text-align: middle-center;" />
     </ui:VisualElement>
-    <ui:VisualElement name="LobbyList" style="flex-grow: 1; width: 100%; background-color: rgb(140, 109, 135); height: 90%; flex-direction: column; align-items: flex-start; align-self: flex-start; position: absolute; top: 64px; justify-content: flex-start; align-content: flex-start; flex-wrap: nowrap;">
-        <ui:VisualElement name="ListRow" class="lobbyListRow" style="flex-direction: row; align-items: center; align-self: center; width: 100%; height: 40px; position: absolute; -unity-background-image-tint-color: rgb(134, 176, 42);">
-            <ui:Label text="Label" style="align-content: auto; justify-content: center; align-items: auto; margin-top: 0; height: 100%; -unity-text-align: middle-left; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgb(214, 70, 70);" />
-            <ui:Button text="Button" style="align-content: center; background-color: rgba(204, 189, 63, 0.83);" />
+    <ui:VisualElement name="LobbyList" style="visibility: visible; height: 90%; justify-content: flex-start; align-self: stretch; align-items: flex-start; flex-direction: row; display: none;">
+        <ui:VisualElement name="ListRow" class="lobbyListRow" style="flex-direction: row; align-items: flex-start; width: 100%; height: 10%; align-self: flex-start;">
+            <ui:Label text="Label" name="Label" />
+            <ui:Button text="Button" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="CreateHostWindow" enabled="true" style="flex-grow: 1; height: 90%; width: 100%; background-color: rgb(135, 183, 180); position: absolute; top: 64px;">
-        <ui:Button text="Oluştur" name="CreateLobbyBtn" style="-unity-text-align: middle-center; white-space: nowrap;" />
-        <ui:Label text="-" name="CreatedLobiCodeTxt" style="-unity-text-align: middle-left; justify-content: center; align-self: center; font-size: 14px;" />
-        <ui:Button text="Kapat" name="CloseLobby" style="-unity-text-align: middle-center; white-space: nowrap;" />
-        <ui:VisualElement name="PlayerList" style="flex-grow: 1;" />
-        <ui:Button text="Başlat" name="StartRelay" />
+    <ui:VisualElement name="CreateHostWindow" enabled="true" style="visibility: visible; align-items: center; height: 90%; justify-content: center; display: flex;">
+        <ui:Button text="Lobi Aç&#x9;" name="CreateLobbyBtn" class="button btn" style="-unity-text-align: middle-center;" />
+        <ui:Label text="-" name="CreatedLobiCodeTxt" />
+        <ui:Button text="Kapat" name="CloseLobby" class="button btn" style="flex-direction: row; -unity-text-align: middle-center;" />
+        <ui:VisualElement name="PlayerList" style="width: 100%; min-height: 20%;" />
+        <ui:Button text="Başlat" name="StartRelay" class="button btn" style="-unity-text-align: middle-center; justify-content: space-between; align-items: center; flex-direction: column; position: absolute; bottom: 10px;" />
     </ui:VisualElement>
 </ui:UXML>

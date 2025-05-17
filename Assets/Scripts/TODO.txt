@@ -13,3 +13,7 @@
     "Rakibe Gönder" :
     Kazanılan taşlar rakibin kartına eklenir. Sürenin sonunda en az taşa sahip olan kazanır. 
     İki kişilik bir oyun modudur.
+    
+    
+    
+    
