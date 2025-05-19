@@ -7,12 +7,15 @@
 *6 - Eğer bir clientin lobysi varsa lobi listeleyemesiz ve Listeleme coroutini dursun. 
 *7 - Client oyundan çıktıktan sonra kedisi host açarsa diğerleri bunu listeleyemiyor. Bunun sebebini bul
 
-8 - Yeni oyun modu : 
+* 8 - Yeni oyun modu : 
     "Görevleri Yap",
     Belli sıralamalar verilir. ve rakiplerin bu sıralamayı yapması beklenir. ilk bitirenler ilk sıralarda yer alır. 
     "Rakibe Gönder" :
     Kazanılan taşlar rakibin kartına eklenir. Sürenin sonunda en az taşa sahip olan kazanır. 
     İki kişilik bir oyun modudur.
+    
+    GÜNCELLE : görevlerin hepsi cepsayısı kadar olsun. farklı sayıda olmasın.
+    eşeleşen kolonlardaki taşların rakamları ayrıca puan olarak eklensin.
     
     
     

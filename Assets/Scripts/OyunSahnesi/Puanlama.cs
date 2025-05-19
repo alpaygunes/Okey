@@ -171,8 +171,7 @@ public class Puanlama : MonoBehaviour{
     }
     
     public void BonuslariVer(){
-        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-
+        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
         if (BonusAyniRenkArdisikRakam.Count > 2) {
             foreach (var tasInstance in BonusAyniRenkArdisikRakam) {
                 foreach (var item in cardtakiTaslar) {
@@ -243,10 +242,8 @@ public class Puanlama : MonoBehaviour{
         
         // networke göndermek için animasyon vb gecikme leri beklemeden kaznılan net puan 
         int nwrkPuan = 0;
-        foreach (var tas in siralanmisTumPerTaslari){
-            //taşın kendisi 
-            nwrkPuan += TasManeger.Instance.TasInstances[tas.Value].rakam;
-            // perdeki taşın carddaki eşleşenleri
+        foreach (var tas in siralanmisTumPerTaslari){ 
+            nwrkPuan += TasManeger.Instance.TasInstances[tas.Value].rakam; 
             foreach (var bonusTaslari in TasManeger.Instance.TasInstances[tas.Value].BonusOlarakEslesenTaslar){
                 if (bonusTaslari.Value && !bonusTaslari.Value.NetworkDatayaEklendi){
                     bonusTaslari.Value.NetworkDatayaEklendi = true;
@@ -255,7 +252,6 @@ public class Puanlama : MonoBehaviour{
             }
         } 
         ToplamPuan += nwrkPuan;
-        
         // --- son
 
         float gecikme = 0f;

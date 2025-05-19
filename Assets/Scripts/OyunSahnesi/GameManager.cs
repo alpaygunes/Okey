@@ -67,8 +67,6 @@ public class GameManager : MonoBehaviour{
             spawnHolesList.Add(sh);
         }
     }
-
-    
     
     private IEnumerator OyununBitimiIcinGeriSayRoutine(){
         oyununBitimineKalanZaman = 120;
@@ -117,6 +115,5 @@ public class GameManager : MonoBehaviour{
                     }
                 }
     }
-
- 
+    
 }

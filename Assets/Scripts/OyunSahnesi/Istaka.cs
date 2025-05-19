@@ -87,9 +87,9 @@ public class Istaka : MonoBehaviour{
                 cepInstance.TasInstance = null;
             } 
             Puanlama.Instance.ToplamPuan -= cezaliPuan;
-            //Tamam düğmesini göster
+            //Tamam düğmesini gizle
             if ( GameManager.Instance.PerKontrolDugmesiOlsun){
-                OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
+                OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
             }
         } 
         

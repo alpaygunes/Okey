@@ -35,22 +35,27 @@ public class PuanlamaCounter : MonoBehaviour{
             || Istaka.Instance.AyniRakamAyniRenkGruplari.Count > 0
             || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count > 0
             || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count > 0){
-            if (CountdownCoroutine != null ){
+            if (CountdownCoroutine != null){
                 StopCoroutine(CountdownCoroutine);
             }
 
             if (GameManager.Instance.OtomatikPerkontrolu){
                 CountdownCoroutine = StartCoroutine(PuanlamaGerisayimProgresBariniIslet());
             }
-            
-            //Tamam düğmesini göster
-            if ( GameManager.Instance.PerKontrolDugmesiOlsun){
+
+            if (GameManager.Instance.PerKontrolDugmesiOlsun){
                 OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
             }
-           
+
+            if (Istaka.Instance.DoluCepSayisi() == GameManager.Instance.CepSayisi){
+                OyunSahnesiUI.Instance.ButtonlaPuanlamaYap();
+            }
+        }
+        else{
+            Istaka.Instance.PersizFullIstakayiBosalt();
         }
 
-        Istaka.Instance.PersizFullIstakayiBosalt();
+        
     }
 
     private IEnumerator PuanlamaGerisayimProgresBariniIslet(){
