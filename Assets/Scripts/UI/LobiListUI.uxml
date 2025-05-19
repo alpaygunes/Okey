@@ -12,7 +12,7 @@
             <ui:Button text="Button" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="CreateHostWindow" enabled="true" style="visibility: visible; align-items: center; height: 90%; justify-content: center; display: flex;">
+    <ui:VisualElement name="CreateHostWindow" enabled="true" style="visibility: visible; align-items: center; height: 90%; justify-content: flex-start; display: flex;">
         <ui:Button text="Lobi Aç&#x9;" name="CreateLobbyBtn" class="button btn" style="-unity-text-align: middle-center;" />
         <ui:Label text="-" name="CreatedLobiCodeTxt" />
         <ui:Button text="Kapat" name="CloseLobby" class="button btn" style="flex-direction: row; -unity-text-align: middle-center;" />

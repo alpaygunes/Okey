@@ -1,21 +1,18 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Netcode;
-using UnityEngine;
-using UnityEngine.Serialization;
+using System.Collections.Generic; 
+using UnityEngine; 
 
 public class GameManager : MonoBehaviour{
     public readonly float PuanlamaIcinGeriSayimSuresi = 100f; // sadece bir rakam. sn değil.
-    private readonly int _colonCount = 8;
+    public readonly int _colonCount = 5;
     public readonly int TasCount = 200;
-    public readonly int CepSayisi = 8;
+    public readonly int CepSayisi = 5;
     public readonly RangeInt RenkAraligi = new RangeInt(1, 20);
     public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string seed;
-    public bool PerKontrolDugmesiOlsun = true;
-    public bool OtomatikPerkontrolu = false;
+    public bool PerKontrolDugmesiOlsun ;
+    public bool OtomatikPerkontrolu ;
     public static GameManager Instance{ get; private set; }
     public int oyununBitimineKalanZaman=0;  
     public OynanmaDurumu oyunDurumu;
@@ -45,7 +42,7 @@ public class GameManager : MonoBehaviour{
 
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
-        KutulariHazirla();
+        Card.Instance.KutulariHazirla();
         
         ///////////////// younun türüne göre sürecin devamına karar veriliyor. ///////////////////////
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
@@ -54,10 +51,9 @@ public class GameManager : MonoBehaviour{
             //GorevYoneticisi OnNetworkSpawn() olunca tetiklenir.
         }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             // puanlama sırasında gereken kotrol yapılıyor.
-        }
+        } 
     }
-
- 
+    
     private void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / _colonCount;
@@ -72,20 +68,7 @@ public class GameManager : MonoBehaviour{
         }
     }
 
-    private void KutulariHazirla(){
-        Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = (cardSize.x / _colonCount);
-        GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
-        float satirSayisi = (cardSize.y / colonWidth);
-        for (var satir = satirSayisi; satir > 0; satir--){
-            for (int sutun = 0; sutun < _colonCount; sutun++){
-                float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
-                float positionY = -(cardSize.y * .5f) + colonWidth * 0.5f + ((satirSayisi - satir) * colonWidth);
-                var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
-                kutu.transform.localScale = new Vector2(colonWidth, colonWidth);
-            }
-        }
-    }
+    
     
     private IEnumerator OyununBitimiIcinGeriSayRoutine(){
         oyununBitimineKalanZaman = 120;

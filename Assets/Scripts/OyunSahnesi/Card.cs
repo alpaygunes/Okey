@@ -19,10 +19,7 @@ public class Card : MonoBehaviour{
     public List<List<GameObject>> _ayniRakamFarkliRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> AyniRakamFarkliRenkli = new List<GameObject>();
 
-    
-
-    
-
+      
     void Awake(){
         
         if (Instance != null && Instance != this){
@@ -36,8 +33,7 @@ public class Card : MonoBehaviour{
         Size = GetComponent<SpriteRenderer>().bounds.size; 
     }
 
- 
-
+  
     // Karttaki taşları kontrol edip yan yana  perler varmı bakalım 
     public async Task KarttakiPerleriBul(){
         _siraliAyniRenkliGruplar.Clear();
@@ -97,5 +93,19 @@ public class Card : MonoBehaviour{
         
     }
 
+    public void KutulariHazirla(){
+        Vector2 cardSize = Card.Instance.Size;
+        float colonWidth = (cardSize.x / GameManager.Instance._colonCount);
+        GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
+        float satirSayisi = (cardSize.y / colonWidth);
+        for (var satir = satirSayisi; satir > 0; satir--){
+            for (int sutun = 0; sutun < GameManager.Instance._colonCount; sutun++){
+                float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
+                float positionY = -(cardSize.y * .5f) + colonWidth * 0.5f + ((satirSayisi - satir) * colonWidth);
+                var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
+                kutu.transform.localScale = new Vector2(colonWidth, colonWidth);
+            }
+        }
+    }
     
 }

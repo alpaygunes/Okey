@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DG.Tweening; 
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
@@ -26,18 +27,19 @@ public class Tas : MonoBehaviour{
     public Tweener tweener = null;
     public Vector3 zeminlocalScale;
     public GameObject zemin;
-    public Dictionary<int,Tas> BonusOlarakEslesenTaslar = new Dictionary<int,Tas>(); 
+    public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>();
     public bool NetworkDatayaEklendi = false;
+    public TextMeshPro TextRakam;
 
     private void Awake(){
         zemin = transform.Find("Zemin").gameObject;
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
-        uiCamera = Camera.main; 
+        uiCamera = Camera.main;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 
-    private void Start(){ 
+    private void Start(){
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
         zeminSpriteRenderer.color = renk;
@@ -54,9 +56,10 @@ public class Tas : MonoBehaviour{
         _audioSource_patla = gameObject.AddComponent<AudioSource>();
         _audioSource_patla.playOnAwake = false;
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
-        
-        zeminlocalScale = zemin.transform.localScale;
 
+        zeminlocalScale = zemin.transform.localScale*.25f;
+        TextRakam.text = rakam.ToString();
+        CreateBg();
     }
 
     private void OnDestroy(){
@@ -86,10 +89,10 @@ public class Tas : MonoBehaviour{
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++){
             var cepScript = Istaka.Instance.CepList[i];
             if (cepScript.Dolu == false){
+                gameObject.transform.position += new Vector3(0, 0, -1);
                 transform.DOMove(cepScript.transform.position, animasyonSuresi * .5f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => _audioSource_up.Play()));
-                gameObject.transform.position += new Vector3(0, 0, -1);
                 Destroy(_rigidbody);
                 Destroy(_collider);
                 transform.localScale = new Vector3(colonWidth, colonWidth) * 0.9f;
@@ -97,57 +100,57 @@ public class Tas : MonoBehaviour{
                 cepScript.TasInstance = this;
                 cepInstance = cepScript;
                 PerIcinTasTavsiye.Instance.Sallanma();
-                tag = "CEPTEKI_TAS"; 
+                tag = "CEPTEKI_TAS";
                 zemin.transform.localScale = zeminlocalScale;
-                _audioSource_down.Play(); 
+                _audioSource_down.Play();
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
             }
         }
     }
- 
+
     public IEnumerator TaslarinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         float sure = 1;
         //Puanlama.Instance.PerlerdenKazanilanPuan += rakam;  
-        _audioSource_patla.Play(); 
+        _audioSource_patla.Play();
         Vector3 ilkScale = transform.localScale;
         transform.DOMove(skorTxtPosition, sure);
         Sequence mySequence = DOTween.Sequence();
         mySequence
             .Append(transform.DOScale(transform.localScale * 2, sure * .5f))
             .Append(transform.DOScale(ilkScale * .25f, sure * .5f))
-            .OnComplete(() => {  
+            .OnComplete(() => {
                 transform.DOKill();
                 Destroy(gameObject);
                 enabled = false;
                 TasManeger.Instance.TasInstances.Remove(gameObject);
             });
         foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
-            if ( bonusTaslari.Value ){
-                bonusTaslari.Value.RakamiPuanaEkle(); 
+            if (bonusTaslari.Value){
+                bonusTaslari.Value.RakamiPuanaEkle();
             }
         }
-        
-    }
-    
-    public void RakamiPuanaEkle(){  
-        Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity); 
-        Destroy(gameObject); 
-        enabled = false;
-        TasManeger.Instance.TasInstances.Remove(gameObject); 
     }
 
-    public IEnumerator CezaliRakamiCikar(float gecikme){ 
+    public void RakamiPuanaEkle(){
+        Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+        enabled = false;
+        TasManeger.Instance.TasInstances.Remove(gameObject);
+    }
+
+    public IEnumerator CezaliRakamiCikar(float gecikme){
         yield return new WaitForSeconds(gecikme);
         if (gameObject){
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
+
         enabled = false;
-        TasManeger.Instance.TasInstances.Remove(gameObject); 
+        TasManeger.Instance.TasInstances.Remove(gameObject);
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
     }
-    
+
     void OnTriggerStay2D(Collider2D other){
         if (other.gameObject.CompareTag("CARDTAKI_TAS")){
             EdgeCollider2D edgeCollider = GetComponent<EdgeCollider2D>();
@@ -238,9 +241,9 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    public void Sallan(){ 
+    public void Sallan(){
         if (CompareTag("CARDTAKI_TAS")){
-            tweener =  zemin.transform.DOScale(1.2f, .3f)
+            tweener = zemin.transform.DOScale(.275f, .35f)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetAutoKill(true);
@@ -254,5 +257,64 @@ public class Tas : MonoBehaviour{
             tweener.Kill();
             tweener = null;
         }
+    }
+
+    // kendi zemini hazirla
+    public void CreateBg(){
+        int width = 96*4;
+        int height = 96*4;
+        float radius = 30f; // yuvarlak köşe yarıçapı
+        float shadowThickness = 25f; // gölge kalınlığı
+        float shadowAlpha = 0.5f; // gölgenin maksimum alfa değeri (0 - 1)
+
+        // Renkleri ayarlayın
+        Color baseColor = renk; // varsayılan zemin rengi
+        Color shadowColor = new Color(1, 1, 1, shadowAlpha);
+
+        Texture2D texture = new Texture2D(width, height);
+        Color[] pixels = new Color[width * height];
+
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                int index = x + y * width;
+
+                // Köşe yuvarlaklığı kontrolü
+                bool isRoundedCorner =
+                    (x < radius && y < radius &&
+                     Vector2.Distance(new Vector2(x, y), new Vector2(radius, radius)) > radius) ||
+                    (x > width - radius && y < radius &&
+                     Vector2.Distance(new Vector2(x, y), new Vector2(width - radius, radius)) > radius) ||
+                    (x < radius && y > height - radius &&
+                     Vector2.Distance(new Vector2(x, y), new Vector2(radius, height - radius)) > radius) ||
+                    (x > width - radius && y > height - radius &&
+                     Vector2.Distance(new Vector2(x, y), new Vector2(width - radius, height - radius)) > radius);
+
+                if (isRoundedCorner){
+                    pixels[index] = new Color(0, 0, 0, 0); // şeffaf köşe
+                    continue;
+                }
+
+                // Alt ve sağ kenar için gölge hesaplama
+                float shadowBlend = 0;
+
+                if (y < shadowThickness)
+                    shadowBlend = Mathf.Max(shadowBlend, 1 - (y / shadowThickness));
+
+                if (x > width - shadowThickness)
+                    shadowBlend = Mathf.Max(shadowBlend, (x - (width - shadowThickness)) / shadowThickness);
+
+                if (shadowBlend > 0)
+                    pixels[index] = Color.Lerp(baseColor, shadowColor, shadowBlend);
+                else
+                    pixels[index] = baseColor;
+            }
+        }
+
+        texture.SetPixels(pixels);
+        texture.Apply();
+
+        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
+        zeminSpriteRenderer.sprite = sprite;
+        zeminSpriteRenderer.transform.localScale *= .25f;
     }
 }

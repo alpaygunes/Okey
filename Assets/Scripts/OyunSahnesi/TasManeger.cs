@@ -17,17 +17,17 @@ public class TasManeger : MonoBehaviour{
     }
   
     public void TaslariHazirla(){
-        List<Data> generatedData = GenerateDataList(GameManager.Instance.seed);
-
-        foreach (var data in generatedData){ 
+        List<Data> generatedData = GenerateDataList(GameManager.Instance.seed); 
+        foreach (var data in generatedData){
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
             var Tas = Instantiate(tare, new Vector3(0, 0, -1), Quaternion.identity);
             var rakam = data.number;
             Color color = Renkler.RenkSozlugu[data.color];
-            Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
+            Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam); 
+            var tasScribe = Tas.GetComponentInChildren<Tas>();
             Tas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite;
-            Tas.GetComponentInChildren<Tas>().rakam = rakam;
-            Tas.GetComponentInChildren<Tas>().renk = color;
+            tasScribe.rakam = rakam;
+            tasScribe.renk = color;
             TasList.Add(Tas);
         } 
     }
@@ -63,4 +63,6 @@ public class TasManeger : MonoBehaviour{
         } 
         return dataList;
     }
+    
+
 }

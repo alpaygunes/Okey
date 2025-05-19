@@ -12,7 +12,7 @@ public class OyunSahnesiUI : MonoBehaviour
     public Label HamleSayisi; 
     public Label GeriSayim;
     private Button exit;
-    private Button kontrolEt;
+    public Button puanlamaYap;
     public VisualElement PregressBarContainer;
     public ProgressBar GeriSayimBari;
     public Label GorevSayisiLbl;
@@ -64,16 +64,16 @@ public class OyunSahnesiUI : MonoBehaviour
         HamleSayisi = rootElement.Q<Label>("HamleSayisi");
         GeriSayim = rootElement.Q<Label>("GeriSayim"); 
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
-        kontrolEt = rootElement.Q<Button>("KontrolEt");
+        puanlamaYap = rootElement.Q<Button>("PuanlamaYap");
         exit = rootElement.Q<Button>("Exit");
         GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari");  
         PregressBarContainer = rootElement.Q<VisualElement>("PregressBarContainer"); 
         avatars = rootElement.Q<VisualElement>("Avtars"); 
-        kontrolEt.clicked += ButtonlaPuanlamaYap; 
-        kontrolEt.visible = GameManager.Instance.PerKontrolDugmesiOlsun;
+        puanlamaYap.clicked += ButtonlaPuanlamaYap;  
+        puanlamaYap.style.display = DisplayStyle.None;
         PregressBarContainer.style.display =
             GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
-        GeriSayim.style.display =    DisplayStyle.None;
+        GeriSayim.style.display =    PregressBarContainer.style.display;
         GorevSayisiLbl.style.display =    DisplayStyle.None;
         
         
@@ -98,6 +98,7 @@ public class OyunSahnesiUI : MonoBehaviour
     public void ButtonlaPuanlamaYap(){
         GeriSayimBari.value = 0;
         Puanlama.Instance.ButtonlaPuanlamaYap();
+        puanlamaYap.style.display = DisplayStyle.None;
     } 
     
 }

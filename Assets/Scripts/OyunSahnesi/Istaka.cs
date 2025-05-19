@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Istaka : MonoBehaviour{
     
@@ -55,7 +56,7 @@ public class Istaka : MonoBehaviour{
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - istakaGenisligi * .5f;
             GameObject Cep = Resources.Load<GameObject>("Prefabs/IstakaCebi");
             var cep = Instantiate(Cep, new Vector3(x, Body.transform.position.y, -2), Quaternion.identity);
-            cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
+            cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -5);
             cep.transform.localScale *= .7f;
             cep.GetComponent<Cep>().ID = i;
             cep.transform.SetParent(Body.transform);
@@ -86,7 +87,13 @@ public class Istaka : MonoBehaviour{
                 cepInstance.TasInstance = null;
             } 
             Puanlama.Instance.ToplamPuan -= cezaliPuan;
+            //Tamam düğmesini göster
+            if ( GameManager.Instance.PerKontrolDugmesiOlsun){
+                OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
+            }
         } 
+        
+
         
     }
 
