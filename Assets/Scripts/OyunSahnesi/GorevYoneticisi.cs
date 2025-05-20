@@ -164,8 +164,8 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         int start = GameManager.Instance.RakamAraligi.start;
         int end = GameManager.Instance.RakamAraligi.end;
-        int araliktakiElemanSayisi = end - start + 1;
-        int secilecekRakamSayisi = UnityEngine.Random.Range(2, araliktakiElemanSayisi + 1);
+        //int araliktakiElemanSayisi = end - start + 1;
+        int secilecekRakamSayisi = GameManager.Instance.CepSayisi;
         int rasgeleBaslangic = UnityEngine.Random.Range(start, end - secilecekRakamSayisi);
         var secilenSayilar = Enumerable.Range(rasgeleBaslangic, secilecekRakamSayisi).ToList();
         int renkStart = GameManager.Instance.RenkAraligi.start;
@@ -190,9 +190,9 @@ public class GorevYoneticisi : NetworkBehaviour{
         // --- Ardışık rakamlar -------------------------------------------------
         int start = GameManager.Instance.RakamAraligi.start;
         int end = GameManager.Instance.RakamAraligi.end;
-        int aralik = end - start + 1;
+        //int aralik = end - start + 1;
 
-        int secilecekRakamSayisi = UnityEngine.Random.Range(2, aralik + 1);
+        int secilecekRakamSayisi = GameManager.Instance.CepSayisi;
         int rasgeleBaslangic = UnityEngine.Random.Range(start, end - secilecekRakamSayisi);
         List<int> secilenSayilar = Enumerable.Range(rasgeleBaslangic, secilecekRakamSayisi).ToList();
 
@@ -238,7 +238,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         // --- Seçilecek taş sayısı ------------------------------------------
         int maxTasSayisi = GameManager.Instance.CepSayisi; // Üst sınır
-        int tasSayisi = UnityEngine.Random.Range(2, maxTasSayisi + 1);
+        int tasSayisi = maxTasSayisi;
 
         // --- Rakam (hepsi aynı olacak) --------------------------------------
         int rakamStart = GameManager.Instance.RakamAraligi.start;
@@ -286,7 +286,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         // --- Taş adedi ------------------------------------------------------
         int maxTasSayisi = GameManager.Instance.CepSayisi;
-        int tasSayisi    = UnityEngine.Random.Range(2, maxTasSayisi + 1);
+        int tasSayisi = maxTasSayisi;
 
         // --- Ortak rakam -----------------------------------------------------
         int rakamStart   = GameManager.Instance.RakamAraligi.start;
@@ -335,10 +335,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         var body = Instance.transform.Find("Body");
         if (body == null) return;
         // öncekileri temizle 
-        for (int j = body.childCount - 1; j >= 0; j--)
-        {
-            var child = body.GetChild(j);
-            Debug.Log($"ADI {child.name}");
+        for (int j = body.childCount - 1; j >= 0; j--) {
+            var child = body.GetChild(j); 
             Destroy(child.gameObject);
         }
  

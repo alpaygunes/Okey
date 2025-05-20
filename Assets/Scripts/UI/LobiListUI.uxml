@@ -6,13 +6,13 @@
         <ui:Button text="Liste" name="HostListBtn" class="button btn" style="-unity-text-align: middle-center;" />
         <ui:Button text="Lobi Oluştur" name="CrtLobBtn" class="button btn" style="-unity-text-align: middle-center;" />
     </ui:VisualElement>
-    <ui:VisualElement name="LobbyList" style="visibility: visible; height: 90%; justify-content: flex-start; align-self: stretch; align-items: flex-start; flex-direction: row; display: none;">
-        <ui:VisualElement name="ListRow" class="lobbyListRow" style="flex-direction: row; align-items: flex-start; width: 100%; height: 10%; align-self: flex-start;">
+    <ui:VisualElement name="LobbyList" style="visibility: visible; height: 90%; justify-content: flex-start; align-self: stretch; align-items: flex-start; flex-direction: row; display: flex;">
+        <ui:VisualElement name="ListRow" class="lobbyListRow" style="flex-direction: row; align-items: flex-start; width: 100%; height: 10%; align-self: flex-start; display: none;">
             <ui:Label text="Label" name="Label" />
             <ui:Button text="Button" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="CreateHostWindow" enabled="true" style="visibility: visible; align-items: center; height: 90%; justify-content: flex-start; display: flex;">
+    <ui:VisualElement name="CreateHostWindow" enabled="true" style="visibility: visible; align-items: center; height: 90%; justify-content: flex-start; display: none;">
         <ui:Button text="Lobi Aç&#x9;" name="CreateLobbyBtn" class="button btn" style="-unity-text-align: middle-center;" />
         <ui:Label text="-" name="CreatedLobiCodeTxt" />
         <ui:Button text="Kapat" name="CloseLobby" class="button btn" style="flex-direction: row; -unity-text-align: middle-center;" />

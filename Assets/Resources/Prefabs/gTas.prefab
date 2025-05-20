@@ -312,6 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rakam: 0
   renk: {r: 0, g: 0, b: 0, a: 0}
+  TextRakam: {fileID: 1087946500794997880}
 --- !u!1 &3948034344815900963
 GameObject:
   m_ObjectHideFlags: 0

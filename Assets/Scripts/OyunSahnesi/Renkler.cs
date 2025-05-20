@@ -4,7 +4,7 @@ using UnityEngine;
   
 public static class Renkler
 {
-    private static byte alpha = 210;
+    private static byte alpha = 255;
     public static Dictionary<int, Color32> RenkSozlugu = new Dictionary<int, Color32>();
     
     static Renkler()

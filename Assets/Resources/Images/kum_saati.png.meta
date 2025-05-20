@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 201049c17ef0fb9b38c24e37819e03aa
+guid: 39e0f86349d00df6c998d7bf8c1b4631
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6600994041416419396
-    second: game_bg_0
+      213: -7900982085686414245
+    second: kum_saati_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: game_bg_0
+      name: kum_saati_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 832
-        height: 1472
+        x: 294
+        y: 199
+        width: 435
+        height: 626
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cb777e494ee8464a0800000000000000
-      internalID: -6600994041416419396
+      spriteID: b54bfed77a21a5290800000000000000
+      internalID: -7900982085686414245
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      game_bg_0: -6600994041416419396
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -107,7 +107,7 @@ public class LobbyManager : NetworkBehaviour{
                 lobbyUpdateCoroutine = null;
             }
 
-            // host yanlız başına oynarsa diye başka bir esprisi yok
+            // host single player oynarsa diye başka bir esprisi yok
             OyunKurallari.Instance.InitializeSettings();
         }
         catch (Exception e){

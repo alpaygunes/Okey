@@ -67,7 +67,7 @@ public class LobbyListUI : MonoBehaviour{
         
         // Lobby Yaratma Butonu
         CreateLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.None : DisplayStyle.Flex;
-        CreateLobbyBtn.clicked += () => { _ = LobbyManager.Instance?.LobbyCreate(); };
+        CreateLobbyBtn.clicked += CreateLobby;
 
         // Lobby Kapatma Butonu 
         CloseLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.Flex : DisplayStyle.None;
@@ -76,9 +76,9 @@ public class LobbyListUI : MonoBehaviour{
         };
 
         // Lobby Create Penceresi
-        CrtLobBtn.clicked += () => {
-            CreateHostWindow.visible = true;
-            HostList.visible = false;
+        CrtLobBtn.clicked += () => { 
+            CreateHostWindow.style.display = DisplayStyle.Flex;
+            HostList.style.display = DisplayStyle.None;
         };
 
         // loby listesi Penceresi
@@ -91,19 +91,24 @@ public class LobbyListUI : MonoBehaviour{
         
         //AnaMenüye Dön
         QuitToMainMenu.clicked += AnaMenuyeDon;
-        
         if (LobbyManager.Instance?.CurrentLobby!=null){
             if (benLobininSahibiyim){
                 CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
                 HostListBtn.style.display = DisplayStyle.None;
                 RefreshPlayerList();
             }
-            else{ 
-                CreateHostWindow.visible = false;
-                HostList.visible = true;
+            else{    
+                HostList.style.display = DisplayStyle.None;
                 OnLobbyListButtonClicked(); 
             }
         }
+    }
+
+    private async void CreateLobby(){
+        var loading = YukleniyorBekleniyorMesajBox.Instance.CreateLoadingElement("Bağlanıyor..."); 
+        CreateHostWindow.Insert(0, loading);
+        await LobbyManager.Instance?.LobbyCreate();
+        CreateHostWindow.Remove(loading);
     }
 
     private async void AnaMenuyeDon(){
@@ -127,13 +132,16 @@ public class LobbyListUI : MonoBehaviour{
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void OnLobbyListButtonClickedWrapper(){
-        HostList.visible = true;
-        CreateHostWindow.visible = false;
-        OnLobbyListButtonClicked(); 
+    public async void OnLobbyListButtonClickedWrapper(){
+        CreateHostWindow.style.display = DisplayStyle.None;
+        HostList.style.display = DisplayStyle.Flex;
+        var loading = YukleniyorBekleniyorMesajBox.Instance.CreateLoadingElement("Listeleniyor...");
+        rootElement.Add(loading);
+        await OnLobbyListButtonClicked(); 
+        rootElement.Remove(loading);
     }
 
-    public async void OnLobbyListButtonClicked(){ 
+    public async Task OnLobbyListButtonClicked(){ 
         try{
             response = await LobbyManager.Instance.GetLobbyList();
             if (response != null){
@@ -144,12 +152,29 @@ public class LobbyListUI : MonoBehaviour{
                         continue; 
                     var row = HostListRow(lobby);
                     HostList.Add(row);
-                    row.AddToClassList("lobbyListRow"); 
+                    row.AddToClassList("lobbyListRow");
                 }
 
-                if (response.Results.Count == 0){
-                    Debug.Log("Lobi Bulunamadı Liste Boş .");
-                } 
+                if (response.Results.Count==0){
+                    {
+                        var label = new Label("Lobi Bulunamadı.");
+                        label.style.fontSize = 20;
+                        label.style.color = Color.white;
+                        label.style.unityTextAlign = TextAnchor.MiddleCenter;
+                        label.style.unityFontStyleAndWeight = FontStyle.Bold;
+                        label.style.position = new StyleEnum<Position>(Position.Absolute);
+                        label.style.top       = Length.Percent(50);   // Dikey merkez
+                        label.style.left      = Length.Percent(50);   // Yatay merkez
+                        label.style.width        = Length.Percent(100); 
+                        label.style.height        = 32; 
+                        label.style.translate = new StyleTranslate(
+                            new Translate(
+                                new Length(-50, LengthUnit.Percent),              // -%50 X
+                                new Length(-50, LengthUnit.Percent),              // -%50 Y
+                                0));
+                        HostList.Insert(0,label);
+                    } 
+                }
             }
         }
         catch (Exception e){
