@@ -35,8 +35,7 @@ public class GameManager : MonoBehaviour{
     private void Start(){
         if (LobbyManager.Instance){
             seed = LobbyManager.Instance.gameSeed;
-        }
-        else{ 
+        } else{ 
             seed = "1234";
         }
 
