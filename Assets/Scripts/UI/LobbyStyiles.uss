@@ -1,41 +1,19 @@
-@import url("project://database/Assets/Scripts/UI/Theme.uss?fileID=7433441132597879392&guid=efda944dc0890303dbae568a6ca188f8&type=3#Theme");
 :root {
-    background-color: var(--mainmenu-page_bg);
-    font-size: var(--lobby-menu-font-size);
-    -unity-font-style: normal;
-}
-
-.menu {
-    background-color: var(--lobby-menu-bg);
-    width: 100%;
-    height: 10%;
-    align-self: center;
-    align-items: stretch;
-    justify-content: flex-start;
-    flex-direction: row;
-}
-
-.menu .btn {
-    min-width:auto!important;
+    background-image: resource('Images/main_menu_scene_bg');
 }
 
 .btn {
-    justify-content: flex-start;
+    width: 96px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
     align-self: center;
-    align-content: flex-start;
-    align-items: center;
-    padding: 6px;
-    min-width: 96px;
-    font-size: 12px;
-    -unity-text-align: upper-center;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-    border-left-width: 0;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
 }
 
 .lobbyListRow {
@@ -47,4 +25,6 @@
     margin-left: 0;
     padding-left: 20px;
     padding-right: 20px;
+    flex-wrap: nowrap;
+    width: 90%;
 }

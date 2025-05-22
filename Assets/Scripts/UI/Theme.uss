@@ -1,26 +1,18 @@
-:root {
-    --mainmenu-page_bg: rgb(18, 89, 37);
+:root { 
     --btn-text: rgb(244, 255, 239);
-    --btn-border: rgb(47, 163, 78);
-    --btn-border-bottom: rgb(48, 161, 75);
-    --btn-bg: rgb(52, 168, 83);
+ 
     
     --lobby-menu-bg: rgb(6, 55, 18);
     --lobby-menu-font-size: 12px;
 }
 
-.button {
-    background-color: var(--btn-bg);
-    border-width: 1px;
-    border-color: var(--btn-border);
+.button {  
     border-bottom-width: 2px;
     border-bottom-color: var(--btn-border-bottom);
     color: var(--btn-text);
     background-repeat: no-repeat;
 }
 
-.btn_size {
-    width: 32px;
-    height: 16px;
+.btn_size { 
     font-size: 20px;
 }

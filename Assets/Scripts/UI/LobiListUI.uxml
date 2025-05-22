@@ -1,10 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/LobbyStyiles.uss?fileID=7433441132597879392&amp;guid=422e1b671256356c19e61a0e772cc642&amp;type=3#LobbyStyiles" />
-    <Style src="project://database/Assets/Scripts/UI/Theme.uss?fileID=7433441132597879392&amp;guid=efda944dc0890303dbae568a6ca188f8&amp;type=3#Theme" />
-    <ui:VisualElement name="Menu" class="menu" style="flex-direction: row; align-self: center; align-items: center; justify-content: space-around; display: flex; visibility: visible; height: 30%;">
-        <ui:Button text="Çıkış" name="QuitToMainMenu" class="button btn" style="-unity-text-align: middle-center;" />
-        <ui:Button text="Liste" name="HostListBtn" class="button btn" style="-unity-text-align: middle-center;" />
-        <ui:Button text="Lobi Oluştur" name="CrtLobBtn" class="button btn" style="-unity-text-align: middle-center;" />
+    <ui:Button name="QuitToMainMenu" class="button btn" style="background-image: resource(&apos;Images/cikis&apos;); align-self: center; align-items: center;" />
+    <ui:VisualElement name="Menu" style="flex-direction: row; align-self: center; align-items: center; justify-content: space-around; display: flex; visibility: visible; height: 30%; align-content: flex-start; flex-wrap: wrap; width: 90%;">
+        <ui:Button name="HostListBtn" class="button btn" style="-unity-text-align: middle-center; background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/lobi_listesi&apos;);" />
+        <ui:Button name="CrtLobBtn" class="button btn" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/lobi_olustur&apos;);" />
     </ui:VisualElement>
     <ui:VisualElement name="LobbyList" style="visibility: visible; height: 90%; justify-content: flex-start; align-self: stretch; align-items: flex-start; flex-direction: row; display: flex;">
         <ui:VisualElement name="ListRow" class="lobbyListRow" style="flex-direction: row; align-items: flex-start; width: 100%; height: 10%; align-self: flex-start; display: none;">
@@ -13,10 +12,10 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="CreateHostWindow" enabled="true" style="visibility: visible; align-items: center; height: 90%; justify-content: flex-start; display: none;">
-        <ui:Button text="Lobi Aç&#x9;" name="CreateLobbyBtn" class="button btn" style="-unity-text-align: middle-center;" />
+        <ui:Button name="CreateLobbyBtn" class="button btn" style="background-image: resource(&apos;Images/olustur&apos;); height: 96px;" />
         <ui:Label text="-" name="CreatedLobiCodeTxt" />
-        <ui:Button text="Kapat" name="CloseLobby" class="button btn" style="flex-direction: row; -unity-text-align: middle-center;" />
+        <ui:Button name="CloseLobby" class="button btn" style="flex-direction: row; background-image: resource(&apos;Images/lobiyi_kapat&apos;); height: 96px;" />
         <ui:VisualElement name="PlayerList" style="width: 100%; min-height: 20%;" />
-        <ui:Button text="Başlat" name="StartRelay" class="button btn" style="-unity-text-align: middle-center; justify-content: space-between; align-items: center; flex-direction: column; position: absolute; bottom: 10px;" />
+        <ui:Button name="StartRelay" class="button btn" style="justify-content: space-between; align-items: center; flex-direction: column; position: absolute; bottom: 10px; background-image: resource(&apos;Images/start_relay&apos;); height: 96px;" />
     </ui:VisualElement>
 </ui:UXML>

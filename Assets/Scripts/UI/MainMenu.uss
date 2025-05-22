@@ -1,32 +1,37 @@
-@import url("project://database/Assets/Scripts/UI/Theme.uss?fileID=7433441132597879392&guid=efda944dc0890303dbae568a6ca188f8&type=3#Theme");
 :root {
-    background-color: var(--mainmenu-page_bg);
-    --buttonlar-arasi-bosluk : 10px;
+    background-image: resource('Images/main_menu_scene_bg');
 }
 
-.btn{
-    width: 75%;
-    height: 64px;
-    padding-left: 19%;
-    background-position-x: 9%;
-    font-size: 16px;
-    background-size:24px;
-    border-radius: 12px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
-    -unity-text-align: middle-left;
-    -unity-font-style: bold;
+.btn {
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    align-self: center;
+    width: 87%;
+    background-position-x: center;
+    background-position-y: center;
+    height: 40%;
 }
 
 .hamle_limitli_btn {
-    background-image: resource('Images/btn_hamle_limitli'); 
-    margin-top:  var(--buttonlar-arasi-bosluk);
+    background-image: resource('Images/hamle_limitli_btn_bg');
 }
+
 .sure_limitli_btn {
-    background-image: resource('Images/btn_sure_limitli');
-    margin-top:  var(--buttonlar-arasi-bosluk);
- }
+    background-image: resource('Images/zamana_limitli_btn_bg');
+}
+
 .gorevli_btn {
-    background-image: resource('Images/btn_gorev');
-    margin-top:  var(--buttonlar-arasi-bosluk);
+    background-image: resource('Images/gorev_yap_btn_bg');
+}
+
+.MenuBox {
+    padding-top: 27px;
+    background-image: resource('Images/main_menu_box_bg');
+    width: 90%;
+    padding-bottom: 38px;
+    min-width: 200px;
+    max-width: 300px;
 }

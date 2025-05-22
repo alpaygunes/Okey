@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -10,6 +11,7 @@ public class MainMenu : MonoBehaviour{
     private Button HamleLimitliBtn; 
     private Button ZamanLimitliBtn; 
     private Button GorevYap; 
+    private VisualElement MenuBox; 
     
     async void Awake() {
         if (!UnityServices.State.Equals(ServicesInitializationState.Initialized)) {
@@ -31,6 +33,8 @@ public class MainMenu : MonoBehaviour{
         }
     }
 
+ 
+
     private void OnEnable(){ 
         VisualElement rootElement = GetComponent<UIDocument>().rootVisualElement;
         HamleLimitliBtn = rootElement.Q<Button>("HamleLimitliBtn");
@@ -38,7 +42,8 @@ public class MainMenu : MonoBehaviour{
         ZamanLimitliBtn = rootElement.Q<Button>("ZamanLimitliBtn");
         ZamanLimitliBtn.clicked += SearchZamanLimitliGame; 
         GorevYap = rootElement.Q<Button>("GorevYap");
-        GorevYap.clicked += SearchGorevYapGame;
+        GorevYap.clicked += SearchGorevYapGame; 
+        MenuBox = rootElement.Q<VisualElement>("MenuBox");
     }
 
     private void SearchHamleLimitliGame(){ 
