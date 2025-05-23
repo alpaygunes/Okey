@@ -6,12 +6,7 @@
     --lobby-menu-font-size: 12px;
 }
 
-.button {  
-    border-bottom-width: 2px;
-    border-bottom-color: var(--btn-border-bottom);
-    color: var(--btn-text);
-    background-repeat: no-repeat;
-}
+ 
 
 .btn_size { 
     font-size: 20px;

@@ -41,6 +41,7 @@ public class LobbyListUI : MonoBehaviour{
             return;
         }
         Instance = this; 
+
     }
 
     private void OnDisable(){
@@ -71,15 +72,10 @@ public class LobbyListUI : MonoBehaviour{
 
         // Lobby Kapatma Butonu 
         CloseLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.Flex : DisplayStyle.None;
-        CloseLobbyBtn.clicked += () => {
-            LobbyManager.Instance?.OyunculariCikartVeLobiyiSil(LobbyManager.Instance?.CurrentLobby.Id);
-        };
+        CloseLobbyBtn.clicked += LobimiKapat;
 
         // Lobby Create Penceresi
-        CrtLobBtn.clicked += () => { 
-            CreateHostWindow.style.display = DisplayStyle.Flex;
-            HostList.style.display = DisplayStyle.None;
-        };
+        CrtLobBtn.clicked += LobiOlusturmaPenceresi;
 
         // loby listesi Penceresi
         HostListBtn.clicked += OnLobbyListButtonClickedWrapper;
@@ -91,9 +87,11 @@ public class LobbyListUI : MonoBehaviour{
         
         //AnaMenüye Dön
         QuitToMainMenu.clicked += AnaMenuyeDon;
+        
         if (LobbyManager.Instance?.CurrentLobby!=null){
             if (benLobininSahibiyim){
-                CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
+                //CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
+                CreatedLobiCodeTxt.text = $"Oyun Türü : {OyunKurallari.Instance.GuncelOyunTipi.ToString()}";
                 HostListBtn.style.display = DisplayStyle.None;
                 RefreshPlayerList();
             }
@@ -102,6 +100,19 @@ public class LobbyListUI : MonoBehaviour{
                 OnLobbyListButtonClicked(); 
             }
         }
+        
+        // hemen lobileri listele
+        OnLobbyListButtonClickedWrapper();
+    }
+
+    private void LobimiKapat(){
+        LobbyManager.Instance?.OyunculariCikartVeLobiyiSil(LobbyManager.Instance?.CurrentLobby.Id);
+    }
+
+    private void LobiOlusturmaPenceresi(){
+        CreateHostWindow.style.display = DisplayStyle.Flex;
+        HostList.style.display = DisplayStyle.None; 
+        CreateLobby();
     }
 
     private async void CreateLobby(){
@@ -135,6 +146,7 @@ public class LobbyListUI : MonoBehaviour{
     public async void OnLobbyListButtonClickedWrapper(){
         CreateHostWindow.style.display = DisplayStyle.None;
         HostList.style.display = DisplayStyle.Flex;
+        HostListBtn.style.display = DisplayStyle.None;
         var loading = YukleniyorBekleniyorMesajBox.Instance.CreateLoadingElement("Listeleniyor...");
         rootElement.Add(loading);
         await OnLobbyListButtonClicked(); 
@@ -153,12 +165,13 @@ public class LobbyListUI : MonoBehaviour{
                     var row = HostListRow(lobby);
                     HostList.Add(row);
                     row.AddToClassList("lobbyListRow");
+                    HostListBtn.style.display = DisplayStyle.None;
                 }
 
                 if (response.Results.Count==0){
                     {
                         var label = new Label("Lobi Bulunamadı.");
-                        label.style.fontSize = 20;
+                        label.style.fontSize = 10;
                         label.style.color = Color.white;
                         label.style.unityTextAlign = TextAnchor.MiddleCenter;
                         label.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -173,6 +186,7 @@ public class LobbyListUI : MonoBehaviour{
                                 new Length(-50, LengthUnit.Percent),              // -%50 Y
                                 0));
                         HostList.Insert(0,label);
+                        //HostListBtn.style.display = DisplayStyle.Flex;
                     } 
                 }
             }
@@ -203,22 +217,16 @@ public class LobbyListUI : MonoBehaviour{
         if (lobby.Data.TryGetValue("oyunTipi", out var relayData)){
             oyunTipi = relayData.Value;
         }
-        
-        var label = new Label
-        {
-            text = $"{oyunTipi} - {lobby.Players.Count}/{lobby.MaxPlayers}"
-        };
-        
-        katilBtn = new Button { text = "Katıl" };
-        ayrilBtn = new Button { text = "Ayrıl" };
+ 
+        katilBtn = new Button { text = $"{oyunTipi} - {lobby.Players.Count}/{lobby.MaxPlayers}" }; 
+        ayrilBtn = new Button(); 
         katilBtn.style.display  = benLobidemiyim ? DisplayStyle.None : DisplayStyle.Flex;
         ayrilBtn.style.display  = benLobidemiyim ? DisplayStyle.Flex : DisplayStyle.None;
-
+        katilBtn.AddToClassList("katilBtn");
+        ayrilBtn.AddToClassList("ayrilBtn");
+        
         katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID);
-        ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();
-        katilBtn.AddToClassList("button");
-        ayrilBtn.AddToClassList("button");
-        row.Add(label);
+        ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();  
         row.Add(katilBtn);
         row.Add(ayrilBtn); 
         return row;
@@ -230,9 +238,10 @@ public class LobbyListUI : MonoBehaviour{
             joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
             ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
             katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
+            CrtLobBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex; 
         }
         catch (Exception e){
-            Console.WriteLine($"Hata OnJoinLobbyClicked içinde {e.Message}"); 
+            Console.WriteLine($"Hata OnJoinLobbyClicked içinde {e.Message}");
         }
     }
 
@@ -248,7 +257,8 @@ public class LobbyListUI : MonoBehaviour{
                 AuthenticationService.Instance.PlayerId);
             ayrilBtn.style.display = DisplayStyle.None;
             katilBtn.style.display = DisplayStyle.Flex;
-            HostListBtn.style.display = DisplayStyle.Flex;
+            HostListBtn.style.display = DisplayStyle.None;
+            CrtLobBtn.style.display = DisplayStyle.Flex;
             LobbyManager.Instance.CurrentLobby = null; 
             LobbyManager.Instance.AbonelikeriBitir();
         }

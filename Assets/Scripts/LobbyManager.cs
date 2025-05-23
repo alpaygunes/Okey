@@ -85,12 +85,12 @@ public class LobbyManager : NetworkBehaviour{
 
             CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(LobbyName, MaxPlayers, options);
             StartHeartbeat();
-            LobbyListUI.Instance.CreatedLobiCodeTxt.text =
-                OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- " + CurrentLobby.LobbyCode;
+            LobbyListUI.Instance.CreatedLobiCodeTxt.text = $"Oyun Türü : {OyunKurallari.Instance.GuncelOyunTipi.ToString()}";
             LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex;
             LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
             LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None;
+            LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.benLobininSahibiyim = true;
 
             hostCallBacks = new LobbyEventCallbacks();
@@ -422,7 +422,9 @@ public class LobbyManager : NetworkBehaviour{
                 LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.None;
                 LobbyListUI.Instance.CreatedLobiCodeTxt.text = null;
                 LobbyListUI.Instance.PlayerList.Clear();
-                LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.Flex;
+                LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.Flex; 
+                LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.Flex;
+                LobbyListUI.Instance.OnLobbyListButtonClickedWrapper();
 
                 if (hostCallBacks != null){
                     hostCallBacks.PlayerJoined -= OnPlayerJoined;
