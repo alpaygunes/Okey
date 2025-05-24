@@ -91,7 +91,7 @@ public class LobbyListUI : MonoBehaviour{
         if (LobbyManager.Instance?.CurrentLobby!=null){
             if (benLobininSahibiyim){
                 //CreatedLobiCodeTxt.text = OyunKurallari.Instance.GuncelOyunTipi.ToString() + " -- "+ LobbyManager.Instance.CurrentLobby.LobbyCode;
-                CreatedLobiCodeTxt.text = $"Oyun Türü : {OyunKurallari.Instance.GuncelOyunTipi.ToString()}";
+                CreatedLobiCodeTxt.text = $"{OyunKurallari.Instance.GuncelOyunTipi.ToString()} : {LobbyManager.Instance.CurrentLobby.LobbyCode}";
                 HostListBtn.style.display = DisplayStyle.None;
                 RefreshPlayerList();
             }
@@ -276,14 +276,30 @@ public class LobbyListUI : MonoBehaviour{
                 Debug.LogWarning("Player.Data null! DisplayName atanamadı.");
                 continue; // Null gelen veriyi atla
             }
-
             var name = player.Data.ContainsKey("DisplayName")
                 ? player.Data["DisplayName"].Value
                 : "Bilinmeyen Oyuncu";
-
-            var label = new Label(name);
-
-            PlayerList.Add(label);
+            var playerListItem = new VisualElement();
+            playerListItem.AddToClassList("playerListItem");
+            var playerName = new Label(name);
+            playerName.AddToClassList("playerName");
+            var playerAvatar = new Button();
+            playerAvatar.AddToClassList("playerAvatar");
+            
+            string avatarName = player.Data.ContainsKey("avatar")
+                ? player.Data["avatar"].Value
+                : "avatar0";
+            Sprite avatarSprite = Resources.Load<Sprite>($"avatars/{avatarName}");
+            if (avatarSprite != null)
+                playerAvatar.style.backgroundImage = new StyleBackground(avatarSprite);
+            playerAvatar.style.marginLeft = 0;
+            playerAvatar.style.marginRight = 0;
+            playerAvatar.style.marginTop = 0;
+            playerAvatar.style.marginBottom = 0;
+            
+            playerListItem.Add(playerAvatar);
+            playerListItem.Add(playerName);
+            PlayerList.Add(playerListItem);
         }
     }
  
