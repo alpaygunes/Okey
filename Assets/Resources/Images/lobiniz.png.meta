@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      lobiniz_0: -7161834146727620804
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -43,14 +43,21 @@ public class OyunSonu : NetworkBehaviour{
             foreach (var oyuncu in siraliListe){
                 ulong clientID = oyuncu.ClientId;
                 FixedString64Bytes clientName = oyuncu.ClientName;
-                int puan = oyuncu.Skor;
-                int HamleSayisi = oyuncu.HamleSayisi;
-                var listeOgesi = new Button();
-                listeOgesi.text = clientID.ToString();
-                listeOgesi.text += " ClientName :" + clientName;
-                listeOgesi.text += " Puan :" + puan;
-                listeOgesi.text += " HamleSayisi :" + HamleSayisi;
-                sonucListesi.Add(listeOgesi);
+                //int puan = oyuncu.Skor;
+                //int HamleSayisi = oyuncu.HamleSayisi;
+                var puanBtn = new Button(); 
+                puanBtn.text =  oyuncu.Skor.ToString(); 
+                puanBtn.AddToClassList("puan");
+                sonucListesi.Add(puanBtn);
+                var playerNameBtn = new Button(); 
+                playerNameBtn.text =  clientName.ToString(); 
+                playerNameBtn.AddToClassList("name");
+                var ListRowVisuElm = new VisualElement();
+                ListRowVisuElm.Add(puanBtn);
+                ListRowVisuElm.Add(playerNameBtn);
+                ListRowVisuElm.AddToClassList("ListRow");
+                sonucListesi.Add(ListRowVisuElm);
+                
             }
         }
         catch(Exception e){

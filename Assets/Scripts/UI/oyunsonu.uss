@@ -1,0 +1,33 @@
+:root {
+    background-image: resource('Images/main_menu_scene_bg');
+    align-items: center;
+    align-self: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ListRow {
+    width: 80%;
+    height: 48px;
+    align-self: center;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.name {
+    width: 60%;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: resource('Images/oyun_sonu_player_name_bg');
+    -unity-background-scale-mode: stretch-to-fill;
+    font-size: 10px;
+}
+
+.puan {
+    width: 20%;
+    height: auto;
+    align-self: center;
+    background-image: resource('Images/oyun_sonu_puan_bg');
+    font-size: 10px;
+    -unity-background-scale-mode: stretch-to-fill;
+}

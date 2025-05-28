@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5088d44f68bd07807b7fd383f5d96810
+guid: affcac3ff69af444e887d60e39b32a3d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -38807097732301139
-    second: kutu_0
+      213: -52913702393500096
+    second: kalan_gorev_bg_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: kutu_0
+      name: kalan_gorev_bg_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 512
+        height: 243
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: daef6e47621267ff0800000000000000
-      internalID: -38807097732301139
+      spriteID: 04ea51d9443044ff0800000000000000
+      internalID: -52913702393500096
       vertices: []
       indices: 
       edges: []
@@ -160,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      kutu_0: -38807097732301139
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

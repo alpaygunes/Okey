@@ -90,12 +90,18 @@ public class Tas : MonoBehaviour{
             var cepScript = Istaka.Instance.CepList[i];
             if (cepScript.Dolu == false){
                 gameObject.transform.position += new Vector3(0, 0, -1);
-                transform.DOMove(cepScript.transform.position, animasyonSuresi * .5f)
+                var hedef_cep_position = new Vector3(
+                    cepScript.transform.position.x, 
+                    cepScript.transform.position.y*.965f,
+                    cepScript.transform.position.z);
+                transform.DOMove(hedef_cep_position, animasyonSuresi * .5f)
                     .SetEase(Ease.OutExpo)
-                    .OnComplete((() => _audioSource_up.Play()));
+                    .OnComplete((() => {
+                        transform.localScale = new Vector3(colonWidth, colonWidth) * 0.865f;
+                        _audioSource_up.Play();
+                    })); 
                 Destroy(_rigidbody);
-                Destroy(_collider);
-                transform.localScale = new Vector3(colonWidth, colonWidth) * 0.9f;
+                Destroy(_collider); 
                 cepScript.Dolu = true;
                 cepScript.TasInstance = this;
                 cepInstance = cepScript;
@@ -264,7 +270,7 @@ public class Tas : MonoBehaviour{
         int width = 96*4;
         int height = 96*4;
         float radius = 30f; // yuvarlak köşe yarıçapı
-        float shadowThickness = 25f; // gölge kalınlığı
+        float shadowThickness = 0f; // gölge kalınlığı
         float shadowAlpha = 0.5f; // gölgenin maksimum alfa değeri (0 - 1)
 
         // Renkleri ayarlayın

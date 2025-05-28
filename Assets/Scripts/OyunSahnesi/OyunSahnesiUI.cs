@@ -74,24 +74,26 @@ public class OyunSahnesiUI : MonoBehaviour
         PregressBarContainer.style.display =
             GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
         GeriSayim.style.display =    PregressBarContainer.style.display;
-        GorevSayisiLbl.style.display =    DisplayStyle.None;
-        
-        
+        GorevSayisiLbl.style.display =    DisplayStyle.None; 
         GeriSayim.text = null;
         GorevSayisiLbl.text = null;
         HamleSayisi.text = "0"; 
+        HamleSayisi.style.display =    DisplayStyle.None; 
         exit.clicked += () => {
             _ = LobbyManager.Instance.CikmakIisteginiGonder();
         }; 
+        
+ 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             GeriSayim.text = OyunKurallari.Instance.ZamanLimiti.ToString();  
             GeriSayim.style.display =    DisplayStyle.Flex;
-        }
-        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+        } else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
             GorevSayisiLbl.style.display =    DisplayStyle.Flex;
             GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();  
-        }
-        
+        } else if(OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
+            HamleSayisi.style.display =    DisplayStyle.Flex;
+            HamleSayisi.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();  
+        } 
         _ = AvatarlariGoster();
     }
      
@@ -99,6 +101,8 @@ public class OyunSahnesiUI : MonoBehaviour
         GeriSayimBari.value = 0;
         Puanlama.Instance.ButtonlaPuanlamaYap();
         puanlamaYap.style.display = DisplayStyle.None;
-    } 
+    }
+
+ 
     
 }
