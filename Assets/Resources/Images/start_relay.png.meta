@@ -3,8 +3,8 @@ guid: 5caece7932c4fdf83b78318d0bf6871d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7903156021158652542
-    second: sart_relay_0
+      213: 1344266321831089685
+    second: start_relay_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sart_relay_0
+      name: start_relay_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2855952b879525290800000000000000
-      internalID: -7903156021158652542
+      spriteID: 5165344f81bc7a210800000000000000
+      internalID: 1344266321831089685
       vertices: []
       indices: 
       edges: []
@@ -160,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      sart_relay_0: -7903156021158652542
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

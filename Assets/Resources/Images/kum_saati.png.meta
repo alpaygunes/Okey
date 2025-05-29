@@ -129,10 +129,10 @@ TextureImporter:
       name: kum_saati_0
       rect:
         serializedVersion: 2
-        x: 294
-        y: 199
-        width: 435
-        height: 626
+        x: 0
+        y: 0
+        width: 85
+        height: 107
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      kum_saati_0: -7900982085686414245
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

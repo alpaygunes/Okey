@@ -1,10 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=e48650b18525b5061b14e9ec17907458&amp;type=3#MainMenu" />
-    <ui:VisualElement style="flex-grow: 1; justify-content: center; align-self: auto; width: 100%; align-items: center; height: auto; align-content: auto;">
+    <ui:VisualElement name="VisualElement" style="align-items: center; align-self: center; width: 80%; justify-content: center; height: 100%;">
         <ui:VisualElement name="MenuBox" class="MenuBox">
-            <ui:Button name="ZamanLimitliBtn" class="button sure_limitli_btn btn_size btn" />
+            <ui:Button name="ZamanLimitliBtn" class="button sure_limitli_btn btn_size btn" style="background-size: 100% 100%; -unity-background-scale-mode: scale-to-fit;" />
             <ui:Button name="GorevYap" class="button gorevli_btn btn_size btn" />
-            <ui:Button name="HamleLimitliBtn" class="button hamle_limitli_btn btn_size btn" />
+            <ui:Button name="HamleLimitliBtn" class="button hamle_limitli_btn btn_size btn" style="-unity-background-scale-mode: scale-to-fit; background-image: resource(&apos;Images/hamle_limitli_btn_bg&apos;); background-size: contain;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 71f8afe3f2e2d92738b5847e7759491d
+guid: ee370d4acbc1afd9a84cb53329cc8836
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6968685579757593649
-    second: yarisma_sonu_skor_bg_0
+      213: -5790736032759945521
+    second: main_menu_box_bg_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: yarisma_sonu_skor_bg_0
+      name: main_menu_box_bg_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 127
+        width: 512
+        height: 308
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 134a6d4fc9eb5b060800000000000000
-      internalID: 6968685579757593649
+      spriteID: fc6e943424c23afa0800000000000000
+      internalID: -5790736032759945521
       vertices: []
       indices: 
       edges: []
@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      main_menu_box_bg_0: -5790736032759945521
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
