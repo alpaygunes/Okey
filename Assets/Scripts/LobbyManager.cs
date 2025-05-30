@@ -88,9 +88,9 @@ public class LobbyManager : NetworkBehaviour{
             //LobbyListUI.Instance.CreatedLobiCodeTxt.text = $"Oyun Türü : {OyunKurallari.Instance.GuncelOyunTipi.ToString()}";
             LobbyListUI.Instance.CreatedLobiCodeTxt.text = $"{OyunKurallari.Instance.GuncelOyunTipi.ToString()} : {CurrentLobby.LobbyCode}";
             LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex;
-            LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
+            //LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
-            LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None;
+            //LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.benLobininSahibiyim = true;
 
@@ -419,11 +419,11 @@ public class LobbyManager : NetworkBehaviour{
             try{
                 await LobbyService.Instance.DeleteLobbyAsync(mevcutLobiId);
                 LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.None;
-                LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.Flex;
+                //LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.Flex;
                 LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.None;
                 LobbyListUI.Instance.CreatedLobiCodeTxt.text = null;
                 LobbyListUI.Instance.PlayerList.Clear();
-                LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.Flex; 
+                //LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.Flex; 
                 LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.Flex;
                 LobbyListUI.Instance.OnLobbyListButtonClickedWrapper();
 

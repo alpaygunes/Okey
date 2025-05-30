@@ -1,33 +1,33 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/LobbyStyiles.uss?fileID=7433441132597879392&amp;guid=422e1b671256356c19e61a0e772cc642&amp;type=3#LobbyStyiles" />
-    <ui:VisualElement style="flex-grow: 1; width: 100%; height: 100%;">
-        <ui:VisualElement name="Menu" style="flex-direction: column; align-self: center; align-items: center; justify-content: space-around; display: flex; visibility: visible; height: 75px; align-content: flex-start; flex-wrap: nowrap; width: 100%; min-width: auto; max-width: none; min-height: auto; max-height: none; margin-top: 32px;">
-            <ui:VisualElement style="width: 100%;">
-                <ui:Button name="QuitToMainMenu" class="button btn" style="background-image: resource(&apos;Images/anamenu&apos;); align-self: center; align-items: center; width: 150px; height: 40px; background-size: contain; background-position-x: left 0; -unity-background-scale-mode: scale-to-fit; background-position-y: center 0;" />
-            </ui:VisualElement>
-            <ui:VisualElement name="VisualElement" style="width: 100%;">
-                <ui:Button name="HostListBtn" class="button btn" style="-unity-text-align: middle-center; background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/lobi_listesi&apos;);" />
-                <ui:Button name="CrtLobBtn" class="button btn" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/lobi_olustur&apos;);" />
-            </ui:VisualElement>
+    <ui:VisualElement name="Container" style="align-items: center; justify-content: center; height: 100%; width: 100%;">
+        <ui:VisualElement name="Satir1" style="align-items: flex-end; height: 100px; width: 100%;">
+            <ui:Button name="QuitToMainMenu" class="button btn" style="background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); background-image: resource(&apos;Images/UI/anamenu&apos;); background-size: contain; width: 50%; height: 48px; -unity-background-scale-mode: scale-to-fit;" />
         </ui:VisualElement>
-        <ui:VisualElement name="LobbyList" style="height: 75%; background-image: resource(&apos;Images/lobi_list_bg&apos;); -unity-background-scale-mode: scale-to-fit; background-position-x: center 0; background-position-y: center 0; width: 100%; align-items: stretch; align-self: center; justify-content: flex-start; background-size: 100% 100%; min-width: 128px; max-width: 512px; visibility: visible; display: flex; padding-top: 51px;">
-            <ui:VisualElement name="ListRow" class="lobbyListRow ListRow">
-                <ui:Button text="Button" name="Button" class="katilBtn" style="display: none;" />
-            </ui:VisualElement>
-        </ui:VisualElement>
-        <ui:VisualElement name="CreateHostWindow" enabled="true" style="width: 100%; align-items: center; align-self: center; height: 75%; background-image: resource(&apos;Images/lobiniz&apos;); background-position-x: center 0; -unity-background-scale-mode: scale-to-fit; background-size: 100% 100%; display: flex; padding-top: 59px;">
-            <ui:Button name="CreateLobbyBtn" class="button btn" style="background-image: resource(&apos;Images/lobi_olustur&apos;); overflow: visible; display: none;" />
-            <ui:VisualElement name="VisualElement" style="flex-grow: 1; width: 75%; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center; align-self: center; background-color: rgba(0, 0, 0, 0); margin-top: 0; margin-bottom: 0; margin-right: 0; margin-left: 0; min-height: 48px; max-height: 48px; height: 48px; min-width: 128px; padding-top: 5px; padding-right: 8px; padding-bottom: 5px; padding-left: 10px; align-content: flex-start; background-image: resource(&apos;Images/lobi_kodu&apos;); max-width: 256px;">
-                <ui:Label text="-" name="CreatedLobiCodeTxt" style="font-size: 12px; -unity-font-style: normal; color: rgb(255, 255, 255); text-shadow: 0 0 0 rgba(99, 28, 28, 0); white-space: normal; -unity-text-align: middle-left; width: 75%; align-self: center; height: 90%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-                <ui:Button name="CloseLobby" style="background-image: resource(&apos;Images/lobiyi_kapat&apos;); background-size: cover; align-items: center; justify-content: center; align-self: center; background-color: rgba(188, 188, 188, 0); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); overflow: hidden; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px; background-position-x: center 0; -unity-background-scale-mode: scale-to-fit; background-position-y: center 0; width: auto; height: 100%; position: absolute; right: 11px;" />
-            </ui:VisualElement>
-            <ui:VisualElement name="PlayerList" style="width: 200px; min-height: initial; height: 64px; background-position-x: left 0; background-position-y: top 0; -unity-background-scale-mode: scale-and-crop; align-items: stretch; align-self: center; justify-content: center; min-width: 128px; max-width: 200px;">
-                <ui:VisualElement name="PlayerListItem" class="playerListItem" style="justify-content: center;">
-                    <ui:Button name="Button" class="playerAvatar" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-                    <ui:Label text="Oyuncu Bekleniyor" name="playerName" class="playerName" />
+        <ui:VisualElement name="Satir2a" style="align-items: center; justify-content: space-between; width: 100%; display: flex;">
+            <ui:Button name="icon" style="width: 64px; height: 57px; background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/controler&apos;); border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0);" />
+            <ui:VisualElement name="LobbyList" style="width: 256px; height: 385px; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Images/UI/Lobi_List&apos;); background-size: contain; -unity-background-scale-mode: scale-to-fit; align-items: center; justify-content: center;">
+                <ui:VisualElement name="ListRow" class="lobbyListRow ListRow" style="align-items: flex-end;">
+                    <ui:Button text="Button" name="Button" class="katilBtn" style="-unity-background-scale-mode: scale-to-fit; width: 64px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:Button name="StartRelay" emoji-fallback-support="true" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/start&apos;); -unity-background-scale-mode: scale-and-crop; background-size: contain; width: 64px; height: 64px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; align-items: auto;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Satir2b" style="width: 100%; align-items: center; height: auto; justify-content: center;">
+            <ui:Button style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/paylas_icon&apos;); -unity-background-scale-mode: scale-to-fit; background-size: contain; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); width: 48px; height: 48px;" />
+            <ui:VisualElement name="s" enabled="true" style="width: 220px; background-color: rgba(0, 0, 0, 0); background-image: resource(&apos;Images/UI/lobi_bilgileri&apos;); height: 600px; align-items: center; justify-content: center; display: flex; -unity-background-scale-mode: scale-to-fit; align-self: center; background-size: contain; background-position-y: center 0;">
+                <ui:Label text="-" name="CreatedLobiCodeTxt" style="background-image: resource(&apos;Images/UI/lobi_kodu_bg&apos;); width: 50%; -unity-text-align: upper-center; height: 20px;" />
+                <ui:VisualElement name="PlayerList" style="width: 50%; height: 20px; -unity-background-scale-mode: scale-to-fit; font-size: 9px;">
+                    <ui:VisualElement name="PlayerListItem" class="playerListItem ListITem" style="width: 100%; background-image: resource(&apos;Images/UI/lobi_player_name_bg&apos;); -unity-text-align: upper-center;">
+                        <ui:Button name="Button" class="playerAvatar" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                        <ui:Label text="Oyuncu Bekleniyor" name="playerName" class="playerName" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Button name="CloseLobby" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/lobiyi_kapat&apos;); width: 50%; height: 20px; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); background-size: contain; align-self: center;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Button name="StartRelay" emoji-fallback-support="true" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/baslat&apos;); -unity-background-scale-mode: scale-to-fit; align-items: center; align-self: center; justify-content: center; width: 50%; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); height: 20px;" />
+        <ui:VisualElement name="Satir3" style="width: 100%; align-items: center; justify-content: center;">
+            <ui:Button name="CrtLobBtn" class="button btn" style="background-color: rgba(188, 188, 188, 0); -unity-background-scale-mode: scale-to-fit; background-image: resource(&apos;Images/UI/lobi_olustur&apos;); background-size: contain; width: 50%; height: 64px; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); min-width: 128px; max-width: 200px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

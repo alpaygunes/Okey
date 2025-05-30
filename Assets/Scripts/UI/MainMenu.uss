@@ -1,5 +1,7 @@
 :root {
-    background-image: resource('Images/main_menu_scene_bg');
+    background-image: resource('Images/UI/bg0');
+    align-items: center;
+    justify-content: center;
 }
 
 .btn {
@@ -8,39 +10,18 @@
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    align-self: center;
-    width: 90%;
-    background-position-x: center;
-    background-position-y: center;
-    height: 40%;
-    -unity-background-scale-mode: scale-to-fit;
-    background-size: contain;
-    min-width: 100px;
-    max-width: 200px;
-}
-
-.hamle_limitli_btn {
-    background-image: resource('Images/hamle_limitli_btn_bg');
-}
-
-.sure_limitli_btn {
-    background-image: resource('Images/zamana_limitli_btn_bg');
-}
-
-.gorevli_btn {
-    background-image: resource('Images/gorev_yap_btn_bg');
+    width: 80%;
+    height: 18%;
 }
 
 .MenuBox {
-    padding-top: 27px;
-    background-image: resource('Images/main_menu_box_bg');
-    width: 100%;
-    padding-bottom: 38px;
-    min-width: 128px;
-    max-width: 256px;
-    -unity-background-scale-mode: scale-and-crop;
-    background-size: 100% 100%;
-    background-position-x: center 0;
-    background-position-y: center 0;
-    height: auto;
+    background-image: resource('Images/UI/menu0_bg');
+    -unity-background-scale-mode: scale-to-fit;
+    width: 200px;
+    height: 137px;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: center;
+    padding-bottom: 21px;
+    scale: 1 1;
 }
