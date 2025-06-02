@@ -91,7 +91,8 @@ public class LobbyManager : NetworkBehaviour{
             //LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
             LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
             //LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None;
-            LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.None;
+            //LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.None;
+            LobbyListUI.Instance.CrtLobBtn.visible = false;
             LobbyListUI.Instance.benLobininSahibiyim = true;
 
             hostCallBacks = new LobbyEventCallbacks();
@@ -233,7 +234,7 @@ public class LobbyManager : NetworkBehaviour{
             if (lobbyData != null && lobbyData.ContainsKey("lobby_message")){
                 string messageValue = lobbyData["lobby_message"].Value.Value;
                 if (messageValue == "lobby_kapanacak"){
-                    LobbyListUI.Instance.HostList.Clear();
+                    LobbyListUI.Instance.LobbyList.Clear();
                     await LobbyListUI.Instance.LobidenAyril();
                     LobbyListUI.Instance.OnLobbyListButtonClicked();
                     CurrentLobby = null;
@@ -424,7 +425,8 @@ public class LobbyManager : NetworkBehaviour{
                 LobbyListUI.Instance.CreatedLobiCodeTxt.text = null;
                 LobbyListUI.Instance.PlayerList.Clear();
                 //LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.Flex; 
-                LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.Flex;
+                //LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.Flex;
+                LobbyListUI.Instance.CrtLobBtn.visible = true;
                 LobbyListUI.Instance.OnLobbyListButtonClickedWrapper();
 
                 if (hostCallBacks != null){

@@ -20,7 +20,7 @@ public class LobbyListUI : MonoBehaviour{
     //public Button HostListBtn;
     public Button QuitToMainMenu;
     public TextElement CreatedLobiCodeTxt;
-    public VisualElement HostList;
+    public VisualElement LobbyList;
     public VisualElement Satir2a;
     public VisualElement Satir2b;
     public QueryResponse response;
@@ -54,7 +54,7 @@ public class LobbyListUI : MonoBehaviour{
 
     private void OnEnable(){
         rootElement = GetComponent<UIDocument>().rootVisualElement;
-        HostList = rootElement.Q<VisualElement>("LobbyList");
+        LobbyList = rootElement.Q<VisualElement>("LobbyList");
         Satir2a = rootElement.Q<VisualElement>("Satir2a");
         Satir2b = rootElement.Q<VisualElement>("Satir2b");
         CrtLobBtn = rootElement.Q<Button>("CrtLobBtn");
@@ -139,7 +139,7 @@ public class LobbyListUI : MonoBehaviour{
             LobbyManager.Instance.lobbyUpdateCoroutine = null;
         }
 
-        HostList.Clear();
+        LobbyList.Clear();
         PlayerList.Clear();
         CreatedLobiCodeTxt.text = null;
         SceneManager.LoadScene("MainMenu");
@@ -159,15 +159,13 @@ public class LobbyListUI : MonoBehaviour{
         try{
             response = await LobbyManager.Instance.GetLobbyList();
             if (response != null){
-                HostList.Clear();
+                LobbyList.Clear();
                 for (int i = 0; i < response.Results.Count; i++){
                     var lobby = response.Results[i];
                     if (LobbyManager.Instance.CurrentLobby?.HostId == AuthenticationService.Instance.PlayerId)
                         continue; 
-                    var row = HostListRow(lobby);
-                    HostList.Add(row);
-                    row.AddToClassList("lobbyListRow");
-                    //HostListBtn.style.display = DisplayStyle.None;
+                    var row = LobiListRow(lobby);
+                    LobbyList.Add(row); 
                 }
 
                 if (response.Results.Count==0){
@@ -187,7 +185,7 @@ public class LobbyListUI : MonoBehaviour{
                                 new Length(-50, LengthUnit.Percent),              // -%50 X
                                 new Length(-50, LengthUnit.Percent),              // -%50 Y
                                 0));
-                        HostList.Insert(0,label);
+                        LobbyList.Insert(0,label);
                         //HostListBtn.style.display = DisplayStyle.Flex;
                     } 
                 }
@@ -209,26 +207,31 @@ public class LobbyListUI : MonoBehaviour{
         }
     }
     
-    private VisualElement HostListRow(Lobby lobby){
+    private VisualElement LobiListRow(Lobby lobby){
         var benLobidemiyim =  lobby.Players.Any(p => p.Id == AuthenticationService.Instance.PlayerId);
 
         var lobbyID = lobby.Id;
         var row = new VisualElement();
+        row.AddToClassList("aListRow"); 
         string oyunTipi = null;
         
         if (lobby.Data.TryGetValue("oyunTipi", out var relayData)){
             oyunTipi = relayData.Value;
         }
+        
+        var lobiKodu = new TextElement { text = $"{oyunTipi}   #{lobby.Players.Count}/{lobby.MaxPlayers}"  };
  
-        katilBtn = new Button { text = $"{oyunTipi} - {lobby.Players.Count}/{lobby.MaxPlayers}" }; 
+        katilBtn = new Button(); 
         ayrilBtn = new Button(); 
         katilBtn.style.display  = benLobidemiyim ? DisplayStyle.None : DisplayStyle.Flex;
         ayrilBtn.style.display  = benLobidemiyim ? DisplayStyle.Flex : DisplayStyle.None;
-        katilBtn.AddToClassList("katilBtn");
-        ayrilBtn.AddToClassList("ayrilBtn");
+        katilBtn.AddToClassList("aKatilBtn");
+        ayrilBtn.AddToClassList("aAyrilBtn");
+        lobiKodu.AddToClassList("aLobiType");
         
         katilBtn.clicked += async () => await OnJoinLobbyClicked(lobbyID);
         ayrilBtn.clicked += async () => await OnLeaveLobbyClicked();  
+        row.Add(lobiKodu); 
         row.Add(katilBtn);
         row.Add(ayrilBtn); 
         return row;
@@ -240,7 +243,8 @@ public class LobbyListUI : MonoBehaviour{
             joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
             ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
             katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
-            CrtLobBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex; 
+            //CrtLobBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex; 
+            CrtLobBtn.visible = !joinedToLobby;
         }
         catch (Exception e){
             Console.WriteLine($"Hata OnJoinLobbyClicked içinde {e.Message}");
@@ -260,7 +264,8 @@ public class LobbyListUI : MonoBehaviour{
             ayrilBtn.style.display = DisplayStyle.None;
             katilBtn.style.display = DisplayStyle.Flex;
             //HostListBtn.style.display = DisplayStyle.None;
-            CrtLobBtn.style.display = DisplayStyle.Flex;
+            //CrtLobBtn.style.display = DisplayStyle.Flex;
+            CrtLobBtn.visible = true;
             LobbyManager.Instance.CurrentLobby = null; 
             LobbyManager.Instance.AbonelikeriBitir();
         }
@@ -282,11 +287,11 @@ public class LobbyListUI : MonoBehaviour{
                 ? player.Data["DisplayName"].Value
                 : "Bilinmeyen Oyuncu";
             var playerListItem = new VisualElement();
-            playerListItem.AddToClassList("playerListItem");
+            playerListItem.AddToClassList("bPlayerListItem");
             var playerName = new Label(name);
-            playerName.AddToClassList("playerName");
+            playerName.AddToClassList("bPlayerName");
             var playerAvatar = new Button();
-            playerAvatar.AddToClassList("playerAvatar");
+            playerAvatar.AddToClassList("bPlayerAvatar");
             
             string avatarName = player.Data.ContainsKey("avatar")
                 ? player.Data["avatar"].Value
@@ -297,7 +302,7 @@ public class LobbyListUI : MonoBehaviour{
             playerAvatar.style.marginLeft = 0;
             playerAvatar.style.marginRight = 0;
             playerAvatar.style.marginTop = 0;
-            playerAvatar.style.marginBottom = 0;
+            playerAvatar.style.marginBottom = 0; 
             
             playerListItem.Add(playerAvatar);
             playerListItem.Add(playerName);

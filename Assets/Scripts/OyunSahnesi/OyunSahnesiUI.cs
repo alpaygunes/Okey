@@ -71,8 +71,7 @@ public class OyunSahnesiUI : MonoBehaviour
         avatars = rootElement.Q<VisualElement>("Avtars"); 
         puanlamaYap.clicked += ButtonlaPuanlamaYap;  
         puanlamaYap.style.display = DisplayStyle.None;
-        PregressBarContainer.style.display =
-            GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
+        PregressBarContainer.style.display = GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
         GeriSayim.style.display =    PregressBarContainer.style.display;
         GorevSayisiLbl.style.display =    DisplayStyle.None; 
         GeriSayim.text = null;

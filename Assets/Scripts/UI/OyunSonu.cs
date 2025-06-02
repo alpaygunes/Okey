@@ -10,11 +10,12 @@ using UnityEngine.UIElements;
 
 public class OyunSonu : NetworkBehaviour{
     private VisualElement rootElement;
+    private VisualElement container;
     private VisualElement sonucListesi;
     private VisualElement footer;
     public Button YeniOyunuBaslat;
     public Button Quit;
-    public Button Hazirim;
+    //public Button Hazirim;
     public static OyunSonu Instance; 
 
     private void Awake(){
@@ -65,16 +66,17 @@ public class OyunSonu : NetworkBehaviour{
         }
     }
 
-    private void OnEnable(){
+    private void OnEnable(){ 
         rootElement = GetComponent<UIDocument>().rootVisualElement;
+        container = rootElement.Q<VisualElement>("Container"); 
         sonucListesi = rootElement.Q<VisualElement>("SonucListesi"); 
         footer = rootElement.Q<VisualElement>("Footer");
-        YeniOyunuBaslat = footer.Q<Button>("YeniOyunuBaslat");
+        YeniOyunuBaslat = container.Q<Button>("YeniOyunuBaslat");
         Quit = rootElement.Q<Button>("Quit");
-        Hazirim = rootElement.Q<Button>("Hazirim"); 
+        //Hazirim = rootElement.Q<Button>("Hazirim"); 
         YeniOyunuBaslat.clicked += OnYeniOyunuBaslatClick;
         Quit.clicked += OnQuitClick;
-        Hazirim.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.None : DisplayStyle.Flex;
+        //Hazirim.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.None : DisplayStyle.Flex;
         YeniOyunuBaslat.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.Flex : DisplayStyle.None;
     }
 

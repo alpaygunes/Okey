@@ -357,7 +357,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
             gTas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite; 
             gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
-            gTas.transform.localScale *= .7f; 
+            gTas.transform.localScale *= .13f; 
             gTas.GetComponent<gTas>().rakam = rakam;
             gTas.GetComponent<gTas>().renk = color;
             gTas.transform.SetParent(body.transform);

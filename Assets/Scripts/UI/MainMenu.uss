@@ -5,23 +5,25 @@
 }
 
 .btn {
-    background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
     width: 80%;
-    height: 18%;
+    height: 10%;
+    min-width: 128px;
+    max-width: 256px;
 }
 
 .MenuBox {
     background-image: resource('Images/UI/menu0_bg');
     -unity-background-scale-mode: scale-to-fit;
-    width: 200px;
-    height: 137px;
+    width: 80%;
+    height: 128px;
     align-items: center;
     justify-content: flex-end;
     align-self: center;
     padding-bottom: 21px;
     scale: 1 1;
+    background-size: 100% 100%;
 }

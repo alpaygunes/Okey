@@ -57,7 +57,7 @@ public class Istaka : MonoBehaviour{
             GameObject Cep = Resources.Load<GameObject>("Prefabs/IstakaCebi");
             var cep = Instantiate(Cep, new Vector3(x, Body.transform.position.y, -2), Quaternion.identity);
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -5);
-            cep.transform.localScale *= .7f;
+            cep.transform.localScale *= .15f;
             cep.GetComponent<Cep>().ID = i;
             cep.transform.SetParent(Body.transform);
             CepList.Add(cep.GetComponent<Cep>());

@@ -92,12 +92,12 @@ public class Tas : MonoBehaviour{
                 gameObject.transform.position += new Vector3(0, 0, -1);
                 var hedef_cep_position = new Vector3(
                     cepScript.transform.position.x, 
-                    cepScript.transform.position.y*.965f,
+                    cepScript.transform.position.y*.968f,
                     cepScript.transform.position.z);
-                transform.DOMove(hedef_cep_position, animasyonSuresi * .5f)
+                transform.DOMove(hedef_cep_position, animasyonSuresi * .2f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => {
-                        transform.localScale = new Vector3(colonWidth, colonWidth) * 0.865f;
+                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.6f;
                         _audioSource_up.Play();
                     })); 
                 Destroy(_rigidbody);

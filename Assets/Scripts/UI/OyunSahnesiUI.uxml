@@ -3,23 +3,23 @@
     <ui:VisualElement name="PregressBarContainer" style="display: none;">
         <ui:ProgressBar value="0" name="GeriSayimBari" class="pregresBar" style="flex-direction: column; align-items: stretch; justify-content: center; align-self: center; visibility: visible; display: none; align-content: center; height: 2px; width: 95%;" />
     </ui:VisualElement>
-    <ui:VisualElement name="Container">
-        <ui:VisualElement name="Footer" style="width: 100%; height: 128px; background-image: none; -unity-background-scale-mode: scale-to-fit; background-size: contain; background-position-y: center 0; background-position-x: center 0;">
-            <ui:VisualElement name="satir2" style="width: 100%; height: 39px; flex-direction: row;">
-                <ui:Label name="Skor" text="Skor" class="smallBox" style="background-image: resource(&apos;Images/skor_bg&apos;);" />
-                <ui:Label name="KalanTasSayisi" text="Kalan" class="smallBox" style="background-image: resource(&apos;Images/kalan_tas_sayisi&apos;);" />
-                <ui:Label name="HamleSayisi" text="Hamle" class="smallBox" style="background-image: resource(&apos;Images/hamle_sayisi_bg&apos;);" />
-                <ui:Label name="GeriSayim" enable-rich-text="true" text="Zaman" class="smallBox" style="background-image: resource(&apos;Images/gerisayim_bg&apos;);" />
-                <ui:Label name="GorevSayisi" text="Görev" class="smallBox" style="background-image: resource(&apos;Images/kalan_gorev_bg&apos;);" />
-                <ui:Button text="X" name="Exit" class="exit" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/kapat_bg&apos;); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
+    <ui:VisualElement name="Container" style="width: 100%; height: 90%; justify-content: space-between; align-items: center; align-self: center;">
+        <ui:VisualElement name="Footer" class="footer_bottom" style="height: 14%; min-height: auto; justify-content: space-around; background-image: resource(&apos;Images/UI/OyunSahnesi/bottom&apos;); -unity-background-scale-mode: scale-to-fit; background-size: 100% 100%; width: 90%;">
+            <ui:VisualElement name="satir2" enabled="true" style="flex-direction: row; justify-content: center; align-items: center; height: 24px;">
+                <ui:Label name="Skor" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/skor&apos;);" />
+                <ui:Label name="KalanTasSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/kalan_tas&apos;);" />
+                <ui:Label name="HamleSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/hamle&apos;);" />
+                <ui:Label name="GeriSayim" enable-rich-text="true" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/zaman&apos;);" />
+                <ui:Label name="GorevSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/gorev_cep&apos;);" />
+                <ui:Button name="Exit" class="exit" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/OyunSahnesi/kapat&apos;); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); width: 24px; height: 24px; justify-content: center; align-self: center; -unity-background-scale-mode: scale-to-fit; background-size: contain;" />
             </ui:VisualElement>
-            <ui:VisualElement name="satirAvatars" style="align-items: center; align-self: center; justify-content: center; background-image: none; -unity-background-scale-mode: scale-to-fit; background-position-x: center 0; background-size: contain; flex-direction: row; background-position-y: center 0; width: 100%;">
-                <ui:Button name="avatar" class="avatar" />
-                <ui:Button name="avatar" class="avatar" />
+            <ui:VisualElement name="Avtars" style="align-items: center; align-self: center; justify-content: center; background-image: none; -unity-background-scale-mode: scale-to-fit; background-position-x: center 0; background-size: contain; flex-direction: row; background-position-y: center 0; width: 100%; height: 24px;">
+                <ui:Button name="avatar" class="avatar" style="background-image: resource(&apos;Images/UI/OyunSahnesi/avatar&apos;);" />
+                <ui:Button name="avatar" class="avatar" style="background-image: resource(&apos;Images/UI/OyunSahnesi/avatar&apos;); -unity-background-scale-mode: scale-to-fit; background-size: contain; width: 24px;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="Middle" style="width: 100%; height: 365px; background-image: none; -unity-background-scale-mode: stretch-to-fill;" />
-        <ui:VisualElement name="Bottom" style="height: 128px; width: 100%; align-items: center;">
+        <ui:VisualElement name="Middle" style="width: 100%; height: 74%; background-image: none; -unity-background-scale-mode: stretch-to-fill;" />
+        <ui:VisualElement name="Bottom" class="footer_bottom" style="height: 16%; width: 90%; justify-content: center; align-items: center; align-self: center; min-height: auto; max-height: none;">
             <ui:Button text="Tamam" name="PuanlamaYap" class="tamam" style="background-position-x: center 0; -unity-background-scale-mode: scale-and-crop; -unity-text-align: middle-center; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 0; border-left-width: 4px; background-color: rgb(166, 0, 12); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 0; border-bottom-left-radius: 0; font-size: 12px; position: absolute; bottom: 0;" />
         </ui:VisualElement>
     </ui:VisualElement>
