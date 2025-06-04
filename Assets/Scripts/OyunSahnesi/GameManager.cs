@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour{
     public readonly float PuanlamaIcinGeriSayimSuresi = 100f; // sadece bir rakam. sn değil.
     public readonly int _colonCount = 5;
-    public readonly int TasCount = 27;
+    public readonly int TasCount = 100;
     public readonly int CepSayisi = 5;
     public readonly RangeInt RenkAraligi = new RangeInt(1, 10);
     public readonly RangeInt RakamAraligi = new RangeInt(1, 4);
