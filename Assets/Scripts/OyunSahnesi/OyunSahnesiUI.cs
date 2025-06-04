@@ -19,7 +19,6 @@ public class OyunSahnesiUI : MonoBehaviour
     private VisualElement avatars;
 
  
-
     private async Task AvatarlariGoster(){
         var updatedLobby = await LobbyService.Instance.GetLobbyAsync(LobbyManager.Instance.CurrentLobby.Id);
         LobbyManager.Instance.CurrentLobby = updatedLobby;

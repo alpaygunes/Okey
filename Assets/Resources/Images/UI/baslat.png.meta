@@ -129,10 +129,10 @@ TextureImporter:
       name: baslat_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 9
-        width: 299
-        height: 72
+        x: 15
+        y: 15
+        width: 482
+        height: 116
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      baslat_0: 6539036085294925503
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -25,7 +25,7 @@ public class Tas : MonoBehaviour{
     private AudioSource _audioSource_patla;
     public Cep cepInstance = null;
     public Tweener tweener = null;
-    public Vector3 zeminlocalScale;
+    //public Vector3 zeminlocalScale;
     public GameObject zemin;
     public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>();
     public bool NetworkDatayaEklendi = false;
@@ -57,9 +57,9 @@ public class Tas : MonoBehaviour{
         _audioSource_patla.playOnAwake = false;
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
 
-        zeminlocalScale = zemin.transform.localScale*.25f;
+        //zeminlocalScale = zemin.transform.localScale*.25f;
         TextRakam.text = rakam.ToString();
-        CreateBg();
+        //CreateBg();
     }
 
     private void OnDestroy(){
@@ -97,7 +97,7 @@ public class Tas : MonoBehaviour{
                 transform.DOMove(hedef_cep_position, animasyonSuresi * .2f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => {
-                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.6f;
+                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.12f;
                         _audioSource_up.Play();
                     })); 
                 Destroy(_rigidbody);
@@ -107,7 +107,7 @@ public class Tas : MonoBehaviour{
                 cepInstance = cepScript;
                 PerIcinTasTavsiye.Instance.Sallanma();
                 tag = "CEPTEKI_TAS";
-                zemin.transform.localScale = zeminlocalScale;
+                //zemin.transform.localScale = zeminlocalScale;
                 _audioSource_down.Play();
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
@@ -257,7 +257,7 @@ public class Tas : MonoBehaviour{
     }
 
     public void Sallanma(){
-        zemin.transform.localScale = zeminlocalScale;
+        //zemin.transform.localScale = zeminlocalScale;
         if (tweener != null && tweener.IsActive()){
             tweener.Complete();
             tweener.Kill();
@@ -321,6 +321,6 @@ public class Tas : MonoBehaviour{
 
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
         zeminSpriteRenderer.sprite = sprite;
-        zeminSpriteRenderer.transform.localScale *= .25f;
+        //zeminSpriteRenderer.transform.localScale *= .25f;
     }
 }

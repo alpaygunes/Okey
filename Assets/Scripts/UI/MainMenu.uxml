@@ -1,10 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/MainMenu.uss?fileID=7433441132597879392&amp;guid=e48650b18525b5061b14e9ec17907458&amp;type=3#MainMenu" />
     <ui:VisualElement name="VisualElement" style="width: 100%; height: 100%; align-items: center; justify-content: center;">
-        <ui:VisualElement name="MenuBox" class="MenuBox" style="height: 160px; min-width: 128px; max-width: 256px;">
+        <ui:Button name="icon" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/oyun_Sec&apos;); width: 85%; -unity-background-scale-mode: scale-to-fit; background-size: contain; min-width: 256px; max-width: 512px; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); height: 32px;" />
+        <ui:VisualElement name="MenuBox" class="MenuBox" style="background-color: rgba(255, 255, 255, 0.16); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; height: 305px;">
             <ui:Button name="ZamanLimitliBtn" class="button sure_limitli_btn btn_size btn" style="background-size: contain; -unity-background-scale-mode: scale-to-fit; background-image: resource(&apos;Images/UI/zamana_limitli_btn_bg&apos;); background-color: rgba(188, 188, 188, 0); background-position-x: center 0; background-position-y: center 0;" />
             <ui:Button name="GorevYap" class="button gorevli_btn btn_size btn" style="background-image: resource(&apos;Images/UI/gorev_yap_btn_bg&apos;); -unity-background-scale-mode: scale-to-fit; background-color: rgba(188, 188, 188, 0);" />
-            <ui:Button name="HamleLimitliBtn" class="button hamle_limitli_btn btn_size btn" style="-unity-background-scale-mode: scale-to-fit; background-image: resource(&apos;Images/UI/hamle_limitli_btn_bg&apos;); background-size: contain; background-color: rgba(188, 188, 188, 0);" />
+            <ui:Button name="HamleLimitliBtn" class="button hamle_limitli_btn btn_size btn" style="-unity-background-scale-mode: scale-to-fit; background-image: resource(&apos;Images/UI/hamle&apos;); background-size: contain; background-color: rgba(188, 188, 188, 0);" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

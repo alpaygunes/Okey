@@ -129,10 +129,10 @@ TextureImporter:
       name: paylas_icon_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 82
-        height: 98
+        x: 4
+        y: 2
+        width: 250
+        height: 301
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -160,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      paylas_icon_0: -1095078514915998192
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
