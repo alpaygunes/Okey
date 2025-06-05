@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      paylas_icon_0: -1095078514915998192
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

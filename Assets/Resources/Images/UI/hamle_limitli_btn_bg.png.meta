@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      hamle_limitli_btn_bg_0: -1149355824621155599
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

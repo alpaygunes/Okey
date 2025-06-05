@@ -20,14 +20,10 @@ public class TasManeger : MonoBehaviour{
         List<Data> generatedData = GenerateDataList(GameManager.Instance.seed); 
         foreach (var data in generatedData){
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
-            var Tas = Instantiate(tare, new Vector3(0, 0, -1), Quaternion.identity);
-            var rakam = data.number;
-            Color color = Renkler.RenkSozlugu[data.color];
-            Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam); 
-            var tasScribe = Tas.GetComponentInChildren<Tas>();
-            Tas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite;
-            tasScribe.rakam = rakam;
-            tasScribe.renk = color;
+            var Tas = Instantiate(tare, new Vector3(0, 0, 5), Quaternion.identity); 
+            var tasScribe = Tas.GetComponentInChildren<Tas>(); 
+            tasScribe.rakam = data.number;
+            tasScribe.renk = Renkler.RenkSozlugu[data.color];
             TasList.Add(Tas);
         } 
     }

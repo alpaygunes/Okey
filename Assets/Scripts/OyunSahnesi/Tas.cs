@@ -16,6 +16,7 @@ public class Tas : MonoBehaviour{
     private Rigidbody2D _rigidbody;
     public bool birCardPerineDahil = false;
     public SpriteRenderer zeminSpriteRenderer;
+    public SpriteRenderer rakamResmiSpriteRenderer;
     private Vector3 skorTxtPosition;
     public Camera uiCamera;
     private Object _collider;
@@ -35,14 +36,24 @@ public class Tas : MonoBehaviour{
         zemin = transform.Find("Zemin").gameObject;
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
+        rakamResmiSpriteRenderer = transform.Find("RakamResmi").GetComponent<SpriteRenderer>();
         uiCamera = Camera.main;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 
     private void Start(){
+        
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        zeminSpriteRenderer.color = renk;
+        var acikRenk = Color.Lerp(renk, Color.white, 0.5f);
+        zeminSpriteRenderer.color = acikRenk;
+        Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam); 
+        rakamResmiSpriteRenderer.sprite = sprite;
+
+        var koyuRenk = Color.Lerp(renk, Color.black, 0.2f);
+        rakamResmiSpriteRenderer.color = koyuRenk;
+        rakamResmiSpriteRenderer.transform.localScale *= 1.25f;
+        
         destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof");
 
         _audioSource_down = gameObject.AddComponent<AudioSource>();
@@ -55,9 +66,8 @@ public class Tas : MonoBehaviour{
 
         _audioSource_patla = gameObject.AddComponent<AudioSource>();
         _audioSource_patla.playOnAwake = false;
-        _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
-
-        //zeminlocalScale = zemin.transform.localScale*.25f;
+        _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla"); 
+        
         TextRakam.text = rakam.ToString();
         //CreateBg();
     }

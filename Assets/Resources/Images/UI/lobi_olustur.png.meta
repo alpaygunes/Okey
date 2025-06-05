@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      lobi_olustur_0: -5645664762103122492
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

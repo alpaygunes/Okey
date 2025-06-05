@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      lobiye_katil_0: -576495876132255153
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
