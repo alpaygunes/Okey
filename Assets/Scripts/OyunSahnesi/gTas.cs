@@ -7,13 +7,11 @@ public class gTas : MonoBehaviour{
     private SpriteRenderer zeminSpriteRenderer; 
     public TextMeshPro TextRakam;
     public SpriteRenderer rakamResmiSpriteRenderer;
-
+    public int colID;
 
     private void Awake(){
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
-        Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
-        transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite; 
     }
 
     private void Start(){
@@ -25,6 +23,10 @@ public class gTas : MonoBehaviour{
         var koyuRenk = Color.Lerp(renk, Color.black, 0.2f);
         rakamResmiSpriteRenderer.color = koyuRenk;
         rakamResmiSpriteRenderer.transform.localScale *= 1f;
+        
+        
+        Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
+        rakamResmiSpriteRenderer.sprite = sprite; 
         
         transform.localScale *= .35f; 
         //CreateBg();

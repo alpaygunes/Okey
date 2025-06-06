@@ -31,6 +31,7 @@ public class Tas : MonoBehaviour{
     public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>();
     public bool NetworkDatayaEklendi = false;
     public TextMeshPro TextRakam;
+    public int colID;
 
     private void Awake(){
         zemin = transform.Find("Zemin").gameObject;
@@ -109,6 +110,17 @@ public class Tas : MonoBehaviour{
                     .OnComplete((() => {
                         transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.162f;
                         _audioSource_up.Play();
+                        // görev cebiyle aynı meyve renk mi
+                        GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
+                        var gTas = gorevTaslari[cepScript.colID];
+                        int uyumSayisi = 0;
+                        if (gTas.GetComponent<gTas>().renk == renk){ 
+                            uyumSayisi++;
+                        }
+                        if (gTas.GetComponent<gTas>().rakam == rakam){ 
+                            uyumSayisi++;
+                        }
+                        cepScript.YildiziYak(uyumSayisi); 
                     })); 
                 Destroy(_rigidbody);
                 Destroy(_collider); 

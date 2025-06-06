@@ -49,7 +49,7 @@ public class Istaka : MonoBehaviour{
         return doluCepSayisi;
     }
 
-    void CepleriOlustur(){
+    public void CepleriOlustur(){
         float istakaGenisligi = Body.GetComponent<SpriteRenderer>().bounds.size.x;
         float aralikMesafesi = istakaGenisligi / GameManager.Instance.CepSayisi;
         for (int i = 0; i < GameManager.Instance.CepSayisi; i++) {
@@ -58,7 +58,7 @@ public class Istaka : MonoBehaviour{
             var cep = Instantiate(Cep, new Vector3(x, Body.transform.position.y, -2), Quaternion.identity);
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -5);
             cep.transform.localScale *= .2f;
-            cep.GetComponent<Cep>().ID = i;
+            cep.GetComponent<Cep>().colID = i;
             cep.transform.SetParent(Body.transform);
             CepList.Add(cep.GetComponent<Cep>());
         }
@@ -409,5 +409,11 @@ public class Istaka : MonoBehaviour{
         BenzerRakamGruplari.Clear();
         FarkliMeyveGruplari.Clear();
         AyniRakamHepsiFarkliRenkGruplari.Clear();
+    }
+
+    public void YildizleriGizle(){
+        foreach (var cep in CepList){
+            cep.YildiziYak(0);
+        }
     }
 }

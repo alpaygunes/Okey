@@ -263,7 +263,8 @@ public class Puanlama : MonoBehaviour{
         
         Istaka.Instance.GruplariTemizle(); 
     }
-
+    
+    /*
     public void KartdakiPerleriIsle(){
          
         foreach (var grup in Card.Instance._siraliAyniRenkliGruplar) {
@@ -295,6 +296,7 @@ public class Puanlama : MonoBehaviour{
         } 
         
     }
+    */
     
     public void Puanla(){ 
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
@@ -303,10 +305,10 @@ public class Puanlama : MonoBehaviour{
                /*|| Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0*/){
                 IstakadakiPerdekiTaslariToparla();
                 BonuslariVer(); 
-                PerIcinTasTavsiye.Instance.Sallanma();
+                PerIcinTasTavsiye.Instance.Sallanma(); 
         } 
         _ = Card.Instance.KarttakiPerleriBul();
-        KartdakiPerleriIsle();
+        //KartdakiPerleriIsle();
     }
 
     public void SkorBoardiGuncelle(){ 
@@ -328,5 +330,6 @@ public class Puanlama : MonoBehaviour{
         else{
             Istaka.Instance.PersizFullIstakayiBosalt();
         }
+        Istaka.Instance.YildizleriGizle();
     }
 }

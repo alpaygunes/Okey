@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SpawnHole : MonoBehaviour{
     public bool musait = true;
+    public int colID;
 
     private void OnTriggerStay2D(Collider2D other){
         if (other.CompareTag("CARDTAKI_TAS")) {
@@ -26,8 +27,10 @@ public class SpawnHole : MonoBehaviour{
             siradakiTas.gameObject.transform.localScale *= .195f ;
             siradakiTas.transform.SetParent(GameManager.Instance.transform);
             siradakiTas.tag = "CARDTAKI_TAS";
+            siradakiTas.gameObject.GetComponent<Tas>().colID = colID;
             TasManeger.Instance.TasInstances.Add(siradakiTas, siradakiTas.gameObject.GetComponent<Tas>());
             siradakiTas.SetActive(true);
+            
         }
     }
 }

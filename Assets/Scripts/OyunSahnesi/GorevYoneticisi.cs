@@ -128,12 +128,13 @@ public class GorevYoneticisi : NetworkBehaviour{
             switch (RastgelePerTuruSec())
             {
                 case PerTurleri.ArdisikRakamAyniRenk:
-                    ArdisikRakamAyniRenkPeriOlustur();
+                    FarkliRakamAyniRenkPeriOlustur();
                     break;
-
+                /*
                 case PerTurleri.ArdisikRakamFarkliRenk:
                     ArdisikRakamFarkliRenkPeriOlustur();
                     break;
+                */
 
                 case PerTurleri.AyniRakamFarkliRenkPerleri:
                     AyniRakamFarkliRenkPerleriOlustur();
@@ -152,7 +153,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         return (PerTurleri)rastgeleIndex;
     }
     
-    private static void ArdisikRakamAyniRenkPeriOlustur(){
+    private static void FarkliRakamAyniRenkPeriOlustur(){
         GorevData gorev = new GorevData
         {
             Taslar = new FixedList128Bytes<TasData>()
@@ -177,6 +178,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             Instance.gorevlerNetList.Add(gorev);
     }
 
+   /* 
     private static void ArdisikRakamFarkliRenkPeriOlustur(){
         GorevData gorev = new GorevData
         {
@@ -225,7 +227,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         if (Instance != null && Instance.IsServer)
             Instance.gorevlerNetList.Add(gorev);
     }
-
+*/
+   
     private static void AyniRakamFarkliRenkPerleriOlustur(){
         GorevData gorev = new GorevData
         {
@@ -338,22 +341,23 @@ public class GorevYoneticisi : NetworkBehaviour{
         
         GorevData gorev = gorevlerNetList[SiradakiGorevSirasNosu];
         FixedList128Bytes<TasData> taslar = gorev.Taslar;
-        // tas nesnelerini tasList e ekle 
+        // tas nesnelerini tasList e ekle
         int i = 0;
-        foreach (var gorevTasi in taslar){ 
-            // gorev gameobjectini kooordinatlarına göre sahneye yerleştir 
+        foreach (var gorevTasi in taslar){
+            // gorev gameobjectini kooordinatlarına göre sahneye yerleştir
             float gorvePaneliGenisligi = body.GetComponent<SpriteRenderer>().bounds.size.x;
             float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.CepSayisi;
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f;
             GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
-            var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);  
+            var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);
             gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1); 
             gTas.GetComponent<gTas>().rakam = gorevTasi.Rakam;
             gTas.GetComponent<gTas>().renk = gorevTasi.Renk;
             gTas.transform.SetParent(body.transform);
             gTas.SetActive(true);
-            gTas.tag = "gTas";
-            gTas.name = "gTas" + i;  
+            gTas.tag  = "gTas";
+            gTas.name = "gTas" + i;
+            gTas.GetComponent<gTas>().colID = i;
             i++;
         }
     }

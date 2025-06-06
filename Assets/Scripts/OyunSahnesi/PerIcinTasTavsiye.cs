@@ -217,26 +217,26 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         List<Cep> ucluk = new List<Cep>();
         ucluCepler.Clear();
 
-        if (cep.ID > 1){
-            ucluk.Add(Istaka.Instance.CepList[cep.ID - 2]);
-            ucluk.Add(Istaka.Instance.CepList[cep.ID - 1]);
-            ucluk.Add(Istaka.Instance.CepList[cep.ID]);
+        if (cep.colID > 1){
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 2]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
             ucluCepler.Add(new List<Cep>(ucluk));
             ucluk.Clear();
         }
 
-        if (cep.ID + 1 < Istaka.Instance.CepList.Count && cep.ID > 0){
-            ucluk.Add(Istaka.Instance.CepList[cep.ID - 1]);
-            ucluk.Add(Istaka.Instance.CepList[cep.ID]);
-            ucluk.Add(Istaka.Instance.CepList[cep.ID + 1]);
+        if (cep.colID + 1 < Istaka.Instance.CepList.Count && cep.colID > 0){
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID + 1]);
             ucluCepler.Add(new List<Cep>(ucluk));
             ucluk.Clear();
         }
 
-        if (cep.ID + 2 < Istaka.Instance.CepList.Count){
-            ucluk.Add(Istaka.Instance.CepList[cep.ID]);
-            ucluk.Add(Istaka.Instance.CepList[cep.ID + 1]);
-            ucluk.Add(Istaka.Instance.CepList[cep.ID + 2]);
+        if (cep.colID + 2 < Istaka.Instance.CepList.Count){
+            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID + 1]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID + 2]);
             ucluCepler.Add(new List<Cep>(ucluk));
             ucluk.Clear();
         }
