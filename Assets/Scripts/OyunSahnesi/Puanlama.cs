@@ -154,6 +154,7 @@ public class Puanlama : MonoBehaviour{
         }
 
         //SiraliRakamHepsiFarkliRenkGruplari sahneye diz 
+        /*
         foreach (var grupList in Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
@@ -164,7 +165,7 @@ public class Puanlama : MonoBehaviour{
                     BonusFarkliRenkArdisikRakam.Add(TasManeger.Instance.TasInstances[item.Value]);
                 }
             }
-        }
+        }*/
         
         siralanmisTumPerTaslari = new SortedDictionary<int, GameObject>(perdekiTumTaslarDic);
         
@@ -299,7 +300,7 @@ public class Puanlama : MonoBehaviour{
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
-               || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){
+               /*|| Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0*/){
                 IstakadakiPerdekiTaslariToparla();
                 BonuslariVer(); 
                 PerIcinTasTavsiye.Instance.Sallanma();
@@ -321,7 +322,7 @@ public class Puanlama : MonoBehaviour{
         if (   Istaka.Instance.SiraliRakamAyniRenkGruplari.Count>0 
                || Istaka.Instance.AyniRakamAyniRenkGruplari.Count>0
                || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count>0
-               || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0){ 
+               /*|| Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count>0*/){ 
             Puanla(); 
         }
         else{

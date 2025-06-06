@@ -34,7 +34,7 @@ public class PuanlamaCounter : MonoBehaviour{
         if (Istaka.Instance.SiraliRakamAyniRenkGruplari.Count > 0
             || Istaka.Instance.AyniRakamAyniRenkGruplari.Count > 0
             || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count > 0
-            || Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count > 0){
+            /*|| Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count > 0*/){
             if (CountdownCoroutine != null){
                 StopCoroutine(CountdownCoroutine);
             }
@@ -54,7 +54,6 @@ public class PuanlamaCounter : MonoBehaviour{
         else{
             Istaka.Instance.PersizFullIstakayiBosalt();
         }
-
         
     }
 

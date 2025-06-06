@@ -34,7 +34,7 @@ public class TasManeger : MonoBehaviour{
         Istaka.Instance.SiraliGruplarinIcindekiAyniRenkGruplariniBelirle();
         Istaka.Instance.AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle();
         Istaka.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
-        Istaka.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
+        //Istaka.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         PuanlamaCounter.Instance.PuanlamaIcinGeriSayimAnimasyonunuBaslat(); 
     }
     

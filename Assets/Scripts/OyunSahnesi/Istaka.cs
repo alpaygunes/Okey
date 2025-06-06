@@ -16,8 +16,8 @@ public class Istaka : MonoBehaviour{
     public GameObject Body;
     private float posYrate = 0.6f;
 
-    public List<Dictionary<int, GameObject>> SiraliRakamHepsiFarkliRenkGruplari =
-        new List<Dictionary<int, GameObject>>();
+    /*public List<Dictionary<int, GameObject>> SiraliRakamHepsiFarkliRenkGruplari =
+        new List<Dictionary<int, GameObject>>();*/
 
     private bool _yeniGrupOlustur;
 
@@ -312,7 +312,8 @@ public class Istaka : MonoBehaviour{
         } // end for 
     }
     
-    public void SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(){
+    
+    /*public void SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle(){
         SiraliRakamHepsiFarkliRenkGruplari.Clear();
         Dictionary<int, GameObject> farkliRenklilerGrubu = new Dictionary<int, GameObject>();
         for (int i = 0; i < SiraliGruplar.Count; i++) {
@@ -358,7 +359,7 @@ public class Istaka : MonoBehaviour{
                 }
             } // end for 
         } // end for 
-    }
+    }*/
 
     public void GruplariTemizle(){
         // SiraliRakamAyniRenkGruplari grupları temizle
@@ -393,16 +394,16 @@ public class Istaka : MonoBehaviour{
         }
     
         // SiraliRakamHepsiFarkliRenkGruplari grupları temizle
-        for (int i = 0; i < SiraliRakamHepsiFarkliRenkGruplari.Count; i++) {
+        /*for (int i = 0; i < SiraliRakamHepsiFarkliRenkGruplari.Count; i++) {
             var grup = SiraliRakamHepsiFarkliRenkGruplari[i];
             foreach (var item in grup) { 
                 var cepins = CepList[item.Key];
                 //cepins.Dolu = false;
                 cepins.TasInstance = null;
             }
-        }
+        }*/
     
-        SiraliRakamHepsiFarkliRenkGruplari.Clear();
+        /*SiraliRakamHepsiFarkliRenkGruplari.Clear();*/
         SiraliRakamAyniRenkGruplari.Clear();
         BenzerRakamGruplari.Clear();
         SiraliGruplar.Clear();
