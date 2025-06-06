@@ -325,7 +325,6 @@ public class GorevYoneticisi : NetworkBehaviour{
             Instance.gorevlerNetList.Add(gorev);
     } 
     // -----------------------------------  SON ---------------------------------------
- 
     
     private void SiradakiGoreviSahnedeGoster(){
         var body = Instance.transform.Find("Body");

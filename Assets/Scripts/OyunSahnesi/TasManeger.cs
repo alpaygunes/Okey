@@ -29,8 +29,8 @@ public class TasManeger : MonoBehaviour{
     }
  
     public void PerleriKontrolEt(){
-        Istaka.Instance.SiraliGruplariBelirle();
-        Istaka.Instance.BenzerRakamGruplariniBelirle();
+        Istaka.Instance.FarkliMeyveGruplariniBelirle();
+        Istaka.Instance.AyniRakamGruplariniBelirle();
         Istaka.Instance.SiraliGruplarinIcindekiAyniRenkGruplariniBelirle();
         Istaka.Instance.AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle();
         Istaka.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
