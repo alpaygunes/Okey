@@ -263,7 +263,7 @@ public class Puanlama : MonoBehaviour{
         Istaka.Instance.GruplariTemizle(); 
     }
 
-    public void _kartdakiPerleriIsle(){
+    public void KartdakiPerleriIsle(){
          
         foreach (var grup in Card.Instance._siraliAyniRenkliGruplar) {
             foreach (var item in grup) {
@@ -305,7 +305,7 @@ public class Puanlama : MonoBehaviour{
                 PerIcinTasTavsiye.Instance.Sallanma();
         } 
         _ = Card.Instance.KarttakiPerleriBul();
-        _kartdakiPerleriIsle();
+        KartdakiPerleriIsle();
     }
 
     public void SkorBoardiGuncelle(){ 

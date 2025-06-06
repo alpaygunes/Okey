@@ -37,12 +37,17 @@ public class OyunSahnesiUI : MonoBehaviour
                 avatarBtn.style.backgroundImage = new StyleBackground(avatarSprite);
 
             avatarBtn.tooltip = displayName; 
-            avatarBtn.AddToClassList("avatarBtn"); 
+            avatarBtn.AddToClassList("avatar"); 
             avatarBtn.RegisterCallback<GeometryChangedEvent>(e =>
             {
                 float h = avatarBtn.resolvedStyle.height;    
                 avatarBtn.style.width = h;
             });
+            avatarBtn.style.borderTopWidth = 0;
+            avatarBtn.style.borderBottomWidth = 0;
+            avatarBtn.style.borderLeftWidth = 0;
+            avatarBtn.style.borderRightWidth = 0;
+            
 
             avatars.Add(avatarBtn);
         }

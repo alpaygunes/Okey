@@ -101,9 +101,11 @@ public class Card : MonoBehaviour{
             for (int sutun = 0; sutun < GameManager.Instance._colonCount; sutun++){
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
                 float positionY = -(cardSize.y * .5f) + (colonWidth * 0.5f) + ((satirSayisi - satir) * colonWidth);
-                positionY += 0.2f;
+                //positionY -= 0.2f;
+                positionY *= 0.97f;
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
-                kutu.transform.localScale *= .6f;
+                kutu.transform.localScale = GameManager.Instance.spawnHolesList[0].transform.localScale;
+                kutu.transform.localScale *= 0.35f;
                 //kutu.transform.localScale = new Vector2(colonWidth, colonWidth);
             }
         }

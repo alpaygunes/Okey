@@ -50,7 +50,7 @@ public class Tas : MonoBehaviour{
         Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam); 
         rakamResmiSpriteRenderer.sprite = sprite;
 
-        var koyuRenk = Color.Lerp(renk, Color.black, 0.2f);
+        var koyuRenk = Color.Lerp(renk, Color.black, 0.0f);
         rakamResmiSpriteRenderer.color = koyuRenk;
         rakamResmiSpriteRenderer.transform.localScale *= 1.25f;
         
@@ -102,12 +102,12 @@ public class Tas : MonoBehaviour{
                 gameObject.transform.position += new Vector3(0, 0, -1);
                 var hedef_cep_position = new Vector3(
                     cepScript.transform.position.x, 
-                    cepScript.transform.position.y*.968f,
+                    cepScript.transform.position.y*.958f,
                     cepScript.transform.position.z);
                 transform.DOMove(hedef_cep_position, animasyonSuresi * .2f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => {
-                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.12f;
+                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.162f;
                         _audioSource_up.Play();
                     })); 
                 Destroy(_rigidbody);

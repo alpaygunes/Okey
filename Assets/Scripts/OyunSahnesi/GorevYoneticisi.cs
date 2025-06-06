@@ -141,11 +141,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
                 case PerTurleri.AyniRakamAyniRenkPerleri:
                     AyniRakamAyniRenkPerleriOlustur();
-                    break;
-
-                default:
-                    // Beklenmeyen durum (opsiyonel)
-                    break;
+                    break; 
             } 
     }
     
@@ -351,15 +347,10 @@ public class GorevYoneticisi : NetworkBehaviour{
             float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.CepSayisi;
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f;
             GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
-            var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);
-            int rakam = gorevTasi.Rakam;
-            Color color = gorevTasi.Renk; 
-            Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam);
-            gTas.transform.Find("RakamResmi").GetComponent<SpriteRenderer>().sprite = sprite; 
-            gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
-            gTas.transform.localScale *= .13f; 
-            gTas.GetComponent<gTas>().rakam = rakam;
-            gTas.GetComponent<gTas>().renk = color;
+            var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);  
+            gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1); 
+            gTas.GetComponent<gTas>().rakam = gorevTasi.Rakam;
+            gTas.GetComponent<gTas>().renk = gorevTasi.Renk;
             gTas.transform.SetParent(body.transform);
             gTas.SetActive(true);
             gTas.tag = "gTas";
