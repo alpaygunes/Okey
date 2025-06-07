@@ -93,14 +93,14 @@ public class Card : MonoBehaviour{
         float colonWidth = (cardSize.x / GameManager.Instance._colonCount);
         GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
         float satirSayisi = (cardSize.y / colonWidth);
-        for (var satir = satirSayisi; satir > 0; satir--){
+        for (var satir=0; satir < satirSayisi; satir++){
             for (int sutun = 0; sutun < GameManager.Instance._colonCount; sutun++){
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
                 float positionY = -(cardSize.y * .5f) + (colonWidth * 0.5f) + ((satirSayisi - satir) * colonWidth); 
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
-                kutu.transform.localScale = GameManager.Instance.spawnHolesList[0].transform.localScale;
-                kutu.transform.localScale *= 0.35f;  
+                kutu.transform.localScale = GameManager.Instance.spawnHolesList[0].transform.localScale; 
             }
         }
+         
     } 
 }
