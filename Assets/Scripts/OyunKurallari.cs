@@ -34,7 +34,7 @@ public class OyunKurallari:NetworkBehaviour
         switch (GuncelOyunTipi)
         {
             case OyunTipleri.HamleLimitli:
-                HamleLimit = 2;
+                HamleLimit = 5;
                 SkorLimiti = 0;
                 ZamanLimiti = 0;
                 GorevYap = 0;
@@ -50,7 +50,7 @@ public class OyunKurallari:NetworkBehaviour
             case OyunTipleri.ZamanLimitli:
                 HamleLimit = 0;
                 SkorLimiti = 0;
-                ZamanLimiti = 20;
+                ZamanLimiti = 60;
                 GorevYap = 0;
                 break;
 

@@ -9,14 +9,14 @@ using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 public class Tas : MonoBehaviour{
-    public int rakam;
+    public int MeyveID;
     public Color renk;
     private float animasyonSuresi = 1f;
     public GameObject sagindakiKomsuTas;
     private Rigidbody2D _rigidbody;
     public bool birCardPerineDahil = false;
     public SpriteRenderer zeminSpriteRenderer;
-    public SpriteRenderer rakamResmiSpriteRenderer;
+    public SpriteRenderer MeyveResmiSpriteRenderer;
     private Vector3 skorTxtPosition;
     public Camera uiCamera;
     private Object _collider;
@@ -30,14 +30,15 @@ public class Tas : MonoBehaviour{
     public GameObject zemin;
     public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>();
     public bool NetworkDatayaEklendi = false;
-    public TextMeshPro TextRakam;
+    public TextMeshPro TextMeyveID;
     public int colID;
 
     private void Awake(){
+        TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
         zemin = transform.Find("Zemin").gameObject;
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
-        rakamResmiSpriteRenderer = transform.Find("RakamResmi").GetComponent<SpriteRenderer>();
+        MeyveResmiSpriteRenderer = transform.Find("MeyveResmi").GetComponent<SpriteRenderer>();
         uiCamera = Camera.main;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
@@ -46,14 +47,14 @@ public class Tas : MonoBehaviour{
         
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        var acikRenk = Color.Lerp(renk, Color.white, 0.5f);
+        var acikRenk = Color.Lerp(renk, Color.white, 1f);
         zeminSpriteRenderer.color = acikRenk;
-        Sprite sprite = Resources.Load<Sprite>("Images/Rakamlar/" + rakam); 
-        rakamResmiSpriteRenderer.sprite = sprite;
+        Sprite sprite = Resources.Load<Sprite>("Images/Meyveler/" + MeyveID); 
+        MeyveResmiSpriteRenderer.sprite = sprite;
 
         var koyuRenk = Color.Lerp(renk, Color.black, 0.0f);
-        rakamResmiSpriteRenderer.color = koyuRenk;
-        rakamResmiSpriteRenderer.transform.localScale *= 1.25f;
+        MeyveResmiSpriteRenderer.color = koyuRenk;
+        MeyveResmiSpriteRenderer.transform.localScale *= 1.25f;
          
         destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof"); 
         _audioSource_down = gameObject.AddComponent<AudioSource>();
@@ -68,7 +69,7 @@ public class Tas : MonoBehaviour{
         _audioSource_patla.playOnAwake = false;
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla"); 
         
-        TextRakam.text = rakam.ToString(); 
+        TextMeyveID.text = MeyveID.ToString(); 
     }
 
     private void OnDestroy(){
@@ -100,12 +101,12 @@ public class Tas : MonoBehaviour{
                 gameObject.transform.position += new Vector3(0, 0, -1);
                 var hedef_cep_position = new Vector3(
                     cepScript.transform.position.x, 
-                    cepScript.transform.position.y*.958f,
+                    cepScript.transform.position.y*.85f,
                     cepScript.transform.position.z);
                 transform.DOMove(hedef_cep_position, animasyonSuresi * .2f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => {
-                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.162f;
+                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.25f;
                         _audioSource_up.Play(); 
                     })); 
                 Destroy(_rigidbody);
@@ -117,17 +118,19 @@ public class Tas : MonoBehaviour{
                 tag = "CEPTEKI_TAS"; 
                 _audioSource_down.Play();
                 // görev cebiyle aynı meyve renk mi
-                GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
-                var gTas = gorevTaslari[cepScript.colID];
-                int uyumSayisi = 0;
-                if (gTas.GetComponent<gTas>().renk == renk){ 
-                    uyumSayisi++;
+                if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+                    GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
+                    var gTas = gorevTaslari[cepScript.colID];
+                    int uyumSayisi = 0;
+                    if (gTas.GetComponent<gTas>().renk == renk){ 
+                        uyumSayisi++;
+                    }
+                    if (gTas.GetComponent<gTas>().meyveID == MeyveID){ 
+                        uyumSayisi++;
+                    }
+                    cepScript.YildiziYak(uyumSayisi); 
                 }
-                if (gTas.GetComponent<gTas>().rakam == rakam){ 
-                    uyumSayisi++;
-                }
-                cepScript.YildiziYak(uyumSayisi); 
-                //------------- end -- görev cebiyle aynı meyve renk mi 
+ 
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
             }
@@ -150,7 +153,7 @@ public class Tas : MonoBehaviour{
                 Destroy(gameObject);
                 enabled = false;
                 TasManeger.Instance.TasInstances.Remove(gameObject);
-                cepInstance.YildiziYak(0);
+                if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) cepInstance.YildiziYak(0); 
             });
         foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
             if (bonusTaslari.Value){
@@ -203,8 +206,8 @@ public class Tas : MonoBehaviour{
         Card.Instance.SiraliAyniRenkliGrup.Add(gameObject);
         if (sagindakiKomsuTas){
             var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
-            if (sagdakininRengi == renk && sagdakininRakami == rakam + 1){
+            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
+            if (sagdakininRengi == renk && sagdakininRakami == MeyveID + 1){
                 await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliAyniRenkGrubunaDahilOl();
             }
         }
@@ -224,8 +227,8 @@ public class Tas : MonoBehaviour{
             Card.Instance.SiraliFarkliRenkliGrup.Add(gameObject);
             if (sagindakiKomsuTas){
                 var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
-                if (sagdakininRengi != renk && sagdakininRakami == rakam + 1){
+                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
+                if (sagdakininRengi != renk && sagdakininRakami == MeyveID + 1){
                     await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliFarkliRenkGrubunaDahilOl();
                 }
             }
@@ -234,11 +237,11 @@ public class Tas : MonoBehaviour{
 
     public async Task AyniRakamAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
-        Card.Instance.AyniRakamAyniRenkliGrup.Add(gameObject);
+        Card.Instance.AyniMeyveAyniRenkliGrup.Add(gameObject);
         if (sagindakiKomsuTas){
             var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
-            if (sagdakininRengi == renk && sagdakininRakami == rakam){
+            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
+            if (sagdakininRengi == renk && sagdakininRakami == MeyveID){
                 await TasManeger.Instance.TasInstances[sagindakiKomsuTas].AyniRakamAyniRenkGrubunaDahilOl();
             }
         }
@@ -248,7 +251,7 @@ public class Tas : MonoBehaviour{
         if (birCardPerineDahil) return;
         bool gruptaAyniRenkYok = true;
         //grupta zaten aynı renk varsa per olmaz . Çık
-        foreach (var gruptakiTas in Card.Instance.AyniRakamFarkliRenkli){
+        foreach (var gruptakiTas in Card.Instance.AyniMeyveFarkliRenkli){
             if (TasManeger.Instance.TasInstances[gruptakiTas].renk == renk){
                 gruptaAyniRenkYok = false;
                 break;
@@ -256,11 +259,11 @@ public class Tas : MonoBehaviour{
         }
 
         if (gruptaAyniRenkYok){
-            Card.Instance.AyniRakamFarkliRenkli.Add(gameObject);
+            Card.Instance.AyniMeyveFarkliRenkli.Add(gameObject);
             if (sagindakiKomsuTas){
                 var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].rakam;
-                if (sagdakininRengi != renk && sagdakininRakami == rakam){
+                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
+                if (sagdakininRengi != renk && sagdakininRakami == MeyveID){
                     await TasManeger.Instance.TasInstances[sagindakiKomsuTas].AyniRakamFarkliRenkGrubunaDahilOl();
                 }
             }

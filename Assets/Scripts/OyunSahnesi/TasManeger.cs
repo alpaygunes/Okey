@@ -22,7 +22,7 @@ public class TasManeger : MonoBehaviour{
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
             var Tas = Instantiate(tare, new Vector3(0, 0, 5), Quaternion.identity); 
             var tasScribe = Tas.GetComponentInChildren<Tas>(); 
-            tasScribe.rakam = data.number;
+            tasScribe.MeyveID = data.number;
             tasScribe.renk = Renkler.RenkSozlugu[data.color];
             TasList.Add(Tas);
         } 
@@ -30,10 +30,10 @@ public class TasManeger : MonoBehaviour{
  
     public void PerleriKontrolEt(){
         Istaka.Instance.FarkliMeyveGruplariniBelirle();
-        Istaka.Instance.AyniRakamGruplariniBelirle();
-        Istaka.Instance.SiraliGruplarinIcindekiAyniRenkGruplariniBelirle();
-        Istaka.Instance.AyniRakamGruplarinIcindekiAyniRenkGruplariniBelirle();
-        Istaka.Instance.AyniRakamGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
+        Istaka.Instance.AyniMeyveGruplariniBelirle();
+        Istaka.Instance.FarkliMeyveGruplriIcindeAyniRenkGruplariniBelirle();
+        Istaka.Instance.AyniMeyveGruplarinIcindekiAyniRenkGruplariniBelirle();
+        Istaka.Instance.AyniMeyveGruplarinIcindekiFarkliRenkGruplariniBelirle();
         //Istaka.Instance.SiraliGruplarinIcindekiHepsiFarkliRenkGruplariniBelirle();
         PuanlamaCounter.Instance.PuanlamaIcinGeriSayimAnimasyonunuBaslat(); 
     }
@@ -53,7 +53,7 @@ public class TasManeger : MonoBehaviour{
         List<Data> dataList = new List<Data>();
 
         for (int i = 0; i < GameManager.Instance.TasCount; i++){
-            int number = random.Next(GameManager.Instance.RakamAraligi.start,  GameManager.Instance.RakamAraligi.end );
+            int number = random.Next(GameManager.Instance.MeyveIDAraligi.start,  GameManager.Instance.MeyveIDAraligi.end );
             int color = random.Next(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end);
             dataList.Add(new Data(number, color));
         } 

@@ -21,8 +21,8 @@
     background-color: rgba(0, 0, 0, 0);
     background-size: contain;
     -unity-background-scale-mode: scale-to-fit;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);

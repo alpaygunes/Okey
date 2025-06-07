@@ -13,22 +13,22 @@ public class GorevYoneticisi : NetworkBehaviour{
     private float posYrate = 0.7f;
     
     public struct TasData : INetworkSerializable, IEquatable<TasData>{
-        public int Rakam;
+        public int MeyveID;
         public Color32 Renk;
 
         public void NetworkSerialize<T>(BufferSerializer<T> ser) where T : IReaderWriter{
-            ser.SerializeValue(ref Rakam);
+            ser.SerializeValue(ref MeyveID);
             ser.SerializeValue(ref Renk);
         }
 
         public bool Equals(TasData other) =>
-            Rakam == other.Rakam && Renk.Equals(other.Renk);
+            MeyveID == other.MeyveID && Renk.Equals(other.Renk);
 
         public override bool Equals(object obj) =>
             obj is TasData other && Equals(other);
 
         public override int GetHashCode() =>
-            HashCode.Combine(Rakam, Renk);
+            HashCode.Combine(MeyveID, Renk);
     }
 
     public struct GorevData : INetworkSerializable, IEquatable<GorevData>{
@@ -117,31 +117,27 @@ public class GorevYoneticisi : NetworkBehaviour{
  
     //----------------------------- GÖREVLERİ OLUŞTURMA --------------------------------- 
     private enum PerTurleri{
-        ArdisikRakamAyniRenk,
-        ArdisikRakamFarkliRenk,
-        AyniRakamFarkliRenkPerleri,
-        AyniRakamAyniRenkPerleri,
+        FarkliMeyveAyniRenk,
+        FarkliMeyveFarkliRenk,
+        AyniMeyveFarkliRenkPerleri,
+        AyniMeyveAyniRenkPerleri,
     }
 
     private static void GorevHazirla(){
         for (int i = 0; i < GorevSayisi; i++) 
             switch (RastgelePerTuruSec())
             {
-                case PerTurleri.ArdisikRakamAyniRenk:
-                    FarkliRakamAyniRenkPeriOlustur();
+                case PerTurleri.FarkliMeyveAyniRenk:
+                    FarkliMeyveAyniRenkPeriOlustur();
                     break;
-                /*
-                case PerTurleri.ArdisikRakamFarkliRenk:
-                    ArdisikRakamFarkliRenkPeriOlustur();
-                    break;
-                */
+ 
 
-                case PerTurleri.AyniRakamFarkliRenkPerleri:
-                    AyniRakamFarkliRenkPerleriOlustur();
+                case PerTurleri.AyniMeyveFarkliRenkPerleri:
+                    AyniMeyveFarkliRenkPerleriOlustur();
                     break;
 
-                case PerTurleri.AyniRakamAyniRenkPerleri:
-                    AyniRakamAyniRenkPerleriOlustur();
+                case PerTurleri.AyniMeyveAyniRenkPerleri:
+                    AyniMeyveAyniRenkPerleriOlustur();
                     break; 
             } 
     }
@@ -153,14 +149,14 @@ public class GorevYoneticisi : NetworkBehaviour{
         return (PerTurleri)rastgeleIndex;
     }
     
-    private static void FarkliRakamAyniRenkPeriOlustur(){
+    private static void FarkliMeyveAyniRenkPeriOlustur(){
         GorevData gorev = new GorevData
         {
             Taslar = new FixedList128Bytes<TasData>()
         };
 
-        int start = GameManager.Instance.RakamAraligi.start;
-        int end = GameManager.Instance.RakamAraligi.end;
+        int start = GameManager.Instance.MeyveIDAraligi.start;
+        int end = GameManager.Instance.MeyveIDAraligi.end;
         //int araliktakiElemanSayisi = end - start + 1;
         int secilecekRakamSayisi = GameManager.Instance.CepSayisi;
         int rasgeleBaslangic = UnityEngine.Random.Range(start, end - secilecekRakamSayisi);
@@ -169,7 +165,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         int renkEnd = GameManager.Instance.RenkAraligi.end;
         Color32 color = Renkler.RenkSozlugu[UnityEngine.Random.Range(renkStart, renkEnd + 1)];
         foreach (int sayi in secilenSayilar){
-            gorev.Taslar.Add(new TasData { Rakam = sayi, Renk = color });
+            gorev.Taslar.Add(new TasData { MeyveID = sayi, Renk = color });
         }
 
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
@@ -177,59 +173,9 @@ public class GorevYoneticisi : NetworkBehaviour{
         if (Instance != null && Instance.IsServer)
             Instance.gorevlerNetList.Add(gorev);
     }
-
-   /* 
-    private static void ArdisikRakamFarkliRenkPeriOlustur(){
-        GorevData gorev = new GorevData
-        {
-            Taslar = new FixedList128Bytes<TasData>()
-        };
-
-        // --- Ardışık rakamlar -------------------------------------------------
-        int start = GameManager.Instance.RakamAraligi.start;
-        int end = GameManager.Instance.RakamAraligi.end;
-        //int aralik = end - start + 1;
-
-        int secilecekRakamSayisi = GameManager.Instance.CepSayisi;
-        int rasgeleBaslangic = UnityEngine.Random.Range(start, end - secilecekRakamSayisi);
-        List<int> secilenSayilar = Enumerable.Range(rasgeleBaslangic, secilecekRakamSayisi).ToList();
-
-        // --- Benzersiz renkler ------------------------------------------------
-        int renkStart = GameManager.Instance.RenkAraligi.start;
-        int renkEnd = GameManager.Instance.RenkAraligi.end;
-
-        // 1) Aralıktaki tüm indeksleri havuza koy
-        List<int> renkHavuzu = Enumerable.Range(renkStart, renkEnd - renkStart + 1).ToList();
-
-        // 2) Fisher-Yates ile karıştır
-        for (int i = renkHavuzu.Count - 1; i > 0; i--){
-            int j = UnityEngine.Random.Range(0, i + 1);
-            (renkHavuzu[i], renkHavuzu[j]) = (renkHavuzu[j], renkHavuzu[i]);
-        }
-
-        // 3) İstenen kadar rengi seç
-        List<Color32> secilenRenkler = renkHavuzu
-            .Take(secilecekRakamSayisi)
-            .Select(idx => Renkler.RenkSozlugu[idx])
-            .ToList();
-
-        // --- Taşları oluştur --------------------------------------------------
-        for (int i = 0; i < secilecekRakamSayisi; i++){
-            gorev.Taslar.Add(new TasData
-            {
-                Rakam = secilenSayilar[i],
-                Renk = secilenRenkler[i]
-            });
-        }
-
-        gorev.TasSayisi = (byte)gorev.Taslar.Length;
-
-        if (Instance != null && Instance.IsServer)
-            Instance.gorevlerNetList.Add(gorev);
-    }
-*/
+    
    
-    private static void AyniRakamFarkliRenkPerleriOlustur(){
+    private static void AyniMeyveFarkliRenkPerleriOlustur(){
         GorevData gorev = new GorevData
         {
             Taslar = new FixedList128Bytes<TasData>()
@@ -240,8 +186,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         int tasSayisi = maxTasSayisi;
 
         // --- Rakam (hepsi aynı olacak) --------------------------------------
-        int rakamStart = GameManager.Instance.RakamAraligi.start;
-        int rakamEnd = GameManager.Instance.RakamAraligi.end;
+        int rakamStart = GameManager.Instance.MeyveIDAraligi.start;
+        int rakamEnd = GameManager.Instance.MeyveIDAraligi.end;
         int secilenRakam = UnityEngine.Random.Range(rakamStart, rakamEnd + 1);
 
         // --- Benzersiz renkler ---------------------------------------------
@@ -266,7 +212,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         for (int i = 0; i < tasSayisi; i++){
             gorev.Taslar.Add(new TasData
             {
-                Rakam = secilenRakam,
+                MeyveID = secilenRakam,
                 Renk = Renkler.RenkSozlugu[renkHavuzu[i]]
             });
         }
@@ -277,7 +223,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             Instance.gorevlerNetList.Add(gorev);
     }
 
-    private static void AyniRakamAyniRenkPerleriOlustur(){
+    private static void AyniMeyveAyniRenkPerleriOlustur(){
         GorevData gorev = new GorevData
         {
             Taslar = new FixedList128Bytes<TasData>()
@@ -288,8 +234,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         int tasSayisi = maxTasSayisi;
 
         // --- Ortak rakam -----------------------------------------------------
-        int rakamStart   = GameManager.Instance.RakamAraligi.start;
-        int rakamEnd     = GameManager.Instance.RakamAraligi.end;
+        int rakamStart   = GameManager.Instance.MeyveIDAraligi.start;
+        int rakamEnd     = GameManager.Instance.MeyveIDAraligi.end;
         int secilenRakam = UnityEngine.Random.Range(rakamStart, rakamEnd + 1);
 
         // --- Benzersiz renkler ---------------------------------------------
@@ -316,7 +262,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         {
             gorev.Taslar.Add(new TasData
             {
-                Rakam = secilenRakam,
+                MeyveID = secilenRakam,
                 Renk  = Renkler.RenkSozlugu[renkHavuzu[i]]
             });
         }
@@ -351,7 +297,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
             var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);
             gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1); 
-            gTas.GetComponent<gTas>().rakam = gorevTasi.Rakam;
+            gTas.GetComponent<gTas>().meyveID = gorevTasi.MeyveID;
             gTas.GetComponent<gTas>().renk = gorevTasi.Renk;
             gTas.transform.SetParent(body.transform);
             gTas.SetActive(true);
@@ -372,8 +318,8 @@ public class GorevYoneticisi : NetworkBehaviour{
             if (pTs.Value==null) break;
             var pTas = pTs.Value.GetComponent<Tas>();
             var gTas = gorevTaslari[i];
-            if (pTas.rakam != gTas.Rakam && pTas.renk != gTas.Renk){
-                Debug.Log($"pTas.rakam {pTas.rakam}  pTas.renk {pTas.renk}");
+            if (pTas.MeyveID != gTas.MeyveID && pTas.renk != gTas.Renk){
+                Debug.Log($"pTas.rakam {pTas.MeyveID}  pTas.renk {pTas.renk}");
             }
             i++;
         }

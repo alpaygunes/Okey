@@ -66,13 +66,13 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         List<Tas> aranantaslar = new List<Tas>();
         aranantaslar.Clear();
         foreach (var kriter in AranacakKriterler){
-            int arananRakam = 0;
+            int arananMeyveID = 0;
             Color arananRenk = default;
             Color yasakliRenk0 = default;
             Color yasakliRenk1 = default;
             Cep hedefCep = null;
 
-
+ 
             foreach (var tas in carddakiTaslar){
                 bool rakamTamam = false;
                 bool uygunRenkTamam = false;
@@ -82,9 +82,9 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                     hedefCep = (Cep)kriter.Value["hedefCep"];
                 }
 
-                if (kriter.Value.ContainsKey("arananRakam")){
-                    arananRakam = (int)kriter.Value["arananRakam"];
-                    rakamTamam = TasManeger.Instance.TasInstances[tas].rakam == arananRakam;
+                if (kriter.Value.ContainsKey("arananMeyveID")){
+                    arananMeyveID = (int)kriter.Value["arananMeyveID"];
+                    rakamTamam = TasManeger.Instance.TasInstances[tas].MeyveID == arananMeyveID;
                 }
 
                 if (kriter.Value.ContainsKey("arananRenk")){
@@ -117,7 +117,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         Dictionary<string, object> kriter = new Dictionary<string, object>();
         foreach (var ucluk in ucluCepler){
             kriter.Clear();
-            int arananRakam = 0;
+            int arananMeyveID = 0;
             Color arananRenk = default;
             Color yasakliRenk0 = default;
             Color yasakliRenk1 = default;
@@ -125,14 +125,14 @@ public class PerIcinTasTavsiye : MonoBehaviour{
             // 0 1 1
             if (ucluk[0].TasInstance == null){
                 if (ucluk[1].TasInstance && ucluk[2].TasInstance){
-                    if (ucluk[1].TasInstance.rakam == ucluk[2].TasInstance.rakam){
-                        arananRakam = ucluk[1].TasInstance.rakam;
+                    if (ucluk[1].TasInstance.MeyveID == ucluk[2].TasInstance.MeyveID){
+                        arananMeyveID = ucluk[1].TasInstance.MeyveID;
                     }
-                    else if (ucluk[1].TasInstance.rakam == ucluk[2].TasInstance.rakam - 1){
-                        arananRakam = ucluk[1].TasInstance.rakam - 1;
+                    else if (ucluk[1].TasInstance.MeyveID == ucluk[2].TasInstance.MeyveID - 1){
+                        arananMeyveID = ucluk[1].TasInstance.MeyveID - 1;
                     }
 
-                    if (arananRakam > 0){
+                    if (arananMeyveID > 0){
                         if (ucluk[1].TasInstance.renk == ucluk[2].TasInstance.renk){
                             arananRenk = ucluk[1].TasInstance.renk;
                             kriter.Add("arananRenk", arananRenk); 
@@ -145,7 +145,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                         }
 
                         kriter.Add("hedefCep", ucluk[0]);
-                        kriter.Add("arananRakam", arananRakam); 
+                        kriter.Add("arananMeyveID", arananMeyveID); 
                         AranacakKriterler.Add(AranacakKriterler.Count, new Dictionary<string, object>(kriter));
                     }
                 }
@@ -154,14 +154,14 @@ public class PerIcinTasTavsiye : MonoBehaviour{
             //1 0 1
             if (ucluk[1].TasInstance == null){
                 if (ucluk[0].TasInstance && ucluk[2].TasInstance){
-                    if (ucluk[0].TasInstance.rakam == ucluk[2].TasInstance.rakam){
-                        arananRakam = ucluk[0].TasInstance.rakam;
+                    if (ucluk[0].TasInstance.MeyveID == ucluk[2].TasInstance.MeyveID){
+                        arananMeyveID = ucluk[0].TasInstance.MeyveID;
                     }
-                    else if (ucluk[0].TasInstance.rakam == ucluk[2].TasInstance.rakam - 2){
-                        arananRakam = ucluk[2].TasInstance.rakam - 1;
+                    else if (ucluk[0].TasInstance.MeyveID == ucluk[2].TasInstance.MeyveID - 2){
+                        arananMeyveID = ucluk[2].TasInstance.MeyveID - 1;
                     }
 
-                    if (arananRakam > 0){
+                    if (arananMeyveID > 0){
                         if (ucluk[0].TasInstance.renk == ucluk[2].TasInstance.renk){
                             arananRenk = ucluk[0].TasInstance.renk;
                             kriter.Add("arananRenk", arananRenk);
@@ -175,7 +175,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                         }
 
                         kriter.Add("hedefCep", ucluk[1]);
-                        kriter.Add("arananRakam", arananRakam); 
+                        kriter.Add("arananMeyveID", arananMeyveID); 
                         AranacakKriterler.Add(AranacakKriterler.Count, new Dictionary<string, object>(kriter));
                     }
                 }
@@ -184,14 +184,14 @@ public class PerIcinTasTavsiye : MonoBehaviour{
             //1 1 0
             if (ucluk[2].TasInstance == null){
                 if (ucluk[0].TasInstance && ucluk[1].TasInstance){
-                    if (ucluk[0].TasInstance.rakam == ucluk[1].TasInstance.rakam){
-                        arananRakam = ucluk[0].TasInstance.rakam;
+                    if (ucluk[0].TasInstance.MeyveID == ucluk[1].TasInstance.MeyveID){
+                        arananMeyveID = ucluk[0].TasInstance.MeyveID;
                     }
-                    else if (ucluk[0].TasInstance.rakam == ucluk[1].TasInstance.rakam - 1){
-                        arananRakam = ucluk[1].TasInstance.rakam + 1;
+                    else if (ucluk[0].TasInstance.MeyveID == ucluk[1].TasInstance.MeyveID - 1){
+                        arananMeyveID = ucluk[1].TasInstance.MeyveID + 1;
                     }
 
-                    if (arananRakam > 0){
+                    if (arananMeyveID > 0){
                         if (ucluk[0].TasInstance.renk == ucluk[1].TasInstance.renk){
                             arananRenk = ucluk[0].TasInstance.renk;
                             kriter.Add("arananRenk", arananRenk); 
@@ -204,7 +204,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                         }
 
                         kriter.Add("hedefCep", ucluk[2]);
-                        kriter.Add("arananRakam", arananRakam); 
+                        kriter.Add("arananMeyveID", arananMeyveID); 
                         AranacakKriterler.Add(AranacakKriterler.Count, new Dictionary<string, object>(kriter));
                     }
                 }

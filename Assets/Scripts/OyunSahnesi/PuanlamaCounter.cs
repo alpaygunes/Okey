@@ -31,10 +31,9 @@ public class PuanlamaCounter : MonoBehaviour{
     }
 
     public void PuanlamaIcinGeriSayimAnimasyonunuBaslat(){
-        if (Istaka.Instance.SiraliRakamAyniRenkGruplari.Count > 0
-            || Istaka.Instance.AyniRakamAyniRenkGruplari.Count > 0
-            || Istaka.Instance.AyniRakamHepsiFarkliRenkGruplari.Count > 0
-            /*|| Istaka.Instance.SiraliRakamHepsiFarkliRenkGruplari.Count > 0*/){
+        if (Istaka.Instance.FarkliMeyveAyniRenkGruplari.Count > 0
+            || Istaka.Instance.AyniMeyveAyniRenkGruplari.Count > 0
+            || Istaka.Instance.AyniMeyveFarkliRenkGruplari.Count > 0 ){
             if (CountdownCoroutine != null){
                 StopCoroutine(CountdownCoroutine);
             }

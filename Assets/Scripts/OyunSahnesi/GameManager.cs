@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine; 
 
 public class GameManager : MonoBehaviour{
-    public readonly float PuanlamaIcinGeriSayimSuresi = 100f; // sadece bir rakam. sn değil.
+    public readonly float PuanlamaIcinGeriSayimSuresi = 100f;  
     public readonly int _colonCount = 5;
     public readonly int TasCount = 100;
     public readonly int CepSayisi = 5;
     public readonly RangeInt RenkAraligi = new RangeInt(0, 4);
-    public readonly RangeInt RakamAraligi = new RangeInt(0, 4); //0,1.,10
+    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 4); //0,1.,10
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string seed;
     public bool PerKontrolDugmesiOlsun ;

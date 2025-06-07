@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 559580169177316257}
   - component: {fileID: 6960383901564603105}
   m_Layer: 0
-  m_Name: RakamResmi
+  m_Name: MeyveResmi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,15 +76,15 @@ SpriteRenderer:
   m_SortingLayerID: 2136321615
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 5088316998373936774, guid: d840ec140ced3b1aa8215a36a1ec5fcf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e4fb132134b6ec2cbe8481cb18f7839, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.13, y: 2.01}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3061349756624977179
@@ -137,17 +137,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95aed21196fc2eeb0998b97863655577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rakam: 0
+  MeyveID: 0
   renk: {r: 0, g: 0, b: 0, a: 0}
   sagindakiKomsuTas: {fileID: 0}
   birCardPerineDahil: 0
   zeminSpriteRenderer: {fileID: 0}
-  rakamResmiSpriteRenderer: {fileID: 0}
+  MeyveResmiSpriteRenderer: {fileID: 0}
   uiCamera: {fileID: 0}
   cepInstance: {fileID: 0}
   zemin: {fileID: 0}
   NetworkDatayaEklendi: 0
-  TextRakam: {fileID: 3691389758770249476}
+  TextMeyveID: {fileID: 0}
+  colID: 0
 --- !u!50 &473513376257399296
 Rigidbody2D:
   serializedVersion: 5
@@ -276,7 +277,7 @@ GameObject:
   - component: {fileID: 4293496792793899531}
   - component: {fileID: 3691389758770249476}
   m_Layer: 0
-  m_Name: RakamText
+  m_Name: TextMeyveID
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -456,7 +457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &316932894152097315
 Transform:
   m_ObjectHideFlags: 0

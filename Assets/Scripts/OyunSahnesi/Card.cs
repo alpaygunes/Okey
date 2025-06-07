@@ -13,13 +13,12 @@ public class Card : MonoBehaviour{
     public List<List<GameObject>> _siraliFarkliRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> SiraliFarkliRenkliGrup = new List<GameObject>();
 
-    public List<List<GameObject>> _ayniRakamAyniRenkliGruplar = new List<List<GameObject>>();
-    public List<GameObject> AyniRakamAyniRenkliGrup = new List<GameObject>();
+    public List<List<GameObject>> _ayniMeyveAyniRenkliGruplar = new List<List<GameObject>>();
+    public List<GameObject> AyniMeyveAyniRenkliGrup = new List<GameObject>();
 
-    public List<List<GameObject>> _ayniRakamFarkliRenkliGruplar = new List<List<GameObject>>();
-    public List<GameObject> AyniRakamFarkliRenkli = new List<GameObject>();
-
-      
+    public List<List<GameObject>> _ayniMeyveFarkliRenkliGruplar = new List<List<GameObject>>();
+    public List<GameObject> AyniMeyveFarkliRenkli = new List<GameObject>();
+ 
     void Awake(){
         
         if (Instance != null && Instance != this){
@@ -37,8 +36,8 @@ public class Card : MonoBehaviour{
     public async Task KarttakiPerleriBul(){
         _siraliAyniRenkliGruplar.Clear();
         _siraliFarkliRenkliGruplar.Clear();
-        _ayniRakamAyniRenkliGruplar.Clear();
-        _ayniRakamFarkliRenkliGruplar.Clear();
+        _ayniMeyveAyniRenkliGruplar.Clear();
+        _ayniMeyveFarkliRenkliGruplar.Clear();
 
         GameObject[] taslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
 
@@ -68,27 +67,24 @@ public class Card : MonoBehaviour{
                 }
             }
 
-            AyniRakamAyniRenkliGrup.Clear();
+            AyniMeyveAyniRenkliGrup.Clear();
             await TasManeger.Instance.TasInstances[tas].AyniRakamAyniRenkGrubunaDahilOl();
-            if (AyniRakamAyniRenkliGrup.Count > 2) {
-                _ayniRakamAyniRenkliGruplar.Add(new List<GameObject>(AyniRakamAyniRenkliGrup));
-                foreach (var item in AyniRakamAyniRenkliGrup) {
+            if (AyniMeyveAyniRenkliGrup.Count > 2) {
+                _ayniMeyveAyniRenkliGruplar.Add(new List<GameObject>(AyniMeyveAyniRenkliGrup));
+                foreach (var item in AyniMeyveAyniRenkliGrup) {
                     TasManeger.Instance.TasInstances[item].birCardPerineDahil = true;
                 }
             }
 
-            AyniRakamFarkliRenkli.Clear();
+            AyniMeyveFarkliRenkli.Clear();
             await TasManeger.Instance.TasInstances[tas].AyniRakamFarkliRenkGrubunaDahilOl();
-            if (AyniRakamFarkliRenkli.Count > 2) {
-                _ayniRakamFarkliRenkliGruplar.Add(new List<GameObject>(AyniRakamFarkliRenkli));
-                foreach (var item in AyniRakamFarkliRenkli) {
+            if (AyniMeyveFarkliRenkli.Count > 2) {
+                _ayniMeyveFarkliRenkliGruplar.Add(new List<GameObject>(AyniMeyveFarkliRenkli));
+                foreach (var item in AyniMeyveFarkliRenkli) {
                     TasManeger.Instance.TasInstances[item].birCardPerineDahil = true;
                 }
             }
         }
-
-        
-
         
     }
 
@@ -100,15 +96,11 @@ public class Card : MonoBehaviour{
         for (var satir = satirSayisi; satir > 0; satir--){
             for (int sutun = 0; sutun < GameManager.Instance._colonCount; sutun++){
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
-                float positionY = -(cardSize.y * .5f) + (colonWidth * 0.5f) + ((satirSayisi - satir) * colonWidth);
-                //positionY -= 0.2f;
-                positionY *= 0.97f;
+                float positionY = -(cardSize.y * .5f) + (colonWidth * 0.5f) + ((satirSayisi - satir) * colonWidth); 
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
                 kutu.transform.localScale = GameManager.Instance.spawnHolesList[0].transform.localScale;
-                kutu.transform.localScale *= 0.35f;
-                //kutu.transform.localScale = new Vector2(colonWidth, colonWidth);
+                kutu.transform.localScale *= 0.35f;  
             }
         }
-    }
-    
+    } 
 }
