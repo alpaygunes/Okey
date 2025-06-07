@@ -129,10 +129,10 @@ TextureImporter:
       name: sol_sus_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 181
-        height: 197
+        x: 3
+        y: 2
+        width: 250
+        height: 252
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
