@@ -67,7 +67,7 @@ public class Istaka : MonoBehaviour{
     public void PersizFullIstakayiBosalt(){
         int cezaliPuan = 0;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
-        if (DoluCepSayisi() == GameManager.Instance.CepSayisi) { 
+        if (DoluCepSayisi() == GameManager.Instance.CepSayisi) {
             foreach (var cepInstance in CepList) { 
                 if (cepInstance is null) break; 
                 var AIstance = cepInstance.TasInstance;
@@ -85,15 +85,15 @@ public class Istaka : MonoBehaviour{
                 cezaliPuan += AIstance.rakam;
                 StartCoroutine(AIstance.CezaliRakamiCikar(1));
                 cepInstance.TasInstance = null;
+                
             } 
             Puanlama.Instance.ToplamPuan -= cezaliPuan;
             //Tamam düğmesini gizle
             if ( GameManager.Instance.PerKontrolDugmesiOlsun){
                 OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
             }
-        } 
-        
-
+            YildizleriGizle();
+        }  
         
     }
 

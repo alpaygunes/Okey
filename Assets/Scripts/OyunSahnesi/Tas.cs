@@ -54,9 +54,8 @@ public class Tas : MonoBehaviour{
         var koyuRenk = Color.Lerp(renk, Color.black, 0.0f);
         rakamResmiSpriteRenderer.color = koyuRenk;
         rakamResmiSpriteRenderer.transform.localScale *= 1.25f;
-        
-        destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof");
-
+         
+        destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof"); 
         _audioSource_down = gameObject.AddComponent<AudioSource>();
         _audioSource_down.playOnAwake = false;
         _audioSource_down.clip = Resources.Load<AudioClip>("Sounds/tas_down");
@@ -69,8 +68,7 @@ public class Tas : MonoBehaviour{
         _audioSource_patla.playOnAwake = false;
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla"); 
         
-        TextRakam.text = rakam.ToString();
-        //CreateBg();
+        TextRakam.text = rakam.ToString(); 
     }
 
     private void OnDestroy(){
@@ -89,8 +87,7 @@ public class Tas : MonoBehaviour{
         }
 
         var kalanTas = Int32.Parse(OyunSahnesiUI.Instance.KalanTasSayisi.text);
-        kalanTas--;
-        //Puanlama.Instance.KalanTasOraniTMP.text = kalanTas.ToString();
+        kalanTas--; 
         OyunSahnesiUI.Instance.KalanTasSayisi.text = kalanTas.ToString();
     }
 
@@ -109,18 +106,7 @@ public class Tas : MonoBehaviour{
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => {
                         transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.162f;
-                        _audioSource_up.Play();
-                        // görev cebiyle aynı meyve renk mi
-                        GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
-                        var gTas = gorevTaslari[cepScript.colID];
-                        int uyumSayisi = 0;
-                        if (gTas.GetComponent<gTas>().renk == renk){ 
-                            uyumSayisi++;
-                        }
-                        if (gTas.GetComponent<gTas>().rakam == rakam){ 
-                            uyumSayisi++;
-                        }
-                        cepScript.YildiziYak(uyumSayisi); 
+                        _audioSource_up.Play(); 
                     })); 
                 Destroy(_rigidbody);
                 Destroy(_collider); 
@@ -128,9 +114,20 @@ public class Tas : MonoBehaviour{
                 cepScript.TasInstance = this;
                 cepInstance = cepScript;
                 PerIcinTasTavsiye.Instance.Sallanma();
-                tag = "CEPTEKI_TAS";
-                //zemin.transform.localScale = zeminlocalScale;
+                tag = "CEPTEKI_TAS"; 
                 _audioSource_down.Play();
+                // görev cebiyle aynı meyve renk mi
+                GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
+                var gTas = gorevTaslari[cepScript.colID];
+                int uyumSayisi = 0;
+                if (gTas.GetComponent<gTas>().renk == renk){ 
+                    uyumSayisi++;
+                }
+                if (gTas.GetComponent<gTas>().rakam == rakam){ 
+                    uyumSayisi++;
+                }
+                cepScript.YildiziYak(uyumSayisi); 
+                //------------- end -- görev cebiyle aynı meyve renk mi 
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
             }
@@ -153,6 +150,7 @@ public class Tas : MonoBehaviour{
                 Destroy(gameObject);
                 enabled = false;
                 TasManeger.Instance.TasInstances.Remove(gameObject);
+                cepInstance.YildiziYak(0);
             });
         foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
             if (bonusTaslari.Value){

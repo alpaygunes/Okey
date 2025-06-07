@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour{
     public readonly int _colonCount = 5;
     public readonly int TasCount = 100;
     public readonly int CepSayisi = 5;
-    public readonly RangeInt RenkAraligi = new RangeInt(0, 19);
-    public readonly RangeInt RakamAraligi = new RangeInt(0, 15); //0,1.,10
+    public readonly RangeInt RenkAraligi = new RangeInt(0, 4);
+    public readonly RangeInt RakamAraligi = new RangeInt(0, 4); //0,1.,10
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string seed;
     public bool PerKontrolDugmesiOlsun ;

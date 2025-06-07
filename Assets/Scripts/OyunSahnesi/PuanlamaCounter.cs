@@ -52,7 +52,7 @@ public class PuanlamaCounter : MonoBehaviour{
             }
         }
         else{
-            Istaka.Instance.PersizFullIstakayiBosalt();
+            Istaka.Instance.PersizFullIstakayiBosalt(); 
         }
         
     }
