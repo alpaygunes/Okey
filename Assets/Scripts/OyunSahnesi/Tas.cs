@@ -272,7 +272,8 @@ public class Tas : MonoBehaviour{
 
     public void Sallan(){
         if (CompareTag("CARDTAKI_TAS")){
-            tweener = zemin.transform.DOScale(.275f, .35f)
+            //tweener = zemin....
+            tweener = MeyveResmiSpriteRenderer.transform.DOScale(.275f, .35f)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetAutoKill(true);
