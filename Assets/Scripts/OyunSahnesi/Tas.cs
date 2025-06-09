@@ -93,7 +93,7 @@ public class Tas : MonoBehaviour{
         OyunSahnesiUI.Instance.KalanTasSayisi.text = kalanTas.ToString();
     }
 
-    public void BosCebeYerles(){
+    public bool BosCebeYerles(){
         Card.Instance.Sallanma();
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
@@ -103,7 +103,7 @@ public class Tas : MonoBehaviour{
                 gameObject.transform.position += new Vector3(0, 0, -1);
                 var hedef_cep_position = new Vector3(
                     cepScript.transform.position.x, 
-                    cepScript.transform.position.y*.85f,
+                    cepScript.transform.position.y*.9f,
                     cepScript.transform.position.z);
                 transform.DOMove(hedef_cep_position, animasyonSuresi * .2f)
                     .SetEase(Ease.OutExpo)
@@ -131,10 +131,10 @@ public class Tas : MonoBehaviour{
                     }
                     cepScript.YildiziYak(uyumSayisi); 
                 } 
-                TasManeger.Instance.PerleriKontrolEt();
-                break;
+                return true; 
             }
         }
+        return false;
     }
 
     public IEnumerator TaslarinRakaminiPuanaEkle(float gecikme){

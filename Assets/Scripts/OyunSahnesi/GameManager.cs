@@ -109,7 +109,10 @@ public class GameManager : MonoBehaviour{
                     RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
                     if (hit.collider != null){
                         if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
-                            TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
+                            var yerlestimi = TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
+                            if (yerlestimi){
+                                TasManeger.Instance.PerleriKontrolEt();
+                            }
                             PerIcinTasTavsiye.Instance.Basla();
                         }
                     }
