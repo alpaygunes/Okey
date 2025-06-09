@@ -74,14 +74,14 @@ public class Puanlama : MonoBehaviour{
     public void LimitleriKontrolEt(){
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
-                GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
+                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
                 SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             }
         }
         
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             if (GameManager.Instance.oyununBitimineKalanZaman<=0){
-                GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
+                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
                 SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 if (NetworkDataManager.Instance.oyuncuListesi != null){
                     IEnumerator enumerator;
@@ -103,7 +103,7 @@ public class Puanlama : MonoBehaviour{
         }
     }
  
-    public void IstakadakiPerdekiTaslariToparla(){
+    public void PerlerdekiTaslariToparla(){
         
         BonusAyniRenkArdisikMeyve.Clear();
         BonusAyniRenkAyniMeyve.Clear();
@@ -113,7 +113,7 @@ public class Puanlama : MonoBehaviour{
         SiralanmisTumPerTaslari = new SortedDictionary<int, GameObject>();
         Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>(); 
         //SiraliRakamRenkGruplari sahneye diz 
-        foreach (var grupList in Istaka.Instance.FarkliMeyveAyniRenkGruplari) {
+        foreach (var grupList in Istaka.Instance.FarkliMeyveAyniRenkPerleri) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
                     perdekiTumTaslarDic.Add(item.Key, item.Value);
@@ -126,7 +126,7 @@ public class Puanlama : MonoBehaviour{
         }
 
         //AyniRakamAyniRenkGruplari sahneye diz 
-        foreach (var grupList in Istaka.Instance.AyniMeyveAyniRenkGruplari) {
+        foreach (var grupList in Istaka.Instance.AyniMeyveAyniRenkPerleri) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
                     perdekiTumTaslarDic.Add(item.Key, item.Value);
@@ -139,7 +139,7 @@ public class Puanlama : MonoBehaviour{
         }
 
         //AyniRakamHepsiFarkliRenkGruplari sahneye diz 
-        foreach (var grupList in Istaka.Instance.AyniMeyveFarkliRenkGruplari) {
+        foreach (var grupList in Istaka.Instance.AyniMeyveFarkliRenkPerleri) {
             foreach (var item in grupList) {
                 if (!perdekiTumTaslarDic.ContainsKey(item.Key)) {
                     perdekiTumTaslarDic.Add(item.Key, item.Value);
@@ -225,14 +225,16 @@ public class Puanlama : MonoBehaviour{
         // networke göndermek için animasyon vb gecikme leri beklemeden kaznılan net puan 
         int nwrkPuan = 0;
         foreach (var tas in SiralanmisTumPerTaslari){ 
-            nwrkPuan += TasManeger.Instance.TasInstances[tas.Value].MeyveID; 
+            //nwrkPuan += TasManeger.Instance.TasInstances[tas.Value].MeyveID; 
+            nwrkPuan ++; 
             foreach (var bonusTaslari in TasManeger.Instance.TasInstances[tas.Value].BonusOlarakEslesenTaslar){
                 if (bonusTaslari.Value && !bonusTaslari.Value.NetworkDatayaEklendi){
                     bonusTaslari.Value.NetworkDatayaEklendi = true;
-                    nwrkPuan += bonusTaslari.Value.MeyveID;
+                    //nwrkPuan += bonusTaslari.Value.MeyveID;
+                    nwrkPuan ++;
                 }
             }
-        } 
+        }
         ToplamPuan += nwrkPuan; 
 
         float gecikme = 0f;
@@ -240,19 +242,27 @@ public class Puanlama : MonoBehaviour{
             StartCoroutine(TasManeger.Instance.TasInstances[tas.Value].TaslarinRakaminiPuanaEkle(gecikme));
             gecikme++;
         } 
-        
-        Istaka.Instance.GruplariTemizle(); 
+         
+        Invoke(nameof(Deneme),gecikme); 
+        Istaka.Instance.PerleriTemizle(); 
+    }
+    
+    void Deneme(){
+        GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.oynaniyor;
+        Debug.Log("Oyun durumu Oynanıyor olarak değiştirildi.");
     }
     
     public void Puanla(){ 
-        if (      Istaka.Instance.FarkliMeyveAyniRenkGruplari.Count>0 
-               || Istaka.Instance.AyniMeyveAyniRenkGruplari.Count>0
-               || Istaka.Instance.AyniMeyveFarkliRenkGruplari.Count>0) {
-                IstakadakiPerdekiTaslariToparla();
+        if (      Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count>0 
+               || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count>0
+               || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count>0) {
+                GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.puanlamaYapiliyor; 
+                Debug.Log("Oyun durumu PuanlamaYapiliyor olarak değiştirildi.");
+                PerlerdekiTaslariToparla();
                 BonuslariVer(); 
-                PerIcinTasTavsiye.Instance.Sallanma(); 
+                Card.Instance.Sallanma(); 
         } 
-        _ = Card.Instance.KarttakiPerleriBul(); 
+        // _ = Card.Instance.KarttakiPerleriBul(); 
     }
 
     public void SkorBoardiGuncelle(){ 
@@ -265,12 +275,11 @@ public class Puanlama : MonoBehaviour{
             PuanlamaCounter.Instance.StopCoroutine(PuanlamaCounter.Instance.CountdownCoroutine);
         }
         
-        if (   Istaka.Instance.FarkliMeyveAyniRenkGruplari.Count>0 
-               || Istaka.Instance.AyniMeyveAyniRenkGruplari.Count>0
-               || Istaka.Instance.AyniMeyveFarkliRenkGruplari.Count>0){ 
+        if (   Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count>0 
+               || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count>0
+               || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count>0){ 
             Puanla();
-        }
-        else{
+        } else {
             Istaka.Instance.PersizFullIstakayiBosalt();
         }
         

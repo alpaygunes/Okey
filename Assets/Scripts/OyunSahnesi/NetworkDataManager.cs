@@ -100,7 +100,7 @@ public class NetworkDataManager : NetworkBehaviour{
 
 
     private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
-        if (GameManager.Instance?.oyunDurumu == GameManager.OynanmaDurumu.bitti){
+        if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.bitti){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }

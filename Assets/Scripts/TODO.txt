@@ -15,7 +15,9 @@
     İki kişilik bir oyun modudur.
     
     GÜNCELLE : görevlerin hepsi cepsayısı kadar olsun. farklı sayıda olmasın.
-    eşeleşen kolonlardaki taşların rakamları ayrıca puan olarak eklensin.
+    eşleşen kolonlardaki taşların rakamları ayrıca puan olarak eklensin.
+    
+ HATA : Periçin tavsiye kodları puanlama sırasıdna çalışmaya başlıyor. puanlama yokkon bu kodlar çalışmalı.
     
     
     

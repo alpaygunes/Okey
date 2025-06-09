@@ -29,11 +29,11 @@ public class TasManeger : MonoBehaviour{
     }
  
     public void PerleriKontrolEt(){
-        Istaka.Instance.FarkliMeyveGruplariniBelirle();
-        Istaka.Instance.AyniMeyveGruplariniBelirle();
-        Istaka.Instance.FarkliMeyveGruplriIcindeAyniRenkGruplariniBelirle();
-        Istaka.Instance.AyniMeyveGruplarinIcindekiAyniRenkGruplariniBelirle();
-        Istaka.Instance.AyniMeyveGruplarinIcindekiFarkliRenkGruplariniBelirle(); 
+        Istaka.Instance.FarkliMeyvePerleriniBelirle();
+        Istaka.Instance.AyniMeyvePerleriniBelirle();
+        Istaka.Instance.FarkliMeyveGruplriIcindeAyniRenkPerleriniBelirle();
+        Istaka.Instance.AyniMeyveGruplarinIcindekiAyniRenkPerleriniBelirle();
+        Istaka.Instance.AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle(); 
         PuanlamaCounter.Instance.PuanlamaIcinGeriSayimAnimasyonunuBaslat(); 
     }
     

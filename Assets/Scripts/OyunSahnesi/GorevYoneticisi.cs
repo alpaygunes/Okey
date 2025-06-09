@@ -10,7 +10,7 @@ using Random = System.Random;
 public class GorevYoneticisi : NetworkBehaviour{ 
     public static GorevYoneticisi Instance{ get; private set; }
     private int SiradakiGorevSirasNosu = 0;
-    private float posYrate = 0.7f;
+    private float posYrate = 0.74f;
     
     public struct TasData : INetworkSerializable, IEquatable<TasData>{
         public int MeyveID;
@@ -124,16 +124,32 @@ public class GorevYoneticisi : NetworkBehaviour{
     }
 
     private static void GorevHazirla(){
+        int renkStart = GameManager.Instance.RenkAraligi.start;
+        int renkEnd = GameManager.Instance.RenkAraligi.end;
+        int renkSayisi = renkEnd - renkStart + 1;
+        
+        int meyveStart = GameManager.Instance.MeyveIDAraligi.start;
+        int meyveEnd = GameManager.Instance.MeyveIDAraligi.end;
+        int meyveSayisi = meyveEnd - meyveStart + 1;
         for (int i = 0; i < GorevSayisi; i++) 
             switch (RastgelePerTuruSec())
             {
                 case PerTurleri.FarkliMeyveAyniRenk:
-                    FarkliMeyveAyniRenkPeriOlustur();
+                    if (GameManager.Instance.CepSayisi <= meyveSayisi){
+                        FarkliMeyveAyniRenkPeriOlustur();
+                    }
+                    else{
+                        AyniMeyveAyniRenkPerleriOlustur();
+                    }
                     break;
  
 
                 case PerTurleri.AyniMeyveFarkliRenkPerleri:
-                    AyniMeyveFarkliRenkPerleriOlustur();
+                    if (GameManager.Instance.CepSayisi <= renkSayisi){
+                        AyniMeyveFarkliRenkPerleriOlustur();
+                    } else{
+                        AyniMeyveAyniRenkPerleriOlustur(); 
+                    }
                     break;
 
                 case PerTurleri.AyniMeyveAyniRenkPerleri:
@@ -156,11 +172,10 @@ public class GorevYoneticisi : NetworkBehaviour{
         };
 
         int start = GameManager.Instance.MeyveIDAraligi.start;
-        int end = GameManager.Instance.MeyveIDAraligi.end;
-        //int araliktakiElemanSayisi = end - start + 1;
-        int secilecekRakamSayisi = GameManager.Instance.CepSayisi;
-        int rasgeleBaslangic = UnityEngine.Random.Range(start, end - secilecekRakamSayisi);
-        var secilenSayilar = Enumerable.Range(rasgeleBaslangic, secilecekRakamSayisi).ToList();
+        int end = GameManager.Instance.MeyveIDAraligi.end - GameManager.Instance.CepSayisi; 
+        int rasgeleBaslangic = UnityEngine.Random.Range(start, end);
+        var secilenSayilar = Enumerable.Range(rasgeleBaslangic, GameManager.Instance.CepSayisi).ToList();
+        
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
         Color32 color = Renkler.RenkSozlugu[UnityEngine.Random.Range(renkStart, renkEnd + 1)];
@@ -174,7 +189,6 @@ public class GorevYoneticisi : NetworkBehaviour{
             Instance.gorevlerNetList.Add(gorev);
     }
     
-   
     private static void AyniMeyveFarkliRenkPerleriOlustur(){
         GorevData gorev = new GorevData
         {
@@ -186,9 +200,9 @@ public class GorevYoneticisi : NetworkBehaviour{
         int tasSayisi = maxTasSayisi;
 
         // --- Rakam (hepsi aynı olacak) --------------------------------------
-        int rakamStart = GameManager.Instance.MeyveIDAraligi.start;
-        int rakamEnd = GameManager.Instance.MeyveIDAraligi.end;
-        int secilenRakam = UnityEngine.Random.Range(rakamStart, rakamEnd + 1);
+        int meyveStart = GameManager.Instance.MeyveIDAraligi.start;
+        int meyveEnd = GameManager.Instance.MeyveIDAraligi.end;
+        int secilenRakam = UnityEngine.Random.Range(meyveStart, meyveEnd + 1);
 
         // --- Benzersiz renkler ---------------------------------------------
         int renkStart = GameManager.Instance.RenkAraligi.start;
@@ -236,7 +250,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         // --- Ortak rakam -----------------------------------------------------
         int rakamStart   = GameManager.Instance.MeyveIDAraligi.start;
         int rakamEnd     = GameManager.Instance.MeyveIDAraligi.end;
-        int secilenRakam = UnityEngine.Random.Range(rakamStart, rakamEnd + 1);
+        int secilenMeyve = UnityEngine.Random.Range(rakamStart, rakamEnd + 1);
 
         // --- Benzersiz renkler ---------------------------------------------
         int renkStart = GameManager.Instance.RenkAraligi.start;
@@ -255,15 +269,15 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
 
         // Havuzdaki renk sayısı yetersizse, taş sayısını düşür
-        tasSayisi = Mathf.Min(tasSayisi, renkHavuzu.Count);
+       // tasSayisi = Mathf.Min(tasSayisi, renkHavuzu.Count);
 
         // --- Taşları oluştur -------------------------------------------------
         for (int i = 0; i < tasSayisi; i++)
         {
             gorev.Taslar.Add(new TasData
             {
-                MeyveID = secilenRakam,
-                Renk  = Renkler.RenkSozlugu[renkHavuzu[i]]
+                MeyveID = secilenMeyve,
+                Renk  = Renkler.RenkSozlugu[renkHavuzu[0]]
             });
         }
 
@@ -328,7 +342,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         SiradakiGoreviSahnedeGoster();
         OyunSahnesiUI.Instance.GorevSayisiLbl.text = SiradakiGorevSirasNosu +"/"+OyunKurallari.Instance.GorevYap.ToString();  
         if (SiradakiGorevSirasNosu >= OyunKurallari.Instance.GorevYap){
-            GameManager.Instance.oyunDurumu = GameManager.OynanmaDurumu.bitti; 
+            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
         }
     }

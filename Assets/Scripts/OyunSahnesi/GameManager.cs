@@ -1,34 +1,34 @@
 using System.Collections;
 using System.Collections.Generic; 
-using UnityEngine; 
+using UnityEngine;
 
 public class GameManager : MonoBehaviour{
     public readonly float PuanlamaIcinGeriSayimSuresi = 100f;  
-    public readonly int _colonCount = 5;
+    public readonly int _colonCount = 6;
     public readonly int TasCount = 100;
-    public readonly int CepSayisi = 5;
-    public readonly RangeInt RenkAraligi = new RangeInt(0, 4);
-    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 4); //0,1.,10
+    public readonly int CepSayisi = 6;
+    public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
+    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6);  
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string seed;
     public bool PerKontrolDugmesiOlsun ;
     public bool OtomatikPerkontrolu ;
     public static GameManager Instance{ get; private set; }
     public int oyununBitimineKalanZaman=0;  
-    public OynanmaDurumu oyunDurumu;
+    public OynanmaDurumu OyunDurumu;
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public enum OynanmaDurumu{
         bitti,
         oynaniyor,
+        puanlamaYapiliyor,
     }
     
     void Awake(){ 
-        oyunDurumu = OynanmaDurumu.oynaniyor; 
+        OyunDurumu = OynanmaDurumu.oynaniyor; 
         if (Instance != null && Instance != this){
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour{
     }
 
     void Update(){
-        if (oyunDurumu == OynanmaDurumu.bitti) return;
+        if (OyunDurumu == OynanmaDurumu.bitti) return;
         
         #if UNITY_ANDROID || UNITY_IOS
             if (Input.touchCount > 0)

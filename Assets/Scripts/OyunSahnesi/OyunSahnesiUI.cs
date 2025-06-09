@@ -88,14 +88,14 @@ public class OyunSahnesiUI : MonoBehaviour
         
  
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
-            GeriSayim.text = OyunKurallari.Instance.ZamanLimiti.ToString();  
+            GeriSayim.text = OyunKurallari.Instance.ZamanLimiti.ToString();
             GeriSayim.style.display =    DisplayStyle.Flex;
         } else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
             GorevSayisiLbl.style.display =    DisplayStyle.Flex;
-            GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();  
+            GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();
         } else if(OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             HamleSayisi.style.display =    DisplayStyle.Flex;
-            HamleSayisi.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();  
+            HamleSayisi.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();
         } 
         _ = AvatarlariGoster();
     }

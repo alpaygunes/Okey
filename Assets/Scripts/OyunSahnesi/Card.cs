@@ -18,7 +18,8 @@ public class Card : MonoBehaviour{
 
     public List<List<GameObject>> _ayniMeyveFarkliRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> AyniMeyveFarkliRenkli = new List<GameObject>();
- 
+    private GameObject[] carddakiTaslar;
+
     void Awake(){
         
         if (Instance != null && Instance != this){
@@ -33,6 +34,7 @@ public class Card : MonoBehaviour{
     }
     
     // Karttaki taşları kontrol edip yan yana  perler varmı bakalım 
+    /*
     public async Task KarttakiPerleriBul(){
         _siraliAyniRenkliGruplar.Clear();
         _siraliFarkliRenkliGruplar.Clear();
@@ -87,7 +89,8 @@ public class Card : MonoBehaviour{
         }
         
     }
-
+*/
+    
     public void KutulariHazirla(){
         Vector2 cardSize = Instance.Size;
         float colonWidth = (cardSize.x / GameManager.Instance._colonCount);
@@ -103,4 +106,11 @@ public class Card : MonoBehaviour{
         }
          
     } 
+    
+    public void Sallanma(){
+        carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+        foreach (var tas in carddakiTaslar){
+            TasManeger.Instance.TasInstances[tas].Sallanma();
+        }
+    }
 }

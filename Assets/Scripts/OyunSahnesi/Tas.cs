@@ -26,7 +26,7 @@ public class Tas : MonoBehaviour{
     private AudioSource _audioSource_patla;
     public Cep cepInstance = null;
     public Tweener tweener = null;
-    //public Vector3 zeminlocalScale;
+    public Vector3 orginalScale;
     public GameObject zemin;
     public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>();
     public bool NetworkDatayaEklendi = false;
@@ -43,7 +43,7 @@ public class Tas : MonoBehaviour{
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 
-    private void Start(){
+    private void Start(){ 
         
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
@@ -70,6 +70,7 @@ public class Tas : MonoBehaviour{
         _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla"); 
         
         TextMeyveID.text = MeyveID.ToString(); 
+        orginalScale = MeyveResmiSpriteRenderer.transform.localScale;
     }
 
     private void OnDestroy(){
@@ -93,6 +94,7 @@ public class Tas : MonoBehaviour{
     }
 
     public void BosCebeYerles(){
+        Card.Instance.Sallanma();
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++){
@@ -107,14 +109,13 @@ public class Tas : MonoBehaviour{
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => {
                         transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.25f;
-                        _audioSource_up.Play(); 
+                        _audioSource_up.Play();
                     })); 
                 Destroy(_rigidbody);
                 Destroy(_collider); 
                 cepScript.Dolu = true;
                 cepScript.TasInstance = this;
-                cepInstance = cepScript;
-                PerIcinTasTavsiye.Instance.Sallanma();
+                cepInstance = cepScript; 
                 tag = "CEPTEKI_TAS"; 
                 _audioSource_down.Play();
                 // görev cebiyle aynı meyve renk mi
@@ -129,8 +130,7 @@ public class Tas : MonoBehaviour{
                         uyumSayisi++;
                     }
                     cepScript.YildiziYak(uyumSayisi); 
-                }
- 
+                } 
                 TasManeger.Instance.PerleriKontrolEt();
                 break;
             }
@@ -154,12 +154,12 @@ public class Tas : MonoBehaviour{
                 enabled = false;
                 TasManeger.Instance.TasInstances.Remove(gameObject);
                 if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) cepInstance.YildiziYak(0); 
+                foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
+                    if (bonusTaslari.Value){
+                        bonusTaslari.Value.RakamiPuanaEkle();
+                    }
+                }
             });
-        foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
-            if (bonusTaslari.Value){
-                bonusTaslari.Value.RakamiPuanaEkle();
-            }
-        }
     }
 
     public void RakamiPuanaEkle(){
@@ -272,21 +272,20 @@ public class Tas : MonoBehaviour{
 
     public void Sallan(){
         if (CompareTag("CARDTAKI_TAS")){
-            //tweener = zemin....
-            tweener = MeyveResmiSpriteRenderer.transform.DOScale(.275f, .35f)
+            tweener = MeyveResmiSpriteRenderer.transform.DOScale(.8f, .5f)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetAutoKill(true);
         }
     }
 
-    public void Sallanma(){
-        //zemin.transform.localScale = zeminlocalScale;
+    public void Sallanma(){ 
         if (tweener != null && tweener.IsActive()){
             tweener.Complete();
             tweener.Kill();
             tweener = null;
         }
+        MeyveResmiSpriteRenderer.transform.localScale = orginalScale;
     }
 
     // kendi zemini hazirla
