@@ -68,9 +68,7 @@ public class LobbyListUI : MonoBehaviour{
         StartRelay.style.display = DisplayStyle.None; 
         benLobininSahibiyim = LobbyManager.Instance.CurrentLobby?.HostId == AuthenticationService.Instance.PlayerId;
         
-        // Lobby Yaratma Butonu
-        //CreateLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.None : DisplayStyle.Flex;
-        //CreateLobbyBtn.clicked += CreateLobby;
+ 
 
         // Lobby Kapatma Butonu 
         CloseLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.Flex : DisplayStyle.None;
@@ -78,9 +76,7 @@ public class LobbyListUI : MonoBehaviour{
 
         // Lobby Create Penceresi
         CrtLobBtn.clicked += LobiOlusturmaPenceresi;
-
-        // loby listesi Penceresi
-        //HostListBtn.clicked += OnLobbyListButtonClickedWrapper;
+ 
 
         //start Relay
         StartRelay.clicked += async () => {

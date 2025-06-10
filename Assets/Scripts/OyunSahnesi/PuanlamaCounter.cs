@@ -30,7 +30,7 @@ public class PuanlamaCounter : MonoBehaviour{
         }
     }
 
-    public void PuanlamaIcinGeriSayimAnimasyonunuBaslat(){
+    public void PuanlamaDugmesiniGoster(){
         if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0 ){
@@ -51,9 +51,8 @@ public class PuanlamaCounter : MonoBehaviour{
             }
         }
         else{
-            Istaka.Instance.PersizFullIstakayiBosalt(); 
+            Istaka.Instance.PersizFullIstakayiBosalt();
         }
-        
     }
 
     private IEnumerator PuanlamaGerisayimProgresBariniIslet(){

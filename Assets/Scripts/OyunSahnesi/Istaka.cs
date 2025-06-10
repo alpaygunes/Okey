@@ -60,6 +60,14 @@ public class Istaka : MonoBehaviour{
             CepList.Add(cep.GetComponent<Cep>());
         }
     }
+    
+    public void PerleriBul(){
+        FarkliMeyvePerleriniBelirle();
+        AyniMeyvePerleriniBelirle();
+        FarkliMeyveGruplriIcindeAyniRenkPerleriniBelirle();
+        AyniMeyveGruplarinIcindekiAyniRenkPerleriniBelirle();
+        AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle();  
+    }
 
     public void PersizFullIstakayiBosalt(){
         int cezaliPuan = 0;

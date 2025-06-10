@@ -84,14 +84,10 @@ public class LobbyManager : NetworkBehaviour{
             };
 
             CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(LobbyName, MaxPlayers, options);
-            StartHeartbeat();
-            //LobbyListUI.Instance.CreatedLobiCodeTxt.text = $"Oyun Türü : {OyunKurallari.Instance.GuncelOyunTipi.ToString()}";
+            StartHeartbeat(); 
             LobbyListUI.Instance.CreatedLobiCodeTxt.text = $"{OyunKurallari.Instance.GuncelOyunTipi.ToString()} : {CurrentLobby.LobbyCode}";
-            LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex;
-            //LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.None;
-            LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex;
-            //LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.None;
-            //LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.None;
+            LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.Flex; 
+            LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.Flex; 
             LobbyListUI.Instance.CrtLobBtn.visible = false;
             LobbyListUI.Instance.benLobininSahibiyim = true;
 
@@ -374,8 +370,7 @@ public class LobbyManager : NetworkBehaviour{
             .ToArray());
         return seed;
     }
-
- 
+    
     public async Task StartClientRelay(string joinCode, string connectionType){
         if (IsHost) return;
         try{
@@ -397,8 +392,7 @@ public class LobbyManager : NetworkBehaviour{
             Debug.LogError($"StartClientRelay HATASI: {ex.Message}");
         } 
     }
-
-
+    
     public override void OnNetworkSpawn(){
         if (IsHost){
             NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);

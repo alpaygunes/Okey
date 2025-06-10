@@ -322,7 +322,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
     }
 
-    public void GorevYapildimiKontrolEt(){
+    public void GoreveUygunCepleriPuanaDonustur(){
         var gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
         var per = Puanlama.Instance.SiralanmisTumPerTaslari;
 
@@ -332,7 +332,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             if (pTs.Value==null) break;
             var pTas = pTs.Value.GetComponent<Tas>();
             var gTas = gorevTaslari[i];
-            if (pTas.MeyveID != gTas.MeyveID && pTas.renk != gTas.Renk){
+            if (pTas.MeyveID == gTas.MeyveID && pTas.renk == gTas.Renk){
                 Debug.Log($"pTas.rakam {pTas.MeyveID}  pTas.renk {pTas.renk}");
             }
             i++;
@@ -346,5 +346,19 @@ public class GorevYoneticisi : NetworkBehaviour{
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
         }
     }
-    
+
+    public void TasGoreveUygunsaYildiziYak(Tas tas){
+        var cepScript = tas.cepInstance;
+        if (OyunKurallari.Instance.GuncelOyunTipi != OyunKurallari.OyunTipleri.GorevYap) return;
+        GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
+        var gTas = gorevTaslari[cepScript.colID];
+        int uyumSayisi = 0;
+        if (gTas.GetComponent<gTas>().renk == tas.renk){ 
+            uyumSayisi++;
+        }
+        if (gTas.GetComponent<gTas>().meyveID == tas.MeyveID){ 
+            uyumSayisi++;
+        }
+        cepScript.YildiziYak(uyumSayisi); 
+    }
 }

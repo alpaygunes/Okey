@@ -118,19 +118,6 @@ public class Tas : MonoBehaviour{
                 cepInstance = cepScript; 
                 tag = "CEPTEKI_TAS"; 
                 _audioSource_down.Play();
-                // görev cebiyle aynı meyve renk mi
-                if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                    GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
-                    var gTas = gorevTaslari[cepScript.colID];
-                    int uyumSayisi = 0;
-                    if (gTas.GetComponent<gTas>().renk == renk){ 
-                        uyumSayisi++;
-                    }
-                    if (gTas.GetComponent<gTas>().meyveID == MeyveID){ 
-                        uyumSayisi++;
-                    }
-                    cepScript.YildiziYak(uyumSayisi); 
-                } 
                 return true; 
             }
         }
