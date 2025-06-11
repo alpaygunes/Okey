@@ -247,19 +247,18 @@ public class Puanlama : MonoBehaviour{
                 }
             }
         }
-        ToplamPuan += nwrkPuan; 
-
-        float gecikme = 0f;
+        ToplamPuan += nwrkPuan;  
+        
         foreach (var tas in SiralanmisTumPerTaslari){
             var tasScript = TasManeger.Instance.TasInstances[tas.Value];
             tasScript.PereUyumluGostergesi.gameObject.SetActive(true);
-            StartCoroutine(tasScript.TaslarinRakaminiPuanaEkle(gecikme));
-            TasManeger.Instance.TasInstances[tas.Value].GoreveUygunsaKolonuIsaretle();
-            gecikme++;
+            tasScript.GoreveUygunsaKolonuIsaretle();
+            tasScript.TaslarinRakaminiPuanaEkle(); 
         } 
-         
+        
+        float gecikme = 1f;
         Invoke(nameof(Deneme),gecikme); 
-        Istaka.Instance.PerleriTemizle(); 
+        Istaka.Instance.PerleriTemizle();
     }
     
     void Deneme(){

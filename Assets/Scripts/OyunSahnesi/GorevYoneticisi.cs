@@ -263,9 +263,6 @@ public class GorevYoneticisi : NetworkBehaviour{
             (renkHavuzu[i], renkHavuzu[j]) = (renkHavuzu[j], renkHavuzu[i]);
         }
 
-        // Havuzdaki renk sayısı yetersizse, taş sayısını düşür
-       // tasSayisi = Mathf.Min(tasSayisi, renkHavuzu.Count);
-
         // --- Taşları oluştur -------------------------------------------------
         for (int i = 0; i < tasSayisi; i++)
         {

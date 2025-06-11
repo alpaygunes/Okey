@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -36,6 +37,7 @@ public class Tas : MonoBehaviour{
     public GameObject GorevUyumGostergesi1;
     public GameObject GorevUyumGostergesi2;
     public GameObject PereUyumluGostergesi;
+    private List<GameObject> AyniKolondakiUygunTaslar = new List<GameObject>();
 
     private void Awake(){;
         TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
@@ -102,10 +104,11 @@ public class Tas : MonoBehaviour{
         var kalanTas = Int32.Parse(OyunSahnesiUI.Instance.KalanTasSayisi.text);
         kalanTas--; 
         OyunSahnesiUI.Instance.KalanTasSayisi.text = kalanTas.ToString();
+        TasManeger.Instance.TasInstances.Remove(gameObject); 
     }
 
     public bool BosCebeYerles(){
-        Card.Instance.Sallanma();
+        //Card.Instance.Sallanma();
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++){
@@ -135,35 +138,33 @@ public class Tas : MonoBehaviour{
         return false;
     }
 
-    public IEnumerator TaslarinRakaminiPuanaEkle(float gecikme){
-        yield return new WaitForSeconds(gecikme);
-        float sure = 1;
+    public void TaslarinRakaminiPuanaEkle(){  
         _audioSource_patla.Play();
-        Vector3 ilkScale = transform.localScale;
-        transform.DOMove(skorTxtPosition, sure);
-        Sequence mySequence = DOTween.Sequence();
-        mySequence
-            .Append(transform.DOScale(transform.localScale * 2, sure * .5f))
-            .Append(transform.DOScale(ilkScale * .25f, sure * .5f))
-            .OnComplete(() => {
-                transform.DOKill();
-                Destroy(gameObject);
-                enabled = false;
-                TasManeger.Instance.TasInstances.Remove(gameObject);
-                if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) cepInstance.YildiziYak(0); 
-                foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
-                    if (bonusTaslari.Value){
-                        bonusTaslari.Value.RakamiPuanaEkle();
-                    }
-                }
-            });
+
+        for (int i = AyniKolondakiUygunTaslar.Count - 1; i >= 0; i--){
+            var uTas = AyniKolondakiUygunTaslar[i];
+            uTas.GetComponent<Tas>().StartCoroutine(uTas.GetComponent<Tas>().kendiniYoket());
+        }
+
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) cepInstance.YildiziYak(0); 
+        foreach (var bonusTaslari in BonusOlarakEslesenTaslar){
+            if (bonusTaslari.Value){
+                bonusTaslari.Value.RakamiPuanaEkle();
+            }
+        } 
+        Destroy(gameObject);
+        enabled = false; 
     }
 
+        IEnumerator kendiniYoket() {
+            yield return new WaitForSeconds(1f);
+            Destroy(gameObject);
+        }
+    
     public void RakamiPuanaEkle(){
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
-        enabled = false;
-        TasManeger.Instance.TasInstances.Remove(gameObject);
+        enabled = false;  
     }
 
     public IEnumerator CezaliRakamiCikar(float gecikme){
@@ -172,8 +173,7 @@ public class Tas : MonoBehaviour{
             Destroy(gameObject);
         }
 
-        enabled = false;
-        TasManeger.Instance.TasInstances.Remove(gameObject);
+        enabled = false; 
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);
     }
 
@@ -198,79 +198,6 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    // public async Task SiraliAyniRenkGrubunaDahilOl(){
-    //     if (birCardPerineDahil) return;
-    //     Card.Instance.SiraliAyniRenkliGrup.Add(gameObject);
-    //     if (sagindakiKomsuTas){
-    //         var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-    //         var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
-    //         if (sagdakininRengi == renk && sagdakininRakami == MeyveID + 1){
-    //             await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliAyniRenkGrubunaDahilOl();
-    //         }
-    //     }
-    // }
-
-    /*
-    public async Task SiraliFarkliRenkGrubunaDahilOl(){
-        if (birCardPerineDahil) return;
-        bool gruptaAyniRenkYok = true;
-        foreach (var gruptakiTas in Card.Instance.SiraliFarkliRenkliGrup){
-            if (TasManeger.Instance.TasInstances[gruptakiTas].renk == renk){
-                gruptaAyniRenkYok = false;
-                break;
-            }
-        }
-
-        if (gruptaAyniRenkYok){
-            Card.Instance.SiraliFarkliRenkliGrup.Add(gameObject);
-            if (sagindakiKomsuTas){
-                var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
-                if (sagdakininRengi != renk && sagdakininRakami == MeyveID + 1){
-                    await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliFarkliRenkGrubunaDahilOl();
-                }
-            }
-        }
-    }*/
-
-    /*
-     public async Task AyniRakamAyniRenkGrubunaDahilOl(){
-        if (birCardPerineDahil) return;
-        Card.Instance.AyniMeyveAyniRenkliGrup.Add(gameObject);
-        if (sagindakiKomsuTas){
-            var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
-            if (sagdakininRengi == renk && sagdakininRakami == MeyveID){
-                await TasManeger.Instance.TasInstances[sagindakiKomsuTas].AyniRakamAyniRenkGrubunaDahilOl();
-            }
-        }
-    }*/
-
-    /*
-    public async Task AyniRakamFarkliRenkGrubunaDahilOl(){
-        if (birCardPerineDahil) return;
-        bool gruptaAyniRenkYok = true;
-        //grupta zaten aynı renk varsa per olmaz . Çık
-        foreach (var gruptakiTas in Card.Instance.AyniMeyveFarkliRenkli){
-            if (TasManeger.Instance.TasInstances[gruptakiTas].renk == renk){
-                gruptaAyniRenkYok = false;
-                break;
-            }
-        }
-
-        if (gruptaAyniRenkYok){
-            Card.Instance.AyniMeyveFarkliRenkli.Add(gameObject);
-            if (sagindakiKomsuTas){
-                var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-                var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
-                if (sagdakininRengi != renk && sagdakininRakami == MeyveID){
-                    await TasManeger.Instance.TasInstances[sagindakiKomsuTas].AyniRakamFarkliRenkGrubunaDahilOl();
-                }
-            }
-        }
-    }
-    */
-
     public void Sallan(){
         if (CompareTag("CARDTAKI_TAS")){
             tweener = MeyveResmiSpriteRenderer.transform.DOScale(.8f, .5f)
@@ -279,6 +206,8 @@ public class Tas : MonoBehaviour{
                 .SetAutoKill(true);
         }
     }
+
+ 
 
     public void Sallanma(){ 
         if (tweener != null && tweener.IsActive()){
@@ -299,7 +228,8 @@ public class Tas : MonoBehaviour{
                     cTasscript.GorevUyumGostergesi1.gameObject.SetActive(true);
                 }else if (GorevleUyum == 2){
                     cTasscript.GorevUyumGostergesi2.gameObject.SetActive(true);
-                }
+                } 
+                AyniKolondakiUygunTaslar.Add(cTas);
             }
         }
     }

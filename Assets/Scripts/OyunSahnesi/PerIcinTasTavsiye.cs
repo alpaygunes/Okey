@@ -234,7 +234,9 @@ public class PerIcinTasTavsiye : MonoBehaviour{
     }
 
     void uclukleriBelirle(Cep cep){
+        //if (Istaka.Instance.CepList.Count==GameManager.Instance.CepSayisi) return;
         if (cep == null) return;
+        if (cep.colID == 0 || cep.colID == Istaka.Instance.CepList.Count) return;
         List<Cep> ucluk = new List<Cep>();
         ucluCepler.Clear(); 
         if (Istaka.Instance.CepList.Count > cep.colID && cep.colID>1){
