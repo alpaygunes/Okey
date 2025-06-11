@@ -32,13 +32,20 @@ public class Tas : MonoBehaviour{
     public bool NetworkDatayaEklendi = false;
     public TextMeshPro TextMeyveID;
     public int colID;
+    public int GorevleUyum = 0; //0 = yok, 1 = gorevle, 2 = gorevle ve yok
+    public GameObject GorevUyumGostergesi1;
+    public GameObject GorevUyumGostergesi2;
+    public GameObject PereUyumluGostergesi;
 
-    private void Awake(){
+    private void Awake(){;
         TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
         zemin = transform.Find("Zemin").gameObject;
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
         MeyveResmiSpriteRenderer = transform.Find("MeyveResmi").GetComponent<SpriteRenderer>();
+        GorevUyumGostergesi1 = transform.Find("GorevUyumGostergesi1").gameObject;
+        GorevUyumGostergesi2 = transform.Find("GorevUyumGostergesi2").gameObject;
+        PereUyumluGostergesi = transform.Find("PereUyumluGostergesi").gameObject;
         uiCamera = Camera.main;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
@@ -71,6 +78,10 @@ public class Tas : MonoBehaviour{
         
         TextMeyveID.text = MeyveID.ToString(); 
         orginalScale = MeyveResmiSpriteRenderer.transform.localScale;
+        
+        GorevUyumGostergesi1.SetActive(false);
+        GorevUyumGostergesi2.SetActive(false);
+        PereUyumluGostergesi.SetActive(false);
     }
 
     private void OnDestroy(){
@@ -108,7 +119,7 @@ public class Tas : MonoBehaviour{
                 transform.DOMove(hedef_cep_position, animasyonSuresi * .2f)
                     .SetEase(Ease.OutExpo)
                     .OnComplete((() => {
-                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth) * 0.25f;
+                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth);
                         _audioSource_up.Play();
                     })); 
                 Destroy(_rigidbody);
@@ -127,7 +138,6 @@ public class Tas : MonoBehaviour{
     public IEnumerator TaslarinRakaminiPuanaEkle(float gecikme){
         yield return new WaitForSeconds(gecikme);
         float sure = 1;
-        //Puanlama.Instance.PerlerdenKazanilanPuan += rakam;  
         _audioSource_patla.Play();
         Vector3 ilkScale = transform.localScale;
         transform.DOMove(skorTxtPosition, sure);
@@ -184,22 +194,23 @@ public class Tas : MonoBehaviour{
         }
         else{
             Card.Instance.TaslarHareketli = false;
-            this.enabled = false;
+            enabled = false;
         }
     }
 
-    public async Task SiraliAyniRenkGrubunaDahilOl(){
-        if (birCardPerineDahil) return;
-        Card.Instance.SiraliAyniRenkliGrup.Add(gameObject);
-        if (sagindakiKomsuTas){
-            var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
-            var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
-            if (sagdakininRengi == renk && sagdakininRakami == MeyveID + 1){
-                await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliAyniRenkGrubunaDahilOl();
-            }
-        }
-    }
+    // public async Task SiraliAyniRenkGrubunaDahilOl(){
+    //     if (birCardPerineDahil) return;
+    //     Card.Instance.SiraliAyniRenkliGrup.Add(gameObject);
+    //     if (sagindakiKomsuTas){
+    //         var sagdakininRengi = TasManeger.Instance.TasInstances[sagindakiKomsuTas].renk;
+    //         var sagdakininRakami = TasManeger.Instance.TasInstances[sagindakiKomsuTas].MeyveID;
+    //         if (sagdakininRengi == renk && sagdakininRakami == MeyveID + 1){
+    //             await TasManeger.Instance.TasInstances[sagindakiKomsuTas].SiraliAyniRenkGrubunaDahilOl();
+    //         }
+    //     }
+    // }
 
+    /*
     public async Task SiraliFarkliRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         bool gruptaAyniRenkYok = true;
@@ -220,9 +231,10 @@ public class Tas : MonoBehaviour{
                 }
             }
         }
-    }
+    }*/
 
-    public async Task AyniRakamAyniRenkGrubunaDahilOl(){
+    /*
+     public async Task AyniRakamAyniRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         Card.Instance.AyniMeyveAyniRenkliGrup.Add(gameObject);
         if (sagindakiKomsuTas){
@@ -232,8 +244,9 @@ public class Tas : MonoBehaviour{
                 await TasManeger.Instance.TasInstances[sagindakiKomsuTas].AyniRakamAyniRenkGrubunaDahilOl();
             }
         }
-    }
+    }*/
 
+    /*
     public async Task AyniRakamFarkliRenkGrubunaDahilOl(){
         if (birCardPerineDahil) return;
         bool gruptaAyniRenkYok = true;
@@ -256,6 +269,7 @@ public class Tas : MonoBehaviour{
             }
         }
     }
+    */
 
     public void Sallan(){
         if (CompareTag("CARDTAKI_TAS")){
@@ -274,63 +288,19 @@ public class Tas : MonoBehaviour{
         }
         MeyveResmiSpriteRenderer.transform.localScale = orginalScale;
     }
-
-    // kendi zemini hazirla
-    public void CreateBg(){
-        int width = 96*4;
-        int height = 96*4;
-        float radius = 30f; // yuvarlak köşe yarıçapı
-        float shadowThickness = 0f; // gölge kalınlığı
-        float shadowAlpha = 0.5f; // gölgenin maksimum alfa değeri (0 - 1)
-
-        // Renkleri ayarlayın
-        Color baseColor = renk; // varsayılan zemin rengi
-        Color shadowColor = new Color(1, 1, 1, shadowAlpha);
-
-        Texture2D texture = new Texture2D(width, height);
-        Color[] pixels = new Color[width * height];
-
-        for (int y = 0; y < height; y++){
-            for (int x = 0; x < width; x++){
-                int index = x + y * width;
-
-                // Köşe yuvarlaklığı kontrolü
-                bool isRoundedCorner =
-                    (x < radius && y < radius &&
-                     Vector2.Distance(new Vector2(x, y), new Vector2(radius, radius)) > radius) ||
-                    (x > width - radius && y < radius &&
-                     Vector2.Distance(new Vector2(x, y), new Vector2(width - radius, radius)) > radius) ||
-                    (x < radius && y > height - radius &&
-                     Vector2.Distance(new Vector2(x, y), new Vector2(radius, height - radius)) > radius) ||
-                    (x > width - radius && y > height - radius &&
-                     Vector2.Distance(new Vector2(x, y), new Vector2(width - radius, height - radius)) > radius);
-
-                if (isRoundedCorner){
-                    pixels[index] = new Color(0, 0, 0, 0); // şeffaf köşe
-                    continue;
+ 
+    public void GoreveUygunsaKolonuIsaretle(){
+        if (GorevleUyum == 0) return;
+        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+        foreach (var cTas in cardtakiTaslar){
+            var cTasscript = TasManeger.Instance.TasInstances[cTas];
+            if (cTasscript.colID == cepInstance.colID){
+                if (GorevleUyum == 1){
+                    cTasscript.GorevUyumGostergesi1.gameObject.SetActive(true);
+                }else if (GorevleUyum == 2){
+                    cTasscript.GorevUyumGostergesi2.gameObject.SetActive(true);
                 }
-
-                // Alt ve sağ kenar için gölge hesaplama
-                float shadowBlend = 0;
-
-                if (y < shadowThickness)
-                    shadowBlend = Mathf.Max(shadowBlend, 1 - (y / shadowThickness));
-
-                if (x > width - shadowThickness)
-                    shadowBlend = Mathf.Max(shadowBlend, (x - (width - shadowThickness)) / shadowThickness);
-
-                if (shadowBlend > 0)
-                    pixels[index] = Color.Lerp(baseColor, shadowColor, shadowBlend);
-                else
-                    pixels[index] = baseColor;
             }
         }
-
-        texture.SetPixels(pixels);
-        texture.Apply();
-
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
-        zeminSpriteRenderer.sprite = sprite;
-        //zeminSpriteRenderer.transform.localScale *= .25f;
     }
 }

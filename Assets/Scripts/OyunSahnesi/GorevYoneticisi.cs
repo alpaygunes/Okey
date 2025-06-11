@@ -99,8 +99,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         transform.position = new Vector3(0, -y * posYrate, 0);
     }
 
-    public override void OnNetworkSpawn(){
-        
+    public override void OnNetworkSpawn(){ 
         if (OyunKurallari.Instance.GuncelOyunTipi != OyunKurallari.OyunTipleri.GorevYap){
             return;
         }
@@ -117,8 +116,7 @@ public class GorevYoneticisi : NetworkBehaviour{
  
     //----------------------------- GÖREVLERİ OLUŞTURMA --------------------------------- 
     private enum PerTurleri{
-        FarkliMeyveAyniRenk,
-        FarkliMeyveFarkliRenk,
+        FarkliMeyveAyniRenk, 
         AyniMeyveFarkliRenkPerleri,
         AyniMeyveAyniRenkPerleri,
     }
@@ -141,17 +139,14 @@ public class GorevYoneticisi : NetworkBehaviour{
                     else{
                         AyniMeyveAyniRenkPerleriOlustur();
                     }
-                    break;
- 
-
+                    break;  
                 case PerTurleri.AyniMeyveFarkliRenkPerleri:
                     if (GameManager.Instance.CepSayisi <= renkSayisi){
                         AyniMeyveFarkliRenkPerleriOlustur();
                     } else{
                         AyniMeyveAyniRenkPerleriOlustur(); 
                     }
-                    break;
-
+                    break; 
                 case PerTurleri.AyniMeyveAyniRenkPerleri:
                     AyniMeyveAyniRenkPerleriOlustur();
                     break; 
@@ -289,7 +284,7 @@ public class GorevYoneticisi : NetworkBehaviour{
     } 
     // -----------------------------------  SON ---------------------------------------
     
-    private void SiradakiGoreviSahnedeGoster(){
+    public void SiradakiGoreviSahnedeGoster(){
         var body = Instance.transform.Find("Body");
         if (body == null) return;
         // öncekileri temizle 
@@ -321,8 +316,8 @@ public class GorevYoneticisi : NetworkBehaviour{
             i++;
         }
     }
-
-    public void GoreveUygunCepleriPuanaDonustur(){
+    
+    public void GoreveUygunCepleriIsaretle(){
         var gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
         var per = Puanlama.Instance.SiralanmisTumPerTaslari;
 
@@ -333,13 +328,14 @@ public class GorevYoneticisi : NetworkBehaviour{
             var pTas = pTs.Value.GetComponent<Tas>();
             var gTas = gorevTaslari[i];
             if (pTas.MeyveID == gTas.MeyveID && pTas.renk == gTas.Renk){
-                Debug.Log($"pTas.rakam {pTas.MeyveID}  pTas.renk {pTas.renk}");
+                pTas.GorevleUyum = 2;
+            }else if (pTas.MeyveID == gTas.MeyveID || pTas.renk == gTas.Renk){ 
+                pTas.GorevleUyum = 1;
             }
             i++;
         }
         
         SiradakiGorevSirasNosu++;
-        SiradakiGoreviSahnedeGoster();
         OyunSahnesiUI.Instance.GorevSayisiLbl.text = SiradakiGorevSirasNosu +"/"+OyunKurallari.Instance.GorevYap.ToString();  
         if (SiradakiGorevSirasNosu >= OyunKurallari.Instance.GorevYap){
             GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 

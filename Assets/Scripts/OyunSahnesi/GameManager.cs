@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour{
     public readonly int _colonCount = 6;
     public readonly int TasCount = 100;
     public readonly int CepSayisi = 6;
-    public readonly RangeInt RenkAraligi = new RangeInt(0, 5);
-    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 5);  
+    public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
+    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6);  
     public List<GameObject> spawnHolesList = new List<GameObject>();
     public string seed;
     public bool PerKontrolDugmesiOlsun ;
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour{
             float holePositionY = cardSize.y * .5f + colonWidth;
             holePositionX += colonWidth * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
-            SpawnHole.GetComponent<SpawnHole>().colID = i;
+            SpawnHole.GetComponent<SpawnHole>().colID =  i;
             var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -0.2f), Quaternion.identity);
             sh.transform.localScale = new Vector2(colonWidth, colonWidth);
             spawnHolesList.Add(sh);

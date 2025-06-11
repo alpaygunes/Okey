@@ -16,7 +16,6 @@ public class Puanlama : MonoBehaviour{
     List<Tas> BonusMeyveAyniRenkAyni = new List<Tas>();
     List<Tas> BonusMeyveAyniFarkliRenk = new List<Tas>();
     List<Tas> BonusMeyveFarkliRenkAyni = new List<Tas>();
-    //List<Tas> BonusFarkliRenkArdisikMeyve = new List<Tas>();
     public int HamleSayisi;
     public event Action<int> OnNetworkDataIicinPuanChanged;
     private int _toplamPuan;
@@ -98,7 +97,8 @@ public class Puanlama : MonoBehaviour{
         }
         
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap && SiralanmisTumPerTaslari != null){ 
-            GorevYoneticisi.Instance.GoreveUygunCepleriPuanaDonustur();
+            GorevYoneticisi.Instance.GoreveUygunCepleriIsaretle(); 
+            GorevYoneticisi.Instance.SiradakiGoreviSahnedeGoster();
         }
     }
  
@@ -106,8 +106,7 @@ public class Puanlama : MonoBehaviour{
         
         BonusMeyveFarkliRenkAyni.Clear();
         BonusMeyveAyniRenkAyni.Clear();
-        BonusMeyveAyniFarkliRenk.Clear();
-        //BonusFarkliRenkArdisikMeyve.Clear();
+        BonusMeyveAyniFarkliRenk.Clear(); 
         
         SiralanmisTumPerTaslari = new SortedDictionary<int, GameObject>();
         Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>(); 
@@ -251,8 +250,11 @@ public class Puanlama : MonoBehaviour{
         ToplamPuan += nwrkPuan; 
 
         float gecikme = 0f;
-        foreach (var tas in SiralanmisTumPerTaslari){ 
-            StartCoroutine(TasManeger.Instance.TasInstances[tas.Value].TaslarinRakaminiPuanaEkle(gecikme));
+        foreach (var tas in SiralanmisTumPerTaslari){
+            var tasScript = TasManeger.Instance.TasInstances[tas.Value];
+            tasScript.PereUyumluGostergesi.gameObject.SetActive(true);
+            StartCoroutine(tasScript.TaslarinRakaminiPuanaEkle(gecikme));
+            TasManeger.Instance.TasInstances[tas.Value].GoreveUygunsaKolonuIsaretle();
             gecikme++;
         } 
          

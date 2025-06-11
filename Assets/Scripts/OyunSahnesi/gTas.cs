@@ -24,8 +24,7 @@ public class gTas : MonoBehaviour{
         meyveResmiSpriteRenderer.color = koyuRenk;
         meyveResmiSpriteRenderer.transform.localScale *= 1f;
         Sprite sprite = Resources.Load<Sprite>("Images/Meyveler/" + meyveID);
-        meyveResmiSpriteRenderer.sprite = sprite; 
-        transform.localScale *= .35f;
+        meyveResmiSpriteRenderer.sprite = sprite;  
     } 
  
 }
