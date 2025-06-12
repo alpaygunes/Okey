@@ -238,7 +238,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         if (cep == null) return;
         if (cep.colID == 0 || cep.colID == Istaka.Instance.CepList.Count) return;
         List<Cep> ucluk = new List<Cep>();
-        ucluCepler.Clear(); 
+        ucluCepler.Clear();
         if (Istaka.Instance.CepList.Count > cep.colID && cep.colID>1){
             ucluk.Add(Istaka.Instance.CepList[cep.colID - 2]);
             ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);

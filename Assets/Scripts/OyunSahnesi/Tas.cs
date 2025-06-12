@@ -142,8 +142,8 @@ public class Tas : MonoBehaviour{
         _audioSource_patla.Play();
 
         for (int i = AyniKolondakiUygunTaslar.Count - 1; i >= 0; i--){
-            var uTas = AyniKolondakiUygunTaslar[i];
-            uTas.GetComponent<Tas>().StartCoroutine(uTas.GetComponent<Tas>().kendiniYoket());
+            var uTasScrip = AyniKolondakiUygunTaslar[i].GetComponent<Tas>(); 
+            uTasScrip.StartCoroutine(uTasScrip.kendiniYoket(0.5f));
         }
 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) cepInstance.YildiziYak(0); 
@@ -156,10 +156,10 @@ public class Tas : MonoBehaviour{
         enabled = false; 
     }
 
-        IEnumerator kendiniYoket() {
-            yield return new WaitForSeconds(1f);
-            Destroy(gameObject);
-        }
+    IEnumerator kendiniYoket(float bekleme) {
+        yield return new WaitForSeconds(bekleme);
+        Destroy(gameObject);
+    }
     
     public void RakamiPuanaEkle(){
         Instantiate(destroyEffectPrefab, transform.position, Quaternion.identity);

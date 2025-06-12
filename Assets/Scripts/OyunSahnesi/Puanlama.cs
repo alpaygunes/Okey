@@ -236,7 +236,7 @@ public class Puanlama : MonoBehaviour{
         }
 
   
-        // networke göndermek için animasyon vb gecikme leri beklemeden kaznılan net puan 
+        // networke göndermek için animasyon vb gecikmeleri beklemeden kazanılan net puan 
         int nwrkPuan = 0;
         foreach (var tas in SiralanmisTumPerTaslari){  
             nwrkPuan ++; 
@@ -247,7 +247,7 @@ public class Puanlama : MonoBehaviour{
                 }
             }
         }
-        ToplamPuan += nwrkPuan;  
+        ToplamPuan += nwrkPuan;
         
         foreach (var tas in SiralanmisTumPerTaslari){
             var tasScript = TasManeger.Instance.TasInstances[tas.Value];
