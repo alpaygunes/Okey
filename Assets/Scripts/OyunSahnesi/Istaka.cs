@@ -92,8 +92,7 @@ public class Istaka : MonoBehaviour{
                 cepInstance.TasInstance = null;
                 
             } 
-            Puanlama.Instance.ToplamPuan -= cezaliPuan;
-            //Tamam düğmesini gizle
+            
             if ( GameManager.Instance.PerKontrolDugmesiOlsun){
                 OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
             } 
@@ -350,14 +349,39 @@ public class Istaka : MonoBehaviour{
     
  
         FarkliMeyveAyniRenkPerleri.Clear();
+        AyniMeyveAyniRenkPerleri.Clear();
+        AyniMeyveFarkliRenkPerleri.Clear();
         AyniMeyvePerleri.Clear();
         FarkliMeyvePerleri.Clear();
-        AyniMeyveFarkliRenkPerleri.Clear();
     }
 
     public void YildizleriGizle(){
         foreach (var cep in CepList){
             cep.YildiziYak(0);
         }
+    }
+
+    public void PerdekiTaslariBelirginYap(){
+        for (int i = 0; i < FarkliMeyveAyniRenkPerleri.Count; i++) {
+            var per = FarkliMeyveAyniRenkPerleri[i];
+            foreach (var ptas in per){
+                var tas = TasManeger.Instance.TasInstances[ptas.Value];
+                tas.PereUyumluGostergesi.SetActive(true);
+            }
+        }
+        for (int i = 0; i < AyniMeyveAyniRenkPerleri.Count; i++) {
+            var per = AyniMeyveAyniRenkPerleri[i];
+            foreach (var ptas in per){
+                var tas = TasManeger.Instance.TasInstances[ptas.Value];
+                tas.PereUyumluGostergesi.SetActive(true);
+            }
+        }
+        for (int i = 0; i < AyniMeyveFarkliRenkPerleri.Count; i++) {
+            var per = AyniMeyveFarkliRenkPerleri[i];
+            foreach (var ptas in per){
+                var tas = TasManeger.Instance.TasInstances[ptas.Value];
+                tas.PereUyumluGostergesi.SetActive(true);
+            }
+        } 
     }
 }

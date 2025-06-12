@@ -314,7 +314,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
     }
     
-    public void GoreveUygunCepleriIsaretle(){
+    public void GoreveUygunCEPLERIIsaretle(){
         var gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
         var per = Puanlama.Instance.SiralanmisTumPerTaslari;
 

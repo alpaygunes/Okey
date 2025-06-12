@@ -107,31 +107,26 @@ public class Tas : MonoBehaviour{
         TasManeger.Instance.TasInstances.Remove(gameObject); 
     }
 
-    public bool BosCebeYerles(){
-        //Card.Instance.Sallanma();
+    public bool BosCebeYerles(){ 
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++){
-            var cepScript = Istaka.Instance.CepList[i];
-            if (cepScript.Dolu == false){
-                gameObject.transform.position += new Vector3(0, 0, -1);
+            var hedefCep = Istaka.Instance.CepList[i];
+            if (hedefCep.Dolu == false){
+                transform.position += new Vector3(0, 0, -1);
                 var hedef_cep_position = new Vector3(
-                    cepScript.transform.position.x, 
-                    cepScript.transform.position.y*.9f,
-                    cepScript.transform.position.z);
-                transform.DOMove(hedef_cep_position, animasyonSuresi * .2f)
-                    .SetEase(Ease.OutExpo)
-                    .OnComplete((() => {
-                        transform.localScale = new Vector3(colonWidth*1.1f, colonWidth);
-                        _audioSource_up.Play();
-                    })); 
+                    hedefCep.transform.position.x, 
+                    hedefCep.transform.position.y*.9f,
+                    hedefCep.transform.position.z);
+                transform.localScale = new Vector3(colonWidth*1.1f, colonWidth); 
+                transform.position = hedef_cep_position;
+                hedefCep.Dolu = true;
+                hedefCep.TasInstance = this;
+                cepInstance = hedefCep; 
+                tag = "CEPTEKI_TAS"; 
+                _audioSource_down.Play(); 
                 Destroy(_rigidbody);
                 Destroy(_collider); 
-                cepScript.Dolu = true;
-                cepScript.TasInstance = this;
-                cepInstance = cepScript; 
-                tag = "CEPTEKI_TAS"; 
-                _audioSource_down.Play();
                 return true; 
             }
         }
@@ -218,7 +213,7 @@ public class Tas : MonoBehaviour{
         MeyveResmiSpriteRenderer.transform.localScale = orginalScale;
     }
  
-    public void GoreveUygunsaKolonuIsaretle(){
+    public void GoreveUygunKOLONUIsaretle(){
         if (GorevleUyum == 0) return;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cTas in cardtakiTaslar){

@@ -16,22 +16,8 @@ public class Puanlama : MonoBehaviour{
     List<Tas> BonusMeyveAyniRenkAyni = new List<Tas>();
     List<Tas> BonusMeyveAyniFarkliRenk = new List<Tas>();
     List<Tas> BonusMeyveFarkliRenkAyni = new List<Tas>();
-    public int HamleSayisi;
-    public event Action<int> OnNetworkDataIicinPuanChanged;
-    private int _toplamPuan;
-    
-    public int ToplamPuan
-    {
-        get => _toplamPuan;
-        set
-        {
-            if (_toplamPuan != value)
-            {
-                _toplamPuan = value; 
-                OnNetworkDataIicinPuanChanged?.Invoke(_toplamPuan); // Event tetikleniyor
-            }
-        }
-    } 
+    public int HamleSayisi; 
+ 
     
     public SortedDictionary<int, GameObject> SiralanmisTumPerTaslari;
     
@@ -49,21 +35,7 @@ public class Puanlama : MonoBehaviour{
         _audioSource_puan_sayac.clip = Resources.Load<AudioClip>("Sounds/puan_sayac");
     }
 
-    private void Start(){
-        OnNetworkDataIicinPuanChanged += (_netwokrDataToplamPuan) => { 
-            HamleSayisi++;
-            var skor = ToplamPuan;
-            var _hameleSayisi = HamleSayisi;
-            string clientName = "Bos_clientName";
-            if (LobbyManager.Instance){
-                clientName = LobbyManager.Instance.myDisplayName; 
-            } 
-            SkorBoardiGuncelle();
-            if (OyunKurallari.Instance){ 
-                LimitleriKontrolEt();
-                NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(skor,_hameleSayisi,clientName); 
-            }  
-        };
+    private void Start(){ 
         // boş bir değişim yaratalım. skorlsitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
         NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(1,0,LobbyManager.Instance.myDisplayName);
         OyunSahnesiUI.Instance.KalanTasSayisi.text = GameManager.Instance.TasCount.ToString();
@@ -96,14 +68,13 @@ public class Puanlama : MonoBehaviour{
             }
         }
         
-        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap && SiralanmisTumPerTaslari != null){ 
-            GorevYoneticisi.Instance.GoreveUygunCepleriIsaretle(); 
-            GorevYoneticisi.Instance.SiradakiGoreviSahnedeGoster();
-        }
+        // if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap && SiralanmisTumPerTaslari != null){ 
+        //     GorevYoneticisi.Instance.GoreveUygunCepleriIsaretle(); 
+        //     GorevYoneticisi.Instance.SiradakiGoreviSahnedeGoster();
+        // }
     }
  
-    public void PerlerleriBelirginlestir(){
-        
+    public void PerlerleriBelirginlestir(){ 
         BonusMeyveFarkliRenkAyni.Clear();
         BonusMeyveAyniRenkAyni.Clear();
         BonusMeyveAyniFarkliRenk.Clear(); 
@@ -234,31 +205,21 @@ public class Puanlama : MonoBehaviour{
                 }
             }
         }
-
-  
-        // networke göndermek için animasyon vb gecikmeleri beklemeden kazanılan net puan 
-        int nwrkPuan = 0;
-        foreach (var tas in SiralanmisTumPerTaslari){  
-            nwrkPuan ++; 
-            foreach (var bonusTaslari in TasManeger.Instance.TasInstances[tas.Value].BonusOlarakEslesenTaslar){
-                if (bonusTaslari.Value && !bonusTaslari.Value.NetworkDatayaEklendi){
-                    bonusTaslari.Value.NetworkDatayaEklendi = true; 
-                    nwrkPuan ++;
-                }
-            }
+        
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap && SiralanmisTumPerTaslari != null){ 
+            GorevYoneticisi.Instance.GoreveUygunCEPLERIIsaretle(); 
+            GorevYoneticisi.Instance.SiradakiGoreviSahnedeGoster();
         }
-        ToplamPuan += nwrkPuan;
         
         foreach (var tas in SiralanmisTumPerTaslari){
-            var tasScript = TasManeger.Instance.TasInstances[tas.Value];
-            tasScript.PereUyumluGostergesi.gameObject.SetActive(true);
-            tasScript.GoreveUygunsaKolonuIsaretle();
+            var tasScript = TasManeger.Instance.TasInstances[tas.Value]; 
+            tasScript.GoreveUygunKOLONUIsaretle();
             tasScript.TaslarinRakaminiPuanaEkle(); 
         } 
         
         float gecikme = 1f;
         Invoke(nameof(Deneme),gecikme); 
-        Istaka.Instance.PerleriTemizle();
+         
     }
     
     void Deneme(){
@@ -271,17 +232,14 @@ public class Puanlama : MonoBehaviour{
                || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count>0) {
                 GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.puanlamaYapiliyor;  
                 PerlerleriBelirginlestir();
-                RengiVeMeyvesiUyumluKarttakiTaslariPuanla(); 
+                RengiVeMeyvesiUyumluKarttakiTaslariPuanla();
+                LimitleriKontrolEt();
                 Card.Instance.Sallanma(); 
+                Istaka.Instance.PerleriTemizle(); // en son temizlenmeli
         } 
  
     }
-
-    public void SkorBoardiGuncelle(){ 
-        OyunSahnesiUI.Instance.Skor.text = ToplamPuan.ToString();
-        OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi.ToString();
-    }
-
+  
     public void ButtonlaPuanlamaYap(){ 
         if (PuanlamaCounter.Instance.CountdownCoroutine != null){
             PuanlamaCounter.Instance.StopCoroutine(PuanlamaCounter.Instance.CountdownCoroutine);

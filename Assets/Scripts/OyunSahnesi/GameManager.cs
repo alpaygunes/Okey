@@ -111,8 +111,10 @@ public class GameManager : MonoBehaviour{
                         if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
                             var yerlestimi = TasManeger.Instance.TasInstances[hit.collider.gameObject].BosCebeYerles();
                             if (yerlestimi){  
+                                Card.Instance.Sallanma();
                                 GorevYoneticisi.Instance.TasGoreveUygunsaYildiziYak(TasManeger.Instance.TasInstances[hit.collider.gameObject]); 
                                 Istaka.Instance.PerleriBul();
+                                Istaka.Instance.PerdekiTaslariBelirginYap();
                                 PuanlamaCounter.Instance.PuanlamaDugmesiniGoster(); 
                             }
                             PerIcinTasTavsiye.Instance.Basla();
