@@ -1,8 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/oyunSahnesiUI.uss?fileID=7433441132597879392&amp;guid=5e61f6022bd4b281db8299b4ddfec121&amp;type=3#oyunSahnesiUI" />
-    <ui:VisualElement name="PregressBarContainer" style="display: none;">
-        <ui:ProgressBar value="0" name="GeriSayimBari" class="pregresBar" style="flex-direction: column; align-items: stretch; justify-content: center; align-self: center; visibility: visible; display: none; align-content: center; height: 2px; width: 95%;" />
-    </ui:VisualElement>
     <ui:VisualElement name="Container" enabled="true" style="width: 100%; height: 100%; justify-content: space-between; align-items: center; align-self: center; overflow: visible;">
         <ui:VisualElement name="Footer" class="footer_bottom" style="height: 16%; min-height: auto; justify-content: flex-end; width: 100%; background-image: resource(&apos;Images/UI/OyunSahnesi/footer0&apos;);">
             <ui:VisualElement name="Avtars" style="align-items: center; align-self: center; justify-content: center; background-image: none; -unity-background-scale-mode: scale-to-fit; background-position-x: center 0; background-size: contain; flex-direction: row; background-position-y: center 0; width: 100%; height: 24px;">

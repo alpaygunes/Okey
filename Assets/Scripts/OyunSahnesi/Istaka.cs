@@ -69,33 +69,25 @@ public class Istaka : MonoBehaviour{
         AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle();  
     }
 
-    public void PersizFullIstakayiBosalt(){
-        int cezaliPuan = 0;
+    public void IstakayiVeCartiTemizle(){ 
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
+        float beklemeSuresi = .1f;
         if (DoluCepSayisi() == GameManager.Instance.CepSayisi) {
+            foreach (var cardtakiTas in cardtakiTaslar) {
+                if (cardtakiTas is null) break; 
+                var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
+                StartCoroutine(CardtakiTas.BekleYokol(beklemeSuresi)); 
+                beklemeSuresi += 0.1f;
+            } 
             foreach (var cepInstance in CepList) { 
                 if (cepInstance is null) break; 
-                var AIstance = cepInstance.TasInstance;
-                foreach (var cardtakiTas in cardtakiTaslar) {
-                    if (cardtakiTas is null) break; 
-                    var BInstance = TasManeger.Instance.TasInstances[cardtakiTas];
-                    if (BInstance.MeyveID == AIstance.MeyveID || BInstance.renk == AIstance.renk) {
-                        BInstance.zeminSpriteRenderer.color = Color.red;
-                        StartCoroutine(BInstance.CezaliRakamiCikar(1));
-                        cezaliPuan += BInstance.MeyveID;
-                    }
-                }
-    
-                AIstance.zeminSpriteRenderer.color = Color.red; 
-                cezaliPuan += AIstance.MeyveID;
-                StartCoroutine(AIstance.CezaliRakamiCikar(1));
+                var CeptekiTas = cepInstance.TasInstance;  
+                StartCoroutine(CeptekiTas.BekleYokol(beklemeSuresi));
                 cepInstance.TasInstance = null;
-                
-            } 
-            
-            if ( GameManager.Instance.PerKontrolDugmesiOlsun){
-                OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
-            } 
+                beklemeSuresi += 0.1f;
+               
+            }  
+            OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) YildizleriGizle();
         }   
     }
@@ -315,7 +307,7 @@ public class Istaka : MonoBehaviour{
         } // end for 
     }
     
-    public void PerleriTemizle(){
+    public void PerlerListObjeleriTemizle(){
         // SiraliRakamAyniRenkGruplari grupları temizle
         for (int i = 0; i < FarkliMeyveAyniRenkPerleri.Count; i++) {
             var grup = FarkliMeyveAyniRenkPerleri[i];

@@ -7,17 +7,14 @@ public class OyunSahnesiUI : MonoBehaviour
 {
     private VisualElement rootElement;
     public static OyunSahnesiUI Instance;
-    public Label Skor;
+    public Label SkorTxt;
     public Label KalanTasSayisi;
     public Label HamleSayisi; 
     public Label GeriSayim;
     private Button exit;
-    public Button puanlamaYap;
-    public VisualElement PregressBarContainer;
-    public ProgressBar GeriSayimBari;
+    public Button puanlamaYap; 
     public Label GorevSayisiLbl;
     private VisualElement avatars;
-
  
     private async Task AvatarlariGoster(){
         var updatedLobby = await LobbyService.Instance.GetLobbyAsync(LobbyManager.Instance.CurrentLobby.Id);
@@ -46,9 +43,7 @@ public class OyunSahnesiUI : MonoBehaviour
             avatarBtn.style.borderTopWidth = 0;
             avatarBtn.style.borderBottomWidth = 0;
             avatarBtn.style.borderLeftWidth = 0;
-            avatarBtn.style.borderRightWidth = 0;
-            
-
+            avatarBtn.style.borderRightWidth = 0; 
             avatars.Add(avatarBtn);
         }
     }
@@ -63,20 +58,20 @@ public class OyunSahnesiUI : MonoBehaviour
 
     private void OnEnable(){
         rootElement = GetComponent<UIDocument>().rootVisualElement;
-        Skor = rootElement.Q<Label>("Skor");
+        SkorTxt = rootElement.Q<Label>("Skor");
         KalanTasSayisi = rootElement.Q<Label>("KalanTasSayisi");
         HamleSayisi = rootElement.Q<Label>("HamleSayisi");
         GeriSayim = rootElement.Q<Label>("GeriSayim"); 
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
         puanlamaYap = rootElement.Q<Button>("PuanlamaYap");
         exit = rootElement.Q<Button>("Exit");
-        GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari");  
-        PregressBarContainer = rootElement.Q<VisualElement>("PregressBarContainer"); 
+        //GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari");  
+        //PregressBarContainer = rootElement.Q<VisualElement>("PregressBarContainer"); 
         avatars = rootElement.Q<VisualElement>("Avtars"); 
-        puanlamaYap.clicked += ButtonlaPuanlamaYap;  
+        puanlamaYap.clicked += PerleriDegerlendir;  
         puanlamaYap.style.display = DisplayStyle.None;
-        PregressBarContainer.style.display = GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
-        GeriSayim.style.display =    PregressBarContainer.style.display;
+        //PregressBarContainer.style.display = GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
+        //GeriSayim.style.display =    PregressBarContainer.style.display;
         GorevSayisiLbl.style.display =    DisplayStyle.None; 
         GeriSayim.text = null;
         GorevSayisiLbl.text = null;
@@ -100,12 +95,7 @@ public class OyunSahnesiUI : MonoBehaviour
         _ = AvatarlariGoster();
     }
      
-    public void ButtonlaPuanlamaYap(){
-        GeriSayimBari.value = 0;
-        Puanlama.Instance.ButtonlaPuanlamaYap();
-        puanlamaYap.style.display = DisplayStyle.None;
+    public void PerleriDegerlendir(){  
+        Puanlama.Instance.Puanla();
     }
-
- 
-    
 }

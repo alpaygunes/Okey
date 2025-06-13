@@ -336,7 +336,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         } else{
             gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
         }
-        var per = Puanlama.Instance.SiralanmisTumPerTaslari;
+        var per = Puanlama.Instance.SiralanmisTumPerlerdekiTaslar;
 
         int i = 0;
         foreach (var pTs in per){

@@ -8,18 +8,19 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 public class Puanlama : MonoBehaviour{
     public static Puanlama Instance{ get; private set; }
     private Camera uiCamera;
     private AudioSource _audioSource_puan_sayac;
-    List<Tas> BonusMeyveAyniRenkAyni = new List<Tas>();
-    List<Tas> BonusMeyveAyniFarkliRenk = new List<Tas>();
-    List<Tas> BonusMeyveFarkliRenkAyni = new List<Tas>();
+    List<Tas> PtasIleUyumluMeyveAyniRenkAyni = new List<Tas>();
+    List<Tas> PtasIleUyumluMeyveAyniFarkliRenk = new List<Tas>();
+    List<Tas> PtasIleUyumluMeyveFarkliRenkAyni = new List<Tas>();
     public int HamleSayisi;
 
 
-    public SortedDictionary<int, GameObject> SiralanmisTumPerTaslari;
+    public SortedDictionary<int, GameObject> SiralanmisTumPerlerdekiTaslar;
 
     void Awake(){
         if (Instance != null && Instance != this){
@@ -88,12 +89,12 @@ public class Puanlama : MonoBehaviour{
         }
     }
 
-    public void PerlerleriBelirginlestir(){
-        BonusMeyveFarkliRenkAyni.Clear();
-        BonusMeyveAyniRenkAyni.Clear();
-        BonusMeyveAyniFarkliRenk.Clear();
+    public void PerlerleriNetlestir(){
+        PtasIleUyumluMeyveFarkliRenkAyni.Clear();
+        PtasIleUyumluMeyveAyniRenkAyni.Clear();
+        PtasIleUyumluMeyveAyniFarkliRenk.Clear();
 
-        SiralanmisTumPerTaslari = new SortedDictionary<int, GameObject>();
+        SiralanmisTumPerlerdekiTaslar = new SortedDictionary<int, GameObject>();
         Dictionary<int, GameObject> perdekiTumTaslarDic = new Dictionary<int, GameObject>();
 
         foreach (var MfRa_Peri in Istaka.Instance.FarkliMeyveAyniRenkPerleri){
@@ -103,7 +104,7 @@ public class Puanlama : MonoBehaviour{
                 }
 
                 if (MfRa_Peri.Count > 2){
-                    BonusMeyveFarkliRenkAyni.Add(TasManeger.Instance.TasInstances[item.Value]);
+                    PtasIleUyumluMeyveFarkliRenkAyni.Add(TasManeger.Instance.TasInstances[item.Value]);
                 }
             }
         }
@@ -116,7 +117,7 @@ public class Puanlama : MonoBehaviour{
                 }
 
                 if (MaRa_Peri.Count > 2){
-                    BonusMeyveAyniRenkAyni.Add(TasManeger.Instance.TasInstances[item.Value]);
+                    PtasIleUyumluMeyveAyniRenkAyni.Add(TasManeger.Instance.TasInstances[item.Value]);
                 }
             }
         }
@@ -129,65 +130,73 @@ public class Puanlama : MonoBehaviour{
                 }
 
                 if (MaRf_Peri.Count > 2){
-                    BonusMeyveAyniFarkliRenk.Add(TasManeger.Instance.TasInstances[item.Value]);
+                    PtasIleUyumluMeyveAyniFarkliRenk.Add(TasManeger.Instance.TasInstances[item.Value]);
                 }
             }
         }
 
-        SiralanmisTumPerTaslari = new SortedDictionary<int, GameObject>(perdekiTumTaslarDic);
+        SiralanmisTumPerlerdekiTaslar = new SortedDictionary<int, GameObject>(perdekiTumTaslarDic);
     }
 
-    public void RengiVeMeyvesiUyumluKarttakiTaslariPuanla(){
+    public void RengiVeMeyvesiUyumluKarttakiTaslariIsaretle(){
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
 
         // Meyveler Farklı Renkler Aynı   A  B  C  D  E 
-        if (BonusMeyveFarkliRenkAyni.Count > 2){
-            foreach (var tasInstance in BonusMeyveFarkliRenkAyni){
+        if (PtasIleUyumluMeyveFarkliRenkAyni.Count > 2){
+            foreach (var tasInstance in PtasIleUyumluMeyveFarkliRenkAyni){
                 foreach (var item in cardtakiTaslar){
                     var itemIstance = TasManeger.Instance.TasInstances[item];
-                    if (BonusMeyveFarkliRenkAyni.Count == 3){
+                    if (PtasIleUyumluMeyveFarkliRenkAyni.Count == 3){
                         // bonus yok
                     }
 
-                    if (BonusMeyveFarkliRenkAyni.Count == 4){
+                    if (PtasIleUyumluMeyveFarkliRenkAyni.Count == 4){
                         // R a M a 
                         if (tasInstance.MeyveID == itemIstance.MeyveID && tasInstance.renk == itemIstance.renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
+                            itemIstance.PtasIleUyumlu = true;
+                            itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                         }
                     }
 
-                    if (BonusMeyveFarkliRenkAyni.Count == 5){
+                    if (PtasIleUyumluMeyveFarkliRenkAyni.Count == 5){
                         // R a M * 
                         if (tasInstance.renk == itemIstance.renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
+                            itemIstance.PtasIleUyumlu = true;
+                            itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                         }
                     }
 
-                    if (BonusMeyveFarkliRenkAyni.Count >= 6){
+                    if (PtasIleUyumluMeyveFarkliRenkAyni.Count >= 6){
                         // R * M *  
                         tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                             itemIstance);
+                        itemIstance.PtasIleUyumlu = true;
+                        itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                     }
                 }
             }
         }
 
         //  Meyve Aynı Renk Aynı  M M M M M (Aynı renk)
-        if (BonusMeyveAyniRenkAyni.Count > 2){
-            foreach (var tasInstance in BonusMeyveAyniRenkAyni){
+        if (PtasIleUyumluMeyveAyniRenkAyni.Count > 2){
+            foreach (var tasInstance in PtasIleUyumluMeyveAyniRenkAyni){
                 foreach (var item in cardtakiTaslar){
                     var itemIstance = TasManeger.Instance.TasInstances[item];
-                    if (BonusMeyveAyniRenkAyni.Count == 3){
+                    if (PtasIleUyumluMeyveAyniRenkAyni.Count == 3){
                         // R a M a 
                         if (tasInstance.MeyveID == itemIstance.MeyveID && tasInstance.renk == itemIstance.renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
+                            itemIstance.PtasIleUyumlu = true;
+                            itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                         }
                     }
 
-                    if (BonusMeyveAyniRenkAyni.Count == 4){
+                    if (PtasIleUyumluMeyveAyniRenkAyni.Count == 4){
                         // R *  M a 
                         if (tasInstance.MeyveID == itemIstance.MeyveID){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
@@ -195,73 +204,85 @@ public class Puanlama : MonoBehaviour{
                         }
                     }
 
-                    if (BonusMeyveAyniRenkAyni.Count == 5){
+                    if (PtasIleUyumluMeyveAyniRenkAyni.Count == 5){
                         // R a M * 
                         if (tasInstance.renk == itemIstance.renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
+                            itemIstance.PtasIleUyumlu = true;
+                            itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                         }
                     }
 
-                    if (BonusMeyveAyniRenkAyni.Count >= 6){
+                    if (PtasIleUyumluMeyveAyniRenkAyni.Count >= 6){
                         // R *  M * 
                         tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                             itemIstance);
+                        itemIstance.PtasIleUyumlu = true;
+                        itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                     }
                 }
             }
         }
 
         // Meyve Aynı Renk Farklı  M M M M M (farklı renk)
-        if (BonusMeyveAyniFarkliRenk.Count > 2){
-            foreach (var tasInstance in BonusMeyveAyniFarkliRenk){
+        if (PtasIleUyumluMeyveAyniFarkliRenk.Count > 2){
+            foreach (var tasInstance in PtasIleUyumluMeyveAyniFarkliRenk){
                 foreach (var item in cardtakiTaslar){
                     var itemIstance = TasManeger.Instance.TasInstances[item];
-                    if (BonusMeyveAyniFarkliRenk.Count == 3){
+                    if (PtasIleUyumluMeyveAyniFarkliRenk.Count == 3){
                         // R a M a 
                         if (tasInstance.MeyveID == itemIstance.MeyveID && tasInstance.renk == itemIstance.renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
+                            itemIstance.PtasIleUyumlu = true;
+                            itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                         }
                     }
 
-                    if (BonusMeyveAyniFarkliRenk.Count == 4){
+                    if (PtasIleUyumluMeyveAyniFarkliRenk.Count == 4){
                         // R * M a 
                         if (tasInstance.MeyveID == itemIstance.MeyveID){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
+                            itemIstance.PtasIleUyumlu = true;
+                            itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                         }
                     }
 
-                    if (BonusMeyveAyniFarkliRenk.Count == 5){
+                    if (PtasIleUyumluMeyveAyniFarkliRenk.Count == 5){
                         // R a M * 
                         if (tasInstance.renk == itemIstance.renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
+                            itemIstance.PtasIleUyumlu = true;
+                            itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                         }
                     }
 
-                    if (BonusMeyveAyniFarkliRenk.Count >= 6){
+                    if (PtasIleUyumluMeyveAyniFarkliRenk.Count >= 6){
                         // R * M *  
                         tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                             itemIstance);
+                        itemIstance.PtasIleUyumlu = true;
+                        itemIstance.PtasIleUyumluGostergesi.SetActive(true);
                     }
                 }
             }
         }
 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap &&
-            SiralanmisTumPerTaslari != null){
+            SiralanmisTumPerlerdekiTaslar != null){
             GorevYoneticisi.Instance.GoreveUygunCEPLERIIsaretle();
             GorevYoneticisi.Instance.SiradakiGoreviSahnedeGoster();
         }
 
-        foreach (var tas in SiralanmisTumPerTaslari){
-            var tasScript = TasManeger.Instance.TasInstances[tas.Value];
-            tasScript.GoreveUygunKOLONUIsaretle();
-            tasScript.TaslarinRakaminiPuanaEkle();
+        foreach (var pTas in SiralanmisTumPerlerdekiTaslar){
+            var tasScript = TasManeger.Instance.TasInstances[pTas.Value];
+            tasScript.AltinVeElmasGoster(); 
+            //tasScript.TaslarinRakaminiPuanaEkle();
         }
-
+ 
         float gecikme = 1f;
         Invoke(nameof(Deneme), gecikme);
     }
@@ -271,30 +292,19 @@ public class Puanlama : MonoBehaviour{
     }
 
     public void Puanla(){
+        Card.Instance.Sallanma(); 
         if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
-            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.puanlamaYapiliyor;
-            PerlerleriBelirginlestir();
-            RengiVeMeyvesiUyumluKarttakiTaslariPuanla();
+            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.puanlamaYapiliyor; 
+            OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
+            PerlerleriNetlestir();
+            RengiVeMeyvesiUyumluKarttakiTaslariIsaretle();
+            Card.Instance.GoreveUyumluCtasYoket(); 
+            Card.Instance.PtasIleUyumluCtaslariYoket();
+            Card.Instance.PtaslariYoket();
             LimitleriKontrolEt(); 
-            Istaka.Instance.PerleriTemizle(); // en son temizlenmeli
+            Istaka.Instance.PerlerListObjeleriTemizle(); // en son temizlenmeli
         }
-    }
-
-    public void ButtonlaPuanlamaYap(){
-        Card.Instance.Sallanma();
-        if (PuanlamaCounter.Instance.CountdownCoroutine != null){
-            PuanlamaCounter.Instance.StopCoroutine(PuanlamaCounter.Instance.CountdownCoroutine);
-        }
-
-        if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
-            || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
-            || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
-            Puanla();
-        }
-        else{
-            Istaka.Instance.PersizFullIstakayiBosalt();
-        }
-    }
+    } 
 }

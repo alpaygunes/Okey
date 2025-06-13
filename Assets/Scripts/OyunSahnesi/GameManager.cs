@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic; 
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour{
     public readonly float PuanlamaIcinGeriSayimSuresi = 100f;  
@@ -11,8 +12,8 @@ public class GameManager : MonoBehaviour{
     public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6);  
     public List<GameObject> spawnHolesList = new List<GameObject>(); 
     public string seed;
-    public bool PerKontrolDugmesiOlsun ;
-    public bool OtomatikPerkontrolu ;
+    //public bool PerKontrolDugmesiOlsun ;
+    //public bool OtomatikPerkontrolu ;
     public static GameManager Instance{ get; private set; }
     public int oyununBitimineKalanZaman=0;  
     public OynanmaDurumu OyunDurumu;
@@ -96,6 +97,20 @@ public class GameManager : MonoBehaviour{
         Puanlama.Instance.LimitleriKontrolEt();
     }
 
+    public void PuanlamaDugmesiniGoster(){
+        if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
+            || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
+            || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0 ){ 
+            OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex; 
+            if (Istaka.Instance.DoluCepSayisi() == CepSayisi) 
+                Puanlama.Instance.Puanla();
+            
+        }
+        else{
+            Istaka.Instance.IstakayiVeCartiTemizle();
+        }
+    }
+    
     void Update(){
         if (OyunDurumu == OynanmaDurumu.bitti) return;
         
@@ -125,7 +140,7 @@ public class GameManager : MonoBehaviour{
                                 GorevYoneticisi.Instance.TasGoreveUygunsaYildiziYak(TasManeger.Instance.TasInstances[hit.collider.gameObject]); 
                                 Istaka.Instance.PerleriBul();
                                 Istaka.Instance.PerdekiTaslariBelirginYap();
-                                PuanlamaCounter.Instance.PuanlamaDugmesiniGoster(); 
+                                PuanlamaDugmesiniGoster(); 
                             }
                             PerIcinTasTavsiye.Instance.Basla();
                         }

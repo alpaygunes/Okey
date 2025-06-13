@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 public class Card : MonoBehaviour{
-    public Vector2 Size; 
+    public Vector2 Size;
     public bool TaslarHareketli{ get; set; }
-    
-    public static Card Instance { get; private set; }
+
+    public static Card Instance{ get; private set; }
     public List<List<GameObject>> _siraliAyniRenkliGruplar = new List<List<GameObject>>();
     public List<GameObject> SiraliAyniRenkliGrup = new List<GameObject>();
 
@@ -21,16 +21,15 @@ public class Card : MonoBehaviour{
     private GameObject[] carddakiTaslar;
 
     void Awake(){
-        
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
 
-        Instance = this; 
+        Instance = this;
 
-        Instance = this; 
-        Size = GetComponent<SpriteRenderer>().bounds.size; 
+        Instance = this;
+        Size = GetComponent<SpriteRenderer>().bounds.size;
     }
 
     public void KutulariHazirla(){
@@ -38,21 +37,53 @@ public class Card : MonoBehaviour{
         float colonWidth = (cardSize.x / GameManager.Instance._colonCount);
         GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
         float satirSayisi = (cardSize.y / colonWidth);
-        for (var satir=0; satir < satirSayisi; satir++){
+        for (var satir = 0; satir < satirSayisi; satir++){
             for (int sutun = 0; sutun < GameManager.Instance._colonCount; sutun++){
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
-                float positionY = -(cardSize.y * .5f) + ((satirSayisi - satir) * colonWidth); 
+                float positionY = -(cardSize.y * .5f) + ((satirSayisi - satir) * colonWidth);
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
-                kutu.transform.localScale = GameManager.Instance.spawnHolesList[0].transform.localScale; 
+                kutu.transform.localScale = GameManager.Instance.spawnHolesList[0].transform.localScale;
             }
         }
-         
-    } 
-    
+    }
+
     public void Sallanma(){
         carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var tas in carddakiTaslar){
             TasManeger.Instance.TasInstances[tas].Sallanma();
         }
+    }
+
+    public void GoreveUyumluCtasYoket(){ 
+        float beklemeSuresi = .5f;
+        foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){ 
+            var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
+            foreach (var uTas in pTasScript.AyniKolondakiAltinveAltinTaslar){
+                var uTasInstance = TasManeger.Instance.TasInstances[uTas]; 
+                uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));  
+            }
+            beklemeSuresi += 0.5f; 
+        }
+    }
+
+    public void PtasIleUyumluCtaslariYoket(){
+        float beklemeSuresi = .2f;
+        foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){
+            var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
+            foreach (var bonusTaslari in pTasScript.BonusOlarakEslesenTaslar){
+               bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi)); 
+               beklemeSuresi += .5f;
+            }
+             
+        } 
+    }
+    
+    public void PtaslariYoket(){
+        float beklemeSuresi = .2f;
+        foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){
+            var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
+            beklemeSuresi += .5f;
+            pTasScript.StartCoroutine(pTasScript.BekleYokol(beklemeSuresi)); 
+        } 
     }
 }

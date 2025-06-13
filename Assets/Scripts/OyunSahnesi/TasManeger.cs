@@ -28,14 +28,6 @@ public class TasManeger : MonoBehaviour{
         } 
     }
  
-    // public void PerleriKontrolEt(){
-    //     Istaka.Instance.FarkliMeyvePerleriniBelirle();
-    //     Istaka.Instance.AyniMeyvePerleriniBelirle();
-    //     Istaka.Instance.FarkliMeyveGruplriIcindeAyniRenkPerleriniBelirle();
-    //     Istaka.Instance.AyniMeyveGruplarinIcindekiAyniRenkPerleriniBelirle();
-    //     Istaka.Instance.AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle(); 
-    //     PuanlamaCounter.Instance.PuanlamaIcinGeriSayimAnimasyonunuBaslat(); 
-    // }
     
     public class Data{
         public int number;
