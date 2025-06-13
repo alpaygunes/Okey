@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour{
     public readonly int CepSayisi = 6;
     public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
     public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6);  
-    public List<GameObject> spawnHolesList = new List<GameObject>();
+    public List<GameObject> spawnHolesList = new List<GameObject>(); 
     public string seed;
     public bool PerKontrolDugmesiOlsun ;
     public bool OtomatikPerkontrolu ;
@@ -23,7 +23,12 @@ public class GameManager : MonoBehaviour{
         puanlamaYapiliyor,
     }
     
-    void Awake(){ 
+    void Awake(){
+        Debug.Log("GameManager yeniden canlandı");
+        if (MainMenu.isSoloGame){
+            OyunKurallari.Instance.InitializeSettings();  
+        }
+        
         OyunDurumu = OynanmaDurumu.oynaniyor; 
         if (Instance != null && Instance != this){
             Destroy(gameObject);
@@ -42,12 +47,17 @@ public class GameManager : MonoBehaviour{
         CreateSpawnHoles();
         TasManeger.Instance.TaslariHazirla();
         Card.Instance.KutulariHazirla();
-        
-        ///////////////// oyunun türüne göre sürecin devamına karar veriliyor. ///////////////////////
+         
+ 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
         }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){ 
-            //GorevYoneticisi OnNetworkSpawn() olunca tetiklenir.
+            // solo ise
+            if (MainMenu.isSoloGame){
+                GorevYoneticisi.GorevHazirla();
+                GorevYoneticisi.Instance.SiradakiGoreviSahnedeGoster();
+            }
+            // Multi ise GorevYoneticisi OnNetworkSpawn() olunca tetiklenir.
         }else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             // puanlama sırasında gereken kotrol yapılıyor.
         } 

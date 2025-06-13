@@ -95,7 +95,7 @@ public class OyunSahnesiUI : MonoBehaviour
             GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();
         } else if(OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             HamleSayisi.style.display =    DisplayStyle.Flex;
-            HamleSayisi.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();
+            HamleSayisi.text  = "1/"+OyunKurallari.Instance.HamleLimit.ToString();
         } 
         _ = AvatarlariGoster();
     }

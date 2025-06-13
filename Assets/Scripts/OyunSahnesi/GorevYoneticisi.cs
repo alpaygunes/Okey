@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Random = System.Random;
+using UnityEngine.SceneManagement; 
 
 public class GorevYoneticisi : NetworkBehaviour{ 
     public static GorevYoneticisi Instance{ get; private set; }
@@ -80,6 +79,8 @@ public class GorevYoneticisi : NetworkBehaviour{
     
     private NetworkList<GorevData> gorevlerNetList;
     
+    private List<GorevData> gorevlerSoloList;
+    
     private static readonly int GorevSayisi = 10;
 
     private void Awake(){
@@ -92,6 +93,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         gorevlerNetList = new NetworkList<GorevData>(
             readPerm: NetworkVariableReadPermission.Everyone,
             writePerm: NetworkVariableWritePermission.Server);
+ 
+        gorevlerSoloList = new List<GorevData>();
     }
 
     private void Start(){
@@ -121,7 +124,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         AyniMeyveAyniRenkPerleri,
     }
 
-    private static void GorevHazirla(){
+    public static void GorevHazirla(){
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
         int renkSayisi = renkEnd - renkStart + 1;
@@ -180,8 +183,10 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
         // Sadece sunucu yazabilir
-        if (Instance != null && Instance.IsServer)
-            Instance.gorevlerNetList.Add(gorev);
+        if (Instance != null && Instance.IsServer)  Instance.gorevlerNetList.Add(gorev);
+        // solo oyunada ayni görev fonksiyonu çalışmalı
+        if (MainMenu.isSoloGame) 
+            Instance.gorevlerSoloList.Add(gorev);
     }
     
     private static void AyniMeyveFarkliRenkPerleriOlustur(){
@@ -228,8 +233,10 @@ public class GorevYoneticisi : NetworkBehaviour{
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
 
         // Sunucudaysak görevi listeye ekle
-        if (Instance != null && Instance.IsServer)
-            Instance.gorevlerNetList.Add(gorev);
+        if (Instance != null && Instance.IsServer) Instance.gorevlerNetList.Add(gorev);
+        // solo oyunada ayni görev fonksiyonu çalışmalı
+        if (MainMenu.isSoloGame) 
+            Instance.gorevlerSoloList.Add(gorev);
     }
 
     private static void AyniMeyveAyniRenkPerleriOlustur(){
@@ -276,11 +283,13 @@ public class GorevYoneticisi : NetworkBehaviour{
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
 
         // Yalnızca sunucu ekler
-        if (Instance != null && Instance.IsServer)
-            Instance.gorevlerNetList.Add(gorev);
+        if (Instance != null && Instance.IsServer) Instance.gorevlerNetList.Add(gorev);
+        // solo oyunada ayni görev fonksiyonu çalışmalı
+        if (MainMenu.isSoloGame) 
+            Instance.gorevlerSoloList.Add(gorev);
     } 
-    // -----------------------------------  SON ---------------------------------------
     
+    // -----------------------------------  SON --------------------------------------- 
     public void SiradakiGoreviSahnedeGoster(){
         var body = Instance.transform.Find("Body");
         if (body == null) return;
@@ -289,9 +298,15 @@ public class GorevYoneticisi : NetworkBehaviour{
             var child = body.GetChild(j); 
             Destroy(child.gameObject);
         }
- 
+
+        GorevData gorev;
+        if (MainMenu.isSoloGame){
+            gorev = gorevlerSoloList[SiradakiGorevSirasNosu];
+        }
+        else{
+            gorev = gorevlerNetList[SiradakiGorevSirasNosu];
+        }
         
-        GorevData gorev = gorevlerNetList[SiradakiGorevSirasNosu];
         FixedList128Bytes<TasData> taslar = gorev.Taslar;
         // tas nesnelerini tasList e ekle
         int i = 0;
@@ -315,7 +330,12 @@ public class GorevYoneticisi : NetworkBehaviour{
     }
     
     public void GoreveUygunCEPLERIIsaretle(){
-        var gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
+        FixedList128Bytes<TasData> gorevTaslari;
+        if (MainMenu.isSoloGame){
+            gorevTaslari = gorevlerSoloList[SiradakiGorevSirasNosu].Taslar;
+        } else{
+            gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
+        }
         var per = Puanlama.Instance.SiralanmisTumPerTaslari;
 
         int i = 0;

@@ -26,6 +26,7 @@ public class LobbyListUI : MonoBehaviour{
     public QueryResponse response;
     public VisualElement PlayerList;
     public Button StartRelay;
+    public Button StartSolo;
     public bool joinedToLobby = false;
     private VisualElement rootElement;
     public Button katilBtn;
@@ -33,10 +34,10 @@ public class LobbyListUI : MonoBehaviour{
     public Coroutine lobbyListUpdateCoroutine;
     public bool benLobininSahibiyim = false;
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 10f;
-    
- 
 
-    private void Awake(){
+  
+    
+ private void Awake(){
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
@@ -49,7 +50,7 @@ public class LobbyListUI : MonoBehaviour{
         if (lobbyListUpdateCoroutine!=null){ 
             StopCoroutine(lobbyListUpdateCoroutine); 
         }
-        //HostListBtn.clicked -= OnLobbyListButtonClickedWrapper;
+        
     }
 
     private void OnEnable(){
@@ -64,8 +65,10 @@ public class LobbyListUI : MonoBehaviour{
         CreatedLobiCodeTxt = rootElement.Q<TextElement>("CreatedLobiCodeTxt");
         PlayerList = rootElement.Q<VisualElement>("PlayerList");
         StartRelay = rootElement.Q<Button>("StartRelay");
+        StartSolo = rootElement.Q<Button>("StartSolo");
         QuitToMainMenu = rootElement.Q<Button>("QuitToMainMenu");
         StartRelay.style.display = DisplayStyle.None; 
+        StartSolo.style.display = DisplayStyle.None; 
         benLobininSahibiyim = LobbyManager.Instance.CurrentLobby?.HostId == AuthenticationService.Instance.PlayerId;
         
  
@@ -76,11 +79,15 @@ public class LobbyListUI : MonoBehaviour{
 
         // Lobby Create Penceresi
         CrtLobBtn.clicked += LobiOlusturmaPenceresi;
- 
 
         //start Relay
         StartRelay.clicked += async () => {
             await LobbyManager.Instance.StartHostWithRelay();
+        };
+        
+        //start Solo
+        StartSolo.clicked += async () => {
+            await LobbyManager.Instance.StartSolo();
         };
         
         //AnaMenüye Dön
@@ -100,7 +107,15 @@ public class LobbyListUI : MonoBehaviour{
         }
         
         // hemen lobileri listele
-        OnLobbyListButtonClickedWrapper();
+        if (!MainMenu.isSoloGame){
+            OnLobbyListButtonClickedWrapper();
+        }
+        else{
+            // multi ile ilgili visualelemnti gizle
+            Satir2b.style.display = DisplayStyle.None;
+            Satir2a.style.display = DisplayStyle.None; 
+            StartSolo.style.display = DisplayStyle.Flex;
+        }
     }
 
     private void LobimiKapat(){

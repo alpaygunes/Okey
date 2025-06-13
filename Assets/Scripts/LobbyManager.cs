@@ -443,6 +443,8 @@ public class LobbyManager : NetworkBehaviour{
     //  ---------------------------     LOBBY SİLME İŞLEMLERİ  SON //////////////////////////////////// 
 
     public async Task CikmakIisteginiGonder(){
+        // soloysa hemen çık
+        if (MainMenu.isSoloGame) SceneManager.LoadScene("LobbyManager");
         // 1) Lobby bayrağını sıfırla (sadece host)
         if (IsHost){
             await LobbyService.Instance.UpdateLobbyAsync(
@@ -486,5 +488,9 @@ public class LobbyManager : NetworkBehaviour{
             clientCallbacks.LobbyChanged -= OnLobbyChangedForBtn;
             clientCallbacks = null; // Callback referansını temizle (isteğe bağlı) 
         }
+    }
+
+    public async Task StartSolo(){  
+        SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }
 }
