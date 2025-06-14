@@ -36,7 +36,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
             yield return new WaitForSeconds(1f);
             _timeLeft--;
         }
-        if (GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.oynaniyor)
+        if (GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.DevamEdiyor)
             TasBul();
     }
     

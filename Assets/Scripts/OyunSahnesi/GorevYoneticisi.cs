@@ -341,13 +341,13 @@ public class GorevYoneticisi : NetworkBehaviour{
         int i = 0;
         foreach (var pTs in per){
             if (gorevTaslari.Length==i) break;
-            if (pTs.Value==null) break;
+            if (pTs.Value ==null) break;
             var pTas = pTs.Value.GetComponent<Tas>();
             var gTas = gorevTaslari[i];
             if (pTas.MeyveID == gTas.MeyveID && pTas.renk == gTas.Renk){
-                pTas.GorevleUyum = 2;
+                pTas.GorevleUyum = 2; 
             }else if (pTas.MeyveID == gTas.MeyveID || pTas.renk == gTas.Renk){ 
-                pTas.GorevleUyum = 1;
+                pTas.GorevleUyum = 1; 
             }
             i++;
         }
@@ -355,14 +355,14 @@ public class GorevYoneticisi : NetworkBehaviour{
         SiradakiGorevSirasNosu++;
         OyunSahnesiUI.Instance.GorevSayisiLbl.text = SiradakiGorevSirasNosu +"/"+OyunKurallari.Instance.GorevYap.ToString();  
         if (SiradakiGorevSirasNosu >= OyunKurallari.Instance.GorevYap){
-            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.bitti; 
-            SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu; 
+            SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single);
+            GameManager.Instance.OyunSahnesiKapaniyor = true;
         }
     }
 
     public void TasGoreveUygunsaYildiziYak(Tas tas){
-        var cepScript = tas.cepInstance;
-        if (OyunKurallari.Instance.GuncelOyunTipi != OyunKurallari.OyunTipleri.GorevYap) return;
+        var cepScript = tas.cepInstance; 
         GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
         var gTas = gorevTaslari[cepScript.colID];
         int uyumSayisi = 0;

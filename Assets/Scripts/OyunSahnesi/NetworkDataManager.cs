@@ -100,7 +100,7 @@ public class NetworkDataManager : NetworkBehaviour{
 
 
     private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
-        if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.bitti){
+        if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.LimitDoldu){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }
@@ -161,7 +161,7 @@ public class NetworkDataManager : NetworkBehaviour{
     }
 
     private async void YeniSeediLobbyeGonder(){
-        var gameSeed = LobbyManager.Instance.GetRandomSeed();
+        var gameSeed = MainMenu.GetRandomSeed();
         try{
             await LobbyService.Instance.UpdateLobbyAsync(LobbyManager.Instance.CurrentLobby.Id, new UpdateLobbyOptions
             {

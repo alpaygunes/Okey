@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -12,7 +13,7 @@ public class MainMenu : MonoBehaviour{
     private Button ZamanLimitliBtn; 
     private Button GorevYap; 
     private VisualElement MenuBox; 
-    static public bool isSoloGame = false;
+    static public bool isSoloGame = true;
     
     async void Awake() {
         if (!UnityServices.State.Equals(ServicesInitializationState.Initialized)) {
@@ -66,5 +67,16 @@ public class MainMenu : MonoBehaviour{
         HamleLimitliBtn.clicked -= SearchHamleLimitliGame;
         ZamanLimitliBtn.clicked -= SearchZamanLimitliGame;
         GorevYap.clicked -= SearchGorevYapGame;
+    }
+    
+    
+    public static string GetRandomSeed(){
+        int length = 20;
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; 
+        System.Random random = new System.Random();
+        var seed = new string(Enumerable.Range(0, length)
+            .Select(_ => chars[random.Next(chars.Length)])
+            .ToArray());
+        return seed;
     }
 }

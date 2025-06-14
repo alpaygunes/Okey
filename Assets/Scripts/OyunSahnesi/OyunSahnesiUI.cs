@@ -78,7 +78,7 @@ public class OyunSahnesiUI : MonoBehaviour
         HamleSayisi.text = "0"; 
         HamleSayisi.style.display =    DisplayStyle.None; 
         exit.clicked += () => {
-            _ = LobbyManager.Instance.CikmakIisteginiGonder();
+            _ = LobbyManager.Instance.CikisIsteginiGonder();
         }; 
         
  

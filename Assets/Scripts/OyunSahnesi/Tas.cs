@@ -39,8 +39,10 @@ public class Tas : MonoBehaviour{
     public GameObject PereUyumluGostergesi; // cepteki daslar per halindeyse belirtir.
     public GameObject MeyveResmi;
     public bool PtasIleUyumlu = false; // Bu alan carttaki taslar için . ceptaki tas için degil
-    public GameObject PtasIleUyumluGostergesi;
+    public GameObject PtasIleUyumluGostergesi; // cardtaki taslar için 
+    public GameObject PersizIstakaTaslariGostergesi;
     public List<GameObject> AyniKolondakiAltinveAltinTaslar = new List<GameObject>();
+    public bool TiklanaBilir{ get; set; } = true;
 
     private void Awake(){;
         TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
@@ -53,6 +55,7 @@ public class Tas : MonoBehaviour{
         PereUyumluGostergesi = transform.Find("PereUyumluGostergesi").gameObject;
         MeyveResmi = transform.Find("MeyveResmi").gameObject;
         PtasIleUyumluGostergesi = transform.Find("PtasIleUyumluGostergesi").gameObject;
+        PersizIstakaTaslariGostergesi = transform.Find("PersizIstakaTaslariGostergesi").gameObject;
         uiCamera = Camera.main;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
@@ -90,6 +93,7 @@ public class Tas : MonoBehaviour{
         GorevUyumGostergesi2.SetActive(false);
         PereUyumluGostergesi.SetActive(false);
         PtasIleUyumluGostergesi.SetActive(false);
+        PersizIstakaTaslariGostergesi.SetActive(false);
     }
 
     private void OnDestroy(){
@@ -106,11 +110,25 @@ public class Tas : MonoBehaviour{
         if (cepInstance){
             cepInstance.Dolu = false;
         }
-
-        var kalanTas = Int32.Parse(OyunSahnesiUI.Instance.KalanTasSayisi.text);
-        kalanTas--; 
-        OyunSahnesiUI.Instance.KalanTasSayisi.text = kalanTas.ToString();
+        
+        // Sıradaki taslar
+        var SiradakiTaslar = TasManeger.Instance.TasList.Count;
+        // Cardtaki TAslar
+        var carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+        // Perdeki Taslar
+        var perdekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
+        
+        int ToplamTasSayisi = SiradakiTaslar + carddakiTaslar.Length + perdekiTaslar.Length;
+        
+        //taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
+        if ( ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f 
+             && GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.DevamEdiyor ){
+            TasManeger.Instance.TaslariOlustur();
+        }
+        
         TasManeger.Instance.TasInstances.Remove(gameObject); 
+        
+        OyunSahnesiUI.Instance.KalanTasSayisi.text = (ToplamTasSayisi-1).ToString();
     }
 
     public bool BosCebeYerles(){ 
@@ -138,8 +156,7 @@ public class Tas : MonoBehaviour{
         }
         return false;
     }
-
-  
+    
     public IEnumerator BekleYokol(float gecikme){
         yield return new WaitForSeconds(gecikme);
         Destroy(gameObject); 
@@ -175,8 +192,6 @@ public class Tas : MonoBehaviour{
         }
     }
 
- 
-
     public void Sallanma(){ 
         if (tweener != null && tweener.IsActive()){
             tweener.Complete();
@@ -195,9 +210,11 @@ public class Tas : MonoBehaviour{
                 if (GorevleUyum == 1){
                     cTasscript.GorevUyumGostergesi1.gameObject.SetActive(true);
                     cTasscript.MeyveResmi.gameObject.SetActive(false);
+                    TiklanaBilir = false;
                 }else if (GorevleUyum == 2){
                     cTasscript.GorevUyumGostergesi2.gameObject.SetActive(true);
                     cTasscript.MeyveResmi.gameObject.SetActive(false);
+                    TiklanaBilir = false;
                 } 
                 AyniKolondakiAltinveAltinTaslar.Add(cTas);
             }

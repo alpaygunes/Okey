@@ -18,6 +18,9 @@
     eşleşen kolonlardaki taşların rakamları ayrıca puan olarak eklensin.
     
  HATA : Periçin tavsiye kodları puanlama sırasıdna çalışmaya başlıyor. puanlama yokkon bu kodlar çalışmalı.
+ HATA : animayonlar ve yok olmalar devame derken taşlar seçilmemeli
+ HATA : Perler yanlış hesaplanıyor. A B A düzeni per sanılıyor. Aynı renk A B A per olmamalı
+ HATA : Ceplerdeki per tasları yok olurken tiklanma kilitlenmeli.
     
     
     

@@ -6,6 +6,7 @@ using Unity.Netcode;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class OyunSonu : NetworkBehaviour{
@@ -81,11 +82,21 @@ public class OyunSonu : NetworkBehaviour{
     }
 
     private void OnQuitClick(){
-        _ = LobbyManager.Instance.CikmakIisteginiGonder();
+        _ = LobbyManager.Instance.CikisIsteginiGonder();
     }
 
-    private void OnYeniOyunuBaslatClick(){ 
-        NetworkDataManager.Instance.OyunuYenidenBaslatServerRpc(); 
+    private void OnYeniOyunuBaslatClick(){
+        GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.DevamEdiyor;
+        // Multy ise
+        if (!MainMenu.isSoloGame) 
+            NetworkDataManager.Instance.OyunuYenidenBaslatServerRpc(); 
+        // Solo ise
+        if (MainMenu.isSoloGame){
+            GameManager.Instance.seed = MainMenu.GetRandomSeed();
+            if (IsHost){
+                NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
+            }
+        }
     }
  
 }

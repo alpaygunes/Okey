@@ -15,6 +15,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class LobbyManager : NetworkBehaviour{
+    
     public static LobbyManager Instance;
     public string relayIDForJoin;
     private LobbyEventCallbacks clientCallbacks;
@@ -30,6 +31,7 @@ public class LobbyManager : NetworkBehaviour{
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
     public GameObject networkPlayerPrefab;
     private string avadarID;
+    
     private void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
         avadarID = "avatar" + UnityEngine.Random.Range(0, 2);
@@ -283,8 +285,7 @@ public class LobbyManager : NetworkBehaviour{
         CurrentLobby = updatedLobby;
         LobbyListUI.Instance.RefreshPlayerList();
     }
-
-
+    
     public void StartHeartbeat(){
         if (heartbeatCoroutine == null){
             heartbeatCoroutine = StartCoroutine(SendHeartbeatRoutine());
@@ -297,8 +298,7 @@ public class LobbyManager : NetworkBehaviour{
             heartbeatCoroutine = null;
         }
     }
-
-
+    
     private IEnumerator SendHeartbeatRoutine(){
         while (true){
             if (CurrentLobby != null){
@@ -308,8 +308,7 @@ public class LobbyManager : NetworkBehaviour{
             yield return new WaitForSeconds(15f); // her 15 saniyede bir ping
         }
     }
-
-
+    
     public async Task StartHostWithRelay(){
         try{
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening){
@@ -334,7 +333,7 @@ public class LobbyManager : NetworkBehaviour{
                     .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
                 var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-                gameSeed = GetRandomSeed();
+                gameSeed = MainMenu.GetRandomSeed();
 
                 await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
                 {
@@ -360,16 +359,7 @@ public class LobbyManager : NetworkBehaviour{
         }
     }
 
-    public string GetRandomSeed(){
-        int length = 4;
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-        System.Random random = new System.Random();
-        var seed = new string(Enumerable.Range(0, length)
-            .Select(_ => chars[random.Next(chars.Length)])
-            .ToArray());
-        return seed;
-    }
     
     public async Task StartClientRelay(string joinCode, string connectionType){
         if (IsHost) return;
@@ -399,8 +389,7 @@ public class LobbyManager : NetworkBehaviour{
         }
     }
 
-    //  /////////////////////////////////////////  LOBBY SİLME İŞLEMLERİ ////////////////////////////////////
-
+    // LOBBY SİLME İŞLEMLERİ
     public async Task OyunculariCikartVeLobiyiSil(string mevcutLobiId){
         Lobby lobby = await LobbyService.Instance.GetLobbyAsync(mevcutLobiId);
         if (lobby != null && lobby.HostId == AuthenticationService.Instance.PlayerId) // Host kontrolü ekledik
@@ -439,12 +428,15 @@ public class LobbyManager : NetworkBehaviour{
             }
         }
     }
-
-    //  ---------------------------     LOBBY SİLME İŞLEMLERİ  SON //////////////////////////////////// 
-
-    public async Task CikmakIisteginiGonder(){
+    // LOBBY SİLME İŞLEMLERİ 
+    
+    public async Task CikisIsteginiGonder(){
+        GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
         // soloysa hemen çık
-        if (MainMenu.isSoloGame) SceneManager.LoadScene("LobbyManager");
+        if (MainMenu.isSoloGame){
+            SceneManager.LoadScene("LobbyManager");
+            return;
+        }
         // 1) Lobby bayrağını sıfırla (sadece host)
         if (IsHost){
             await LobbyService.Instance.UpdateLobbyAsync(

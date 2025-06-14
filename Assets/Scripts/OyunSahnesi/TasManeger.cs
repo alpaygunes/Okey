@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine; 
 
@@ -12,12 +11,11 @@ public class TasManeger : MonoBehaviour{
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
-
         Instance = this; 
     }
   
-    public void TaslariHazirla(){
-        List<Data> generatedData = GenerateDataList(GameManager.Instance.seed); 
+    public void TaslariOlustur(){
+        List<Data> generatedData = GenerateDataList(); 
         foreach (var data in generatedData){
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
             var Tas = Instantiate(tare, new Vector3(0, 0, 5), Quaternion.identity); 
@@ -25,9 +23,8 @@ public class TasManeger : MonoBehaviour{
             tasScribe.MeyveID = data.number;
             tasScribe.renk = Renkler.RenkSozlugu[data.color];
             TasList.Add(Tas);
-        } 
+        }
     }
- 
     
     public class Data{
         public int number;
@@ -39,17 +36,24 @@ public class TasManeger : MonoBehaviour{
         }
     }
 
-    public static List<Data> GenerateDataList(string seed){
-        System.Random random = new System.Random(seed.GetHashCode());
+    public static List<Data> GenerateDataList(){
+        var seed = GameManager.Instance.seed;
+        string SubSeed = seed.Substring(GameManager.Instance.YeniTasEklendiSayisi, 1);
+        GameManager.Instance.YeniTasEklendiSayisi++; 
+        if (GameManager.Instance.YeniTasEklendiSayisi == seed.Length){
+            GameManager.Instance.YeniTasEklendiSayisi = 0;
+        }
+        Debug.Log($"seed {seed} SubSeed {SubSeed}");
+        
+        System.Random random = new System.Random(SubSeed.GetHashCode());
         List<Data> dataList = new List<Data>();
 
-        for (int i = 0; i < GameManager.Instance.TasCount; i++){
+        for (int i = 0; i < GameManager.Instance.BaslangicTasSayisi; i++){
             int number = random.Next(GameManager.Instance.MeyveIDAraligi.start,  GameManager.Instance.MeyveIDAraligi.end );
             int color = random.Next(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end);
             dataList.Add(new Data(number, color));
-        } 
+        }
         return dataList;
     }
     
-
 }
