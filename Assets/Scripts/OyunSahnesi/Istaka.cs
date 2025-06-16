@@ -108,8 +108,8 @@ public class Istaka : MonoBehaviour{
         
     }
 
-    // sadece meyveler aynıysa per adayi olarak belirlenir.
-    public void FarkliMeyvePerleriniBelirle(){
+    // sadece meyveler farklıysa per adayi olarak belirlenir.
+    private void FarkliMeyvePerleriniBelirle(){
         FarkliMeyvePerleri.Clear();
         Dictionary<int, GameObject> farklilarGrupu = new Dictionary<int, GameObject>();
         // Istakadaki cepleri tek tek kontrole delim.
@@ -154,7 +154,7 @@ public class Istaka : MonoBehaviour{
             }
         } // for end 
     }
-
+    
     private bool MeyvePerdeMevcutmu( Dictionary<int,GameObject> fGrup ,int MeyveId){
         bool mevcut = false;
         foreach (var item in fGrup){
@@ -170,6 +170,47 @@ public class Istaka : MonoBehaviour{
         }
         return mevcut;
     }
+
+    // sadece meyveler aynıysa per adayi olarak belirlenir.
+    public void AyniMeyvePerleriniBelirle(){
+        AyniMeyvePerleri.Clear();
+        Dictionary<int, GameObject> benzerRakamGrubu = new Dictionary<int, GameObject>();
+        // Istakadaki cepleri tek tek kontrole delim.
+        for (int i = 0; i < CepList.Count; i++){
+            Cep cepInstance = CepList[i];
+            _yeniGrupOlustur = false;
+            //Cepte taş var mı ?
+            if (cepInstance.TasInstance){
+                // grup yeni grupsa ardışıklığına bakamdan gruba ekleyelim
+                if (benzerRakamGrubu.Count == 0){
+                    benzerRakamGrubu.Add(i, cepInstance.TasInstance.gameObject);
+                }
+
+                // sonraki ile ardışık mı ?
+                try{
+                    Cep sonrakiCepInstance = CepList[i + 1];
+                    if (cepInstance.TasInstance.MeyveID == sonrakiCepInstance?.TasInstance?.MeyveID){
+                        benzerRakamGrubu.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
+                    }
+                    else{
+                        _yeniGrupOlustur = true;
+                    }
+                }
+                catch (Exception e){
+                    Debug.Log(e.Message);
+                    _yeniGrupOlustur = true;
+                }
+            }
+
+            if (_yeniGrupOlustur){
+                if (benzerRakamGrubu.Count > 2){
+                    AyniMeyvePerleri.Add(new Dictionary<int, GameObject>(benzerRakamGrubu));
+                }
+
+                benzerRakamGrubu.Clear();
+            }
+        } // for end  
+    } 
 
     // kesin perler belirlenir
     public void FarkliMeyveGruplriIcindeAyniRenkPerleriniBelirle(){
@@ -213,47 +254,18 @@ public class Istaka : MonoBehaviour{
                 }
             } // end for 
         } // end for
-    }
-    
-    // kesin perler belirlenir
-    public void AyniMeyvePerleriniBelirle(){
-        AyniMeyvePerleri.Clear();
-        Dictionary<int, GameObject> benzerRakamGrubu = new Dictionary<int, GameObject>();
-        // Istakadaki cepleri tek tek kontrole delim.
-        for (int i = 0; i < CepList.Count; i++){
-            Cep cepInstance = CepList[i];
-            _yeniGrupOlustur = false;
-            //Cepte taş var mı ?
-            if (cepInstance.TasInstance){
-                // grup yeni grupsa ardışıklığına bakamdan gruba ekleyelim
-                if (benzerRakamGrubu.Count == 0){
-                    benzerRakamGrubu.Add(i, cepInstance.TasInstance.gameObject);
-                }
-
-                // sonraki ile ardışık mı ?
-                try{
-                    Cep sonrakiCepInstance = CepList[i + 1];
-                    if (cepInstance.TasInstance.MeyveID == sonrakiCepInstance?.TasInstance?.MeyveID){
-                        benzerRakamGrubu.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
-                    }
-                    else{
-                        _yeniGrupOlustur = true;
-                    }
-                }
-                catch (Exception e){
-                    Debug.Log(e.Message);
-                    _yeniGrupOlustur = true;
+        
+        // perdeki taslara kendisiyle aynı perdeki tasların verisini ekleyelim
+        for (int i = 0; i < FarkliMeyveAyniRenkPerleri.Count; i++){
+            var per = FarkliMeyveAyniRenkPerleri[i];
+            foreach (var pTas in per){
+                var pTasInstance = TasManeger.Instance.TasInstances[pTas.Value];
+                var perClone = new Dictionary<int, GameObject>(per);
+                if (pTasInstance.PerAilesi is null){
+                    pTasInstance.PerAilesi = perClone;
                 }
             }
-
-            if (_yeniGrupOlustur){
-                if (benzerRakamGrubu.Count > 2){
-                    AyniMeyvePerleri.Add(new Dictionary<int, GameObject>(benzerRakamGrubu));
-                }
-
-                benzerRakamGrubu.Clear();
-            }
-        } // for end 
+        }
     }
     
     // kesin perler belirlenir
@@ -297,9 +309,21 @@ public class Istaka : MonoBehaviour{
                 }
             } // end for 
         } // end for
+        
+        // perdeki taslara kendisiyle aynı perdeki tasların verisini ekleyelim
+        for (int i = 0; i < AyniMeyveAyniRenkPerleri.Count; i++){
+            var per = AyniMeyveAyniRenkPerleri[i];
+            foreach (var pTas in per){
+                var pTasInstance = TasManeger.Instance.TasInstances[pTas.Value];
+                var perClone = new Dictionary<int, GameObject>(per);
+                if (pTasInstance.PerAilesi is null){
+                    pTasInstance.PerAilesi = perClone;
+                }
+            }
+        }
     }
     
-
+    // kesin perler belirlenir
     public void AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle(){
         AyniMeyveFarkliRenkPerleri.Clear();
         Dictionary<int, GameObject> farkliRenklilerGrubu = new Dictionary<int, GameObject>();
@@ -348,6 +372,18 @@ public class Istaka : MonoBehaviour{
                 }
             } // end for 
         } // end for 
+        
+        // perdeki taslara kendisiyle aynı perdeki tasların verisini ekleyelim
+        for (int i = 0; i < AyniMeyveFarkliRenkPerleri.Count; i++){
+            var per = AyniMeyveFarkliRenkPerleri[i];
+            foreach (var pTas in per){
+                var pTasInstance = TasManeger.Instance.TasInstances[pTas.Value];
+                var perClone = new Dictionary<int, GameObject>(per);
+                if (pTasInstance.PerAilesi is null){
+                    pTasInstance.PerAilesi = perClone;
+                }
+            }
+        }
     }
 
     public void PerlerListObjeleriTemizle(){

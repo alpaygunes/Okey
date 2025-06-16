@@ -43,6 +43,7 @@ public class Tas : MonoBehaviour{
     public GameObject PersizIstakaTaslariGostergesi;
     public List<GameObject> AyniKolondakiAltinveAltinTaslar = new List<GameObject>();
     public bool TiklanaBilir{ get; set; } = true;
+    public Dictionary<int, GameObject> PerAilesi{ get; set; }
 
     private void Awake(){;
         TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();

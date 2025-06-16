@@ -44,7 +44,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         _istakadakiIlkBosCep = IstakaKontrol();
         PerAdaylariniBelirle(_istakadakiIlkBosCep);
         PerAdayiKurallariniBelirle();
-        kurallarauygunIlkTasiBul();
+        KurallarauygunIlkTasiBul();
     }
     
     private  Cep IstakaKontrol(){
@@ -57,8 +57,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         return null;
     }
 
-    private void PerAdaylariniBelirle(Cep cep){
-        //if (Istaka.Instance.CepList.Count==GameManager.Instance.CepSayisi) return;
+    private void PerAdaylariniBelirle(Cep cep){ 
         if (cep == null) return;
         if (cep.colID == 0 || cep.colID == Istaka.Instance.CepList.Count) return;
         List<Cep> ucluk = new List<Cep>();
@@ -107,6 +106,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
             }
             ucluk.Clear();
         }
+        
         cep.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.red;
     }
     
@@ -179,9 +179,9 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                     // farklı meyve
                     if (ucluk[0].TasInstance.MeyveID != ucluk[2].TasInstance.MeyveID){
                         if (ucluk[0].TasInstance.renk == ucluk[2].TasInstance.renk){
-                            yasakliMeyveID0 = ucluk[1].TasInstance.MeyveID ;
+                            yasakliMeyveID0 = ucluk[0].TasInstance.MeyveID ;
                             yasakliMeyveID1 = ucluk[2].TasInstance.MeyveID ;
-                            arananRenk = ucluk[1].TasInstance.renk;
+                            arananRenk = ucluk[0].TasInstance.renk;
                             kriter.Add("arananRenk", arananRenk); 
                             kriter.Add("yasakliMeyveID0", yasakliMeyveID0); 
                             kriter.Add("yasakliMeyveID1", yasakliMeyveID1); 
@@ -230,7 +230,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         } // foreach
     }
     
-    private  void kurallarauygunIlkTasiBul(){
+    private  void KurallarauygunIlkTasiBul(){
         List<Tas> aranantaslar = new List<Tas>();
         aranantaslar.Clear();
         foreach (var kriter in AranacakKriterler){
