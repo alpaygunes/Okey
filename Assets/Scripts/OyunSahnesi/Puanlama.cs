@@ -175,8 +175,7 @@ public class Puanlama : MonoBehaviour{
 
                     if (PtasIleUyumluMeyveFarkliRenkAyni.Count >= 6){
                         // R * M *  
-                        tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
-                            cTasInstance);
+                        tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count, cTasInstance);
                         cTasInstance.PtasIleUyumlu = true;
                         cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
                         cTasInstance.TiklanaBilir = false;
@@ -294,20 +293,20 @@ public class Puanlama : MonoBehaviour{
             //tasScript.TaslarinRakaminiPuanaEkle();
         }
  
-        float gecikme = 1f;
-        Invoke(nameof(Deneme), gecikme);
+        /*float gecikme = 1f;
+        Invoke(nameof(Deneme), gecikme);*/
     }
 
-    void Deneme(){
+   /* void Deneme(){
         GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.DevamEdiyor;
-    }
+    }*/
 
     public void Puanla(){
         Card.Instance.Sallanma(); 
         if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
-            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.PuanlamaYapiliyor; 
+            //GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.PuanlamaYapiliyor; 
             OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
             PerlerleriNetlestir();
             RengiVeMeyvesiUyumluKarttakiTaslariIsaretle();

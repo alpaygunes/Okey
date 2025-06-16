@@ -361,7 +361,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
     }
 
-    public void TasGoreveUygunsaYildiziYak(Tas tas){
+    public void CepGoreveUyduysaYildiziYak(Tas tas){
         var cepScript = tas.cepInstance; 
         GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
         var gTas = gorevTaslari[cepScript.colID];

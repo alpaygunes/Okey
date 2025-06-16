@@ -36,15 +36,15 @@ public class PerIcinTasTavsiye : MonoBehaviour{
             yield return new WaitForSeconds(1f);
             _timeLeft--;
         }
-        if (GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.DevamEdiyor)
+        //if (GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.DevamEdiyor)
             TasBul();
     }
     
     private  void TasBul(){ 
         _istakadakiIlkBosCep = IstakaKontrol();
-        uclukleriBelirle(_istakadakiIlkBosCep);
-        uclugeUygunKurallariBelirle();
-        kurallarauygunIlkTasiBul(); 
+        PerAdaylariniBelirle(_istakadakiIlkBosCep);
+        PerAdayiKurallariniBelirle();
+        kurallarauygunIlkTasiBul();
     }
     
     private  Cep IstakaKontrol(){
@@ -57,64 +57,60 @@ public class PerIcinTasTavsiye : MonoBehaviour{
         return null;
     }
 
-    private  void kurallarauygunIlkTasiBul(){
-        List<Tas> aranantaslar = new List<Tas>();
-        aranantaslar.Clear();
-        foreach (var kriter in AranacakKriterler){
-            int arananMeyveID = -1;
-            int yasakliMeyveID0 = -1;
-            int yasakliMeyveID1 = -1;
-            Color arananRenk = default;
-            Color yasakliRenk0 = default;
-            Color yasakliRenk1 = default;
-            Cep hedefCep = null;
- 
-            foreach (var tas in carddakiTaslar){
-                bool MeyveIDTamam = false;
-                bool uygunRenkTamam = false;
-                bool yasakliRenklerTamam = false;
-                bool yasakliMeyveTamam = false;
-
-                if (kriter.Value.ContainsKey("hedefCep")){
-                    hedefCep = (Cep)kriter.Value["hedefCep"];
-                }
-
-                if (kriter.Value.ContainsKey("arananMeyveID")){
-                    arananMeyveID = (int)kriter.Value["arananMeyveID"];
-                    MeyveIDTamam = TasManeger.Instance.TasInstances[tas].MeyveID == arananMeyveID;
-                }
-                else if (kriter.Value.ContainsKey("yasakliMeyveID0") && kriter.Value.ContainsKey("yasakliMeyveID1")){
-                    yasakliMeyveID0 =  (int)kriter.Value["yasakliMeyveID0"];
-                    yasakliMeyveID1 =  (int)kriter.Value["yasakliMeyveID1"];
-                    yasakliMeyveTamam = (TasManeger.Instance.TasInstances[tas].MeyveID != yasakliMeyveID0)
-                                        && (TasManeger.Instance.TasInstances[tas].MeyveID != yasakliMeyveID1);
-                }
-
-                if (kriter.Value.ContainsKey("arananRenk")){
-                    arananRenk = (Color)kriter.Value["arananRenk"];
-                    uygunRenkTamam = TasManeger.Instance.TasInstances[tas].renk == arananRenk;
-                }
-                else if (kriter.Value.ContainsKey("yasakliRenk0") && kriter.Value.ContainsKey("yasakliRenk1")){
-                    yasakliRenk0 = (Color)kriter.Value["yasakliRenk0"];
-                    yasakliRenk1 = (Color)kriter.Value["yasakliRenk1"];
-                    yasakliRenklerTamam = (TasManeger.Instance.TasInstances[tas].renk != yasakliRenk0)
-                                          && (TasManeger.Instance.TasInstances[tas].renk != yasakliRenk1);
-                }
-
-                if ((MeyveIDTamam || yasakliMeyveTamam) && uygunRenkTamam){
-                    aranantaslar.Add(TasManeger.Instance.TasInstances[tas]);
-                } else if ((MeyveIDTamam || yasakliMeyveTamam)  && yasakliRenklerTamam){
-                    aranantaslar.Add(TasManeger.Instance.TasInstances[tas]);
-                }
-            } // foreach
-        } // foreeach
-
-        foreach (var bulunanTas in aranantaslar){
-            bulunanTas.Sallan();
+    private void PerAdaylariniBelirle(Cep cep){
+        //if (Istaka.Instance.CepList.Count==GameManager.Instance.CepSayisi) return;
+        if (cep == null) return;
+        if (cep.colID == 0 || cep.colID == Istaka.Instance.CepList.Count) return;
+        List<Cep> ucluk = new List<Cep>();
+        ucluCepler.Clear();
+        if (Istaka.Instance.CepList.Count > cep.colID && cep.colID>1){
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 2]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
+            ucluCepler.Add(new List<Cep>(ucluk));
+            foreach (var cp in ucluk){
+                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            ucluk.Clear();
         }
-    }
 
-    private  void uclugeUygunKurallariBelirle(){
+        if (Istaka.Instance.CepList.Count > cep.colID-1 
+            && Istaka.Instance.CepList.Count > cep.colID+1){
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID + 1]);
+            ucluCepler.Add(new List<Cep>(ucluk));
+            foreach (var cp in ucluk){
+                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            ucluk.Clear();
+        }
+
+        if (Istaka.Instance.CepList.Count > cep.colID+2){
+            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID + 1]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID + 2]);
+            ucluCepler.Add(new List<Cep>(ucluk));
+            foreach (var cp in ucluk){
+                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            ucluk.Clear();
+        }
+        
+        if (cep.colID  == Istaka.Instance.CepList.Count-1){
+            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 2]);
+            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
+            ucluCepler.Add(new List<Cep>(ucluk));
+            foreach (var cp in ucluk){
+                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            ucluk.Clear();
+        }
+        cep.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.red;
+    }
+    
+    private  void PerAdayiKurallariniBelirle(){
         AranacakKriterler.Clear();
         Dictionary<string, object> kriter = new Dictionary<string, object>();
         foreach (var ucluk in ucluCepler){
@@ -230,59 +226,65 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                     AranacakKriterler.Add(AranacakKriterler.Count, new Dictionary<string, object>(kriter)); 
                 } 
             }
+            
         } // foreach
     }
+    
+    private  void kurallarauygunIlkTasiBul(){
+        List<Tas> aranantaslar = new List<Tas>();
+        aranantaslar.Clear();
+        foreach (var kriter in AranacakKriterler){
+            int arananMeyveID = -1;
+            int yasakliMeyveID0 = -1;
+            int yasakliMeyveID1 = -1;
+            Color arananRenk = default;
+            Color yasakliRenk0 = default;
+            Color yasakliRenk1 = default;
+            Cep hedefCep = null;
+ 
+            foreach (var tas in carddakiTaslar){
+                bool MeyveIDTamam = false;
+                bool uygunRenkTamam = false;
+                bool yasakliRenklerTamam = false;
+                bool yasakliMeyveTamam = false;
 
-    void uclukleriBelirle(Cep cep){
-        //if (Istaka.Instance.CepList.Count==GameManager.Instance.CepSayisi) return;
-        if (cep == null) return;
-        if (cep.colID == 0 || cep.colID == Istaka.Instance.CepList.Count) return;
-        List<Cep> ucluk = new List<Cep>();
-        ucluCepler.Clear();
-        if (Istaka.Instance.CepList.Count > cep.colID && cep.colID>1){
-            ucluk.Add(Istaka.Instance.CepList[cep.colID - 2]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
-            ucluCepler.Add(new List<Cep>(ucluk));
-            foreach (var cp in ucluk){
-                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
-            }
-            ucluk.Clear();
-        }
+                if (kriter.Value.ContainsKey("hedefCep")){
+                    hedefCep = (Cep)kriter.Value["hedefCep"];
+                }
 
-        if (Istaka.Instance.CepList.Count > cep.colID-1 
-            && Istaka.Instance.CepList.Count > cep.colID+1){
-            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID + 1]);
-            ucluCepler.Add(new List<Cep>(ucluk));
-            foreach (var cp in ucluk){
-                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
-            }
-            ucluk.Clear();
-        }
+                if (kriter.Value.ContainsKey("arananMeyveID")){
+                    arananMeyveID = (int)kriter.Value["arananMeyveID"];
+                    MeyveIDTamam = TasManeger.Instance.TasInstances[tas].MeyveID == arananMeyveID;
+                }
+                else if (kriter.Value.ContainsKey("yasakliMeyveID0") && kriter.Value.ContainsKey("yasakliMeyveID1")){
+                    yasakliMeyveID0 =  (int)kriter.Value["yasakliMeyveID0"];
+                    yasakliMeyveID1 =  (int)kriter.Value["yasakliMeyveID1"];
+                    yasakliMeyveTamam = (TasManeger.Instance.TasInstances[tas].MeyveID != yasakliMeyveID0)
+                                        && (TasManeger.Instance.TasInstances[tas].MeyveID != yasakliMeyveID1);
+                }
 
-        if (Istaka.Instance.CepList.Count > cep.colID+2){
-            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID + 1]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID + 2]);
-            ucluCepler.Add(new List<Cep>(ucluk));
-            foreach (var cp in ucluk){
-                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
-            }
-            ucluk.Clear();
+                if (kriter.Value.ContainsKey("arananRenk")){
+                    arananRenk = (Color)kriter.Value["arananRenk"];
+                    uygunRenkTamam = TasManeger.Instance.TasInstances[tas].renk == arananRenk;
+                }
+                else if (kriter.Value.ContainsKey("yasakliRenk0") && kriter.Value.ContainsKey("yasakliRenk1")){
+                    yasakliRenk0 = (Color)kriter.Value["yasakliRenk0"];
+                    yasakliRenk1 = (Color)kriter.Value["yasakliRenk1"];
+                    yasakliRenklerTamam = (TasManeger.Instance.TasInstances[tas].renk != yasakliRenk0)
+                                          && (TasManeger.Instance.TasInstances[tas].renk != yasakliRenk1);
+                }
+
+                if ((MeyveIDTamam || yasakliMeyveTamam) && uygunRenkTamam){
+                    aranantaslar.Add(TasManeger.Instance.TasInstances[tas]);
+                } else if ((MeyveIDTamam || yasakliMeyveTamam)  && yasakliRenklerTamam){
+                    aranantaslar.Add(TasManeger.Instance.TasInstances[tas]);
+                }
+            } // foreach
+        } // foreeach
+
+        foreach (var bulunanTas in aranantaslar){
+            bulunanTas.Sallan();
         }
-        
-        if (cep.colID  == Istaka.Instance.CepList.Count-1){
-            ucluk.Add(Istaka.Instance.CepList[cep.colID]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID - 2]);
-            ucluk.Add(Istaka.Instance.CepList[cep.colID - 1]);
-            ucluCepler.Add(new List<Cep>(ucluk));
-            foreach (var cp in ucluk){
-                cp.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.green;
-            }
-            ucluk.Clear();
-        }
-        cep.transform.Find("ForDebug").GetComponent<SpriteRenderer>().color = Color.red;
     }
+    
 }

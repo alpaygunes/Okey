@@ -170,8 +170,7 @@ public class LobbyManager : NetworkBehaviour{
             // 3.   Lobiyi al ve metadata'ya eriş
 
             if (lobbyInfo.Data.ContainsKey("isGameStarted") &&
-                lobbyInfo.Data["isGameStarted"].Value == "true"){
-                //Debug.Log("Oyun başladı! İstemci bunu biliyor.");
+                lobbyInfo.Data["isGameStarted"].Value == "true"){ 
                 return false;
             }
             else{
@@ -205,8 +204,7 @@ public class LobbyManager : NetworkBehaviour{
             if (joinedLobby.Data.TryGetValue("oyunTipi", out var relayData) &&
                 !string.IsNullOrEmpty(relayData.Value)){
                 if (Enum.TryParse<OyunKurallari.OyunTipleri>(relayData.Value, out var oyunTipi)){
-                    OyunKurallari.Instance.InitializeSettings();
-                    //Debug.LogWarning("JoinLobbyByID Oyun Tipi: " + relayData.Value);
+                    OyunKurallari.Instance.InitializeSettings(); 
                 }
                 else{
                     Debug.LogWarning("Geçersiz oyun tipi: " + relayData.Value);

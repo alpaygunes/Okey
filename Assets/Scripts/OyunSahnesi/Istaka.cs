@@ -108,6 +108,7 @@ public class Istaka : MonoBehaviour{
         
     }
 
+    // sadece meyveler aynıysa per adayi olarak belirlenir.
     public void FarkliMeyvePerleriniBelirle(){
         FarkliMeyvePerleri.Clear();
         Dictionary<int, GameObject> farklilarGrupu = new Dictionary<int, GameObject>();
@@ -126,34 +127,58 @@ public class Istaka : MonoBehaviour{
                 try{
                     Cep sonrakiCepInstance = CepList[i + 1];
                     if (cepInstance.TasInstance.MeyveID != sonrakiCepInstance?.TasInstance?.MeyveID
-                        && !farklilarGrupu.ContainsValue(sonrakiCepInstance?.TasInstance?.gameObject)){
-                        farklilarGrupu.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
+                        && sonrakiCepInstance != null
+                        && sonrakiCepInstance.TasInstance != null){
+                        var mevcutmu = MeyvePerdeMevcutmu(farklilarGrupu, sonrakiCepInstance.TasInstance.MeyveID);
+                        if (!mevcutmu){ 
+                            farklilarGrupu.Add(i + 1, sonrakiCepInstance.TasInstance.gameObject);
+                        } else{
+                            i--;
+                            _yeniGrupOlustur = true;
+                        } 
                     }
                     else{
                         _yeniGrupOlustur = true;
                     }
                 }
-                catch (Exception e){
-                    Debug.Log(e.Message);
+                catch (Exception e){ 
                     _yeniGrupOlustur = true;
                 }
             }
 
             if (_yeniGrupOlustur){
                 if (farklilarGrupu.Count > 2){
-                    FarkliMeyvePerleri.Add(new Dictionary<int, GameObject>(farklilarGrupu));
-                }
-
-                farklilarGrupu.Clear();
+                    FarkliMeyvePerleri.Add(new Dictionary<int, GameObject>(farklilarGrupu)); 
+                } 
+                farklilarGrupu.Clear(); 
             }
         } // for end 
     }
 
+    private bool MeyvePerdeMevcutmu( Dictionary<int,GameObject> fGrup ,int MeyveId){
+        bool mevcut = false;
+        foreach (var item in fGrup){
+            var itemIsntance = TasManeger.Instance.TasInstances[item.Value];
+            if (itemIsntance.MeyveID == MeyveId){
+                mevcut = true;
+                break;
+            }
+        }
+
+        if (mevcut){
+            Debug.Log("MEVUCUT");
+        }
+        return mevcut;
+    }
+
+    // kesin perler belirlenir
     public void FarkliMeyveGruplriIcindeAyniRenkPerleriniBelirle(){
         FarkliMeyveAyniRenkPerleri.Clear();
-        Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>();
+        Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>(); 
+        Debug.Log($"FarkliMeyvePerleri.Count{FarkliMeyvePerleri.Count}");
         for (int i = 0; i < FarkliMeyvePerleri.Count; i++){
             var grup = FarkliMeyvePerleri[i];
+            Debug.Log($"grup.Count{grup.Count}");
             for (int j = 0; j < grup.Count; j++){
                 _yeniGrupOlustur = false;
                 var key = grup.Keys.ToList()[j];
@@ -183,14 +208,14 @@ public class Istaka : MonoBehaviour{
                 if (_yeniGrupOlustur){
                     if (renkGrubu.Count > 2){
                         FarkliMeyveAyniRenkPerleri.Add(new Dictionary<int, GameObject>(renkGrubu));
-                    }
-
+                    } 
                     renkGrubu.Clear();
                 }
             } // end for 
         } // end for
     }
-
+    
+    // kesin perler belirlenir
     public void AyniMeyvePerleriniBelirle(){
         AyniMeyvePerleri.Clear();
         Dictionary<int, GameObject> benzerRakamGrubu = new Dictionary<int, GameObject>();
@@ -230,7 +255,8 @@ public class Istaka : MonoBehaviour{
             }
         } // for end 
     }
-
+    
+    // kesin perler belirlenir
     public void AyniMeyveGruplarinIcindekiAyniRenkPerleriniBelirle(){
         AyniMeyveAyniRenkPerleri.Clear();
         Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>();
@@ -272,6 +298,7 @@ public class Istaka : MonoBehaviour{
             } // end for 
         } // end for
     }
+    
 
     public void AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle(){
         AyniMeyveFarkliRenkPerleri.Clear();

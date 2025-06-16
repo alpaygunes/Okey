@@ -182,16 +182,14 @@ public class GameManager : MonoBehaviour{
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null){
             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
-                var tas = TasManeger.Instance.TasInstances[hit.collider.gameObject];
-                if (!tas.TiklanaBilir) return;
-                var yerlestimi = tas.BosCebeYerles();
-                if (yerlestimi){
-                    Card.Instance.Sallanma();
+                var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
+                if (!tasInstance.TiklanaBilir) return;
+                Card.Instance.Sallanma();
+                var yerlestimi = tasInstance.BosCebeYerles();
+                if (yerlestimi){ 
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                        GorevYoneticisi.Instance.TasGoreveUygunsaYildiziYak(
-                            TasManeger.Instance.TasInstances[hit.collider.gameObject]);
-                    }
-
+                        GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);
+                    } 
                     Istaka.Instance.PerleriBul();
                     Istaka.Instance.PerdekiTaslariBelirginYap();
                     DugmeGosterilsinmi();

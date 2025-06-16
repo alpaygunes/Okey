@@ -84,8 +84,7 @@ public class NetworkDataManager : NetworkBehaviour{
 
 
     private bool OyuncuVarMi(ulong clientId){
-        if (oyuncuListesi == null || !IsSpawned){
-            //Debug.LogWarning("Oyuncu listesi hazır değil veya nesne spawn edilmedi.");
+        if (oyuncuListesi == null || !IsSpawned){ 
             return false;
         }
 
