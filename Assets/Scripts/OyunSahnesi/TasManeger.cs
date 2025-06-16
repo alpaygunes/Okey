@@ -21,7 +21,7 @@ public class TasManeger : MonoBehaviour{
             var Tas = Instantiate(tare, new Vector3(0, 0, 5), Quaternion.identity); 
             var tasScribe = Tas.GetComponentInChildren<Tas>(); 
             tasScribe.MeyveID = data.number;
-            tasScribe.renk = Renkler.RenkSozlugu[data.color];
+            tasScribe.Renk = Renkler.RenkSozlugu[data.color];
             TasList.Add(Tas);
         }
     }

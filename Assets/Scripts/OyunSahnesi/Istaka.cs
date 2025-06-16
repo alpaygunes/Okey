@@ -63,9 +63,9 @@ public class Istaka : MonoBehaviour{
     public void PerleriBul(){
         FarkliMeyvePerleriniBelirle();
         AyniMeyvePerleriniBelirle();
-        FarkliMeyveGruplriIcindeAyniRenkPerleriniBelirle();
-        AyniMeyveGruplarinIcindekiAyniRenkPerleriniBelirle();
-        AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle();
+        FarkliMeyveGruplariIcindeAyniRenkPerleriniBelirle();
+        AyniMeyveGruplariIcindekiAyniRenkPerleriniBelirle();
+        AyniMeyveGruplariIcindekiFarkliRenkPerleriniBelirle();
     }
 
     public void IstakayiVeCartiTemizle(){
@@ -213,7 +213,7 @@ public class Istaka : MonoBehaviour{
     } 
 
     // kesin perler belirlenir
-    public void FarkliMeyveGruplriIcindeAyniRenkPerleriniBelirle(){
+    public void FarkliMeyveGruplariIcindeAyniRenkPerleriniBelirle(){
         FarkliMeyveAyniRenkPerleri.Clear();
         Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>(); 
         Debug.Log($"FarkliMeyvePerleri.Count{FarkliMeyvePerleri.Count}");
@@ -233,8 +233,8 @@ public class Istaka : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         // rengi aynı mı ?
-                        if (TasManeger.Instance.TasInstances[tas].renk ==
-                            TasManeger.Instance.TasInstances[sonrakiTasA].renk){
+                        if (TasManeger.Instance.TasInstances[tas].Renk ==
+                            TasManeger.Instance.TasInstances[sonrakiTasA].Renk){
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else{
@@ -269,7 +269,7 @@ public class Istaka : MonoBehaviour{
     }
     
     // kesin perler belirlenir
-    public void AyniMeyveGruplarinIcindekiAyniRenkPerleriniBelirle(){
+    public void AyniMeyveGruplariIcindekiAyniRenkPerleriniBelirle(){
         AyniMeyveAyniRenkPerleri.Clear();
         Dictionary<int, GameObject> renkGrubu = new Dictionary<int, GameObject>();
         for (int i = 0; i < AyniMeyvePerleri.Count; i++){
@@ -287,8 +287,8 @@ public class Istaka : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         // rengi aynı mı ?
-                        if (TasManeger.Instance.TasInstances[tas].renk ==
-                            TasManeger.Instance.TasInstances[sonrakiTasA].renk){
+                        if (TasManeger.Instance.TasInstances[tas].Renk ==
+                            TasManeger.Instance.TasInstances[sonrakiTasA].Renk){
                             renkGrubu.Add(grup.Keys.ToList()[j + 1], sonrakiTasA);
                         }
                         else{
@@ -324,7 +324,7 @@ public class Istaka : MonoBehaviour{
     }
     
     // kesin perler belirlenir
-    public void AyniMeyveGruplarinIcindekiFarkliRenkPerleriniBelirle(){
+    public void AyniMeyveGruplariIcindekiFarkliRenkPerleriniBelirle(){
         AyniMeyveFarkliRenkPerleri.Clear();
         Dictionary<int, GameObject> farkliRenklilerGrubu = new Dictionary<int, GameObject>();
         for (int i = 0; i < AyniMeyvePerleri.Count; i++){
@@ -343,8 +343,8 @@ public class Istaka : MonoBehaviour{
                     var sonrakiKey = grup.Keys.ToList()[j + 1];
                     if (grup.TryGetValue(sonrakiKey, out var sonrakiTasA)){
                         foreach (var item in farkliRenklilerGrubu){
-                            if (TasManeger.Instance.TasInstances[sonrakiTasA].renk
-                                == TasManeger.Instance.TasInstances[item.Value].renk){
+                            if (TasManeger.Instance.TasInstances[sonrakiTasA].Renk
+                                == TasManeger.Instance.TasInstances[item.Value].Renk){
                                 if (item.Key != sonrakiKey - 1){
                                     j--;
                                 }

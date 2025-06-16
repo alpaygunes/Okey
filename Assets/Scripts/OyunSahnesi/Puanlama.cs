@@ -153,7 +153,7 @@ public class Puanlama : MonoBehaviour{
 
                     if (PtasIleUyumluMeyveFarkliRenkAyni.Count == 4){
                         // R a M a 
-                        if (tasInstance.MeyveID == cTasInstance.MeyveID && tasInstance.renk == cTasInstance.renk){
+                        if (tasInstance.MeyveID == cTasInstance.MeyveID && tasInstance.Renk == cTasInstance.Renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 cTasInstance);
                             cTasInstance.PtasIleUyumlu = true;
@@ -164,7 +164,7 @@ public class Puanlama : MonoBehaviour{
 
                     if (PtasIleUyumluMeyveFarkliRenkAyni.Count == 5){
                         // R a M * 
-                        if (tasInstance.renk == cTasInstance.renk){
+                        if (tasInstance.Renk == cTasInstance.Renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 cTasInstance);
                             cTasInstance.PtasIleUyumlu = true;
@@ -191,7 +191,7 @@ public class Puanlama : MonoBehaviour{
                     var itemIstance = TasManeger.Instance.TasInstances[item];
                     if (PtasIleUyumluMeyveAyniRenkAyni.Count == 3){
                         // R a M a 
-                        if (tasInstance.MeyveID == itemIstance.MeyveID && tasInstance.renk == itemIstance.renk){
+                        if (tasInstance.MeyveID == itemIstance.MeyveID && tasInstance.Renk == itemIstance.Renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
                             itemIstance.PtasIleUyumlu = true;
@@ -210,7 +210,7 @@ public class Puanlama : MonoBehaviour{
 
                     if (PtasIleUyumluMeyveAyniRenkAyni.Count == 5){
                         // R a M * 
-                        if (tasInstance.renk == itemIstance.renk){
+                        if (tasInstance.Renk == itemIstance.Renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemIstance);
                             itemIstance.PtasIleUyumlu = true;
@@ -238,7 +238,7 @@ public class Puanlama : MonoBehaviour{
                     var itemInstance = TasManeger.Instance.TasInstances[item];
                     if (PtasIleUyumluMeyveAyniFarkliRenk.Count == 3){
                         // R a M a 
-                        if (tasInstance.MeyveID == itemInstance.MeyveID && tasInstance.renk == itemInstance.renk){
+                        if (tasInstance.MeyveID == itemInstance.MeyveID && tasInstance.Renk == itemInstance.Renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemInstance);
                             itemInstance.PtasIleUyumlu = true;
@@ -260,7 +260,7 @@ public class Puanlama : MonoBehaviour{
 
                     if (PtasIleUyumluMeyveAyniFarkliRenk.Count == 5){
                         // R a M * 
-                        if (tasInstance.renk == itemInstance.renk){
+                        if (tasInstance.Renk == itemInstance.Renk){
                             tasInstance.BonusOlarakEslesenTaslar.Add(tasInstance.BonusOlarakEslesenTaslar.Count,
                                 itemInstance);
                             itemInstance.PtasIleUyumlu = true;

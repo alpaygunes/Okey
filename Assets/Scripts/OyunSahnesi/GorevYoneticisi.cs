@@ -344,9 +344,9 @@ public class GorevYoneticisi : NetworkBehaviour{
             if (pTs.Value ==null) break;
             var pTas = pTs.Value.GetComponent<Tas>();
             var gTas = gorevTaslari[i];
-            if (pTas.MeyveID == gTas.MeyveID && pTas.renk == gTas.Renk){
+            if (pTas.MeyveID == gTas.MeyveID && pTas.Renk == gTas.Renk){
                 pTas.GorevleUyum = 2; 
-            }else if (pTas.MeyveID == gTas.MeyveID || pTas.renk == gTas.Renk){ 
+            }else if (pTas.MeyveID == gTas.MeyveID || pTas.Renk == gTas.Renk){ 
                 pTas.GorevleUyum = 1; 
             }
             i++;
@@ -366,7 +366,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
         var gTas = gorevTaslari[cepScript.colID];
         int uyumSayisi = 0;
-        if (gTas.GetComponent<gTas>().renk == tas.renk){ 
+        if (gTas.GetComponent<gTas>().renk == tas.Renk){ 
             uyumSayisi++;
         }
         if (gTas.GetComponent<gTas>().meyveID == tas.MeyveID){ 

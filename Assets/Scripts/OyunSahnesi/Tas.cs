@@ -11,7 +11,7 @@ using Object = UnityEngine.Object;
 
 public class Tas : MonoBehaviour{
     public int MeyveID;
-    public Color renk;
+    public Color Renk;
     private float animasyonSuresi = 1f;
     public GameObject sagindakiKomsuTas;
     private Rigidbody2D _rigidbody;
@@ -43,7 +43,7 @@ public class Tas : MonoBehaviour{
     public GameObject PersizIstakaTaslariGostergesi;
     public List<GameObject> AyniKolondakiAltinveAltinTaslar = new List<GameObject>();
     public bool TiklanaBilir{ get; set; } = true;
-    public Dictionary<int, GameObject> PerAilesi{ get; set; }
+    public Dictionary<int, GameObject> PerAilesi{ get; set; } = null;
 
     private void Awake(){;
         TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
@@ -65,12 +65,12 @@ public class Tas : MonoBehaviour{
         
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        var acikRenk = Color.Lerp(renk, Color.white, 1f);
+        var acikRenk = Color.Lerp(Renk, Color.white, 1f);
         zeminSpriteRenderer.color = acikRenk;
         Sprite sprite = Resources.Load<Sprite>("Images/Meyveler/" + MeyveID); 
         MeyveResmiSpriteRenderer.sprite = sprite;
 
-        var koyuRenk = Color.Lerp(renk, Color.black, 0.0f);
+        var koyuRenk = Color.Lerp(Renk, Color.black, 0.0f);
         MeyveResmiSpriteRenderer.color = koyuRenk;
         MeyveResmiSpriteRenderer.transform.localScale *= 1.25f;
          

@@ -130,12 +130,12 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                         arananMeyveID = ucluk[1].TasInstance.MeyveID;
                         kriter.Add("arananMeyveID", arananMeyveID);
                         //aynı renk
-                        if (ucluk[1].TasInstance.renk == ucluk[2].TasInstance.renk){
-                            arananRenk = ucluk[1].TasInstance.renk;  
+                        if (ucluk[1].TasInstance.Renk == ucluk[2].TasInstance.Renk){
+                            arananRenk = ucluk[1].TasInstance.Renk;  
                             kriter.Add("arananRenk", arananRenk); 
                         } else { // farklı renk 
-                            yasakliRenk0 = ucluk[1].TasInstance.renk;
-                            yasakliRenk1 = ucluk[2].TasInstance.renk;
+                            yasakliRenk0 = ucluk[1].TasInstance.Renk;
+                            yasakliRenk1 = ucluk[2].TasInstance.Renk;
                             kriter.Add("yasakliRenk0", yasakliRenk0); 
                             kriter.Add("yasakliRenk1", yasakliRenk1); 
                         } 
@@ -143,10 +143,10 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                     
                     // farklı meyve
                     if (ucluk[1].TasInstance.MeyveID != ucluk[2].TasInstance.MeyveID){
-                        if (ucluk[1].TasInstance.renk == ucluk[2].TasInstance.renk){
+                        if (ucluk[1].TasInstance.Renk == ucluk[2].TasInstance.Renk){
                             yasakliMeyveID0 = ucluk[1].TasInstance.MeyveID ;
                             yasakliMeyveID1 = ucluk[2].TasInstance.MeyveID ;
-                            arananRenk = ucluk[1].TasInstance.renk;
+                            arananRenk = ucluk[1].TasInstance.Renk;
                             kriter.Add("arananRenk", arananRenk); 
                             kriter.Add("yasakliMeyveID0", yasakliMeyveID0); 
                             kriter.Add("yasakliMeyveID1", yasakliMeyveID1); 
@@ -165,12 +165,12 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                     // Aynı meyve 
                     if (ucluk[0].TasInstance.MeyveID == ucluk[2].TasInstance.MeyveID){  
                         //aynı renk
-                        if (ucluk[0].TasInstance.renk == ucluk[2].TasInstance.renk){
-                            arananRenk = ucluk[0].TasInstance.renk; 
+                        if (ucluk[0].TasInstance.Renk == ucluk[2].TasInstance.Renk){
+                            arananRenk = ucluk[0].TasInstance.Renk; 
                             kriter.Add("arananRenk", arananRenk);  
                         } else { // farklı renk
-                            yasakliRenk0 = ucluk[0].TasInstance.renk;
-                            yasakliRenk1 = ucluk[2].TasInstance.renk;
+                            yasakliRenk0 = ucluk[0].TasInstance.Renk;
+                            yasakliRenk1 = ucluk[2].TasInstance.Renk;
                             kriter.Add("yasakliRenk0", yasakliRenk0); 
                             kriter.Add("yasakliRenk1", yasakliRenk1); 
                         }
@@ -178,10 +178,10 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                     
                     // farklı meyve
                     if (ucluk[0].TasInstance.MeyveID != ucluk[2].TasInstance.MeyveID){
-                        if (ucluk[0].TasInstance.renk == ucluk[2].TasInstance.renk){
+                        if (ucluk[0].TasInstance.Renk == ucluk[2].TasInstance.Renk){
                             yasakliMeyveID0 = ucluk[0].TasInstance.MeyveID ;
                             yasakliMeyveID1 = ucluk[2].TasInstance.MeyveID ;
-                            arananRenk = ucluk[0].TasInstance.renk;
+                            arananRenk = ucluk[0].TasInstance.Renk;
                             kriter.Add("arananRenk", arananRenk); 
                             kriter.Add("yasakliMeyveID0", yasakliMeyveID0); 
                             kriter.Add("yasakliMeyveID1", yasakliMeyveID1); 
@@ -200,12 +200,12 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                         arananMeyveID = ucluk[0].TasInstance.MeyveID;
                         kriter.Add("arananMeyveID", arananMeyveID); 
                         //aynı renk
-                        if (ucluk[0].TasInstance.renk == ucluk[1].TasInstance.renk){
-                            arananRenk = ucluk[0].TasInstance.renk; 
+                        if (ucluk[0].TasInstance.Renk == ucluk[1].TasInstance.Renk){
+                            arananRenk = ucluk[0].TasInstance.Renk; 
                             kriter.Add("arananRenk", arananRenk);  
                         } else { // farklı renk  
-                            yasakliRenk0 = ucluk[0].TasInstance.renk;
-                            yasakliRenk1 = ucluk[1].TasInstance.renk;
+                            yasakliRenk0 = ucluk[0].TasInstance.Renk;
+                            yasakliRenk1 = ucluk[1].TasInstance.Renk;
                             kriter.Add("yasakliRenk0", yasakliRenk0); 
                             kriter.Add("yasakliRenk1", yasakliRenk1); 
                         }
@@ -213,10 +213,10 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                     
                     // farklı meyve
                     if (ucluk[0].TasInstance.MeyveID != ucluk[1].TasInstance.MeyveID){
-                        if (ucluk[0].TasInstance.renk == ucluk[1].TasInstance.renk){
+                        if (ucluk[0].TasInstance.Renk == ucluk[1].TasInstance.Renk){
                             yasakliMeyveID0 = ucluk[0].TasInstance.MeyveID ;
                             yasakliMeyveID1 = ucluk[1].TasInstance.MeyveID ;
-                            arananRenk = ucluk[0].TasInstance.renk;
+                            arananRenk = ucluk[0].TasInstance.Renk;
                             kriter.Add("arananRenk", arananRenk);
                             kriter.Add("yasakliMeyveID0", yasakliMeyveID0); 
                             kriter.Add("yasakliMeyveID1", yasakliMeyveID1); 
@@ -247,37 +247,65 @@ public class PerIcinTasTavsiye : MonoBehaviour{
                 bool uygunRenkTamam = false;
                 bool yasakliRenklerTamam = false;
                 bool yasakliMeyveTamam = false;
-
-                if (kriter.Value.ContainsKey("hedefCep")){
-                    hedefCep = (Cep)kriter.Value["hedefCep"];
-                }
+                var  tavsiyeEdilecekTas = TasManeger.Instance.TasInstances[tas];
+                bool PerdeTasMevcut = false; 
 
                 if (kriter.Value.ContainsKey("arananMeyveID")){
                     arananMeyveID = (int)kriter.Value["arananMeyveID"];
-                    MeyveIDTamam = TasManeger.Instance.TasInstances[tas].MeyveID == arananMeyveID;
+                    MeyveIDTamam = tavsiyeEdilecekTas.MeyveID == arananMeyveID;
                 }
                 else if (kriter.Value.ContainsKey("yasakliMeyveID0") && kriter.Value.ContainsKey("yasakliMeyveID1")){
                     yasakliMeyveID0 =  (int)kriter.Value["yasakliMeyveID0"];
                     yasakliMeyveID1 =  (int)kriter.Value["yasakliMeyveID1"];
-                    yasakliMeyveTamam = (TasManeger.Instance.TasInstances[tas].MeyveID != yasakliMeyveID0)
-                                        && (TasManeger.Instance.TasInstances[tas].MeyveID != yasakliMeyveID1);
+                    yasakliMeyveTamam = (tavsiyeEdilecekTas.MeyveID != yasakliMeyveID0)
+                                        && (tavsiyeEdilecekTas.MeyveID != yasakliMeyveID1);
                 }
 
                 if (kriter.Value.ContainsKey("arananRenk")){
                     arananRenk = (Color)kriter.Value["arananRenk"];
-                    uygunRenkTamam = TasManeger.Instance.TasInstances[tas].renk == arananRenk;
+                    uygunRenkTamam = tavsiyeEdilecekTas.Renk == arananRenk;
                 }
                 else if (kriter.Value.ContainsKey("yasakliRenk0") && kriter.Value.ContainsKey("yasakliRenk1")){
                     yasakliRenk0 = (Color)kriter.Value["yasakliRenk0"];
                     yasakliRenk1 = (Color)kriter.Value["yasakliRenk1"];
-                    yasakliRenklerTamam = (TasManeger.Instance.TasInstances[tas].renk != yasakliRenk0)
-                                          && (TasManeger.Instance.TasInstances[tas].renk != yasakliRenk1);
+                    yasakliRenklerTamam = (tavsiyeEdilecekTas.Renk != yasakliRenk0)
+                                          && (tavsiyeEdilecekTas.Renk != yasakliRenk1);
+                }
+                
+                // Hedef cepten önce yada sonra per var mı ? Cepteki PerAilesine bakalım.
+                if (kriter.Value.ContainsKey("hedefCep")){
+                    hedefCep = (Cep)kriter.Value["hedefCep"];
+                    int oncekiCepID;
+                    int sonrakiCepID;
+                    Tas oncekiCeptekiTas = null;
+                    Tas sonrakiCeptekiTas= null;
+                    if (hedefCep.colID > 0){
+                        oncekiCepID = hedefCep.colID - 1;
+                        oncekiCeptekiTas = Istaka.Instance.CepList[oncekiCepID].TasInstance;
+                    }
+                    if (hedefCep.colID < Istaka.Instance.CepList.Count-1){
+                        sonrakiCepID = hedefCep.colID + 1;
+                        sonrakiCeptekiTas = Istaka.Instance.CepList[sonrakiCepID].TasInstance;
+                    }
+                    
+                    // öncekinde ailevarmı
+                    if (oncekiCeptekiTas?.PerAilesi is not null){
+                        var aile = oncekiCeptekiTas.PerAilesi;
+                        PerdeTasMevcut = AiledeTavsiyeEdicelecekTasVarmi(aile,tavsiyeEdilecekTas);
+                    }
+                    // sonrakinde ailevarmı
+                    if (sonrakiCeptekiTas?.PerAilesi is not null){
+                        var aile = sonrakiCeptekiTas.PerAilesi;
+                        PerdeTasMevcut = AiledeTavsiyeEdicelecekTasVarmi(aile,tavsiyeEdilecekTas);
+                    }
                 }
 
-                if ((MeyveIDTamam || yasakliMeyveTamam) && uygunRenkTamam){
-                    aranantaslar.Add(TasManeger.Instance.TasInstances[tas]);
-                } else if ((MeyveIDTamam || yasakliMeyveTamam)  && yasakliRenklerTamam){
-                    aranantaslar.Add(TasManeger.Instance.TasInstances[tas]);
+                if (!PerdeTasMevcut){ 
+                    if ((MeyveIDTamam || yasakliMeyveTamam) && uygunRenkTamam){
+                        aranantaslar.Add(tavsiyeEdilecekTas);
+                    } else if ((MeyveIDTamam || yasakliMeyveTamam)  && yasakliRenklerTamam){
+                        aranantaslar.Add(tavsiyeEdilecekTas);
+                    }
                 }
             } // foreach
         } // foreeach
@@ -286,5 +314,30 @@ public class PerIcinTasTavsiye : MonoBehaviour{
             bulunanTas.Sallan();
         }
     }
-    
+
+    private bool AiledeTavsiyeEdicelecekTasVarmi(Dictionary<int, GameObject> Per, Tas tavsiyeEdilecekTas){
+        bool mevcut = false;
+        
+        //perin iki tasina bakarak netür bir per olduğuna karar verelim
+        var pTasIns0 = TasManeger.Instance.TasInstances[Per[0]];
+        var pTasIns01 = TasManeger.Instance.TasInstances[Per[1]];
+        // renk aynimi 
+        bool renkAyni = false;
+        bool meyveAyni = false;
+        renkAyni = (pTasIns0.Renk == pTasIns01.Renk);
+        meyveAyni = (pTasIns0.MeyveID == pTasIns01.MeyveID);
+        
+        foreach (var pTas in Per){  
+            var pTasIsntance = TasManeger.Instance.TasInstances[pTas.Value];
+            
+            // R ayni M farkli per ise
+            if ((renkAyni && !meyveAyni) || (!renkAyni && meyveAyni)){
+                if (tavsiyeEdilecekTas.MeyveID == pTasIsntance.MeyveID){ 
+                    mevcut = true;
+                    break;
+                }
+            }   
+        }
+        return mevcut;
+    }
 }
