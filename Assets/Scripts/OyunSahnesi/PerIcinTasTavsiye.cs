@@ -316,28 +316,33 @@ public class PerIcinTasTavsiye : MonoBehaviour{
     }
 
     private bool AiledeTavsiyeEdicelecekTasVarmi(Dictionary<int, GameObject> Per, Tas tavsiyeEdilecekTas){
-        bool mevcut = false;
+        try{
+            bool mevcut = false; 
+            //perin iki tasina bakarak netür bir per olduğuna karar verelim
+            var pTasIns0 = TasManeger.Instance.TasInstances[Per[0]];
+            var pTasIns1 = TasManeger.Instance.TasInstances[Per[1]];
+            // renk aynimi 
+            bool renkAyni = false;
+            bool meyveAyni = false;
+            renkAyni = (pTasIns0.Renk == pTasIns1.Renk);
+            meyveAyni = (pTasIns0.MeyveID == pTasIns1.MeyveID);
         
-        //perin iki tasina bakarak netür bir per olduğuna karar verelim
-        var pTasIns0 = TasManeger.Instance.TasInstances[Per[0]];
-        var pTasIns01 = TasManeger.Instance.TasInstances[Per[1]];
-        // renk aynimi 
-        bool renkAyni = false;
-        bool meyveAyni = false;
-        renkAyni = (pTasIns0.Renk == pTasIns01.Renk);
-        meyveAyni = (pTasIns0.MeyveID == pTasIns01.MeyveID);
-        
-        foreach (var pTas in Per){  
-            var pTasIsntance = TasManeger.Instance.TasInstances[pTas.Value];
+            foreach (var pTas in Per){  
+                var pTasIsntance = TasManeger.Instance.TasInstances[pTas.Value];
             
-            // R ayni M farkli per ise
-            if ((renkAyni && !meyveAyni) || (!renkAyni && meyveAyni)){
-                if (tavsiyeEdilecekTas.MeyveID == pTasIsntance.MeyveID){ 
-                    mevcut = true;
-                    break;
-                }
-            }   
+                // R ayni M farkli per ise
+                if ((renkAyni && !meyveAyni) || (!renkAyni && meyveAyni)){
+                    if (tavsiyeEdilecekTas.MeyveID == pTasIsntance.MeyveID){ 
+                        mevcut = true;
+                        break;
+                    }
+                }   
+            }
+            return mevcut;
         }
-        return mevcut;
+        catch (Exception e){
+            Console.WriteLine($"AiledeTavsiyeEdicelecekTasVarmi içinde hata : {e.Message}");
+            return false;
+        } 
     }
 }

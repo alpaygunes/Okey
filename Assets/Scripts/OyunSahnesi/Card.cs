@@ -51,38 +51,42 @@ public class Card : MonoBehaviour{
         carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var tas in carddakiTaslar){
             TasManeger.Instance.TasInstances[tas].Sallanma();
+        } 
+        var ceptekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
+        foreach (var ptas in ceptekiTaslar){
+            TasManeger.Instance.TasInstances[ptas].Sallanma();
         }
     }
 
     public void GoreveUyumluCtasYoket(){ 
-        float beklemeSuresi = .5f;
+        float beklemeSuresi = .1f;
         foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){ 
             var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
             foreach (var uTas in pTasScript.AyniKolondakiAltinveAltinTaslar){
                 var uTasInstance = TasManeger.Instance.TasInstances[uTas]; 
                 uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));  
             }
-            beklemeSuresi += 0.5f; 
+            beklemeSuresi += 0.1f; 
         }
     }
 
     public void PtasIleUyumluCtaslariYoket(){
-        float beklemeSuresi = .2f;
+        float beklemeSuresi = .1f;
         foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){
             var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
             foreach (var bonusTaslari in pTasScript.BonusOlarakEslesenTaslar){
                bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi)); 
-               beklemeSuresi += .5f;
+               beklemeSuresi += .1f;
             }
              
         } 
     }
     
     public void PtaslariYoket(){
-        float beklemeSuresi = .2f;
+        float beklemeSuresi = .1f;
         foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){
             var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
-            beklemeSuresi += .5f;
+            beklemeSuresi += .1f;
             pTasScript.StartCoroutine(pTasScript.BekleYokol(beklemeSuresi)); 
         } 
     }

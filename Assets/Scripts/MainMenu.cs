@@ -13,7 +13,7 @@ public class MainMenu : MonoBehaviour{
     private Button ZamanLimitliBtn; 
     private Button GorevYap; 
     private VisualElement MenuBox; 
-    static public bool isSoloGame = false;
+    static public bool isSoloGame = true;
     
     async void Awake() {
         if (!UnityServices.State.Equals(ServicesInitializationState.Initialized)) {

@@ -116,8 +116,10 @@ public class GameManager : MonoBehaviour{
             || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
             OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
-            if (Istaka.Instance.DoluCepSayisi() == CepSayisi)
+            if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
                 Puanlama.Instance.Puanla();
+                Card.Instance.Sallanma();
+            }
         }
         else if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
             Istaka.Instance.EgerPerYoksaTumTaslarinGostergesiniAc();
@@ -184,8 +186,8 @@ public class GameManager : MonoBehaviour{
             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
                 var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
                 if (!tasInstance.TiklanaBilir) return;
-                Card.Instance.Sallanma();
                 var yerlestimi = tasInstance.BosCebeYerles();
+                Card.Instance.Sallanma();
                 if (yerlestimi){ 
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
                         GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);

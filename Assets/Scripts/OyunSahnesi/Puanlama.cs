@@ -301,8 +301,7 @@ public class Puanlama : MonoBehaviour{
         GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.DevamEdiyor;
     }*/
 
-    public void Puanla(){
-        Card.Instance.Sallanma(); 
+    public void Puanla(){ 
         if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
