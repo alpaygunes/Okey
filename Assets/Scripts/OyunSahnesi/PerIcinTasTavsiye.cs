@@ -10,7 +10,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
     private  GameObject[] carddakiTaslar;
     private  List<List<Cep>> ucluCepler = new List<List<Cep>>();
     private  Coroutine _countdownCoroutine;
-    private  float GeriSayimSuresi{ get; set; } = 2.5f;
+    private  float PerTavsiyesiIcinGeriSayimSuresi{ get; set; } = 2.5f;
 
     private static Dictionary<int, Dictionary<string, object>> AranacakKriterler = new Dictionary<int, Dictionary<string, object>>();
     
@@ -31,7 +31,7 @@ public class PerIcinTasTavsiye : MonoBehaviour{
     }
 
     private  IEnumerator CountdownRoutine(){
-        float _timeLeft = GeriSayimSuresi;
+        float _timeLeft = PerTavsiyesiIcinGeriSayimSuresi;
         while (_timeLeft > 0){
             yield return new WaitForSeconds(1f);
             _timeLeft--;
@@ -231,8 +231,8 @@ public class PerIcinTasTavsiye : MonoBehaviour{
     }
     
     private  void KurallarauygunIlkTasiBul(){
-        List<Tas> aranantaslar = new List<Tas>();
-        aranantaslar.Clear();
+        List<Tas> tavsiyeEdilecekTaslar = new List<Tas>();
+        tavsiyeEdilecekTaslar.Clear();
         foreach (var kriter in AranacakKriterler){
             int arananMeyveID = -1;
             int yasakliMeyveID0 = -1;
@@ -302,17 +302,17 @@ public class PerIcinTasTavsiye : MonoBehaviour{
 
                 if (!PerdeTasMevcut){ 
                     if ((MeyveIDTamam || yasakliMeyveTamam) && uygunRenkTamam){
-                        aranantaslar.Add(tavsiyeEdilecekTas);
+                        tavsiyeEdilecekTaslar.Add(tavsiyeEdilecekTas);
                     } else if ((MeyveIDTamam || yasakliMeyveTamam)  && yasakliRenklerTamam){
-                        aranantaslar.Add(tavsiyeEdilecekTas);
+                        tavsiyeEdilecekTaslar.Add(tavsiyeEdilecekTas);
                     }
                 }
             } // foreach
         } // foreeach
 
-        foreach (var bulunanTas in aranantaslar){
-            bulunanTas.Sallan();
-        }
+        foreach (var tavsiyeTas in tavsiyeEdilecekTaslar){
+            tavsiyeTas.sallanmaDurumu=true; 
+        } 
     }
 
     private bool AiledeTavsiyeEdicelecekTasVarmi(Dictionary<int, GameObject> Per, Tas tavsiyeEdilecekTas){

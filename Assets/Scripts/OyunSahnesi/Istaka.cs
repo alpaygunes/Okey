@@ -78,13 +78,13 @@ public class Istaka : MonoBehaviour{
 
     public void IstakayiVeCartiTemizle(){
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-        float beklemeSuresi = .1f;
+        float beklemeSuresi = 0.05f;
 
         foreach (var cardtakiTas in cardtakiTaslar){
             if (cardtakiTas is null) break;
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
             StartCoroutine(CardtakiTas.BekleYokol(beklemeSuresi));
-            beklemeSuresi += 0.1f;
+            beklemeSuresi += 0.05f;
         }
 
         foreach (var cepInstance in CepList){
@@ -92,13 +92,13 @@ public class Istaka : MonoBehaviour{
             if (CeptekiTas is null) break;
             StartCoroutine(CeptekiTas.BekleYokol(beklemeSuresi));
             cepInstance.TasInstance = null;
-            beklemeSuresi += 0.1f;
+            beklemeSuresi += 0.05f;
         }
 
-        //OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
+         
     }
 
-    public void EgerPerYoksaTumTaslarinGostergesiniAc(){
+    public void TumTaslarinGostergesiniAc(){
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cardtakiTas in cardtakiTaslar){
             if (cardtakiTas is null) break;
@@ -184,11 +184,6 @@ public class Istaka : MonoBehaviour{
                 break;
             }
         }
-
-        if (mevcut){
-            Debug.Log("MEVUCUT");
-        }
-
         return mevcut;
     }
 

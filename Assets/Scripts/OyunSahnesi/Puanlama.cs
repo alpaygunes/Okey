@@ -289,23 +289,17 @@ public class Puanlama : MonoBehaviour{
 
         foreach (var pTas in SiralanmisTumPerlerdekiTaslar){
             var tasScript = TasManeger.Instance.TasInstances[pTas.Value];
-            tasScript.AltinVeElmasGoster(); 
-            //tasScript.TaslarinRakaminiPuanaEkle();
+            tasScript.AltinVeElmasGoster();  
         }
- 
-        /*float gecikme = 1f;
-        Invoke(nameof(Deneme), gecikme);*/
+  
     }
 
-   /* void Deneme(){
-        GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.DevamEdiyor;
-    }*/
+ 
 
     public void Puanla(){ 
         if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
-            || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
-            //GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.PuanlamaYapiliyor; 
+            || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){ 
             OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None;
             PerlerleriNetlestir();
             RengiVeMeyvesiUyumluKarttakiTaslariIsaretle();

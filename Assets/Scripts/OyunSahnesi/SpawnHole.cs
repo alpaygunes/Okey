@@ -21,16 +21,15 @@ public class SpawnHole : MonoBehaviour{
         if (musait && TasManeger.Instance.TasList.Count > 0) {
             musait = false;
             var siradakiTas = TasManeger.Instance.TasList[0];
-            TasManeger.Instance.TasList.RemoveAt(0);
             siradakiTas.gameObject.transform.position = transform.position;
-            siradakiTas.gameObject.transform.localScale = transform.localScale;
-            //siradakiTas.gameObject.transform.localScale *= .195f ;
+            siradakiTas.gameObject.transform.localScale = transform.localScale; 
             siradakiTas.transform.SetParent(GameManager.Instance.transform);
             siradakiTas.tag = "CARDTAKI_TAS";
-            siradakiTas.gameObject.GetComponent<Tas>().colID = colID;
-            TasManeger.Instance.TasInstances.Add(siradakiTas, siradakiTas.gameObject.GetComponent<Tas>());
+            var siradakiTasInstance = siradakiTas.gameObject.GetComponent<Tas>();
+            siradakiTasInstance.colID = colID;
+            TasManeger.Instance.TasInstances.Add(siradakiTas, siradakiTasInstance);
             siradakiTas.SetActive(true);
-            
+            TasManeger.Instance.TasList.RemoveAt(0);
         }
     }
 }

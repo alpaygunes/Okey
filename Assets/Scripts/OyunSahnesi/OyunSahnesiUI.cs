@@ -14,6 +14,7 @@ public class OyunSahnesiUI : MonoBehaviour
     private Button exit;
     public Button puanlamaYap; 
     public Label GorevSayisiLbl;
+    public Label CanSayisi;
     private VisualElement avatars;
  
     private async Task AvatarlariGoster(){
@@ -63,18 +64,17 @@ public class OyunSahnesiUI : MonoBehaviour
         HamleSayisi = rootElement.Q<Label>("HamleSayisi");
         GeriSayim = rootElement.Q<Label>("GeriSayim"); 
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
+        CanSayisi = rootElement.Q<Label>("CanSayisi");
         puanlamaYap = rootElement.Q<Button>("PuanlamaYap");
-        exit = rootElement.Q<Button>("Exit");
-        //GeriSayimBari = rootElement.Q<ProgressBar>("GeriSayimBari");  
-        //PregressBarContainer = rootElement.Q<VisualElement>("PregressBarContainer"); 
+        exit = rootElement.Q<Button>("Exit"); 
         avatars = rootElement.Q<VisualElement>("Avtars"); 
         puanlamaYap.clicked += PerleriDegerlendir;  
-        puanlamaYap.style.display = DisplayStyle.None;
-        //PregressBarContainer.style.display = GameManager.Instance.OtomatikPerkontrolu ? DisplayStyle.Flex : DisplayStyle.None;
-        //GeriSayim.style.display =    PregressBarContainer.style.display;
+        puanlamaYap.style.display = DisplayStyle.None; 
         GorevSayisiLbl.style.display =    DisplayStyle.None; 
+        CanSayisi.style.display =    DisplayStyle.Flex; 
         GeriSayim.text = null;
         GorevSayisiLbl.text = null;
+        CanSayisi.text = null;
         HamleSayisi.text = "0"; 
         HamleSayisi.style.display =    DisplayStyle.None; 
         exit.clicked += () => {
@@ -95,7 +95,8 @@ public class OyunSahnesiUI : MonoBehaviour
         _ = AvatarlariGoster();
     }
      
-    public void PerleriDegerlendir(){  
-        Puanlama.Instance.Puanla();
+    public void PerleriDegerlendir(){ 
+        Puanlama.Instance.Puanla(); 
+        //Card.Instance.Sallanma();
     }
 }

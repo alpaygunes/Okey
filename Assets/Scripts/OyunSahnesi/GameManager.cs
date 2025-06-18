@@ -10,15 +10,15 @@ public class GameManager : MonoBehaviour{
     public readonly int BaslangicTasSayisi = 100;
     public readonly int CepSayisi = 6;
     public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
-    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6);
-    public List<GameObject> spawnHolesList = new List<GameObject>();
+    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6); 
     public string seed;
     public static GameManager Instance{ get; private set; }
-    public int oyununBitimineKalanZaman = 0;
+    public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
     public OynanmaDurumu OyunDurumu;
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public int YeniTasEklendiSayisi = 0;
     public bool OyunSahnesiKapaniyor{ get; set; } = false;
+    public int CanSayisi{ get; set; } = 10;
 
     public enum OynanmaDurumu{
         LimitDoldu,
@@ -52,10 +52,9 @@ public class GameManager : MonoBehaviour{
         }
 
 
-        CreateSpawnHoles();
+        Card.Instance.CreateSpawnHoles();
         TasManeger.Instance.TaslariOlustur();
         Card.Instance.KutulariHazirla();
-
 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
@@ -75,23 +74,9 @@ public class GameManager : MonoBehaviour{
         OyunSahnesiUI.Instance.KalanTasSayisi.text = TasManeger.Instance.TasList.Count.ToString();
     }
 
-    private void CreateSpawnHoles(){
-        Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = cardSize.x / _colonCount;
-        for (int i = 0; i < _colonCount; i++){
-            float holePositionX = i * colonWidth - cardSize.x * .5f;
-            float holePositionY = cardSize.y * .5f + colonWidth;
-            holePositionX += colonWidth * .5f;
-            GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
-            SpawnHole.GetComponent<SpawnHole>().colID = i;
-            var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -0.2f), Quaternion.identity);
-            sh.transform.localScale = new Vector2(colonWidth, colonWidth);
-            spawnHolesList.Add(sh);
-        }
-    }
+    
 
-    private IEnumerator OyununBitimiIcinGeriSayRoutine(){
-        oyununBitimineKalanZaman = 120;
+    private IEnumerator OyununBitimiIcinGeriSayRoutine(){ 
         if (OyunKurallari.Instance){
             oyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
         }
@@ -107,28 +92,31 @@ public class GameManager : MonoBehaviour{
             StopCoroutine(OyununBitimiIcinGeriSayRoutineCoroutin);
             OyununBitimiIcinGeriSayRoutineCoroutin = null;
         }
-
         Puanlama.Instance.LimitleriKontrolEt();
     }
 
     public void DugmeGosterilsinmi(){
+        // per VAR
         if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
             || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
-            OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
-            if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
-                Puanlama.Instance.Puanla();
-                Card.Instance.Sallanma();
-            }
+            
+            if (Istaka.Instance.DoluCepSayisi() == CepSayisi){ 
+                Puanlama.Instance.Puanla();  
+            } else{
+                OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
+            } 
         }
+        // per YOK
         else if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
-            Istaka.Instance.EgerPerYoksaTumTaslarinGostergesiniAc();
+            CanSayisi--;
+            OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
+            Istaka.Instance.TumTaslarinGostergesiniAc();
             Istaka.Instance.IstakayiVeCartiTemizle();
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap)
                 Istaka.Instance.CeptekiYildizleriGizle();
         }
     }
-
 
     void Update(){
         if (OyunDurumu == OynanmaDurumu.LimitDoldu) return;
@@ -150,7 +138,7 @@ public class GameManager : MonoBehaviour{
         }
 #endif
         // tıklana bilir nesne varsa oyun durumunu değiştirelim
-        bool TiklanamazTasVar = false; 
+        bool TiklanamazTasVar = false;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         var perdekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
         foreach (var cTas in cardtakiTaslar){
@@ -187,14 +175,16 @@ public class GameManager : MonoBehaviour{
                 var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
                 if (!tasInstance.TiklanaBilir) return;
                 var yerlestimi = tasInstance.BosCebeYerles();
-                Card.Instance.Sallanma();
-                if (yerlestimi){ 
+                //Card.Instance.Sallanma();
+                if (yerlestimi){
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
                         GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);
-                    } 
+                    }
+
                     Istaka.Instance.PerleriBul();
                     Istaka.Instance.PerdekiTaslariBelirginYap();
-                    DugmeGosterilsinmi();
+                    DugmeGosterilsinmi(); 
+                    Card.Instance.Sallanma();
                 }
 
                 PerIcinTasTavsiye.Instance.Basla();
