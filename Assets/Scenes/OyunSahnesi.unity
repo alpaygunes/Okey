@@ -174,6 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 321774259}
   - component: {fileID: 321774258}
+  - component: {fileID: 321774260}
   m_Layer: 0
   m_Name: Istaka
   m_TagString: Untagged
@@ -213,6 +214,18 @@ Transform:
   - {fileID: 331956526}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &321774260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321774257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf1323ecc4c6a999a07dc5f40b0c267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &331956525
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,12 +342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3251a291c1651a6bb847a5a6c616cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnHolesList: []
   seed: 
-  PerKontrolDugmesiOlsun: 1
-  OtomatikPerkontrolu: 0
   oyununBitimineKalanZaman: 0
   OyunDurumu: 0
+  YeniTasEklendiSayisi: 0
 --- !u!4 &343139322
 Transform:
   m_ObjectHideFlags: 0
@@ -1892,6 +1903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Size: {x: 0, y: 0}
+  spawnHolesList: []
   SiraliAyniRenkliGrup: []
   SiraliFarkliRenkliGrup: []
   AyniMeyveAyniRenkliGrup: []

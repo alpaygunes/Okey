@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour{
     public readonly int _colonCount = 6;
     public readonly int BaslangicTasSayisi = 100;
     public readonly int CepSayisi = 6;
-    public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
+    public readonly RangeInt RenkAraligi = new RangeInt(0, 3);
     public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6); 
     public string seed;
     public static GameManager Instance{ get; private set; }
@@ -102,13 +102,15 @@ public class GameManager : MonoBehaviour{
             || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
             
             if (Istaka.Instance.DoluCepSayisi() == CepSayisi){ 
-                Puanlama.Instance.Puanla();  
+                // şimidilk bekle ootomatik yok etme
+                //Puanlama.Instance.Puanla();  
             } else{
                 OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
             } 
         }
         // per YOK
         else if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
+            return; // bekle
             CanSayisi--;
             OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
             Istaka.Instance.TumTaslarinGostergesiniAc();
@@ -181,7 +183,7 @@ public class GameManager : MonoBehaviour{
                         GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);
                     }
 
-                    Istaka.Instance.PerleriBul();
+                    PerKontrolBirimi.Instance.PerleriBul();
                     Istaka.Instance.PerdekiTaslariBelirginYap();
                     DugmeGosterilsinmi(); 
                     Card.Instance.Sallanma();

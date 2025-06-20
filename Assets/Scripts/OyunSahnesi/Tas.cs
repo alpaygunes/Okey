@@ -195,14 +195,14 @@ public class Tas : MonoBehaviour{
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetAutoKill(true);
-            Debug.Log("Sallanma BAŞLADI ");
+            
         }
         else if (!sallanmaDurumu && tweener != null && tweener.IsActive()){
             tweener.Complete();
             tweener.Kill();
             tweener = null;
             MeyveResmiSpriteRenderer.transform.localScale = orginalScale;
-            Debug.Log("Sallanma DURDU ");
+            
         }
     }
 

@@ -60,16 +60,16 @@ public class Istaka : MonoBehaviour{
         }
     }
 
-    public void PerleriBul(){
-        PerAdayiTaslarinIsaretiniKaldir();
-        FarkliMeyvePerleriniBelirle();
-        AyniMeyvePerleriniBelirle();
-        FarkliMeyveGruplariIcindeAyniRenkPerleriniBelirle();
-        AyniMeyveGruplariIcindekiAyniRenkPerleriniBelirle();
-        AyniMeyveGruplariIcindekiFarkliRenkPerleriniBelirle();
-    }
+    // public void PerleriBul(){
+    //     PerAdayiTaslarinIsaretiniKaldir();
+    //     FarkliMeyvePerleriniBelirle();
+    //     AyniMeyvePerleriniBelirle();
+    //     FarkliMeyveGruplariIcindeAyniRenkPerleriniBelirle();
+    //     AyniMeyveGruplariIcindekiAyniRenkPerleriniBelirle();
+    //     AyniMeyveGruplariIcindekiFarkliRenkPerleriniBelirle();
+    // }
 
-    private void PerAdayiTaslarinIsaretiniKaldir(){
+    public void PerAdayiTaslarinIsaretiniKaldir(){
         for (int i = 0; i < CepList.Count; i++){ 
             if (CepList[i].TasInstance is null) continue;
             CepList[i].TasInstance.PerAdayinaKatildi = false;
