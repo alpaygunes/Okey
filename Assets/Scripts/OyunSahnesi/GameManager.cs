@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour{
     public readonly int _colonCount = 6;
     public readonly int BaslangicTasSayisi = 100;
     public readonly int CepSayisi = 6;
-    public readonly RangeInt RenkAraligi = new RangeInt(0, 3);
+    public readonly RangeInt RenkAraligi = new RangeInt(0, 8);
     public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6); 
     public string seed;
     public static GameManager Instance{ get; private set; }
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour{
                         GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);
                     }
 
-                    PerKontrolBirimi.Instance.PerleriBul();
+                    PerKontrolBirimi.Instance.Tara();
                     Istaka.Instance.PerdekiTaslariBelirginYap();
                     DugmeGosterilsinmi(); 
                     Card.Instance.Sallanma();

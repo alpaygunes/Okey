@@ -43,7 +43,7 @@ public class TasManeger : MonoBehaviour{
         if (GameManager.Instance.YeniTasEklendiSayisi == seed.Length){
             GameManager.Instance.YeniTasEklendiSayisi = 0;
         }
-        Debug.Log($"seed {seed} SubSeed {SubSeed}");
+         
         
         System.Random random = new System.Random(SubSeed.GetHashCode());
         List<Data> dataList = new List<Data>();

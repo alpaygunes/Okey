@@ -3,53 +3,84 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class Grup
+{
+    public List<Tas> Taslar { get; set; } 
+    public string GrupTuru { get; set; } 
+}
+
+
+
 public class PerKontrolBirimi : MonoBehaviour
 {
     public static PerKontrolBirimi Instance;
     public int SiradakiCepNum = 0;
-    Dictionary<int,List<Tas>> Pers  = new Dictionary<int,List<Tas>>();
+    private Dictionary<int,Grup> Gruplar;
     private void Awake(){
         if (Instance != null && Instance != this){
             Destroy(gameObject);
             return;
         } 
         Instance = this;
+        Gruplar = new Dictionary<int,Grup>();
     }
 
-    public void PerleriBul(){
-        Pers.Clear();
+    
+    
+    public void Tara(){
+        GruplariBul();
+        KesisenGruplardanKucuguSil();
+        foreach (var grup in Gruplar){
+            Debug.Log($"GRup Key {grup.Key} " +
+                      $"itibaren    {grup.Value.Taslar.Count} tane" +
+                      $"Grup TÜRÜ {grup.Value.GrupTuru} " );
+        }
+    }
+
+
+    /*
+     * ABCDEF ABCDE ABCD BCD BCDE gibi alt üst tüm grupları bulur
+     */
+    public void GruplariBul(){
+        Debug.ClearDeveloperConsole(); 
         var ceps = Istaka.Instance.CepList;
         for (int i = 0; i+2 < ceps.Count; i++){
-            var perAdayGrubu = new List<Tas>();
+            var perAdayTasGrubu = new List<Tas>();
             var cep = ceps[i];
             if (cep.TasInstance == null) continue;
-            if (ceps[i].TasInstance is not null) perAdayGrubu.Add(ceps[i].TasInstance); 
-            if (ceps[i+1].TasInstance is not null) perAdayGrubu.Add(ceps[i+1].TasInstance); 
-            if (ceps[i+2].TasInstance is not null) perAdayGrubu.Add(ceps[i+2].TasInstance);
-            if (perAdayGrubu.Count < 3) continue;
-            SiradakiCepNum = 2 + i ; // i dahil üç cep
-            while (GrupPermi(perAdayGrubu)){ 
-                var kontroldenGecmisPerAdayGrubu = new List<Tas>(perAdayGrubu);
-                if(!Pers.TryAdd(kontroldenGecmisPerAdayGrubu[0].cepInstance.colID, kontroldenGecmisPerAdayGrubu))
-                    Pers[kontroldenGecmisPerAdayGrubu[0].cepInstance.colID] = kontroldenGecmisPerAdayGrubu;
+            if (ceps[i].TasInstance is not null) perAdayTasGrubu.Add(ceps[i].TasInstance); 
+            if (ceps[i+1].TasInstance is not null) perAdayTasGrubu.Add(ceps[i+1].TasInstance); 
+            if (ceps[i+2].TasInstance is not null) perAdayTasGrubu.Add(ceps[i+2].TasInstance);
+            if (perAdayTasGrubu.Count < 3) continue;
+            SiradakiCepNum = 2 + i ; // i dahil üç cep 
+            while (GrupPermi(perAdayTasGrubu) is { } grupTuru){ 
+                var kontroldenGecmisPerAdayGrubu = new List<Tas>(perAdayTasGrubu); 
+                var yeniGrup = new Grup();
+                yeniGrup.Taslar = kontroldenGecmisPerAdayGrubu;
+                yeniGrup.GrupTuru = grupTuru;
+                var colID = kontroldenGecmisPerAdayGrubu.First().cepInstance.colID;
+                if (!Gruplar.TryAdd(colID, yeniGrup)){
+                    Gruplar[colID] = yeniGrup;
+                } 
+
+                
+
                 SiradakiCepNum++;
                 if (SiradakiCepNum > ceps.Count-1) break;
-                if (ceps[SiradakiCepNum].TasInstance == null) break; 
-                perAdayGrubu.Add(ceps[SiradakiCepNum].TasInstance);
+                if (ceps[SiradakiCepNum].TasInstance == null) break;
+                perAdayTasGrubu.Add(ceps[SiradakiCepNum].TasInstance);
             }
-        }
-
-        foreach (var per in Pers){
-            Debug.Log($" perAdayGrubu   {per.Value.Count} Cep ID {per.Value.First().cepInstance.colID}");
-        }
+        } 
     }
     
-    private bool GrupPermi(List<Tas> pAdayGrubu){ 
+
+    private string GrupPermi(List<Tas> pAdayGrubu){ 
         var cloneperAdayGrubu = new List<Tas>(pAdayGrubu);
         bool RA = true; // renkler ayni
         bool RF = true; // renkler hepsi bir birinden farkli
         bool MA = true; // meyveler ayni
         bool MF = true; // meyveler hepsi bir birinden farklı
+        string grupTuru = null;
         // RA kontrolu
         for (int i = 0; i < pAdayGrubu.Count; i++){
             var t = pAdayGrubu[i];
@@ -107,12 +138,44 @@ public class PerKontrolBirimi : MonoBehaviour
         }
         
         //Debug.Log($"RA {RA}, MA {MA},MF {MF},RF {RF},");
-        if (RA && MA ) return true;
-        if (RA && MF ) return true;
-        if (RF && MA ) return true;
-        
-        // per değilse eklenen son taşı çıkar
-        
-        return false; 
+        if (RA && MA){
+            grupTuru = "rama"; 
+        } else if (RA && MF){
+            grupTuru = "ramf"; 
+        } else if (RF && MA){
+            grupTuru = "rfma"; 
+        }  
+        return grupTuru; 
+    } 
+    
+    
+    /*
+     * alt ve üst grupların kesişenlerini sile. geriye en büyük kesişmeyen gruplar kalır.
+     */
+    public void KesisenGruplardanKucuguSil(){
+        int silinecekGrupKey = -1; 
+        // kesişen grup var mı ?
+        foreach (var grup0 in Gruplar){
+            var key0   = grup0.Key;
+            var last0  = key0 + grup0.Value.Taslar.Count;
+            foreach (var grup1 in Gruplar){
+                var key1   = grup1.Key;
+                if (key0<key1 && key1<last0){
+                    silinecekGrupKey = (grup0.Value.Taslar.Count >= grup1.Value.Taslar.Count) ? key1 : key0;
+                    break;
+                }
+            }
+            if (silinecekGrupKey >= 0) break;
+        }
+
+        if (silinecekGrupKey >= 0){
+            var cloneGruplar = new Dictionary<int,Grup>(Gruplar);
+            foreach (var grup in cloneGruplar){ 
+                if (grup.Key == silinecekGrupKey){
+                    Gruplar.Remove(silinecekGrupKey);
+                }
+            }
+            KesisenGruplardanKucuguSil();
+        } 
     }
 }
