@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour{
     public readonly int _colonCount = 6;
     public readonly int BaslangicTasSayisi = 100;
     public readonly int CepSayisi = 6;
-    public readonly RangeInt RenkAraligi = new RangeInt(0, 8);
-    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6); 
+    public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
+    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 8);
     public string seed;
     public static GameManager Instance{ get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
@@ -74,9 +74,7 @@ public class GameManager : MonoBehaviour{
         OyunSahnesiUI.Instance.KalanTasSayisi.text = TasManeger.Instance.TasList.Count.ToString();
     }
 
-    
-
-    private IEnumerator OyununBitimiIcinGeriSayRoutine(){ 
+    private IEnumerator OyununBitimiIcinGeriSayRoutine(){
         if (OyunKurallari.Instance){
             oyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
         }
@@ -92,25 +90,22 @@ public class GameManager : MonoBehaviour{
             StopCoroutine(OyununBitimiIcinGeriSayRoutineCoroutin);
             OyununBitimiIcinGeriSayRoutineCoroutin = null;
         }
+
         Puanlama.Instance.LimitleriKontrolEt();
     }
 
-    public void DugmeGosterilsinmi(){
+    public void PuanlamaDugmesiniGoster(){
         // per VAR
-        if (Istaka.Instance.FarkliMeyveAyniRenkPerleri.Count > 0
-            || Istaka.Instance.AyniMeyveAyniRenkPerleri.Count > 0
-            || Istaka.Instance.AyniMeyveFarkliRenkPerleri.Count > 0){
-            
-            if (Istaka.Instance.DoluCepSayisi() == CepSayisi){ 
-                // şimidilk bekle ootomatik yok etme
-                //Puanlama.Instance.Puanla();  
-            } else{
+        if (PerKontrolBirimi.Instance.Gruplar.Count > 0){
+            if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
+                Puanlama.Instance.Puanla();
+            }
+            else{
                 OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.Flex;
-            } 
+            }
         }
-        // per YOK
+        // per YOK ama istaka full.
         else if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
-            return; // bekle
             CanSayisi--;
             OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
             Istaka.Instance.TumTaslarinGostergesiniAc();
@@ -136,7 +131,7 @@ public class GameManager : MonoBehaviour{
 #else
         if (Input.GetMouseButtonDown(0)){
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastVeIslem(worldPoint);
+            TiklamaTuslamaKontrol(worldPoint);
         }
 #endif
         // tıklana bilir nesne varsa oyun durumunu değiştirelim
@@ -167,9 +162,11 @@ public class GameManager : MonoBehaviour{
         else{
             OyunDurumu = OynanmaDurumu.DevamEdiyor;
         }
+
+ 
     }
 
-    void RaycastVeIslem(Vector2 worldPoint){
+    void TiklamaTuslamaKontrol(Vector2 worldPoint){
         if (OyunDurumu != OynanmaDurumu.DevamEdiyor) return;
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null){
@@ -184,9 +181,8 @@ public class GameManager : MonoBehaviour{
                     }
 
                     PerKontrolBirimi.Instance.Tara();
-                    Istaka.Instance.PerdekiTaslariBelirginYap();
-                    DugmeGosterilsinmi(); 
-                    Card.Instance.Sallanma();
+                    PuanlamaDugmesiniGoster();
+                    //Card.Instance.Sallanma();
                 }
 
                 PerIcinTasTavsiye.Instance.Basla();

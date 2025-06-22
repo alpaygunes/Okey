@@ -1,25 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class Card : MonoBehaviour{
-    public Vector2 Size;
-    public bool TaslarHareketli{ get; set; }
+    public Vector2 Size; 
     public List<GameObject> spawnHolesList = new List<GameObject>();
 
-    public static Card Instance{ get; private set; }
-    public List<List<GameObject>> _siraliAyniRenkliGruplar = new List<List<GameObject>>();
-    public List<GameObject> SiraliAyniRenkliGrup = new List<GameObject>();
-
-    public List<List<GameObject>> _siraliFarkliRenkliGruplar = new List<List<GameObject>>();
-    public List<GameObject> SiraliFarkliRenkliGrup = new List<GameObject>();
-
-    public List<List<GameObject>> _ayniMeyveAyniRenkliGruplar = new List<List<GameObject>>();
-    public List<GameObject> AyniMeyveAyniRenkliGrup = new List<GameObject>();
-
-    public List<List<GameObject>> _ayniMeyveFarkliRenkliGruplar = new List<List<GameObject>>();
-    public List<GameObject> AyniMeyveFarkliRenkli = new List<GameObject>();
-    private GameObject[] carddakiTaslar;
+    public static Card Instance{ get; private set; } 
 
     void Awake(){
         if (Instance != null && Instance != this){
@@ -32,7 +20,7 @@ public class Card : MonoBehaviour{
         Instance = this;
         Size = GetComponent<SpriteRenderer>().bounds.size;
     }
-    
+
     public void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
         float colonWidth = cardSize.x / GameManager.Instance._colonCount;
@@ -47,6 +35,7 @@ public class Card : MonoBehaviour{
             spawnHolesList.Add(sh);
         }
     }
+
     public void KutulariHazirla(){
         Vector2 cardSize = Instance.Size;
         float colonWidth = (cardSize.x / GameManager.Instance._colonCount);
@@ -63,43 +52,151 @@ public class Card : MonoBehaviour{
     }
 
     public void Sallanma(){
-        carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+        var carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var tas in carddakiTaslar){
-            TasManeger.Instance.TasInstances[tas].sallanmaDurumu=false; 
-        }  
+            TasManeger.Instance.TasInstances[tas].sallanmaDurumu = false;
+        }
     }
 
-    public void GoreveUyumluCtasYoket(){ 
+    public void GoreveUyumluCtasYoket(){
         float beklemeSuresi = .1f;
-        foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){ 
-            var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
-            foreach (var uTas in pTasScript.AyniKolondakiAltinveAltinTaslar){
-                var uTasInstance = TasManeger.Instance.TasInstances[uTas]; 
-                uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));  
+        foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
+            foreach (var pTas in grup.Value.Taslar){
+                foreach (var cTas in pTas.AyniKolondakiAltinveElmasTaslar){
+                    var uTasInstance = TasManeger.Instance.TasInstances[cTas];
+                    uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));
+                }
+
+                beklemeSuresi += 0.1f;
             }
-            beklemeSuresi += 0.1f; 
         }
     }
 
     public void PtasIleUyumluCtaslariYoket(){
         float beklemeSuresi = .1f;
-        foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){
-            var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
-            foreach (var bonusTaslari in pTasScript.BonusOlarakEslesenTaslar){
-               bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi)); 
-               beklemeSuresi += .1f;
+        foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
+            foreach (var pTas in grup.Value.Taslar){ 
+                foreach (var bonusTaslari in pTas.BonusOlarakEslesenTaslar){
+                    bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi));
+                    beklemeSuresi += .1f;
+                }
             }
-             
-        } 
+        }
     }
     
-    public void PtaslariYoket(){
-        float beklemeSuresi = .1f;
-        foreach (var pTas in Puanlama.Instance.SiralanmisTumPerlerdekiTaslar){
-            var pTasScript = TasManeger.Instance.TasInstances[pTas.Value];
-            pTasScript.cepInstance?.YildiziYak(0);
-            beklemeSuresi += .1f;
-            pTasScript.StartCoroutine(pTasScript.BekleYokol(beklemeSuresi)); 
-        } 
+    public void CardtakiBonusTaslariBelirt(){
+        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+        foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
+            var pTaslar = grup.Value.Taslar;
+            foreach (var pTasInstance in pTaslar){
+                foreach (var cTas in cardtakiTaslar){
+                    var cTasInstance = TasManeger.Instance.TasInstances[cTas];
+                    if (grup.Value.GrupTuru == "rama"){
+                        if (pTaslar.Count == 3){
+                            if (cTasInstance.MeyveID == pTasInstance.MeyveID){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                        else if (pTaslar.Count == 4){
+                            if (pTasInstance.Renk == cTasInstance.Renk){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                        else if (pTaslar.Count >= 5){
+                            pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                cTasInstance);
+                            cTasInstance.BonusBayragi = true;
+                            cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                            cTasInstance.TiklanaBilir = false;
+                        }
+                    }
+                    else if (grup.Value.GrupTuru == "ramf"){
+                        if (pTaslar.Count == 3){
+                            // bonus yok
+                        }
+                        else if (pTaslar.Count == 4){
+                            if (pTasInstance.MeyveID == cTasInstance.MeyveID
+                                && pTasInstance.Renk == cTasInstance.Renk){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                        else if (pTaslar.Count == 5){
+                            if (pTasInstance.Renk == cTasInstance.Renk){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                        else if (pTaslar.Count >= 6){
+                            pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                cTasInstance);
+                            cTasInstance.BonusBayragi = true;
+                            cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                            cTasInstance.TiklanaBilir = false;
+                        }
+                    }
+                    else if (grup.Value.GrupTuru == "rfma"){
+                        if (pTaslar.Count == 3){
+                            if (pTasInstance.MeyveID == cTasInstance.MeyveID && pTasInstance.Renk == cTasInstance.Renk){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                        else if (pTaslar.Count == 4){
+                            if (pTasInstance.MeyveID == cTasInstance.MeyveID){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                        else if (pTaslar.Count == 5){
+                            if (pTasInstance.Renk == cTasInstance.Renk){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                        else if (pTaslar.Count >= 6){
+                            if (pTasInstance.Renk == cTasInstance.Renk){
+                                pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
+                                    cTasInstance);
+                                cTasInstance.BonusBayragi = true;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
+                                cTasInstance.TiklanaBilir = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void TaslariAltinVeElmasaDonustur(){
+        foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
+            foreach (var pTas in grup.Value.Taslar){
+                pTas.AltinVeElmasGoster();
+            }
+        }
     }
 }

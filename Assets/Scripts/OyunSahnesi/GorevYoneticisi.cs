@@ -329,29 +329,28 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
     }
     
-    public void GoreveUygunCEPLERIIsaretle(){
+    public void GoreveUygunCeplereBayrakKoy(){
         FixedList128Bytes<TasData> gorevTaslari;
         if (MainMenu.isSoloGame){
             gorevTaslari = gorevlerSoloList[SiradakiGorevSirasNosu].Taslar;
         } else{
             gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
         }
-        var per = Puanlama.Instance.SiralanmisTumPerlerdekiTaslar;
 
-        int i = 0;
-        foreach (var pTs in per){
-            if (gorevTaslari.Length==i) break;
-            if (pTs.Value ==null) break;
-            var pTas = pTs.Value.GetComponent<Tas>();
-            var gTas = gorevTaslari[i];
-            if (pTas.MeyveID == gTas.MeyveID && pTas.Renk == gTas.Renk){
-                pTas.GorevleUyum = 2; 
-            }else if (pTas.MeyveID == gTas.MeyveID || pTas.Renk == gTas.Renk){ 
-                pTas.GorevleUyum = 1; 
+        var i = 0;
+        foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
+            foreach (var pTas in grup.Value.Taslar){
+                if (gorevTaslari.Length == i) break; 
+                var gTas = gorevTaslari[i];
+                if (pTas.MeyveID == gTas.MeyveID && pTas.Renk == gTas.Renk){
+                    pTas.GorevleUyumBayragi = 2; 
+                }else if (pTas.MeyveID == gTas.MeyveID || pTas.Renk == gTas.Renk){ 
+                    pTas.GorevleUyumBayragi = 1; 
+                }  
+                i++;
             }
-            i++;
         }
-        
+          
         SiradakiGorevSirasNosu++;
         OyunSahnesiUI.Instance.GorevSayisiLbl.text = SiradakiGorevSirasNosu +"/"+OyunKurallari.Instance.GorevYap.ToString();  
         if (SiradakiGorevSirasNosu >= OyunKurallari.Instance.GorevYap){

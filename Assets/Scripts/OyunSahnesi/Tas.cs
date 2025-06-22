@@ -21,7 +21,7 @@ public class Tas : MonoBehaviour{
     private Vector3 skorTxtPosition;
     public Camera uiCamera;
     private Object _collider;
-    private GameObject destroyEffectPrefab;
+ 
     private AudioSource _audioSource_down;
     private AudioSource _audioSource_up;
     private AudioSource _audioSource_patla;
@@ -35,23 +35,22 @@ public class Tas : MonoBehaviour{
     public int colID;
 
     public int
-        GorevleUyum = 0; //0 = yok, 1 = gorevle, 2 = gorevle ve yok . Bu alan Cepteki tas için. Cart takiler icin degil
+        GorevleUyumBayragi = 0; //0 = yok, 1 = gorevle, 2 = gorevle ve yok . Bu alan Cepteki tas için. Cart takiler icin degil
 
     public GameObject GorevUyumGostergesi1;
     public GameObject GorevUyumGostergesi2;
     public GameObject PereUyumluGostergesi; // cepteki daslar per halindeyse belirtir.
     public GameObject MeyveResmi;
-    public bool PtasIleUyumlu = false; // Bu alan carttaki taslar için . ceptaki tas için degil
+    public bool BonusBayragi; // Bu alan carttaki taslar için . ceptaki tas için degil
     public GameObject PtasIleUyumluGostergesi; // cardtaki taslar için 
     public GameObject PersizIstakaTaslariGostergesi;
-    public List<GameObject> AyniKolondakiAltinveAltinTaslar = new List<GameObject>();
+    public List<GameObject> AyniKolondakiAltinveElmasTaslar = new List<GameObject>();
     public bool TiklanaBilir{ get; set; } = true;
-    public Dictionary<int, GameObject> PerAilesi{ get; set; } = null;
-    public bool PerAdayinaKatildi{ get; set; } = false;
+    public Dictionary<int, GameObject> PerAilesi{ get; set; } = null; 
     public bool sallanmaDurumu = false;
 
     private void Awake(){
-        ;
+        BonusBayragi = false;
         TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
         zemin = transform.Find("Zemin").gameObject;
         gameObject.SetActive(false);
@@ -78,8 +77,7 @@ public class Tas : MonoBehaviour{
         var koyuRenk = Color.Lerp(Renk, Color.black, 0.0f);
         MeyveResmiSpriteRenderer.color = koyuRenk;
         MeyveResmiSpriteRenderer.transform.localScale *= 1.25f;
-
-        destroyEffectPrefab = Resources.Load<GameObject>("Prefabs/CFXR Magic Poof");
+ 
         _audioSource_down = gameObject.AddComponent<AudioSource>();
         _audioSource_down.playOnAwake = false;
         _audioSource_down.clip = Resources.Load<AudioClip>("Sounds/tas_down");
@@ -180,16 +178,7 @@ public class Tas : MonoBehaviour{
         }
     }
 
-    private void Update(){
-        if (gameObject.CompareTag("CARDTAKI_TAS")){
-            Card.Instance.TaslarHareketli = (_rigidbody.linearVelocity.magnitude > 0.01f);
-        }
-        else{
-            Card.Instance.TaslarHareketli = false;
-            enabled = false;
-        }
-
-
+    private void Update(){  
         if (sallanmaDurumu && !tweener.IsActive() && tweener == null){
             tweener = MeyveResmiSpriteRenderer.transform.DOScale(.8f, .5f)
                 .SetEase(Ease.InOutSine)
@@ -207,23 +196,22 @@ public class Tas : MonoBehaviour{
     }
 
     public void AltinVeElmasGoster(){
-        if (GorevleUyum == 0) return;
+        if (GorevleUyumBayragi == 0) return;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cTas in cardtakiTaslar){
             var cTasscript = TasManeger.Instance.TasInstances[cTas];
             if (cTasscript.colID == cepInstance.colID){
-                if (GorevleUyum == 1){
+                if (GorevleUyumBayragi == 1){
                     cTasscript.GorevUyumGostergesi1.gameObject.SetActive(true);
                     cTasscript.MeyveResmi.gameObject.SetActive(false);
                     TiklanaBilir = false;
                 }
-                else if (GorevleUyum == 2){
+                else if (GorevleUyumBayragi == 2){
                     cTasscript.GorevUyumGostergesi2.gameObject.SetActive(true);
                     cTasscript.MeyveResmi.gameObject.SetActive(false);
                     TiklanaBilir = false;
-                }
-
-                AyniKolondakiAltinveAltinTaslar.Add(cTas);
+                } 
+                AyniKolondakiAltinveElmasTaslar.Add(cTas);
             }
         }
     }

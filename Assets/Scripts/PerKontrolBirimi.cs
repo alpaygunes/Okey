@@ -15,7 +15,9 @@ public class PerKontrolBirimi : MonoBehaviour
 {
     public static PerKontrolBirimi Instance;
     public int SiradakiCepNum = 0;
-    private Dictionary<int,Grup> Gruplar;
+    public Dictionary<int,Grup> Gruplar;
+    private List<Color> GrupRenkleri = new List<Color>() { Color.red, Color.yellow, Color.blue };
+    
     private void Awake(){
         if (Instance != null && Instance != this){
             Destroy(gameObject);
@@ -24,25 +26,42 @@ public class PerKontrolBirimi : MonoBehaviour
         Instance = this;
         Gruplar = new Dictionary<int,Grup>();
     }
-
-    
     
     public void Tara(){
         GruplariBul();
         KesisenGruplardanKucuguSil();
-        foreach (var grup in Gruplar){
-            Debug.Log($"GRup Key {grup.Key} " +
-                      $"itibaren    {grup.Value.Taslar.Count} tane" +
-                      $"Grup TÜRÜ {grup.Value.GrupTuru} " );
-        }
+        PerdekiTasiBelirt(); 
     }
 
+    private void PerdekiTasiBelirt(){ 
+        // önceki belirteçleri kaldır. per düzeni değişmiştir belki
+        for (int i = 0; i < Istaka.Instance.CepList.Count; i++){
+            var cep = Istaka.Instance.CepList[i];
+            if (!cep.TasInstance) continue;
+            Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.SetActive(false);
+            Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+
+        try{
+            var i = 0;
+            foreach (var grup in Gruplar){
+                foreach (var tas in grup.Value.Taslar){
+                    tas.PereUyumluGostergesi.SetActive(true);
+                    tas.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color = GrupRenkleri[i];
+                } 
+                i++;
+            }
+        }
+        catch (Exception e){
+            Console.WriteLine($"PerdekiTasiBelirt {e.Message}"); 
+        } 
+    }
 
     /*
      * ABCDEF ABCDE ABCD BCD BCDE gibi alt üst tüm grupları bulur
      */
-    public void GruplariBul(){
-        Debug.ClearDeveloperConsole(); 
+    public void GruplariBul(){ 
+        Gruplar = new Dictionary<int,Grup>();
         var ceps = Istaka.Instance.CepList;
         for (int i = 0; i+2 < ceps.Count; i++){
             var perAdayTasGrubu = new List<Tas>();
@@ -61,10 +80,7 @@ public class PerKontrolBirimi : MonoBehaviour
                 var colID = kontroldenGecmisPerAdayGrubu.First().cepInstance.colID;
                 if (!Gruplar.TryAdd(colID, yeniGrup)){
                     Gruplar[colID] = yeniGrup;
-                } 
-
-                
-
+                }
                 SiradakiCepNum++;
                 if (SiradakiCepNum > ceps.Count-1) break;
                 if (ceps[SiradakiCepNum].TasInstance == null) break;
@@ -73,7 +89,6 @@ public class PerKontrolBirimi : MonoBehaviour
         } 
     }
     
-
     private string GrupPermi(List<Tas> pAdayGrubu){ 
         var cloneperAdayGrubu = new List<Tas>(pAdayGrubu);
         bool RA = true; // renkler ayni
@@ -147,7 +162,6 @@ public class PerKontrolBirimi : MonoBehaviour
         }  
         return grupTuru; 
     } 
-    
     
     /*
      * alt ve üst grupların kesişenlerini sile. geriye en büyük kesişmeyen gruplar kalır.

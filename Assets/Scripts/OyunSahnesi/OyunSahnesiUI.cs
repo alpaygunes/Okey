@@ -96,7 +96,7 @@ public class OyunSahnesiUI : MonoBehaviour
     }
      
     public void PerleriDegerlendir(){ 
-        Puanlama.Instance.Puanla(); 
+        Puanlama.Instance.Puanla();
         //Card.Instance.Sallanma();
     }
 }

@@ -490,7 +490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MeyveID: 0
-  renk: {r: 0, g: 0, b: 0, a: 0}
+  Renk: {r: 0, g: 0, b: 0, a: 0}
   sagindakiKomsuTas: {fileID: 0}
   birCardPerineDahil: 0
   zeminSpriteRenderer: {fileID: 0}
@@ -502,15 +502,16 @@ MonoBehaviour:
   NetworkDatayaEklendi: 0
   TextMeyveID: {fileID: 0}
   colID: 0
-  GorevleUyum: 0
+  GorevleUyumBayragi: 0
   GorevUyumGostergesi1: {fileID: 0}
   GorevUyumGostergesi2: {fileID: 0}
   PereUyumluGostergesi: {fileID: 0}
   MeyveResmi: {fileID: 0}
-  PtasIleUyumlu: 0
+  BonusBayragi: 0
   PtasIleUyumluGostergesi: {fileID: 0}
   PersizIstakaTaslariGostergesi: {fileID: 0}
-  AyniKolondakiAltinveAltinTaslar: []
+  AyniKolondakiAltinveElmasTaslar: []
+  sallanmaDurumu: 0
 --- !u!50 &473513376257399296
 Rigidbody2D:
   serializedVersion: 5
