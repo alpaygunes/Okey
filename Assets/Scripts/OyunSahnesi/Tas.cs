@@ -11,11 +11,8 @@ using Object = UnityEngine.Object;
 
 public class Tas : MonoBehaviour{
     public int MeyveID;
-    public Color Renk;
-    private float animasyonSuresi = 1f;
-    public GameObject sagindakiKomsuTas;
-    private Rigidbody2D _rigidbody;
-    public bool birCardPerineDahil = false;
+    public Color Renk; 
+    private Rigidbody2D _rigidbody; 
     public SpriteRenderer zeminSpriteRenderer;
     public SpriteRenderer MeyveResmiSpriteRenderer;
     private Vector3 skorTxtPosition;
@@ -112,26 +109,31 @@ public class Tas : MonoBehaviour{
         }
 
         if (cepInstance){
-            cepInstance.Dolu = false;
+            cepInstance.Dolu = false;  
         }
 
-        // Sıradaki taslar
-        var SiradakiTaslar = TasManeger.Instance.TasList.Count;
-        // Cardtaki TAslar
-        var carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-        // Perdeki Taslar
-        var perdekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
+        try{
+            // Sıradaki taslar
+            var SiradakiTaslar = TasManeger.Instance.TasList.Count;
+            // Cardtaki TAslar
+            var carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+            // Perdeki Taslar
+            var perdekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
 
-        int ToplamTasSayisi = SiradakiTaslar + carddakiTaslar.Length + perdekiTaslar.Length;
+            int ToplamTasSayisi = SiradakiTaslar + carddakiTaslar.Length + perdekiTaslar.Length;
 
-        //taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
-        if (ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
-            && GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.DevamEdiyor){
-            TasManeger.Instance.TaslariOlustur();
+            //taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
+            if (ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
+                && GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.DevamEdiyor){
+                TasManeger.Instance.TaslariOlustur();
+            }
+
+            TasManeger.Instance.TasInstances.Remove(gameObject);
+            OyunSahnesiUI.Instance.KalanTasSayisi.text = (ToplamTasSayisi - 1).ToString();
         }
-
-        TasManeger.Instance.TasInstances.Remove(gameObject);
-        OyunSahnesiUI.Instance.KalanTasSayisi.text = (ToplamTasSayisi - 1).ToString();
+        catch (Exception e){
+            Debug.Log($" Tas.cs OnDestroy içinde HATA : \n {e.Message}"); 
+        } 
     }
 
     public bool BosCebeYerles(){
@@ -164,20 +166,10 @@ public class Tas : MonoBehaviour{
 
     public IEnumerator BekleYokol(float gecikme){
         yield return new WaitForSeconds(gecikme);
+        if (cepInstance != null) cepInstance.TasInstance = null;
         Destroy(gameObject);
     }
-
-    void OnTriggerStay2D(Collider2D other){
-        if (other.gameObject.CompareTag("CARDTAKI_TAS")){
-            EdgeCollider2D edgeCollider = GetComponent<EdgeCollider2D>();
-            if (edgeCollider != null && edgeCollider.IsTouching(other)){
-                if (other is BoxCollider2D){
-                    sagindakiKomsuTas = other.gameObject;
-                }
-            }
-        }
-    }
-
+ 
     private void Update(){  
         if (sallanmaDurumu && !tweener.IsActive() && tweener == null){
             tweener = MeyveResmiSpriteRenderer.transform.DOScale(.8f, .5f)

@@ -86,8 +86,8 @@ public class LobbyListUI : MonoBehaviour{
         };
         
         //start Solo
-        StartSolo.clicked += async () => {
-            await LobbyManager.Instance.StartSolo();
+        StartSolo.clicked += () => {
+            LobbyManager.Instance.StartSolo();
         };
         
         //AnaMenüye Dön
@@ -102,7 +102,7 @@ public class LobbyListUI : MonoBehaviour{
             }
             else{    
                 Satir2a.style.display = DisplayStyle.None;
-                OnLobbyListButtonClicked(); 
+                _ = OnLobbyListButtonClicked(); 
             }
         }
         
@@ -214,7 +214,7 @@ public class LobbyListUI : MonoBehaviour{
     private IEnumerator LobbyListUpdateLoop(){
         while (true){
             yield return new WaitForSeconds(LOBBY_LISTESINI_GUNCELLEME_PERYODU); // her 10 saniyede bir bekle 
-            OnLobbyListButtonClicked();
+            _ = OnLobbyListButtonClicked();
         }
     }
     

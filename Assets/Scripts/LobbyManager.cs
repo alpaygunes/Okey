@@ -232,7 +232,7 @@ public class LobbyManager : NetworkBehaviour{
                 if (messageValue == "lobby_kapanacak"){
                     LobbyListUI.Instance.LobbyList.Clear();
                     await LobbyListUI.Instance.LobidenAyril();
-                    LobbyListUI.Instance.OnLobbyListButtonClicked();
+                    await LobbyListUI.Instance.OnLobbyListButtonClicked();
                     CurrentLobby = null;
                 }
             }
@@ -260,7 +260,7 @@ public class LobbyManager : NetworkBehaviour{
 
     private void OnClientPlayerLeft(List<int> playerIds){
         if (CurrentLobby.Players.Any(p => p.Id == AuthenticationService.Instance.PlayerId)){
-            LobbyListUI.Instance.OnLobbyListButtonClicked();
+            _ = LobbyListUI.Instance.OnLobbyListButtonClicked();
         }
     }
 
@@ -480,7 +480,7 @@ public class LobbyManager : NetworkBehaviour{
         }
     }
 
-    public async Task StartSolo(){  
+    public void StartSolo(){  
         SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }
 }

@@ -14,10 +14,8 @@ public class Puanlama : MonoBehaviour{
     public static Puanlama Instance{ get; private set; }
     private Camera uiCamera;
     private AudioSource _audioSource_puan_sayac; 
-    public int HamleSayisi;
-
-
-    public SortedDictionary<int, GameObject> SiralanmisTumPerlerdekiTaslar;
+    public int hamleSayisi;
+ 
 
     void Awake(){
         if (Instance != null && Instance != this){
@@ -44,7 +42,7 @@ public class Puanlama : MonoBehaviour{
         // eğer multi player ise
         if (!MainMenu.isSoloGame){
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
-                if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
+                if (hamleSayisi >= OyunKurallari.Instance.HamleLimit){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single);
                 }
@@ -72,7 +70,7 @@ public class Puanlama : MonoBehaviour{
         // eğer solo ise
         if(MainMenu.isSoloGame){ 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
-                if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
+                if (hamleSayisi >= OyunKurallari.Instance.HamleLimit){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single);
                 }
@@ -86,8 +84,7 @@ public class Puanlama : MonoBehaviour{
             }
         }
     }
-
- 
+    
     public void Puanla(){ 
         if ( PerKontrolBirimi.Instance.Gruplar.Count>0){ 
             OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None; 

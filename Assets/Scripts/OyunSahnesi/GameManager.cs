@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour{
                                 if (touch.phase == TouchPhase.Began)
                                 {
                                     Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
-                                    RaycastVeIslem(worldPoint);
+                                    TiklamaTuslamaKontrol(worldPoint);
                                 }
                             }
 #else
@@ -178,15 +178,15 @@ public class GameManager : MonoBehaviour{
                 if (yerlestimi){
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
                         GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);
-                    }
-
-                    PerKontrolBirimi.Instance.Tara();
-                    PuanlamaDugmesiniGoster();
+                    } 
+                    PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
+                    PerKontrolBirimi.Instance.PerdekiTaslariBelirt();
+                    PerIcinUygunTaslariBelirt.Bul();
+                    PuanlamaDugmesiniGoster(); 
                     //Card.Instance.Sallanma();
-                }
-
-                PerIcinTasTavsiye.Instance.Basla();
+                } 
             }
         }
     }
 }
+

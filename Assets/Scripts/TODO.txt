@@ -17,14 +17,12 @@
     GÜNCELLE : görevlerin hepsi cepsayısı kadar olsun. farklı sayıda olmasın.
     eşleşen kolonlardaki taşların rakamları ayrıca puan olarak eklensin.
     
- HATA : Periçin tavsiye kodları puanlama sırasıdna çalışmaya başlıyor. puanlama yokkon bu kodlar çalışmalı.
- HATA : animayonlar ve yok olmalar devame derken taşlar seçilmemeli
- HATA : Perler yanlış hesaplanıyor. A B A düzeni per sanılıyor. Aynı renk A B A per olmamalı
- HATA : Ceplerdeki per tasları yok olurken tiklanma kilitlenmeli.
+ HATA : Periçin tavsiye kodları puanlama sırasıdna çalışmaya başlıyor. puanlama yokkon bu kodlar çalışmalı. 
  HATA : Oyunsahnesinde X ile çıkınca lobilistesi boş ama altında BAŞLAT düğmesi hala var. Ve çalışıyor. Lobi
         Oyunsahnesinden çıkınca lobi kapanmıyor mu ? Kapanınca BAŞLAT nasıl aktif olur
  HATA : Per üçten falza yasa aynı meyve perde olabiliyor. A B C D A   gibi A 5 linin parçası olamaz. ABCDEA  olabilir ama. 3 + 3 
  YAP  : Farklı perlerin belirteci farklı renkte olmalı.
+ YAP  : Istakadaki ilk boş cebi  belirt.
     
     
     

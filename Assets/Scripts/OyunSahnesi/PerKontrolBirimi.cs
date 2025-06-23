@@ -3,43 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Grup
-{
-    public List<Tas> Taslar { get; set; } 
-    public string GrupTuru { get; set; } 
+public class Grup{
+    public List<Tas> Taslar{ get; set; }
+    public string GrupTuru{ get; set; }
 }
 
 
-
-public class PerKontrolBirimi : MonoBehaviour
-{
+public class PerKontrolBirimi : MonoBehaviour{
     public static PerKontrolBirimi Instance;
     public int SiradakiCepNum = 0;
-    public Dictionary<int,Grup> Gruplar;
+    public Dictionary<int, Grup> Gruplar;
     private List<Color> GrupRenkleri = new List<Color>() { Color.red, Color.yellow, Color.blue };
-    
+    private List<Cep> Ceps;
+
     private void Awake(){
         if (Instance != null && Instance != this){
             Destroy(gameObject);
             return;
-        } 
+        }
+
         Instance = this;
-        Gruplar = new Dictionary<int,Grup>();
-    }
-    
-    public void Tara(){
-        GruplariBul();
-        KesisenGruplardanKucuguSil();
-        PerdekiTasiBelirt(); 
+        Gruplar = new Dictionary<int, Grup>();
     }
 
-    private void PerdekiTasiBelirt(){ 
+    public void ParseEt(List<Cep> CepList){
+        Ceps = CepList;
+        GruplariBul();
+        KesisenGruplardanKucuguSil();
+    }
+
+    public void PerdekiTaslariBelirt(){
         // önceki belirteçleri kaldır. per düzeni değişmiştir belki
         for (int i = 0; i < Istaka.Instance.CepList.Count; i++){
             var cep = Istaka.Instance.CepList[i];
             if (!cep.TasInstance) continue;
             Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.SetActive(false);
-            Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color = Color.white;
+            Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color =
+                Color.white;
         }
 
         try{
@@ -48,48 +48,55 @@ public class PerKontrolBirimi : MonoBehaviour
                 foreach (var tas in grup.Value.Taslar){
                     tas.PereUyumluGostergesi.SetActive(true);
                     tas.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color = GrupRenkleri[i];
-                } 
+                }
+
                 i++;
             }
         }
         catch (Exception e){
-            Console.WriteLine($"PerdekiTasiBelirt {e.Message}"); 
-        } 
+            Console.WriteLine($"PerdekiTasiBelirt {e.Message}");
+        }
     }
 
     /*
      * ABCDEF ABCDE ABCD BCD BCDE gibi alt üst tüm grupları bulur
      */
-    public void GruplariBul(){ 
-        Gruplar = new Dictionary<int,Grup>();
-        var ceps = Istaka.Instance.CepList;
-        for (int i = 0; i+2 < ceps.Count; i++){
-            var perAdayTasGrubu = new List<Tas>();
-            var cep = ceps[i];
-            if (cep.TasInstance == null) continue;
-            if (ceps[i].TasInstance is not null) perAdayTasGrubu.Add(ceps[i].TasInstance); 
-            if (ceps[i+1].TasInstance is not null) perAdayTasGrubu.Add(ceps[i+1].TasInstance); 
-            if (ceps[i+2].TasInstance is not null) perAdayTasGrubu.Add(ceps[i+2].TasInstance);
-            if (perAdayTasGrubu.Count < 3) continue;
-            SiradakiCepNum = 2 + i ; // i dahil üç cep 
-            while (GrupPermi(perAdayTasGrubu) is { } grupTuru){ 
-                var kontroldenGecmisPerAdayGrubu = new List<Tas>(perAdayTasGrubu); 
-                var yeniGrup = new Grup();
-                yeniGrup.Taslar = kontroldenGecmisPerAdayGrubu;
-                yeniGrup.GrupTuru = grupTuru;
-                var colID = kontroldenGecmisPerAdayGrubu.First().cepInstance.colID;
-                if (!Gruplar.TryAdd(colID, yeniGrup)){
-                    Gruplar[colID] = yeniGrup;
+    public void GruplariBul(){
+        try{
+            Gruplar = new Dictionary<int, Grup>();
+            for (int i = 0; i + 2 < Ceps.Count; i++){
+                var perAdayTasGrubu = new List<Tas>();
+                var cep = Ceps[i];
+                if (cep.TasInstance == null) continue;
+                if (Ceps[i].TasInstance is not null) perAdayTasGrubu.Add(Ceps[i].TasInstance);
+                if (Ceps[i + 1].TasInstance is not null) perAdayTasGrubu.Add(Ceps[i + 1].TasInstance);
+                if (Ceps[i + 2].TasInstance is not null) perAdayTasGrubu.Add(Ceps[i + 2].TasInstance);
+                if (perAdayTasGrubu.Count < 3) continue;
+                SiradakiCepNum = 2 + i; // i dahil üç cep 
+                while (GrupPermi(perAdayTasGrubu) is { } grupTuru){
+                    var kontroldenGecmisPerAdayGrubu = new List<Tas>(perAdayTasGrubu);
+                    var yeniGrup = new Grup();
+                    yeniGrup.Taslar = kontroldenGecmisPerAdayGrubu;
+                    yeniGrup.GrupTuru = grupTuru;
+                    int colID = kontroldenGecmisPerAdayGrubu.First().cepInstance.colID;
+
+                    if (!Gruplar.TryAdd(colID, yeniGrup)){
+                        Gruplar[colID] = yeniGrup;
+                    }
+
+                    SiradakiCepNum++;
+                    if (SiradakiCepNum > Ceps.Count - 1) break;
+                    if (!Ceps[SiradakiCepNum].TasInstance) break;
+                    perAdayTasGrubu.Add(Ceps[SiradakiCepNum].TasInstance);
                 }
-                SiradakiCepNum++;
-                if (SiradakiCepNum > ceps.Count-1) break;
-                if (ceps[SiradakiCepNum].TasInstance == null) break;
-                perAdayTasGrubu.Add(ceps[SiradakiCepNum].TasInstance);
             }
-        } 
+        }
+        catch (Exception e){
+            Debug.Log(e.Message);
+        }
     }
-    
-    private string GrupPermi(List<Tas> pAdayGrubu){ 
+
+    private string GrupPermi(List<Tas> pAdayGrubu){
         var cloneperAdayGrubu = new List<Tas>(pAdayGrubu);
         bool RA = true; // renkler ayni
         bool RF = true; // renkler hepsi bir birinden farkli
@@ -100,7 +107,7 @@ public class PerKontrolBirimi : MonoBehaviour
         for (int i = 0; i < pAdayGrubu.Count; i++){
             var t = pAdayGrubu[i];
             for (int j = 0; j < cloneperAdayGrubu.Count; j++){
-                if (j == cloneperAdayGrubu.Count-1) break;
+                if (j == cloneperAdayGrubu.Count - 1) break;
                 var st = cloneperAdayGrubu[j];
                 if (i == j) continue;
                 if (t.Renk != st.Renk){
@@ -109,12 +116,12 @@ public class PerKontrolBirimi : MonoBehaviour
                 }
             }
         }
-        
+
         // RF kontrolu
         for (int r = 0; r < pAdayGrubu.Count; r++){
             var t = pAdayGrubu[r];
             for (int rr = 0; rr < cloneperAdayGrubu.Count; rr++){
-                if (rr == cloneperAdayGrubu.Count-1) break;
+                if (rr == cloneperAdayGrubu.Count - 1) break;
                 var st = cloneperAdayGrubu[rr];
                 if (r == rr) continue;
                 if (t.Renk == st.Renk){
@@ -123,13 +130,13 @@ public class PerKontrolBirimi : MonoBehaviour
                 }
             }
         }
-        
+
         // MA kontrolu
-        for (int ii = 0; ii < pAdayGrubu.Count; ii++){  
+        for (int ii = 0; ii < pAdayGrubu.Count; ii++){
             var t = pAdayGrubu[ii];
             for (int jj = 0; jj < cloneperAdayGrubu.Count; jj++){
-                if (jj == cloneperAdayGrubu.Count-1) break;
-                var st = cloneperAdayGrubu[jj]; 
+                if (jj == cloneperAdayGrubu.Count - 1) break;
+                var st = cloneperAdayGrubu[jj];
                 if (ii == jj) continue;
                 if (t.MeyveID != st.MeyveID){
                     MA = false;
@@ -137,59 +144,64 @@ public class PerKontrolBirimi : MonoBehaviour
                 }
             }
         }
-        
+
         // MF kontrolu
-        for (int iii = 0; iii < pAdayGrubu.Count; iii++){  
+        for (int iii = 0; iii < pAdayGrubu.Count; iii++){
             var t = pAdayGrubu[iii];
             for (int jjj = 0; jjj < cloneperAdayGrubu.Count; jjj++){
-                if (jjj == cloneperAdayGrubu.Count-1) break;
+                if (jjj == cloneperAdayGrubu.Count - 1) break;
                 var st = cloneperAdayGrubu[jjj];
                 if (iii == jjj) continue;
                 if (t.MeyveID == st.MeyveID){
                     MF = false;
                     break;
-                } 
-            }  
+                }
+            }
         }
-        
+
         //Debug.Log($"RA {RA}, MA {MA},MF {MF},RF {RF},");
         if (RA && MA){
-            grupTuru = "rama"; 
-        } else if (RA && MF){
-            grupTuru = "ramf"; 
-        } else if (RF && MA){
-            grupTuru = "rfma"; 
-        }  
-        return grupTuru; 
-    } 
-    
+            grupTuru = "rama";
+        }
+        else if (RA && MF){
+            grupTuru = "ramf";
+        }
+        else if (RF && MA){
+            grupTuru = "rfma";
+        }
+
+        return grupTuru;
+    }
+
     /*
      * alt ve üst grupların kesişenlerini sile. geriye en büyük kesişmeyen gruplar kalır.
      */
     public void KesisenGruplardanKucuguSil(){
-        int silinecekGrupKey = -1; 
+        int silinecekGrupKey = -1;
         // kesişen grup var mı ?
         foreach (var grup0 in Gruplar){
-            var key0   = grup0.Key;
-            var last0  = key0 + grup0.Value.Taslar.Count;
+            var key0 = grup0.Key;
+            var last0 = key0 + grup0.Value.Taslar.Count;
             foreach (var grup1 in Gruplar){
-                var key1   = grup1.Key;
-                if (key0<key1 && key1<last0){
+                var key1 = grup1.Key;
+                if (key0 < key1 && key1 < last0){
                     silinecekGrupKey = (grup0.Value.Taslar.Count >= grup1.Value.Taslar.Count) ? key1 : key0;
                     break;
                 }
             }
+
             if (silinecekGrupKey >= 0) break;
         }
 
         if (silinecekGrupKey >= 0){
-            var cloneGruplar = new Dictionary<int,Grup>(Gruplar);
-            foreach (var grup in cloneGruplar){ 
+            var cloneGruplar = new Dictionary<int, Grup>(Gruplar);
+            foreach (var grup in cloneGruplar){
                 if (grup.Key == silinecekGrupKey){
                     Gruplar.Remove(silinecekGrupKey);
                 }
             }
+
             KesisenGruplardanKucuguSil();
-        } 
+        }
     }
 }
