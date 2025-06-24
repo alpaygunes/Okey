@@ -16,7 +16,7 @@ public class Tas : MonoBehaviour{
     public SpriteRenderer zeminSpriteRenderer;
     public SpriteRenderer MeyveResmiSpriteRenderer;
     private Vector3 skorTxtPosition;
-    public Camera uiCamera;
+    //public Camera uiCamera;
     private Object _collider;
  
     private AudioSource _audioSource_down;
@@ -59,7 +59,7 @@ public class Tas : MonoBehaviour{
         MeyveResmi = transform.Find("MeyveResmi").gameObject;
         PtasIleUyumluGostergesi = transform.Find("PtasIleUyumluGostergesi").gameObject;
         PersizIstakaTaslariGostergesi = transform.Find("PersizIstakaTaslariGostergesi").gameObject;
-        uiCamera = Camera.main;
+        //uiCamera = Camera.main;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 

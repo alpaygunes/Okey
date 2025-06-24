@@ -65,8 +65,7 @@ public class Card : MonoBehaviour{
                 foreach (var cTas in pTas.AyniKolondakiAltinveElmasTaslar){
                     var uTasInstance = TasManeger.Instance.TasInstances[cTas];
                     uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));
-                }
-
+                } 
                 beklemeSuresi += 0.1f;
             }
         }

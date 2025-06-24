@@ -1,19 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
-using DG.Tweening.Core;
-using TMPro;
-using Unity.Netcode;
+using System.Collections; 
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+using UnityEngine.SceneManagement; 
 using UnityEngine.UIElements;
 
-public class Puanlama : MonoBehaviour{
-    public static Puanlama Instance{ get; private set; }
-    private Camera uiCamera;
-    private AudioSource _audioSource_puan_sayac; 
+public class IsaretleBelirtYoket : MonoBehaviour{
+    public static IsaretleBelirtYoket Instance{ get; private set; }
+    //private Camera uiCamera; 
     public int hamleSayisi;
  
 
@@ -24,17 +17,13 @@ public class Puanlama : MonoBehaviour{
         }
 
         Instance = this;
-        uiCamera = Camera.main;
-
-        _audioSource_puan_sayac = gameObject.AddComponent<AudioSource>();
-        _audioSource_puan_sayac.playOnAwake = false;
-        _audioSource_puan_sayac.clip = Resources.Load<AudioClip>("Sounds/puan_sayac");
+        //uiCamera = Camera.main; 
     }
 
     private void Start(){
         if (!MainMenu.isSoloGame){
             // boş bir değişim yaratalım. skorlsitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
-            NetworkDataManager.Instance?.SkorVeHamleGuncelleServerRpc(1, 0, LobbyManager.Instance.myDisplayName);
+            MultiPlayerVeriYoneticisi.Instance?.SkorVeHamleGuncelleServerRpc(1, 0, LobbyManager.Instance.myDisplayName);
         } 
     }
 
@@ -44,20 +33,20 @@ public class Puanlama : MonoBehaviour{
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
                 if (hamleSayisi >= OyunKurallari.Instance.HamleLimit){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
-                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single);
+                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
             }
 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
                 if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
-                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single);
-                    if (NetworkDataManager.Instance.oyuncuListesi != null){
+                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+                    if (MultiPlayerVeriYoneticisi.Instance.oyuncuListesi != null){
                         IEnumerator enumerator;
                         try{
-                            enumerator = NetworkDataManager.Instance.SkorListesiniYavasGuncelle();
-                            NetworkDataManager.Instance.skorListesiniYavasGuncelleCoroutine
-                                = NetworkDataManager.Instance.StartCoroutine(enumerator);
+                            enumerator = MultiPlayerVeriYoneticisi.Instance.SkorListesiniYavasGuncelle();
+                            MultiPlayerVeriYoneticisi.Instance.skorListesiniYavasGuncelleCoroutine
+                                = MultiPlayerVeriYoneticisi.Instance.StartCoroutine(enumerator);
                         }
                         catch (Exception e){
                             Debug.Log($"Host ayrışmış olabilir . LimitleriKontrolEt HATA : {e.Message}");
@@ -72,34 +61,35 @@ public class Puanlama : MonoBehaviour{
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
                 if (hamleSayisi >= OyunKurallari.Instance.HamleLimit){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
-                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single);
+                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
             }
 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
                 if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
-                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single); 
+                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive); 
                 }
             }
         }
     }
     
-    public void Puanla(){ 
+    public void Degerlendir(){ 
+        Card.Instance.Sallanma();
         if ( PerKontrolBirimi.Instance.Gruplar.Count>0){ 
-            OyunSahnesiUI.Instance.puanlamaYap.style.display = DisplayStyle.None; 
+            OyunSahnesiUI.Instance.degerlendirmeYap.style.display = DisplayStyle.None; 
             Card.Instance.CardtakiBonusTaslariBelirt(); 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap &&
                 PerKontrolBirimi.Instance.Gruplar != null){
                 GorevYoneticisi.Instance.GoreveUygunCeplereBayrakKoy();
-                GorevYoneticisi.Instance.SiradakiGoreviSahnedeGoster();
+                GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
             }
             Card.Instance.TaslariAltinVeElmasaDonustur(); 
-            Card.Instance.GoreveUyumluCtasYoket(); 
+            Card.Instance.GoreveUyumluCtasYoket();
             Card.Instance.PtasIleUyumluCtaslariYoket();
             Istaka.Instance.PtaslariYoket();
-            LimitleriKontrolEt(); 
-            Istaka.Instance.PerlerListObjeleriTemizle(); // en son temizlenmeli
+            PuanlamaIStatistikleri.Sakla();
+            LimitleriKontrolEt();  
         }
     } 
 }

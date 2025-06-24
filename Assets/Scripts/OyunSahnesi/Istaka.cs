@@ -7,11 +7,13 @@ using UnityEngine.UIElements;
 public class Istaka : MonoBehaviour{
     public List<Cep> CepList = new List<Cep>();
     public static Istaka Instance;
+    /*
     public List<Dictionary<int, GameObject>> FarkliMeyvePerleri = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> AyniMeyvePerleri = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> FarkliMeyveAyniRenkPerleri = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> AyniMeyveAyniRenkPerleri = new List<Dictionary<int, GameObject>>();
     public List<Dictionary<int, GameObject>> AyniMeyveFarkliRenkPerleri = new List<Dictionary<int, GameObject>>();
+    */
     public GameObject Body;
     private float posYrate = 0.66f;
 
@@ -97,46 +99,7 @@ public class Istaka : MonoBehaviour{
             CeptekiTas?.PersizIstakaTaslariGostergesi.SetActive(true);
         }
     }
- 
-    public void PerlerListObjeleriTemizle(){
-        // SiraliRakamAyniRenkGruplari grupları temizle
-        for (int i = 0; i < FarkliMeyveAyniRenkPerleri.Count; i++){
-            var grup = FarkliMeyveAyniRenkPerleri[i];
-            foreach (var item in grup){
-                var cepins = CepList[item.Key];
-                //cepins.Dolu = false;
-                cepins.TasInstance = null;
-            }
-        }
-
-        // AyniRakamAyniRenkGruplari grupları temizle
-        for (int i = 0; i < AyniMeyveAyniRenkPerleri.Count; i++){
-            var grup = AyniMeyveAyniRenkPerleri[i];
-            foreach (var item in grup){
-                var cepins = CepList[item.Key];
-                //cepins.Dolu = false;
-                cepins.TasInstance = null;
-            }
-        }
-
-
-        // AyniRakamHepsiFarkliRenkGruplari grupları temizle
-        for (int i = 0; i < AyniMeyveFarkliRenkPerleri.Count; i++){
-            var grup = AyniMeyveFarkliRenkPerleri[i];
-            foreach (var item in grup){
-                var cepins = CepList[item.Key];
-                //cepins.Dolu = false;
-                cepins.TasInstance = null;
-            }
-        }
-
-
-        FarkliMeyveAyniRenkPerleri.Clear();
-        AyniMeyveAyniRenkPerleri.Clear();
-        AyniMeyveFarkliRenkPerleri.Clear();
-        AyniMeyvePerleri.Clear();
-        FarkliMeyvePerleri.Clear();
-    }
+  
 
     public void CeptekiYildizleriGizle(){
         foreach (var cep in CepList){

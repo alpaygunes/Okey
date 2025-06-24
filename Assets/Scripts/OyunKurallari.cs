@@ -50,7 +50,7 @@ public class OyunKurallari:NetworkBehaviour
             case OyunTipleri.ZamanLimitli:
                 HamleLimit = 0;
                 SkorLimiti = 0;
-                ZamanLimiti = 60;
+                ZamanLimiti = 20;
                 GorevYap = 0;
                 break;
 

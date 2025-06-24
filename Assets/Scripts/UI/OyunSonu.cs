@@ -15,27 +15,28 @@ public class OyunSonu : NetworkBehaviour{
     private VisualElement sonucListesi;
     private VisualElement footer;
     public Button YeniOyunuBaslat;
+
     public Button Quit;
+
     //public Button Hazirim;
-    public static OyunSonu Instance; 
+    public static OyunSonu Instance;
 
     private void Awake(){
         if (Instance != null && Instance != this){
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
 
-   
-
     public void SonucListesiniGoster(){
         try{
-            NetworkList<NetworkDataManager.PlayerData> oyuncuListesi = NetworkDataManager.Instance.oyuncuListesi;
-      
+            NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.oyuncuListesi;
+
             sonucListesi.Clear();
             // Burada yeni bir kopya liste oluştur 
-            var localList = new List<NetworkDataManager.PlayerData>();
+            var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>();
             foreach (var oyuncu in oyuncuListesi){
                 localList.Add(oyuncu);
             }
@@ -47,30 +48,29 @@ public class OyunSonu : NetworkBehaviour{
                 FixedString64Bytes clientName = oyuncu.ClientName;
                 //int puan = oyuncu.Skor;
                 //int HamleSayisi = oyuncu.HamleSayisi;
-                var puanBtn = new Button(); 
-                puanBtn.text =  oyuncu.Skor.ToString(); 
+                var puanBtn = new Button();
+                puanBtn.text = oyuncu.Skor.ToString();
                 puanBtn.AddToClassList("puan");
-                sonucListesi.Add(puanBtn);
-                var playerNameBtn = new Button(); 
-                playerNameBtn.text =  clientName.ToString(); 
+                //sonucListesi.Add(puanBtn);
+                var playerNameBtn = new Button();
+                playerNameBtn.text = clientName.ToString();
                 playerNameBtn.AddToClassList("name");
                 var ListRowVisuElm = new VisualElement();
                 ListRowVisuElm.Add(puanBtn);
                 ListRowVisuElm.Add(playerNameBtn);
                 ListRowVisuElm.AddToClassList("ListRow");
                 sonucListesi.Add(ListRowVisuElm);
-                
             }
         }
-        catch(Exception e){
+        catch (Exception e){
             Debug.Log($"SonucListesiniGoster içinde HATA : {e.Message}");
         }
     }
 
-    private void OnEnable(){ 
+    private void OnEnable(){
         rootElement = GetComponent<UIDocument>().rootVisualElement;
-        container = rootElement.Q<VisualElement>("Container"); 
-        sonucListesi = rootElement.Q<VisualElement>("SonucListesi"); 
+        container = rootElement.Q<VisualElement>("Container");
+        sonucListesi = rootElement.Q<VisualElement>("SonucListesi");
         footer = rootElement.Q<VisualElement>("Footer");
         YeniOyunuBaslat = container.Q<Button>("YeniOyunuBaslat");
         Quit = rootElement.Q<Button>("Quit");
@@ -88,8 +88,8 @@ public class OyunSonu : NetworkBehaviour{
     private void OnYeniOyunuBaslatClick(){
         GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.DevamEdiyor;
         // Multy ise
-        if (!MainMenu.isSoloGame) 
-            NetworkDataManager.Instance.OyunuYenidenBaslatServerRpc(); 
+        if (!MainMenu.isSoloGame)
+            MultiPlayerVeriYoneticisi.Instance.OyunuYenidenBaslatServerRpc();
         // Solo ise
         if (MainMenu.isSoloGame){
             GameManager.Instance.seed = MainMenu.GetRandomSeed();
@@ -98,5 +98,4 @@ public class OyunSonu : NetworkBehaviour{
             }
         }
     }
- 
 }

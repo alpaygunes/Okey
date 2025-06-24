@@ -12,7 +12,7 @@ public class OyunSahnesiUI : MonoBehaviour
     public Label HamleSayisi; 
     public Label GeriSayim;
     private Button exit;
-    public Button puanlamaYap; 
+    public Button degerlendirmeYap; 
     public Label GorevSayisiLbl;
     public Label CanSayisi;
     private VisualElement avatars;
@@ -65,11 +65,11 @@ public class OyunSahnesiUI : MonoBehaviour
         GeriSayim = rootElement.Q<Label>("GeriSayim"); 
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
         CanSayisi = rootElement.Q<Label>("CanSayisi");
-        puanlamaYap = rootElement.Q<Button>("PuanlamaYap");
+        degerlendirmeYap = rootElement.Q<Button>("DegerlendirmeYap");
         exit = rootElement.Q<Button>("Exit"); 
         avatars = rootElement.Q<VisualElement>("Avtars"); 
-        puanlamaYap.clicked += PerleriDegerlendir;  
-        puanlamaYap.style.display = DisplayStyle.None; 
+        degerlendirmeYap.clicked += PerleriDegerlendir;  
+        degerlendirmeYap.style.display = DisplayStyle.None; 
         GorevSayisiLbl.style.display =    DisplayStyle.None; 
         CanSayisi.style.display =    DisplayStyle.Flex; 
         GeriSayim.text = null;
@@ -96,7 +96,6 @@ public class OyunSahnesiUI : MonoBehaviour
     }
      
     public void PerleriDegerlendir(){ 
-        Puanlama.Instance.Puanla();
-        //Card.Instance.Sallanma();
+        IsaretleBelirtYoket.Instance.Degerlendir(); 
     }
 }

@@ -8,8 +8,8 @@ using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NetworkDataManager : NetworkBehaviour{
-    public static NetworkDataManager Instance;
+public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
+    public static MultiPlayerVeriYoneticisi Instance;
     public NetworkList<PlayerData> oyuncuListesi = new NetworkList<PlayerData>();
     public Coroutine skorListesiniYavasGuncelleCoroutine;
 
@@ -51,8 +51,7 @@ public class NetworkDataManager : NetworkBehaviour{
 
         if (skorListesiniYavasGuncelleCoroutine != null){
             StopCoroutine(skorListesiniYavasGuncelleCoroutine);
-        }
-
+        } 
         oyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;
     }
 
@@ -81,8 +80,7 @@ public class NetworkDataManager : NetworkBehaviour{
             Debug.LogError($"AddOyuncu içinde hata {e.Message}");
         }
     }
-
-
+    
     private bool OyuncuVarMi(ulong clientId){
         if (oyuncuListesi == null || !IsSpawned){ 
             return false;
@@ -96,21 +94,18 @@ public class NetworkDataManager : NetworkBehaviour{
 
         return false;
     }
-
-
+    
     private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
         if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.LimitDoldu){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }
-
-
+    
     public IEnumerator SkorListesiniYavasGuncelle(){
         yield return new WaitUntil(() => OyunSonu.Instance != null);
         OyunSonu.Instance.SonucListesiniGoster();
     }
-
-
+    
     [ServerRpc(RequireOwnership = false)]
     public void SkorVeHamleGuncelleServerRpc(int skor, int hamleSayisi, FixedString64Bytes clientName,
         ServerRpcParams rpcParams = default){

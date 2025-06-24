@@ -113,7 +113,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
 
         if (IsClient){
-            SiradakiGoreviSahnedeGoster();
+            SiradakiGoreviIstakadaGoster();
         }
     }
  
@@ -290,7 +290,7 @@ public class GorevYoneticisi : NetworkBehaviour{
     } 
     
     // -----------------------------------  SON --------------------------------------- 
-    public void SiradakiGoreviSahnedeGoster(){
+    public void SiradakiGoreviIstakadaGoster(){
         var body = Instance.transform.Find("Body");
         if (body == null) return;
         // öncekileri temizle 
@@ -355,7 +355,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         OyunSahnesiUI.Instance.GorevSayisiLbl.text = SiradakiGorevSirasNosu +"/"+OyunKurallari.Instance.GorevYap.ToString();  
         if (SiradakiGorevSirasNosu >= OyunKurallari.Instance.GorevYap){
             GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu; 
-            SceneManager.LoadScene("OyunSonu", LoadSceneMode.Single);
+            SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             GameManager.Instance.OyunSahnesiKapaniyor = true;
         }
     }

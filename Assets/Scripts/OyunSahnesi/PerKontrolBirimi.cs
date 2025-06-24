@@ -11,10 +11,10 @@ public class Grup{
 
 public class PerKontrolBirimi : MonoBehaviour{
     public static PerKontrolBirimi Instance;
-    public int SiradakiCepNum = 0;
+    public int siradakiCepNum = 0;
     public Dictionary<int, Grup> Gruplar;
-    private List<Color> GrupRenkleri = new List<Color>() { Color.red, Color.yellow, Color.blue };
-    private List<Cep> Ceps;
+    private readonly List<Color> grupRenkleri = new List<Color>() { Color.red, Color.yellow, Color.blue };
+    private List<Cep> ceps;
 
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -27,7 +27,7 @@ public class PerKontrolBirimi : MonoBehaviour{
     }
 
     public void ParseEt(List<Cep> CepList){
-        Ceps = CepList;
+        ceps = CepList;
         GruplariBul();
         KesisenGruplardanKucuguSil();
     }
@@ -47,9 +47,8 @@ public class PerKontrolBirimi : MonoBehaviour{
             foreach (var grup in Gruplar){
                 foreach (var tas in grup.Value.Taslar){
                     tas.PereUyumluGostergesi.SetActive(true);
-                    tas.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color = GrupRenkleri[i];
-                }
-
+                    tas.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color = grupRenkleri[i];
+                } 
                 i++;
             }
         }
@@ -58,21 +57,18 @@ public class PerKontrolBirimi : MonoBehaviour{
         }
     }
 
-    /*
-     * ABCDEF ABCDE ABCD BCD BCDE gibi alt üst tüm grupları bulur
-     */
     public void GruplariBul(){
         try{
             Gruplar = new Dictionary<int, Grup>();
-            for (int i = 0; i + 2 < Ceps.Count; i++){
+            for (int i = 0; i + 2 < ceps.Count; i++){
                 var perAdayTasGrubu = new List<Tas>();
-                var cep = Ceps[i];
+                var cep = ceps[i];
                 if (cep.TasInstance == null) continue;
-                if (Ceps[i].TasInstance is not null) perAdayTasGrubu.Add(Ceps[i].TasInstance);
-                if (Ceps[i + 1].TasInstance is not null) perAdayTasGrubu.Add(Ceps[i + 1].TasInstance);
-                if (Ceps[i + 2].TasInstance is not null) perAdayTasGrubu.Add(Ceps[i + 2].TasInstance);
+                if (ceps[i].TasInstance is not null) perAdayTasGrubu.Add(ceps[i].TasInstance);
+                if (ceps[i + 1].TasInstance is not null) perAdayTasGrubu.Add(ceps[i + 1].TasInstance);
+                if (ceps[i + 2].TasInstance is not null) perAdayTasGrubu.Add(ceps[i + 2].TasInstance);
                 if (perAdayTasGrubu.Count < 3) continue;
-                SiradakiCepNum = 2 + i; // i dahil üç cep 
+                siradakiCepNum = 2 + i; // i dahil üç cep 
                 while (GrupPermi(perAdayTasGrubu) is { } grupTuru){
                     var kontroldenGecmisPerAdayGrubu = new List<Tas>(perAdayTasGrubu);
                     var yeniGrup = new Grup();
@@ -84,10 +80,10 @@ public class PerKontrolBirimi : MonoBehaviour{
                         Gruplar[colID] = yeniGrup;
                     }
 
-                    SiradakiCepNum++;
-                    if (SiradakiCepNum > Ceps.Count - 1) break;
-                    if (!Ceps[SiradakiCepNum].TasInstance) break;
-                    perAdayTasGrubu.Add(Ceps[SiradakiCepNum].TasInstance);
+                    siradakiCepNum++;
+                    if (siradakiCepNum > ceps.Count - 1) break;
+                    if (!ceps[siradakiCepNum].TasInstance) break;
+                    perAdayTasGrubu.Add(ceps[siradakiCepNum].TasInstance);
                 }
             }
         }
@@ -172,10 +168,7 @@ public class PerKontrolBirimi : MonoBehaviour{
 
         return grupTuru;
     }
-
-    /*
-     * alt ve üst grupların kesişenlerini sile. geriye en büyük kesişmeyen gruplar kalır.
-     */
+    
     public void KesisenGruplardanKucuguSil(){
         int silinecekGrupKey = -1;
         // kesişen grup var mı ?
@@ -188,8 +181,7 @@ public class PerKontrolBirimi : MonoBehaviour{
                     silinecekGrupKey = (grup0.Value.Taslar.Count >= grup1.Value.Taslar.Count) ? key1 : key0;
                     break;
                 }
-            }
-
+            } 
             if (silinecekGrupKey >= 0) break;
         }
 
@@ -199,8 +191,7 @@ public class PerKontrolBirimi : MonoBehaviour{
                 if (grup.Key == silinecekGrupKey){
                     Gruplar.Remove(silinecekGrupKey);
                 }
-            }
-
+            } 
             KesisenGruplardanKucuguSil();
         }
     }

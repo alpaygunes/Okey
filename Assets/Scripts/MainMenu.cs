@@ -10,7 +10,9 @@ using Button = UnityEngine.UIElements.Button;
 
 public class MainMenu : MonoBehaviour{
     private Button HamleLimitliBtn; 
-    private Button ZamanLimitliBtn; 
+    private Button ZamanLimitliBtn;  
+    private Button SPlayerBtn; 
+    private Button MPlayerBtn;
     private Button GorevYap; 
     private VisualElement MenuBox; 
     static public bool isSoloGame = true;
@@ -46,6 +48,13 @@ public class MainMenu : MonoBehaviour{
         GorevYap = rootElement.Q<Button>("GorevYap");
         GorevYap.clicked += SearchGorevYapGame; 
         MenuBox = rootElement.Q<VisualElement>("MenuBox");
+        
+        SPlayerBtn = rootElement.Q<Button>("SoloPlayer");
+        MPlayerBtn = rootElement.Q<Button>("Multyplayer");
+        SPlayerBtn.clicked += ChangeSoloMultyMode; 
+        MPlayerBtn.clicked += ChangeSoloMultyMode; 
+        SPlayerBtn.enabledSelf = (!MainMenu.isSoloGame);
+        MPlayerBtn.enabledSelf = (MainMenu.isSoloGame);
     }
 
     private void SearchHamleLimitliGame(){ 
@@ -61,6 +70,12 @@ public class MainMenu : MonoBehaviour{
     private void SearchGorevYapGame(){ 
         OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.GorevYap;
         SceneManager.LoadScene("LobbyManager");
+    }
+    
+    private void ChangeSoloMultyMode(){
+        MainMenu.isSoloGame = !MainMenu.isSoloGame;
+        MPlayerBtn.enabledSelf = MainMenu.isSoloGame;
+        SPlayerBtn.enabledSelf = !MainMenu.isSoloGame;
     }
 
     private void OnDisable(){
