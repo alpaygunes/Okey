@@ -153,7 +153,7 @@ public class Tas : MonoBehaviour{
                 StartCoroutine(RigidbodyVeCollideriSilGecikmeli());
                 return true;
             }
-        } 
+        }
         return false;
     }
     
@@ -215,8 +215,7 @@ public class Tas : MonoBehaviour{
                     cTasscript.GorevUyumGostergesi1.gameObject.SetActive(true);
                     cTasscript.MeyveResmi.gameObject.SetActive(false);
                     TiklanaBilir = false;
-                }
-                else if (GorevleUyumBayragi == 2){
+                } else if (GorevleUyumBayragi == 2){
                     cTasscript.GorevUyumGostergesi2.gameObject.SetActive(true);
                     cTasscript.MeyveResmi.gameObject.SetActive(false);
                     TiklanaBilir = false;

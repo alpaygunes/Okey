@@ -45,12 +45,11 @@ public class GameManager : MonoBehaviour{
         if (MainMenu.isSoloGame){
             seed = MainMenu.GetRandomSeed();
         }
-        else if (LobbyManager.Instance){
-            // multy
+        // multy
+        else if (LobbyManager.Instance){ 
             seed = LobbyManager.Instance.gameSeed;
         }
-
-
+ 
         Card.Instance.CreateSpawnHoles();
         TasManeger.Instance.TaslariOlustur();
         Card.Instance.KutulariHazirla();
@@ -179,7 +178,6 @@ public class GameManager : MonoBehaviour{
                     } 
                     PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
                     PerKontrolBirimi.Instance.PerdekiTaslariBelirt();
-                    //PerIcinUygunTaslariBelirt.Bul();
                     DegerlendirmeDugmesiniGoster();
                 } 
             }

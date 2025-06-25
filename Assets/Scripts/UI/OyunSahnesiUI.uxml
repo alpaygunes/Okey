@@ -3,6 +3,9 @@
     <ui:VisualElement name="Container" enabled="true" style="width: 100%; height: 100%; justify-content: space-between; align-items: center; align-self: center; overflow: visible;">
         <ui:VisualElement name="Footer" class="footer_bottom" style="height: 16%; min-height: auto; justify-content: flex-end; width: 100%; background-image: resource(&apos;Images/UI/OyunSahnesi/footer0&apos;);">
             <ui:VisualElement name="Avtars" style="align-items: center; align-self: center; justify-content: center; background-image: none; -unity-background-scale-mode: scale-to-fit; background-position-x: center 0; background-size: contain; flex-direction: row; background-position-y: center 0; width: 100%; height: 24px;">
+                <ui:Label name="ElmasSayisi" text="0" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/elmas_sayisi&apos;);" />
+                <ui:Label name="AltinSayisi" text="0" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/altin_sayisi&apos;);" />
+                <ui:Label name="GorevSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/gorev&apos;);" />
                 <ui:Button name="avatar" class="avatar" />
                 <ui:Button name="avatar" class="avatar" style="background-image: resource(&apos;Images/UI/OyunSahnesi/avatar&apos;); -unity-background-scale-mode: scale-to-fit; background-size: contain;" />
             </ui:VisualElement>
@@ -12,7 +15,6 @@
                 <ui:Label name="KalanTasSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/kalan_tas&apos;);" />
                 <ui:Label name="HamleSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/hamle&apos;);" />
                 <ui:Label name="GeriSayim" enable-rich-text="true" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/zaman&apos;);" />
-                <ui:Label name="GorevSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/gorev&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="Middle" style="width: 100%; height: 74%; background-image: none; -unity-background-scale-mode: stretch-to-fill;" />

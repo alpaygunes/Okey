@@ -84,11 +84,11 @@ public class IsaretleBelirtYoket : MonoBehaviour{
                 GorevYoneticisi.Instance.GoreveUygunCeplereBayrakKoy();
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
             }
-            Card.Instance.TaslariAltinVeElmasaDonustur(); 
+            Card.Instance.TaslariAltinVeElmasaDonustur();  
+            PuanlamaIStatistikleri.Sakla();
             Card.Instance.GoreveUyumluCtasYoket();
             Card.Instance.PtasIleUyumluCtaslariYoket();
             Istaka.Instance.PtaslariYoket();
-            PuanlamaIStatistikleri.Sakla();
             LimitleriKontrolEt();
         }
     } 

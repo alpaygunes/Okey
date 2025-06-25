@@ -30,6 +30,8 @@ public static class PuanlamaIStatistikleri{
         CanSayisi = GameManager.Instance.CanSayisi;
         
         OyunSahnesiUI.Instance.SkorTxt.text = Puan.ToString();
+        OyunSahnesiUI.Instance.AltinSayisi.text = AltinSayisi.ToString();
+        OyunSahnesiUI.Instance.ElmasSayisi.text = ElmsSayisi.ToString();
     }
 
     private static void PerdekiTaslariPuanla(){
@@ -55,13 +57,13 @@ public static class PuanlamaIStatistikleri{
     private static void AltinVeElmaslariPuanla(){
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cTas in cardtakiTaslar){
-            var cTasscript = TasManeger.Instance.TasInstances[cTas]; 
+            var cTasscript = TasManeger.Instance.TasInstances[cTas];  
             // altı ise
-            if (cTasscript.GorevleUyumBayragi == 1){
+            if (cTasscript.GorevUyumGostergesi1.gameObject.activeSelf){
                 AltinSayisi++;
             }
             // elmas ise
-            else if (cTasscript.GorevleUyumBayragi == 2){
+            else if (cTasscript.GorevUyumGostergesi2.gameObject.activeSelf){
                 ElmsSayisi++;
             }
         }

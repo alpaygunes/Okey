@@ -16,6 +16,9 @@ public class OyunSahnesiUI : MonoBehaviour
     public Label GorevSayisiLbl;
     public Label CanSayisi;
     private VisualElement avatars;
+    
+    public Label AltinSayisi; 
+    public Label ElmasSayisi; 
  
     private async Task AvatarlariGoster(){
         var updatedLobby = await LobbyService.Instance.GetLobbyAsync(LobbyManager.Instance.CurrentLobby.Id);
@@ -64,6 +67,8 @@ public class OyunSahnesiUI : MonoBehaviour
         HamleSayisi = rootElement.Q<Label>("HamleSayisi");
         GeriSayim = rootElement.Q<Label>("GeriSayim"); 
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
+        AltinSayisi = rootElement.Q<Label>("AltinSayisi");
+        ElmasSayisi = rootElement.Q<Label>("ElmasSayisi");
         CanSayisi = rootElement.Q<Label>("CanSayisi");
         degerlendirmeYap = rootElement.Q<Button>("DegerlendirmeYap");
         exit = rootElement.Q<Button>("Exit"); 
@@ -77,6 +82,8 @@ public class OyunSahnesiUI : MonoBehaviour
         CanSayisi.text = null;
         HamleSayisi.text = "0"; 
         HamleSayisi.style.display =    DisplayStyle.None; 
+        // AltinSayisi.text = "0"; 
+        // ElmasSayisi.text = "0";
         exit.clicked += () => {
             _ = LobbyManager.Instance.CikisIsteginiGonder();
         }; 
