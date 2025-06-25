@@ -89,7 +89,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
             Card.Instance.PtasIleUyumluCtaslariYoket();
             Istaka.Instance.PtaslariYoket();
             PuanlamaIStatistikleri.Sakla();
-            LimitleriKontrolEt();  
+            LimitleriKontrolEt();
         }
     } 
 }

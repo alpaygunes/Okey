@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
+using NUnit.Framework.Constraints;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -45,6 +46,8 @@ public class Tas : MonoBehaviour{
     public bool TiklanaBilir{ get; set; } = true;
     public Dictionary<int, GameObject> PerAilesi{ get; set; } = null; 
     public bool sallanmaDurumu = false;
+    private bool cebeYerles = false;
+    private Cep hedefCep;
 
     private void Awake(){
         BonusBayragi = false;
@@ -130,44 +133,60 @@ public class Tas : MonoBehaviour{
 
             TasManeger.Instance.TasInstances.Remove(gameObject);
             OyunSahnesiUI.Instance.KalanTasSayisi.text = (ToplamTasSayisi - 1).ToString();
+            PuanlamaIStatistikleri.ToplamTasSayisi = ToplamTasSayisi;
         }
         catch (Exception e){
             Debug.Log($" Tas.cs OnDestroy içinde HATA : \n {e.Message}"); 
         } 
     }
 
-    public bool BosCebeYerles(){
-        Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
+    public bool BosCebeYerles(){ 
         for (var i = 0; i < Istaka.Instance.CepList.Count; i++){
-            var hedefCep = Istaka.Instance.CepList[i];
-            if (hedefCep.Dolu == false){
-                transform.position += new Vector3(0, 0, -1);
-                var hedef_cep_position = new Vector3(
-                    hedefCep.transform.position.x,
-                    hedefCep.transform.position.y * .9f,
-                    hedefCep.transform.position.z);
-                transform.localScale = new Vector3(colonWidth * 1.1f, colonWidth);
-                transform.position = hedef_cep_position;
+            hedefCep = Istaka.Instance.CepList[i];
+            if (hedefCep.Dolu == false){ 
                 hedefCep.Dolu = true;
                 hedefCep.TasInstance = this;
-                cepInstance = hedefCep;
-                tag = "CEPTEKI_TAS";
+                cepInstance = hedefCep; 
                 _audioSource_down.Play();
-                Destroy(_rigidbody);
-                Destroy(_collider);
                 sallanmaDurumu = false;
+                cebeYerles = true;
+                StartCoroutine(RigidbodyVeCollideriSilGecikmeli());
                 return true;
             }
-        }
-
+        } 
         return false;
+    }
+    
+    IEnumerator RigidbodyVeCollideriSilGecikmeli()
+    {
+        yield return new WaitForFixedUpdate(); // 1 fizik frame bekle
+        tag = "CEPTEKI_TAS";
+        Destroy(_rigidbody);  
+        PerIcinUygunTaslariBelirt.Bul();
+    }
+ 
+    private void FixedUpdate(){
+        if (cebeYerles){
+            _rigidbody.constraints &= ~RigidbodyConstraints2D.FreezePositionX;  
+            Destroy(_collider);
+            Vector2 cardSize = Card.Instance.Size;
+            float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
+            transform.localScale = new Vector3(colonWidth * 1.1f, colonWidth);
+            var hedefCepPosition = new Vector3(
+                hedefCep.transform.position.x,
+                hedefCep.transform.position.y * .9f);
+            _rigidbody.MovePosition(hedefCepPosition); 
+            cebeYerles = false; 
+        }
     }
 
     public IEnumerator BekleYokol(float gecikme){
         yield return new WaitForSeconds(gecikme);
+        if (this == null) yield break; 
         if (cepInstance != null) cepInstance.TasInstance = null;
-        Destroy(gameObject);
+        if (gameObject != null)
+            Destroy(gameObject);
+
     }
  
     private void Update(){  
@@ -182,8 +201,7 @@ public class Tas : MonoBehaviour{
             tweener.Complete();
             tweener.Kill();
             tweener = null;
-            MeyveResmiSpriteRenderer.transform.localScale = orginalScale;
-            
+            MeyveResmiSpriteRenderer.transform.localScale = orginalScale; 
         }
     }
 

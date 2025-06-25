@@ -9,15 +9,27 @@ public static class PuanlamaIStatistikleri{
     public static int GorevSayisi = 0;
     public static int AltinSayisi = 0;
     public static int ElmsSayisi = 0;
+    public static int ToplamTasSayisi{ get; set; } = 0;
+
+    public static void Sifirla(){
+        Puan = 0;
+        HamleSayisi = 0; 
+        Zaman = 0;
+        CanSayisi = 0;
+        YokEdilenTasSayisi = 0;
+        GorevSayisi = 0;
+        AltinSayisi = 0;
+        ElmsSayisi = 0;
+        ToplamTasSayisi = 0;
+    }
 
     public static void Sakla(){
         AltinVeElmaslariPuanla();
         BonuslariPuanla();
         PerdekiTaslariPuanla();
+        CanSayisi = GameManager.Instance.CanSayisi;
+        
         OyunSahnesiUI.Instance.SkorTxt.text = Puan.ToString();
-        Debug.Log("Puan: " + Puan);
-        Debug.Log("AltinSayisi: " + AltinSayisi);
-        Debug.Log("ElmsSayisi: " + ElmsSayisi);
     }
 
     private static void PerdekiTaslariPuanla(){

@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour{
         }
 
         OyunSahnesiUI.Instance.KalanTasSayisi.text = TasManeger.Instance.TasList.Count.ToString();
+        OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
+        PuanlamaIStatistikleri.Sifirla();
     }
 
     private IEnumerator OyununBitimiIcinGeriSayRoutine(){
@@ -117,22 +119,22 @@ public class GameManager : MonoBehaviour{
     void Update(){
         if (OyunDurumu == OynanmaDurumu.LimitDoldu) return;
         // tıklama algılama
-#if UNITY_ANDROID || UNITY_IOS
-                            if (Input.touchCount > 0)
-                            {
-                                Touch touch = Input.GetTouch(0);
-                                if (touch.phase == TouchPhase.Began)
-                                {
-                                    Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
-                                    TiklamaTuslamaKontrol(worldPoint);
-                                }
-                            }
-#else
-        if (Input.GetMouseButtonDown(0)){
-            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            TiklamaTuslamaKontrol(worldPoint);
-        }
-#endif
+        #if UNITY_ANDROID || UNITY_IOS
+                                    if (Input.touchCount > 0)
+                                    {
+                                        Touch touch = Input.GetTouch(0);
+                                        if (touch.phase == TouchPhase.Began)
+                                        {
+                                            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
+                                            TiklamaTuslamaKontrol(worldPoint);
+                                        }
+                                    }
+        #else
+                if (Input.GetMouseButtonDown(0)){
+                    Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    TiklamaTuslamaKontrol(worldPoint);
+                }
+        #endif
         // tıklana bilir nesne varsa oyun durumunu değiştirelim
         bool TiklanamazTasVar = false;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
@@ -160,9 +162,7 @@ public class GameManager : MonoBehaviour{
         }
         else{
             OyunDurumu = OynanmaDurumu.DevamEdiyor;
-        }
-
- 
+        } 
     }
 
     void TiklamaTuslamaKontrol(Vector2 worldPoint){
@@ -172,15 +172,14 @@ public class GameManager : MonoBehaviour{
             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
                 var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
                 if (!tasInstance.TiklanaBilir) return;
-                var yerlestimi = tasInstance.BosCebeYerles(); 
-                if (yerlestimi){
-                    Card.Instance.Sallanma();
+                var yerlestimi = tasInstance.BosCebeYerles();
+                if (yerlestimi){ 
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
                         GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);
                     } 
                     PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
                     PerKontrolBirimi.Instance.PerdekiTaslariBelirt();
-                    PerIcinUygunTaslariBelirt.Bul();
+                    //PerIcinUygunTaslariBelirt.Bul();
                     DegerlendirmeDugmesiniGoster();
                 } 
             }

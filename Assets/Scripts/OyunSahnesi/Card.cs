@@ -26,7 +26,7 @@ public class Card : MonoBehaviour{
         float colonWidth = cardSize.x / GameManager.Instance._colonCount;
         for (int i = 0; i < GameManager.Instance._colonCount; i++){
             float holePositionX = i * colonWidth - cardSize.x * .5f;
-            float holePositionY = cardSize.y * .5f + colonWidth;
+            float holePositionY = cardSize.y * .35f + colonWidth;
             holePositionX += colonWidth * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
             SpawnHole.GetComponent<SpawnHole>().colID = i;
