@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour{
         // per YOK ama istaka full.
         else if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
             CanSayisi--;
+            IsaretleBelirtYoket.Instance.HamleSayisi++;
             OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
             Istaka.Instance.TumTaslarinGostergesiniAc();
             Istaka.Instance.IstakayiVeCartiTemizle();

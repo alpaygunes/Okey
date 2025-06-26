@@ -32,7 +32,7 @@ public class OyunSonu : NetworkBehaviour{
 
     public void SonucListesiniGoster(){
         try{
-            NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.oyuncuListesi;
+            NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.OyuncuListesi;
 
             sonucListesi.Clear();
             // Burada yeni bir kopya liste oluştur 
@@ -45,13 +45,10 @@ public class OyunSonu : NetworkBehaviour{
             var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
             foreach (var oyuncu in siraliListe){
                 ulong clientID = oyuncu.ClientId;
-                FixedString64Bytes clientName = oyuncu.ClientName;
-                //int puan = oyuncu.Skor;
-                //int HamleSayisi = oyuncu.HamleSayisi;
+                FixedString64Bytes clientName = oyuncu.ClientName; 
                 var puanBtn = new Button();
                 puanBtn.text = oyuncu.Skor.ToString();
-                puanBtn.AddToClassList("puan");
-                //sonucListesi.Add(puanBtn);
+                puanBtn.AddToClassList("puan"); 
                 var playerNameBtn = new Button();
                 playerNameBtn.text = clientName.ToString();
                 playerNameBtn.AddToClassList("name");

@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     public static MultiPlayerVeriYoneticisi Instance;
-    public NetworkList<PlayerData> oyuncuListesi = new NetworkList<PlayerData>();
+    public NetworkList<PlayerData> OyuncuListesi = new NetworkList<PlayerData>();
     public Coroutine skorListesiniYavasGuncelleCoroutine;
 
     private void Awake(){
@@ -35,12 +35,12 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
             StartCoroutine(GecikmeliOyuncuEkle(NetworkManager.Singleton.LocalClientId));
         }
         if (IsClient){
-            oyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi;
+            OyuncuListesi.OnListChanged += OnOyuncuListesiGuncellendi;
         }
     } 
 
     private IEnumerator GecikmeliOyuncuEkle(ulong clientId){ 
-        yield return new WaitUntil(() => IsSpawned && oyuncuListesi != null);
+        yield return new WaitUntil(() => IsSpawned && OyuncuListesi != null);
         AddOyuncu(clientId);
     }
 
@@ -52,7 +52,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         if (skorListesiniYavasGuncelleCoroutine != null){
             StopCoroutine(skorListesiniYavasGuncelleCoroutine);
         } 
-        oyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;
+        OyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;
     }
 
     private void AddOyuncu(ulong clientId){
@@ -61,18 +61,28 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                 return;
             }
 
-            if (oyuncuListesi == null){
+            if (OyuncuListesi == null){
                 return;
             }
 
             string displayName = LobbyManager.Instance != null ? LobbyManager.Instance.myDisplayName : "Unknown";
 
             if (!OyuncuVarMi(clientId)){
-                oyuncuListesi.Add(new PlayerData
+                OyuncuListesi.Add(new PlayerData
                 {
                     ClientId = clientId,
-                    Skor = 0,
-                    HamleSayisi = 0,
+                    Skor  = 0,
+                    // PuanlamaIStatistikleri alanları
+                    BonusMeyveSayisi = PuanlamaIStatistikleri.BonusMeyveSayisi,
+                    HamleSayisi = PuanlamaIStatistikleri.HamleSayisi,
+                    Zaman = PuanlamaIStatistikleri.Zaman,
+                    CanSayisi=PuanlamaIStatistikleri.CanSayisi,
+                    YokEdilenTasSayisi=PuanlamaIStatistikleri.YokEdilenTasSayisi,
+                    GorevSayisi=PuanlamaIStatistikleri.GorevSayisi,
+                    AltinSayisi=PuanlamaIStatistikleri.AltinSayisi,
+                    ElmasSayisi=PuanlamaIStatistikleri.ElmasSayisi,
+                    ToplamTasSayisi=PuanlamaIStatistikleri.ToplamTasSayisi, 
+                    //------------
                     ClientName = displayName,
                 });
             }
@@ -82,12 +92,12 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     }
     
     private bool OyuncuVarMi(ulong clientId){
-        if (oyuncuListesi == null || !IsSpawned){ 
+        if (OyuncuListesi == null || !IsSpawned){ 
             return false;
         }
 
-        for (int i = 0; i < oyuncuListesi.Count; i++){
-            if (oyuncuListesi[i].ClientId == clientId){
+        for (int i = 0; i < OyuncuListesi.Count; i++){
+            if (OyuncuListesi[i].ClientId == clientId){
                 return true;
             }
         }
@@ -96,6 +106,9 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     }
     
     private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
+        /*burada kaldın. puanlar her güncellediniğinde burası çağrılıyor
+            puanlarına bakıp avatar sırasını değiştirmek mümün.
+            avatarlara animasyon efekt eklene bilir.*/
         if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.LimitDoldu){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
@@ -107,16 +120,25 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     }
     
     [ServerRpc(RequireOwnership = false)]
-    public void SkorVeHamleGuncelleServerRpc(int skor, int hamleSayisi, FixedString64Bytes clientName,
-        ServerRpcParams rpcParams = default){
+    public void SkorVeHamleGuncelleServerRpc(ServerRpcParams rpcParams = default){
+        FixedString64Bytes clientName = LobbyManager.Instance.myDisplayName;
         try{
-            for (int i = 0; i < oyuncuListesi.Count; i++){
-                if (oyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
-                    oyuncuListesi[i] = new PlayerData
-                    {
+            for (int i = 0; i < OyuncuListesi.Count; i++){
+                if (OyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
+                    OyuncuListesi[i] = new PlayerData{
                         ClientId = rpcParams.Receive.SenderClientId,
-                        Skor = skor,
-                        HamleSayisi = hamleSayisi,
+                        Skor = 0,
+                        // PuanlamaIStatistikleri alanları
+                        BonusMeyveSayisi = PuanlamaIStatistikleri.BonusMeyveSayisi,
+                        HamleSayisi = PuanlamaIStatistikleri.BonusMeyveSayisi,
+                        Zaman = PuanlamaIStatistikleri.Zaman,
+                        CanSayisi=PuanlamaIStatistikleri.CanSayisi,
+                        YokEdilenTasSayisi=PuanlamaIStatistikleri.YokEdilenTasSayisi,
+                        GorevSayisi=PuanlamaIStatistikleri.GorevSayisi,
+                        AltinSayisi=PuanlamaIStatistikleri.AltinSayisi,
+                        ElmasSayisi=PuanlamaIStatistikleri.ElmasSayisi,
+                        ToplamTasSayisi=PuanlamaIStatistikleri.ToplamTasSayisi, 
+                        //------------
                         ClientName = clientName,
                     };
                     break;
@@ -129,16 +151,30 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     }
 
     public struct PlayerData : INetworkSerializable, System.IEquatable<PlayerData>{
-        public ulong ClientId;
+        public ulong ClientId; 
         public int Skor;
-        public int HamleSayisi;
+        public int BonusMeyveSayisi;
+        public int HamleSayisi; 
+        public int Zaman;
+        public int CanSayisi;
+        public int YokEdilenTasSayisi;
+        public int GorevSayisi;
+        public int AltinSayisi;
+        public int ElmasSayisi;
+        public int ToplamTasSayisi; 
         public FixedString64Bytes ClientName;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter{
             serializer.SerializeValue(ref ClientId);
-            serializer.SerializeValue(ref Skor);
+            serializer.SerializeValue(ref BonusMeyveSayisi);
             serializer.SerializeValue(ref HamleSayisi);
-            serializer.SerializeValue(ref ClientName);
+            serializer.SerializeValue(ref Zaman);
+            serializer.SerializeValue(ref CanSayisi);
+            serializer.SerializeValue(ref YokEdilenTasSayisi);
+            serializer.SerializeValue(ref GorevSayisi);
+            serializer.SerializeValue(ref AltinSayisi);
+            serializer.SerializeValue(ref ElmasSayisi);
+            serializer.SerializeValue(ref ToplamTasSayisi); 
         }
 
         public bool Equals(PlayerData other){

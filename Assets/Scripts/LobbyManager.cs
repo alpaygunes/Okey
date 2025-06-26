@@ -30,11 +30,11 @@ public class LobbyManager : NetworkBehaviour{
     private bool IsGameStarted = false;
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
     public GameObject networkPlayerPrefab;
-    private string avadarID;
+    private string AvadarID;
     
     private void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
-        avadarID = "avatar" + UnityEngine.Random.Range(0, 2);
+        AvadarID = "avatar" + UnityEngine.Random.Range(0, 2);
 
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
@@ -122,6 +122,101 @@ public class LobbyManager : NetworkBehaviour{
             _ = UpdateLobbyAsync();
         }
     }
+    
+    public void StartHeartbeat(){
+        if (heartbeatCoroutine == null){
+            heartbeatCoroutine = StartCoroutine(SendHeartbeatRoutine());
+        }
+    }
+
+    public void StopHeartbeat(){
+        if (heartbeatCoroutine != null){
+            StopCoroutine(heartbeatCoroutine);
+            heartbeatCoroutine = null;
+        }
+    }
+    
+    private IEnumerator SendHeartbeatRoutine(){
+        while (true){
+            if (CurrentLobby != null){
+                LobbyService.Instance.SendHeartbeatPingAsync(CurrentLobby.Id);
+            }
+
+            yield return new WaitForSeconds(15f); // her 15 saniyede bir ping
+        }
+    }
+    
+    public async Task StartHostWithRelay(){
+        try{
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening){
+                NetworkManager.Singleton.Shutdown();  
+                // Şu satırı ekle: Shutdown tamamlanana kadar bekle
+                while (NetworkManager.Singleton.IsListening)
+                    await Task.Delay(100);
+            } 
+            
+            // NetworkManager prefab’ı sahnede yoksa instansela
+            if (NetworkManager.Singleton == null){
+                Instantiate(networkPlayerPrefab); // Inspector’dan atadığınız prefab
+            }
+
+            if (CurrentLobby.HostId != AuthenticationService.Instance.PlayerId){
+                return;
+            }
+
+            try{
+                var allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
+                NetworkManager.Singleton.GetComponent<UnityTransport>()
+                    .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
+                var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+                gameSeed = MainMenu.GetRandomSeed();
+
+                await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, relayCode) },
+                        { "GameSeed", new DataObject(DataObject.VisibilityOptions.Public, gameSeed) },
+                        { "isGameStarted", new DataObject(DataObject.VisibilityOptions.Public, "true") }
+                    }
+                });
+ 
+                if (!NetworkManager.Singleton.IsListening){
+                    NetworkManager.Singleton.StartHost();
+                }
+            }
+            catch (LobbyServiceException ex){
+                Debug.LogError($"LobbyServiceException: {ex.Message}");
+                Debug.LogError($"ErrorCode: {ex.ErrorCode}, Reason: {ex.Reason}, Message: {ex.Message}");
+            }
+        }
+        catch (Exception ex){
+            Debug.LogError("Genel hata: " + ex.ToString());
+        }
+    }
+    
+    public async Task StartClientRelay(string joinCode, string connectionType){
+        if (IsHost) return;
+        try{
+            var nm = NetworkManager.Singleton;
+
+            if (nm.IsListening){
+                nm.Shutdown();
+
+                while (nm.IsListening)
+                    await Task.Delay(100);
+            }
+
+            var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+            nm.GetComponent<UnityTransport>().SetRelayServerData(
+                AllocationUtils.ToRelayServerData(allocation, connectionType));
+            nm.StartClient();
+        }
+        catch (Exception ex){
+            Debug.LogError($"StartClientRelay HATASI: {ex.Message}");
+        } 
+    }
 
     private async Task UpdateLobbyAsync(){
         try{
@@ -185,7 +280,7 @@ public class LobbyManager : NetworkBehaviour{
                     Data = new Dictionary<string, PlayerDataObject>
                     {
                         { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, myDisplayName) },
-                        { "avatar", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, avadarID) }
+                        { "avatar", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, AvadarID) }
                     }
                 }
             };
@@ -282,103 +377,6 @@ public class LobbyManager : NetworkBehaviour{
         var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         CurrentLobby = updatedLobby;
         LobbyListUI.Instance.RefreshPlayerList();
-    }
-    
-    public void StartHeartbeat(){
-        if (heartbeatCoroutine == null){
-            heartbeatCoroutine = StartCoroutine(SendHeartbeatRoutine());
-        }
-    }
-
-    public void StopHeartbeat(){
-        if (heartbeatCoroutine != null){
-            StopCoroutine(heartbeatCoroutine);
-            heartbeatCoroutine = null;
-        }
-    }
-    
-    private IEnumerator SendHeartbeatRoutine(){
-        while (true){
-            if (CurrentLobby != null){
-                LobbyService.Instance.SendHeartbeatPingAsync(CurrentLobby.Id);
-            }
-
-            yield return new WaitForSeconds(15f); // her 15 saniyede bir ping
-        }
-    }
-    
-    public async Task StartHostWithRelay(){
-        try{
-            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening){
-                NetworkManager.Singleton.Shutdown();  
-                // Şu satırı ekle: Shutdown tamamlanana kadar bekle
-                while (NetworkManager.Singleton.IsListening)
-                    await Task.Delay(100);
-            } 
-            
-            // NetworkManager prefab’ı sahnede yoksa instansela
-            if (NetworkManager.Singleton == null){
-                Instantiate(networkPlayerPrefab); // Inspector’dan atadığınız prefab
-            }
-
-            if (CurrentLobby.HostId != AuthenticationService.Instance.PlayerId){
-                return;
-            }
-
-            try{
-                var allocation = await RelayService.Instance.CreateAllocationAsync(MaxPlayers);
-                NetworkManager.Singleton.GetComponent<UnityTransport>()
-                    .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
-                var relayCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-
-                gameSeed = MainMenu.GetRandomSeed();
-
-                await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
-                {
-                    Data = new Dictionary<string, DataObject>
-                    {
-                        { "RelayCode", new DataObject(DataObject.VisibilityOptions.Public, relayCode) },
-                        { "GameSeed", new DataObject(DataObject.VisibilityOptions.Public, gameSeed) },
-                        { "isGameStarted", new DataObject(DataObject.VisibilityOptions.Public, "true") }
-                    }
-                });
- 
-                if (!NetworkManager.Singleton.IsListening){
-                    NetworkManager.Singleton.StartHost();
-                }
-            }
-            catch (LobbyServiceException ex){
-                Debug.LogError($"LobbyServiceException: {ex.Message}");
-                Debug.LogError($"ErrorCode: {ex.ErrorCode}, Reason: {ex.Reason}, Message: {ex.Message}");
-            }
-        }
-        catch (Exception ex){
-            Debug.LogError("Genel hata: " + ex.ToString());
-        }
-    }
-
-
-    
-    public async Task StartClientRelay(string joinCode, string connectionType){
-        if (IsHost) return;
-        try{
-            var nm = NetworkManager.Singleton;
-
-            if (nm.IsListening){
-                nm.Shutdown();
-
-                while (nm.IsListening)
-                    await Task.Delay(100);
-            }
-
-            var allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
-            nm.GetComponent<UnityTransport>().SetRelayServerData(
-                AllocationUtils.ToRelayServerData(allocation, connectionType));
-            nm.StartClient();
-        }
-        catch (Exception ex){
-            Debug.LogError($"StartClientRelay HATASI: {ex.Message}");
-        } 
     }
     
     public override void OnNetworkSpawn(){

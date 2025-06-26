@@ -253,8 +253,7 @@ public class LobbyListUI : MonoBehaviour{
             
             joinedToLobby = await LobbyManager.Instance.JoinLobbyByID(lobbyID);
             ayrilBtn.style.display = joinedToLobby ? DisplayStyle.Flex : DisplayStyle.None;
-            katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex;
-            //CrtLobBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex; 
+            katilBtn.style.display = joinedToLobby ? DisplayStyle.None : DisplayStyle.Flex; 
             CrtLobBtn.visible = !joinedToLobby;
         }
         catch (Exception e){
@@ -273,9 +272,7 @@ public class LobbyListUI : MonoBehaviour{
             await LobbyService.Instance.RemovePlayerAsync(LobbyManager.Instance.CurrentLobby.Id,
                 AuthenticationService.Instance.PlayerId);
             ayrilBtn.style.display = DisplayStyle.None;
-            katilBtn.style.display = DisplayStyle.Flex;
-            //HostListBtn.style.display = DisplayStyle.None;
-            //CrtLobBtn.style.display = DisplayStyle.Flex;
+            katilBtn.style.display = DisplayStyle.Flex; 
             CrtLobBtn.visible = true;
             LobbyManager.Instance.CurrentLobby = null; 
             LobbyManager.Instance.AbonelikeriBitir();

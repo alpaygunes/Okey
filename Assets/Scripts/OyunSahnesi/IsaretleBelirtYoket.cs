@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class IsaretleBelirtYoket : MonoBehaviour{
     public static IsaretleBelirtYoket Instance{ get; private set; }
     //private Camera uiCamera; 
-    public int hamleSayisi;
+    public int HamleSayisi;
  
 
     void Awake(){
@@ -23,7 +23,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
     private void Start(){
         if (!MainMenu.isSoloGame){
             // boş bir değişim yaratalım. skorlsitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
-            MultiPlayerVeriYoneticisi.Instance?.SkorVeHamleGuncelleServerRpc(1, 0, LobbyManager.Instance.myDisplayName);
+            MultiPlayerVeriYoneticisi.Instance?.SkorVeHamleGuncelleServerRpc();
         } 
     }
 
@@ -31,7 +31,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
         // eğer multi player ise
         if (!MainMenu.isSoloGame){
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
-                if (hamleSayisi >= OyunKurallari.Instance.HamleLimit){
+                if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
@@ -41,7 +41,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
                 if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-                    if (MultiPlayerVeriYoneticisi.Instance.oyuncuListesi != null){
+                    if (MultiPlayerVeriYoneticisi.Instance.OyuncuListesi != null){
                         IEnumerator enumerator;
                         try{
                             enumerator = MultiPlayerVeriYoneticisi.Instance.SkorListesiniYavasGuncelle();
@@ -59,7 +59,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
         // eğer solo ise
         if(MainMenu.isSoloGame){ 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
-                if (hamleSayisi >= OyunKurallari.Instance.HamleLimit){
+                if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
@@ -76,6 +76,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
     
     public void Degerlendir(){ 
         Card.Instance.Sallanma();
+        HamleSayisi++;
         if ( PerKontrolBirimi.Instance.Gruplar.Count>0){ 
             OyunSahnesiUI.Instance.degerlendirmeYap.style.display = DisplayStyle.None; 
             Card.Instance.CardtakiBonusTaslariBelirt(); 
