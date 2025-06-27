@@ -28,18 +28,28 @@ public static class PuanlamaIStatistikleri{
         AltinVeElmaslariPuanla();
         BonuslariPuanla();
         PerdekiTaslariPuanla();
-        CanSayisi = GameManager.Instance.CanSayisi;
-        HamleSayisi = IsaretleBelirtYoket.Instance.HamleSayisi;
         
-        OyunSahnesiUI.Instance.SkorTxt.text = BonusMeyveSayisi.ToString();
-        OyunSahnesiUI.Instance.AltinSayisi.text = AltinSayisi.ToString();
-        OyunSahnesiUI.Instance.ElmasSayisi.text = ElmasSayisi.ToString();
-        OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi.ToString();
+        SayilariGuncelle(); 
+        UIgucelle();
         
         if (!MainMenu.isSoloGame){ 
             MultiPlayerVeriYoneticisi.Instance?.SkorVeHamleGuncelleServerRpc();
         } 
         
+    }
+
+    public static void SayilariGuncelle(){
+        CanSayisi = GameManager.Instance.CanSayisi;
+        HamleSayisi = IsaretleBelirtYoket.Instance.HamleSayisi;
+        GorevSayisi = GorevYoneticisi.Instance.SiradakiGorevSiraNosu;
+    }
+
+    public static void UIgucelle(){
+        OyunSahnesiUI.Instance.SkorTxt.text = BonusMeyveSayisi.ToString();
+        OyunSahnesiUI.Instance.AltinSayisi.text = AltinSayisi.ToString();
+        OyunSahnesiUI.Instance.ElmasSayisi.text = ElmasSayisi.ToString();
+        OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi+1 + "/" + OyunKurallari.Instance.HamleLimit;
+        OyunSahnesiUI.Instance.GorevSayisiLbl.text = GorevSayisi+1 + "/" + OyunKurallari.Instance.GorevLimit;
     }
 
     private static void PerdekiTaslariPuanla(){

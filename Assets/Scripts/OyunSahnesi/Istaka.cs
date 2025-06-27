@@ -101,11 +101,7 @@ public class Istaka : MonoBehaviour{
     }
   
 
-    public void CeptekiYildizleriGizle(){
-        foreach (var cep in CepList){
-            cep.YildiziYak(0);
-        }
-    }
+ 
 
     public void PtaslariYoket(){ 
         float beklemeSuresi = .1f;

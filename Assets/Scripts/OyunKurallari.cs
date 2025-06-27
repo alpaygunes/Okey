@@ -7,7 +7,7 @@ public class OyunKurallari:NetworkBehaviour
     public int HamleLimit { get; private set; }
     public int SkorLimiti { get; private set; }
     public int ZamanLimiti { get; private set; }
-    public int GorevYap { get; private set; } 
+    public int GorevLimit { get; private set; } 
     
     public enum OyunTipleri
     {
@@ -37,28 +37,28 @@ public class OyunKurallari:NetworkBehaviour
                 HamleLimit = 5;
                 SkorLimiti = 0;
                 ZamanLimiti = 0;
-                GorevYap = 0;
+                GorevLimit = 0;
                 break;
 
             case OyunTipleri.GorevYap:
                 HamleLimit = 0;
                 SkorLimiti = 20;
                 ZamanLimiti = 0;
-                GorevYap = 5;
+                GorevLimit = 5;
                 break;
 
             case OyunTipleri.ZamanLimitli:
                 HamleLimit = 0;
                 SkorLimiti = 0;
                 ZamanLimiti = 20;
-                GorevYap = 0;
+                GorevLimit = 0;
                 break;
 
             case OyunTipleri.RakibeGonder:
                 HamleLimit = 0;
                 SkorLimiti = 0;
                 ZamanLimiti = 0;
-                GorevYap = 0;
+                GorevLimit = 0;
                 break;
 
             default:

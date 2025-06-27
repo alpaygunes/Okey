@@ -105,10 +105,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         return false;
     }
     
-    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
-        /*burada kaldın. puanlar her güncellediniğinde burası çağrılıyor
-            puanlarına bakıp avatar sırasını değiştirmek mümün.
-            avatarlara animasyon efekt eklene bilir.*/
+    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){ 
         if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.LimitDoldu){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }

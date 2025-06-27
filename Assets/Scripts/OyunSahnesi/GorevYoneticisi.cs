@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class GorevYoneticisi : NetworkBehaviour{ 
     public static GorevYoneticisi Instance{ get; private set; }
-    private int SiradakiGorevSirasNosu = 0;
+    public int SiradakiGorevSiraNosu = 0;
     private float posYrate = 0.74f;
     
     public struct TasData : INetworkSerializable, IEquatable<TasData>{
@@ -89,7 +89,6 @@ public class GorevYoneticisi : NetworkBehaviour{
             return;
         } 
         Instance = this; 
-        
         gorevlerNetList = new NetworkList<GorevData>(
             readPerm: NetworkVariableReadPermission.Everyone,
             writePerm: NetworkVariableWritePermission.Server);
@@ -102,7 +101,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         transform.position = new Vector3(0, -y * posYrate, 0);
     }
 
-    public override void OnNetworkSpawn(){ 
+    public override void OnNetworkSpawn(){
         if (OyunKurallari.Instance.GuncelOyunTipi != OyunKurallari.OyunTipleri.GorevYap){
             return;
         }
@@ -301,10 +300,10 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         GorevData gorev;
         if (MainMenu.isSoloGame){
-            gorev = gorevlerSoloList[SiradakiGorevSirasNosu];
+            gorev = gorevlerSoloList[SiradakiGorevSiraNosu];
         }
         else{
-            gorev = gorevlerNetList[SiradakiGorevSirasNosu];
+            gorev = gorevlerNetList[SiradakiGorevSiraNosu];
         }
         
         FixedList128Bytes<TasData> taslar = gorev.Taslar;
@@ -326,51 +325,52 @@ public class GorevYoneticisi : NetworkBehaviour{
             gTas.name = "gTas" + i;
             gTas.GetComponent<gTas>().colID = i;
             i++;
-        }
+        } 
     }
     
     public void GoreveUygunCeplereBayrakKoy(){
         FixedList128Bytes<TasData> gorevTaslari;
         if (MainMenu.isSoloGame){
-            gorevTaslari = gorevlerSoloList[SiradakiGorevSirasNosu].Taslar;
+            gorevTaslari = gorevlerSoloList[SiradakiGorevSiraNosu].Taslar;
         } else{
-            gorevTaslari = gorevlerNetList[SiradakiGorevSirasNosu].Taslar;
+            gorevTaslari = gorevlerNetList[SiradakiGorevSiraNosu].Taslar;
         }
 
-        var i = 0;
+         
         foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
             foreach (var pTas in grup.Value.Taslar){
-                if (gorevTaslari.Length == i) break; 
-                var gTas = gorevTaslari[i];
+                if (gorevTaslari.Length == pTas.cepInstance.colID) break; 
+                var gTas = gorevTaslari[pTas.cepInstance.colID];
                 if (pTas.MeyveID == gTas.MeyveID && pTas.Renk == gTas.Renk){
                     pTas.GorevleUyumBayragi = 2; 
                 }else if (pTas.MeyveID == gTas.MeyveID || pTas.Renk == gTas.Renk){ 
                     pTas.GorevleUyumBayragi = 1; 
-                }  
-                i++;
+                }   
             }
         }
-          
-        SiradakiGorevSirasNosu++;
-        OyunSahnesiUI.Instance.GorevSayisiLbl.text = SiradakiGorevSirasNosu +"/"+OyunKurallari.Instance.GorevYap.ToString();  
-        if (SiradakiGorevSirasNosu >= OyunKurallari.Instance.GorevYap){
-            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu; 
+        SiradakiGorevSiraNosu++;
+        if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
+            GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             GameManager.Instance.OyunSahnesiKapaniyor = true;
         }
     }
 
-    public void CepGoreveUyduysaYildiziYak(Tas tas){
-        var cepScript = tas.cepInstance; 
-        GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
-        var gTas = gorevTaslari[cepScript.colID];
-        int uyumSayisi = 0;
-        if (gTas.GetComponent<gTas>().renk == tas.Renk){ 
-            uyumSayisi++;
-        }
-        if (gTas.GetComponent<gTas>().meyveID == tas.MeyveID){ 
-            uyumSayisi++;
-        }
-        cepScript.YildiziYak(uyumSayisi); 
+    public void CeplerinYidiziniGuncelle(){
+        foreach (var cepScript in Istaka.Instance.CepList){
+            cepScript.YildiziYak(0);
+            if (cepScript.TasInstance == null) continue;
+            var tas = cepScript.TasInstance;
+            GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
+            var gTas = gorevTaslari[cepScript.colID];
+            int uyumSayisi = 0;
+            if (gTas.GetComponent<gTas>().renk == tas.Renk){ 
+                uyumSayisi++;
+            }
+            if (gTas.GetComponent<gTas>().meyveID == tas.MeyveID){ 
+                uyumSayisi++;
+            }
+            cepScript.YildiziYak(uyumSayisi);  
+        } 
     }
 }

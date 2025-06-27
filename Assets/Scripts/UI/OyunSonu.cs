@@ -29,6 +29,46 @@ public class OyunSonu : NetworkBehaviour{
 
         Instance = this;
     }
+    private void Start(){
+        if (MainMenu.isSoloGame){
+            SonucListesiniGoster();
+            // alanları doldur
+            sonucListesi.Clear();
+            var BonusSayisiBtn = new Button();
+            BonusSayisiBtn.text = PuanlamaIStatistikleri.BonusMeyveSayisi.ToString();
+            BonusSayisiBtn.AddToClassList("bonus_sayisi"); 
+            BonusSayisiBtn.AddToClassList("kutu"); 
+                
+            var AltinBtn = new Button();
+            AltinBtn.text = PuanlamaIStatistikleri.AltinSayisi.ToString();
+            AltinBtn.AddToClassList("altin_sayisi"); 
+            AltinBtn.AddToClassList("kutu"); 
+                
+            var ElmasBtn = new Button();
+            ElmasBtn.text = PuanlamaIStatistikleri.ElmasSayisi.ToString();
+            ElmasBtn.AddToClassList("elmas_sayisi"); 
+            ElmasBtn.AddToClassList("kutu"); 
+                
+            var SkorBtn = new Button();
+            SkorBtn.text = (PuanlamaIStatistikleri.BonusMeyveSayisi + PuanlamaIStatistikleri.AltinSayisi +
+                            PuanlamaIStatistikleri.ElmasSayisi).ToString();
+            SkorBtn.AddToClassList("skor_sayisi");
+            SkorBtn.AddToClassList("kutu"); 
+                
+            var playerNameBtn = new Button();
+            playerNameBtn.text = "BAŞARDINIZ";
+            playerNameBtn.AddToClassList("name");
+                
+            var ListRowVisuElm = new VisualElement();
+            ListRowVisuElm.Add(playerNameBtn);
+            ListRowVisuElm.Add(BonusSayisiBtn);
+            ListRowVisuElm.Add(AltinBtn);
+            ListRowVisuElm.Add(ElmasBtn);
+            ListRowVisuElm.Add(SkorBtn);
+            ListRowVisuElm.AddToClassList("ListRow");
+            sonucListesi.Add(ListRowVisuElm);
+        }
+    }
 
     public void SonucListesiniGoster(){
         try{
@@ -37,24 +77,55 @@ public class OyunSonu : NetworkBehaviour{
             sonucListesi.Clear();
             // Burada yeni bir kopya liste oluştur 
             var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>();
-            foreach (var oyuncu in oyuncuListesi){
+            /*foreach (var oyuncu in oyuncuListesi){
+                oyuncu.Skor = oyuncu.BonusMeyveSayisi + oyuncu.AltinSayisi + oyuncu.ElmasSayisi;
+                
+            }*/
+            
+            for (int i = 0; i < oyuncuListesi.Count; i++) {
+                var oyuncu = oyuncuListesi[i];
+                oyuncu.Skor = oyuncu.BonusMeyveSayisi + oyuncu.AltinSayisi + oyuncu.ElmasSayisi;
+                //oyuncuListesi[i] = pd;          // geri yaz
                 localList.Add(oyuncu);
             }
+
 
             // Bu kopyayı sıralıyoruz
             var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
             foreach (var oyuncu in siraliListe){
                 ulong clientID = oyuncu.ClientId;
                 FixedString64Bytes clientName = oyuncu.ClientName; 
-                var puanBtn = new Button();
-                puanBtn.text = oyuncu.Skor.ToString();
-                puanBtn.AddToClassList("puan"); 
+                
+                var BonusSayisiBtn = new Button();
+                BonusSayisiBtn.text = oyuncu.BonusMeyveSayisi.ToString();
+                BonusSayisiBtn.AddToClassList("bonus_sayisi"); 
+                BonusSayisiBtn.AddToClassList("kutu"); 
+                
+                var AltinBtn = new Button();
+                AltinBtn.text = oyuncu.AltinSayisi.ToString();
+                AltinBtn.AddToClassList("altin_sayisi"); 
+                AltinBtn.AddToClassList("kutu"); 
+                
+                var ElmasBtn = new Button();
+                ElmasBtn.text = oyuncu.ElmasSayisi.ToString();
+                ElmasBtn.AddToClassList("elmas_sayisi"); 
+                ElmasBtn.AddToClassList("kutu"); 
+                
+                var SkorBtn = new Button();
+                SkorBtn.text = oyuncu.Skor.ToString();
+                SkorBtn.AddToClassList("skor_sayisi");  
+                SkorBtn.AddToClassList("kutu"); 
+                
                 var playerNameBtn = new Button();
                 playerNameBtn.text = clientName.ToString();
                 playerNameBtn.AddToClassList("name");
+                
                 var ListRowVisuElm = new VisualElement();
-                ListRowVisuElm.Add(puanBtn);
                 ListRowVisuElm.Add(playerNameBtn);
+                ListRowVisuElm.Add(BonusSayisiBtn);
+                ListRowVisuElm.Add(AltinBtn);
+                ListRowVisuElm.Add(ElmasBtn);
+                ListRowVisuElm.Add(SkorBtn);
                 ListRowVisuElm.AddToClassList("ListRow");
                 sonucListesi.Add(ListRowVisuElm);
             }

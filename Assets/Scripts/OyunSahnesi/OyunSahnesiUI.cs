@@ -82,8 +82,8 @@ public class OyunSahnesiUI : MonoBehaviour
         CanSayisi.text = null;
         HamleSayisi.text = "0"; 
         HamleSayisi.style.display =    DisplayStyle.None; 
-        // AltinSayisi.text = "0"; 
-        // ElmasSayisi.text = "0";
+        AltinSayisi.text = "0"; 
+        ElmasSayisi.text = "0";
         exit.clicked += () => {
             _ = LobbyManager.Instance.CikisIsteginiGonder();
         }; 
@@ -94,7 +94,7 @@ public class OyunSahnesiUI : MonoBehaviour
             GeriSayim.style.display =    DisplayStyle.Flex;
         } else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
             GorevSayisiLbl.style.display =    DisplayStyle.Flex;
-            GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevYap.ToString();
+            GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevLimit.ToString();
         } else if(OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             HamleSayisi.style.display =    DisplayStyle.Flex;
             HamleSayisi.text  = "1/"+OyunKurallari.Instance.HamleLimit.ToString();

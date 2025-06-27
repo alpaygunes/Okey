@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour{
@@ -94,8 +95,8 @@ public class GameManager : MonoBehaviour{
         IsaretleBelirtYoket.Instance.LimitleriKontrolEt();
     }
 
-    public void DegerlendirmeDugmesiniGoster(){
-        // per VAR
+    public void DugmeYadaOtomatikDegerlendirme(){
+        // per VAR sa
         if (PerKontrolBirimi.Instance.Gruplar.Count > 0){
             if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
                 IsaretleBelirtYoket.Instance.Degerlendir();
@@ -106,14 +107,24 @@ public class GameManager : MonoBehaviour{
         }
         // per YOK ama istaka full.
         else if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
-            CanSayisi--;
-            IsaretleBelirtYoket.Instance.HamleSayisi++;
+            CanSayisi--; 
+            IsaretleBelirtYoket.Instance.HamleSayisi++;  
             OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
             Istaka.Instance.TumTaslarinGostergesiniAc();
             Istaka.Instance.IstakayiVeCartiTemizle();
-            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap)
-                Istaka.Instance.CeptekiYildizleriGizle();
-        }
+            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){ 
+                GorevYoneticisi.Instance.SiradakiGorevSiraNosu++;
+                GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
+                if (GorevYoneticisi.Instance.SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
+                    OyunDurumu = OynanmaDurumu.LimitDoldu;
+                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+                    OyunSahnesiKapaniyor = true;
+                }
+            }
+        } 
+        PuanlamaIStatistikleri.SayilariGuncelle(); 
+        PuanlamaIStatistikleri.UIgucelle(); 
+        IsaretleBelirtYoket.Instance.LimitleriKontrolEt();
     }
 
     void Update(){
@@ -175,11 +186,11 @@ public class GameManager : MonoBehaviour{
                 var yerlestimi = tasInstance.BosCebeYerles();
                 if (yerlestimi){ 
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                        GorevYoneticisi.Instance.CepGoreveUyduysaYildiziYak(tasInstance);
+                        GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
                     } 
                     PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
                     PerKontrolBirimi.Instance.PerdekiTaslariBelirt();
-                    DegerlendirmeDugmesiniGoster();
+                    DugmeYadaOtomatikDegerlendirme();
                 } 
             }
         }

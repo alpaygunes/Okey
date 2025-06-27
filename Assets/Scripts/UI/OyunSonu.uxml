@@ -4,12 +4,15 @@
         <ui:VisualElement name="Footer" style="flex-direction: row; width: 100%; height: 32px; justify-content: flex-end; align-self: center; align-items: center; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; -unity-background-scale-mode: scale-to-fit;">
             <ui:Button name="Quit" emoji-fallback-support="true" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/OyunSahnesi/kapat&apos;); -unity-background-scale-mode: scale-to-fit; background-size: contain; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); width: 64px; height: auto; align-self: flex-end;" />
         </ui:VisualElement>
-        <ui:VisualElement name="ListContainer" style="width: 80%; height: 413px; background-image: resource(&apos;Images/UI/OyunSahnesi/skorboard&apos;); justify-content: center; align-self: center; align-items: center; -unity-background-scale-mode: scale-to-fit;">
+        <ui:VisualElement name="ListContainer" style="width: 93%; height: 413px; background-image: resource(&apos;Images/UI/OyunSahnesi/skorboard&apos;); justify-content: center; align-self: center; align-items: center; -unity-background-scale-mode: scale-to-fit;">
             <ui:Button name="icon" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;Images/UI/OyunSahnesi/skorboard_icon&apos;); -unity-background-scale-mode: scale-to-fit; background-size: contain; height: 64px; width: 25%; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0);" />
             <ui:VisualElement name="SonucListesi" style="background-size: contain; -unity-background-scale-mode: scale-to-fit; width: 100%;">
-                <ui:VisualElement name="ListRow" class="ListRow">
-                    <ui:Button name="Puan" class="puan" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 9px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
-                    <ui:Button text="Player Name" name="Name" class="name" style="background-image: none; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0); -unity-background-scale-mode: scale-to-fit; background-color: rgba(255, 255, 255, 0); width: auto;" />
+                <ui:VisualElement name="ListRow" class="ListRow" style="align-items: center; align-self: center; flex-wrap: wrap;">
+                    <ui:Button text="Player Name" name="Name" class="name" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgba(149, 149, 149, 0); border-right-color: rgba(149, 149, 149, 0); border-top-color: rgba(149, 149, 149, 0); border-bottom-color: rgba(149, 149, 149, 0);" />
+                    <ui:Button name="BonusSayisi" class="bonus_sayisi kutular" />
+                    <ui:Button name="Altin" class="altin_sayisi kutular" />
+                    <ui:Button name="Elmas" class="elmas_sayisi kutular" />
+                    <ui:Button name="Skor" class="kutular skor_sayisi" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
