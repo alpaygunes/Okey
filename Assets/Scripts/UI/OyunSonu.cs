@@ -29,6 +29,7 @@ public class OyunSonu : NetworkBehaviour{
 
         Instance = this;
     }
+    
     private void Start(){
         if (MainMenu.isSoloGame){
             SonucListesiniGoster();
@@ -73,25 +74,20 @@ public class OyunSonu : NetworkBehaviour{
     public void SonucListesiniGoster(){
         try{
             NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.OyuncuListesi;
-
             sonucListesi.Clear();
             // Burada yeni bir kopya liste oluştur 
-            var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>();
-            /*foreach (var oyuncu in oyuncuListesi){
-                oyuncu.Skor = oyuncu.BonusMeyveSayisi + oyuncu.AltinSayisi + oyuncu.ElmasSayisi;
-                
-            }*/
-            
+            var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>(); 
             for (int i = 0; i < oyuncuListesi.Count; i++) {
                 var oyuncu = oyuncuListesi[i];
-                oyuncu.Skor = oyuncu.BonusMeyveSayisi + oyuncu.AltinSayisi + oyuncu.ElmasSayisi;
-                //oyuncuListesi[i] = pd;          // geri yaz
+                oyuncu.Skor = oyuncu.BonusMeyveSayisi + oyuncu.AltinSayisi + oyuncu.ElmasSayisi; 
                 localList.Add(oyuncu);
             }
-
-
+            
+            
+                
             // Bu kopyayı sıralıyoruz
             var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
+            
             foreach (var oyuncu in siraliListe){
                 ulong clientID = oyuncu.ClientId;
                 FixedString64Bytes clientName = oyuncu.ClientName; 

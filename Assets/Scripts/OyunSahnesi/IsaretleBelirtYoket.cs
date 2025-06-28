@@ -22,8 +22,8 @@ public class IsaretleBelirtYoket : MonoBehaviour{
 
     private void Start(){
         if (!MainMenu.isSoloGame){
-            // boş bir değişim yaratalım. skorlsitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
-            MultiPlayerVeriYoneticisi.Instance?.SkorVeHamleGuncelleServerRpc();
+            // boş bir değişim yaratalım. skorl sitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
+            MultiPlayerVeriYoneticisi.Instance?.OyuncuVerileriniGuncelle();
         } 
     }
 
@@ -65,14 +65,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
                     }
                 }
             }
-            
-            /*if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                if (GorevYoneticisi.Instance.SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
-                    GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
-                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-                    GameManager.Instance.OyunSahnesiKapaniyor = true;
-                }
-            }*/
+             
         } 
         
         // eğer solo ise

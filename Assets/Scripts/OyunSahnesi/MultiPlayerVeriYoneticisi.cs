@@ -55,7 +55,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         OyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;
     }
 
-    private void AddOyuncu(ulong clientId){
+    private void AddOyuncu(ulong clientId){ 
         try{
             if (!IsSpawned){
                 return;
@@ -71,18 +71,16 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                 OyuncuListesi.Add(new PlayerData
                 {
                     ClientId = clientId,
-                    Skor  = 0,
-                    // PuanlamaIStatistikleri alanları
-                    BonusMeyveSayisi = PuanlamaIStatistikleri.BonusMeyveSayisi,
-                    HamleSayisi = PuanlamaIStatistikleri.HamleSayisi,
-                    Zaman = PuanlamaIStatistikleri.Zaman,
-                    CanSayisi=PuanlamaIStatistikleri.CanSayisi,
-                    YokEdilenTasSayisi=PuanlamaIStatistikleri.YokEdilenTasSayisi,
-                    GorevSayisi=PuanlamaIStatistikleri.GorevSayisi,
-                    AltinSayisi=PuanlamaIStatistikleri.AltinSayisi,
-                    ElmasSayisi=PuanlamaIStatistikleri.ElmasSayisi,
-                    ToplamTasSayisi=PuanlamaIStatistikleri.ToplamTasSayisi, 
-                    //------------
+                    Skor  = 0, 
+                    BonusMeyveSayisi = 0,
+                    HamleSayisi = 0,
+                    Zaman = 0,
+                    CanSayisi=0,
+                    YokEdilenTasSayisi=0,
+                    GorevSayisi=0,
+                    AltinSayisi=0,
+                    ElmasSayisi=0,
+                    ToplamTasSayisi=0,  
                     ClientName = displayName,
                 });
             }
@@ -105,8 +103,9 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         return false;
     }
     
-    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){ 
-        if (GameManager.Instance?.OyunDurumu == GameManager.OynanmaDurumu.LimitDoldu){
+    private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
+        Debug.Log("OyuncuListesi Guncellendi avatar sırası burada değiştirile bilir");
+        if (GameManager.Instance?.OyunDurumu != GameManager.OynanmaDurumu.LimitDoldu){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }
@@ -115,28 +114,50 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         yield return new WaitUntil(() => OyunSonu.Instance != null);
         OyunSonu.Instance.SonucListesiniGoster();
     }
+
+    public void OyuncuVerileriniGuncelle(){
+        Dictionary<string, string> playerDatas = new Dictionary<string, string>();  
+        playerDatas.Add("BonusMeyveSayisi",PuanlamaIStatistikleri.BonusMeyveSayisi.ToString());
+        playerDatas.Add("HamleSayisi",PuanlamaIStatistikleri.HamleSayisi.ToString());
+        playerDatas.Add("Zaman",PuanlamaIStatistikleri.Zaman.ToString());
+        playerDatas.Add("CanSayisi",PuanlamaIStatistikleri.CanSayisi.ToString());
+        playerDatas.Add("YokEdilenTasSayisi",PuanlamaIStatistikleri.YokEdilenTasSayisi.ToString());
+        playerDatas.Add("GorevSayisi",PuanlamaIStatistikleri.GorevSayisi.ToString());
+        playerDatas.Add("AltinSayisi",PuanlamaIStatistikleri.AltinSayisi.ToString());
+        playerDatas.Add("ElmasSayisi",PuanlamaIStatistikleri.ElmasSayisi.ToString());
+        playerDatas.Add("ToplamTasSayisi",PuanlamaIStatistikleri.ToplamTasSayisi.ToString());
+        playerDatas.Add("myDisplayName",LobbyManager.Instance.myDisplayName);
+
+        // Örneğin JSON
+        string json = JsonUtility.ToJson(new SerializationHelper(playerDatas));
+
+        FixedString512Bytes fs = json;
+        SkorVeHamleGuncelleServerRpc(fs); 
+    }
     
     [ServerRpc(RequireOwnership = false)]
-    public void SkorVeHamleGuncelleServerRpc(ServerRpcParams rpcParams = default){
+    public void SkorVeHamleGuncelleServerRpc( FixedString512Bytes playerDatas, ServerRpcParams rpcParams = default){
+        // FixedString -> JSON string
+        string jsonString = playerDatas.ToString(); 
+        // JSON string -> Dictionary<string, string>
+        Dictionary<string, string> deserializedDatas = JsonUtility.FromJson<SerializationHelper>(jsonString).ToDictionary();
         FixedString64Bytes clientName = LobbyManager.Instance.myDisplayName;
         try{
-            for (int i = 0; i < OyuncuListesi.Count; i++){
+            for (int i = 0; i < OyuncuListesi.Count; i++){ 
                 if (OyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
                     OyuncuListesi[i] = new PlayerData{
                         ClientId = rpcParams.Receive.SenderClientId,
-                        Skor = 0,
-                        // PuanlamaIStatistikleri alanları
-                        BonusMeyveSayisi = PuanlamaIStatistikleri.BonusMeyveSayisi,
-                        HamleSayisi = PuanlamaIStatistikleri.BonusMeyveSayisi,
-                        Zaman = PuanlamaIStatistikleri.Zaman,
-                        CanSayisi=PuanlamaIStatistikleri.CanSayisi,
-                        YokEdilenTasSayisi=PuanlamaIStatistikleri.YokEdilenTasSayisi,
-                        GorevSayisi=PuanlamaIStatistikleri.GorevSayisi,
-                        AltinSayisi=PuanlamaIStatistikleri.AltinSayisi,
-                        ElmasSayisi=PuanlamaIStatistikleri.ElmasSayisi,
-                        ToplamTasSayisi=PuanlamaIStatistikleri.ToplamTasSayisi, 
-                        //------------
-                        ClientName = clientName,
+                        Skor = 0, 
+                        BonusMeyveSayisi = Convert.ToInt16(deserializedDatas["BonusMeyveSayisi"]),
+                        HamleSayisi = Convert.ToInt16(deserializedDatas["BonusMeyveSayisi"]),
+                        Zaman = Convert.ToInt16(deserializedDatas["Zaman"]),
+                        CanSayisi=Convert.ToInt16(deserializedDatas["CanSayisi"]),
+                        YokEdilenTasSayisi=Convert.ToInt16(deserializedDatas["YokEdilenTasSayisi"]),
+                        GorevSayisi=Convert.ToInt16(deserializedDatas["GorevSayisi"]),
+                        AltinSayisi=Convert.ToInt16(deserializedDatas["AltinSayisi"]),
+                        ElmasSayisi=Convert.ToInt16(deserializedDatas["ElmasSayisi"]),
+                        ToplamTasSayisi=Convert.ToInt16(deserializedDatas["ToplamTasSayisi"]),  
+                        ClientName = deserializedDatas["myDisplayName"],
                     };
                     break;
                 }

@@ -8,7 +8,7 @@
 }
 
 .ListRow {
-    width: 80%;
+    width: 90%;
     height: 96px;
     align-self: center;
     align-items: center;
@@ -38,17 +38,7 @@
 
 .bonus_sayisi {
     align-self: center;
-    font-size: 10px;
-    -unity-font-style: bold;
-    color: rgb(255, 255, 255);
-    -unity-text-align: middle-center;
     justify-content: center;
-    padding-left: 22px;
-    padding-right: 0;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(224, 197, 197, 0);
     background-image: resource('Images/UI/OyunSahnesi/bonus_sayisi');
@@ -56,97 +46,50 @@
 
 .altin_sayisi {
     align-self: center;
-    font-size: 10px;
-    -unity-font-style: bold;
-    color: rgb(255, 255, 255);
-    -unity-text-align: middle-center;
     justify-content: center;
-    padding-left: 22px;
-    padding-right: 0;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(224, 197, 197, 0);
     background-image: resource('Images/UI/OyunSahnesi/altin_sayisi');
 }
 
 .elmas_sayisi {
-    align-self: center;
-    font-size: 10px;
-    -unity-font-style: bold;
-    color: rgb(255, 255, 255);
-    -unity-text-align: middle-center;
-    justify-content: center;
-    padding-left: 22px;
-    padding-right: 0;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(224, 197, 197, 0);
     background-image: resource('Images/UI/OyunSahnesi/elmas_sayisi');
 }
 
 .skor_sayisi {
-    align-self: center;
-    font-size: 10px;
-    -unity-font-style: bold;
-    color: rgb(255, 255, 255);
-    -unity-text-align: middle-center;
-    justify-content: center;
-    padding-left: 22px;
-    padding-right: 0;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(224, 197, 197, 0);
     background-image: resource('Images/UI/OyunSahnesi/skor');
 }
 
 .elmas_sayisi {
-    align-self: center;
-    font-size: 10px;
-    -unity-font-style: bold;
-    color: rgb(255, 255, 255);
-    -unity-text-align: middle-center;
-    justify-content: center;
-    padding-left: 22px;
-    padding-right: 0;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
     -unity-background-image-tint-color: rgb(255, 255, 255);
     background-color: rgba(224, 197, 197, 0);
 }
 
 .kutular {
-    width: 48px;
-    height: 20px;
-    min-width: 48px;
+    width: 64px;
+    height: 12px;
+    min-width: 64px;
     max-width: 48px;
-    min-height: 20px;
-}
-
-.skor_sayisi {
-    align-self: center;
-    font-size: 10px;
-    -unity-font-style: bold;
-    color: rgb(255, 255, 255);
-    -unity-text-align: middle-center;
-    justify-content: center;
-    padding-left: 22px;
-    padding-right: 0;
+    min-height: 12px;
+    align-self: auto;
+    align-items: auto;
+    justify-content: space-between;
+    align-content: auto;
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-color: rgba(224, 197, 197, 0);
-    background-image: resource('Images/UI/OyunSahnesi/skor');
+    max-height: none;
+    background-position-y: top 0;
+    background-position-x: left 0;
+    background-size: contain;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.skor_sayisi {
+    -unity-background-image-tint-color: rgb(253, 253, 253);
 }

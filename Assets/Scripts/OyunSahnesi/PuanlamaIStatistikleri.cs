@@ -1,3 +1,5 @@
+using System;
+using Unity.Collections;
 using UnityEngine;
 
 public static class PuanlamaIStatistikleri{
@@ -32,8 +34,8 @@ public static class PuanlamaIStatistikleri{
         SayilariGuncelle(); 
         UIgucelle();
         
-        if (!MainMenu.isSoloGame){ 
-            MultiPlayerVeriYoneticisi.Instance?.SkorVeHamleGuncelleServerRpc();
+        if (!MainMenu.isSoloGame){
+            MultiPlayerVeriYoneticisi.Instance.OyuncuVerileriniGuncelle();
         } 
         
     }
