@@ -12,6 +12,40 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     public static MultiPlayerVeriYoneticisi Instance;
     public NetworkList<PlayerData> OyuncuListesi = new NetworkList<PlayerData>();
     public Coroutine skorListesiniYavasGuncelleCoroutine;
+    
+    public struct PlayerData : INetworkSerializable, IEquatable<PlayerData>{
+        public ulong ClientId; 
+        public int Skor;
+        public int BonusMeyveSayisi;
+        public int HamleSayisi; 
+        public int Zaman;
+        public int CanSayisi;
+        public int YokEdilenTasSayisi;
+        public int GorevSayisi;
+        public int AltinSayisi;
+        public int ElmasSayisi;
+        public int ToplamTasSayisi; 
+        public FixedString64Bytes ClientName;
+        public FixedString64Bytes AvadarID;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter{
+            serializer.SerializeValue(ref ClientId);
+            serializer.SerializeValue(ref BonusMeyveSayisi);
+            serializer.SerializeValue(ref HamleSayisi);
+            serializer.SerializeValue(ref Zaman);
+            serializer.SerializeValue(ref CanSayisi);
+            serializer.SerializeValue(ref YokEdilenTasSayisi);
+            serializer.SerializeValue(ref GorevSayisi);
+            serializer.SerializeValue(ref AltinSayisi);
+            serializer.SerializeValue(ref ElmasSayisi);
+            serializer.SerializeValue(ref ToplamTasSayisi); 
+            serializer.SerializeValue(ref AvadarID); 
+        }
+
+        public bool Equals(PlayerData other){
+            return ClientId == other.ClientId;
+        }
+    }
 
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -65,7 +99,8 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                 return;
             }
 
-            string displayName = LobbyManager.Instance != null ? LobbyManager.Instance.myDisplayName : "Unknown";
+            string displayName = LobbyManager.Instance ? LobbyManager.Instance.myDisplayName : "Unknown";
+            string AvadarID = LobbyManager.Instance.AvadarID;
 
             if (!OyuncuVarMi(clientId)){
                 OyuncuListesi.Add(new PlayerData
@@ -82,6 +117,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                     ElmasSayisi=0,
                     ToplamTasSayisi=0,  
                     ClientName = displayName,
+                    AvadarID = AvadarID,
                 });
             }
         }catch (Exception e){
@@ -104,7 +140,10 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     }
     
     private void OnOyuncuListesiGuncellendi(NetworkListEvent<PlayerData> changeEvent){
-        Debug.Log("OyuncuListesi Guncellendi avatar sırası burada değiştirile bilir");
+        if (OyunSahnesiUI.Instance != null){
+            OyunSahnesiUI.Instance.AvatarSirasiniGuncelle();
+        }
+        
         if (GameManager.Instance?.OyunDurumu != GameManager.OynanmaDurumu.LimitDoldu){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
@@ -127,6 +166,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         playerDatas.Add("ElmasSayisi",PuanlamaIStatistikleri.ElmasSayisi.ToString());
         playerDatas.Add("ToplamTasSayisi",PuanlamaIStatistikleri.ToplamTasSayisi.ToString());
         playerDatas.Add("myDisplayName",LobbyManager.Instance.myDisplayName);
+        playerDatas.Add("AvadarID",LobbyManager.Instance.AvadarID);
 
         // Örneğin JSON
         string json = JsonUtility.ToJson(new SerializationHelper(playerDatas));
@@ -158,6 +198,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                         ElmasSayisi=Convert.ToInt16(deserializedDatas["ElmasSayisi"]),
                         ToplamTasSayisi=Convert.ToInt16(deserializedDatas["ToplamTasSayisi"]),  
                         ClientName = deserializedDatas["myDisplayName"],
+                        AvadarID = deserializedDatas["AvadarID"],
                     };
                     break;
                 }
@@ -165,38 +206,6 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         }
         catch (Exception e){
             Debug.Log($"SkorVeHamleGuncelleServerRpc HATA : {e.Message}");
-        }
-    }
-
-    public struct PlayerData : INetworkSerializable, System.IEquatable<PlayerData>{
-        public ulong ClientId; 
-        public int Skor;
-        public int BonusMeyveSayisi;
-        public int HamleSayisi; 
-        public int Zaman;
-        public int CanSayisi;
-        public int YokEdilenTasSayisi;
-        public int GorevSayisi;
-        public int AltinSayisi;
-        public int ElmasSayisi;
-        public int ToplamTasSayisi; 
-        public FixedString64Bytes ClientName;
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter{
-            serializer.SerializeValue(ref ClientId);
-            serializer.SerializeValue(ref BonusMeyveSayisi);
-            serializer.SerializeValue(ref HamleSayisi);
-            serializer.SerializeValue(ref Zaman);
-            serializer.SerializeValue(ref CanSayisi);
-            serializer.SerializeValue(ref YokEdilenTasSayisi);
-            serializer.SerializeValue(ref GorevSayisi);
-            serializer.SerializeValue(ref AltinSayisi);
-            serializer.SerializeValue(ref ElmasSayisi);
-            serializer.SerializeValue(ref ToplamTasSayisi); 
-        }
-
-        public bool Equals(PlayerData other){
-            return ClientId == other.ClientId;
         }
     }
 

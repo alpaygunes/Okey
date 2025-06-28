@@ -1,4 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Unity.Collections;
+using Unity.Netcode;
 using Unity.Services.Lobbies;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,38 +24,7 @@ public class OyunSahnesiUI : MonoBehaviour
     public Label AltinSayisi; 
     public Label ElmasSayisi; 
  
-    private async Task AvatarlariGoster(){
-        var updatedLobby = await LobbyService.Instance.GetLobbyAsync(LobbyManager.Instance.CurrentLobby.Id);
-        LobbyManager.Instance.CurrentLobby = updatedLobby;
-        avatars.Clear();
-        var Players = LobbyManager.Instance.CurrentLobby.Players;
-        foreach (var player in Players){
-            Button avatarBtn = new Button();
-            string avatarName = player.Data.ContainsKey("avatar")
-                ? player.Data["avatar"].Value
-                : "avatar0";
-            string displayName = player.Data.ContainsKey("DisplayName")
-                ? player.Data["DisplayName"].Value
-                : "NoDisplayName";
-            Sprite avatarSprite = Resources.Load<Sprite>($"avatars/{avatarName}");
-            if (avatarSprite != null)
-                avatarBtn.style.backgroundImage = new StyleBackground(avatarSprite);
-
-            avatarBtn.tooltip = displayName; 
-            avatarBtn.AddToClassList("avatar"); 
-            avatarBtn.RegisterCallback<GeometryChangedEvent>(e =>
-            {
-                float h = avatarBtn.resolvedStyle.height;    
-                avatarBtn.style.width = h;
-            });
-            avatarBtn.style.borderTopWidth = 0;
-            avatarBtn.style.borderBottomWidth = 0;
-            avatarBtn.style.borderLeftWidth = 0;
-            avatarBtn.style.borderRightWidth = 0; 
-            avatars.Add(avatarBtn);
-        }
-    }
-
+ 
     private void Awake(){
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
@@ -88,7 +61,6 @@ public class OyunSahnesiUI : MonoBehaviour
             _ = LobbyManager.Instance.CikisIsteginiGonder();
         }; 
         
- 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             GeriSayim.text = OyunKurallari.Instance.ZamanLimiti.ToString();
             GeriSayim.style.display =    DisplayStyle.Flex;
@@ -98,11 +70,47 @@ public class OyunSahnesiUI : MonoBehaviour
         } else if(OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             HamleSayisi.style.display =    DisplayStyle.Flex;
             HamleSayisi.text  = "1/"+OyunKurallari.Instance.HamleLimit.ToString();
-        } 
-        _ = AvatarlariGoster();
+        }  
     }
      
     public void PerleriDegerlendir(){ 
         IsaretleBelirtYoket.Instance.Degerlendir(); 
+    }
+
+    public void AvatarSirasiniGuncelle(){
+        Debug.Log("Avatar Sirasini Guncellendi ");
+        NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.OyuncuListesi;
+        var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>(); 
+        for (int i = 0; i < oyuncuListesi.Count; i++) {
+            var oyuncu = oyuncuListesi[i];
+            oyuncu.Skor = oyuncu.BonusMeyveSayisi + oyuncu.AltinSayisi + oyuncu.ElmasSayisi; 
+            localList.Add(oyuncu);
+        }
+        var Players = localList.OrderByDescending(p => p.Skor).ToList();
+        avatars.Clear(); 
+        foreach (var player in Players){
+            Button avatarBtn = new Button();
+            string avatarName = player.AvadarID != default
+                ? player.AvadarID.ToString()
+                : "avatar0";
+            string displayName = player.ClientName!= default
+                ? player.AvadarID.ToString()
+                : "NoDisplayName";
+            Sprite avatarSprite = Resources.Load<Sprite>($"avatars/{avatarName}");
+            if (avatarSprite != null)
+                avatarBtn.style.backgroundImage = new StyleBackground(avatarSprite);
+
+            avatarBtn.tooltip = displayName;
+            avatarBtn.AddToClassList("avatar");
+            avatarBtn.RegisterCallback<GeometryChangedEvent>(e =>{
+                float h = avatarBtn.resolvedStyle.height;
+                avatarBtn.style.width = h;
+            });
+            avatarBtn.style.borderTopWidth = 0;
+            avatarBtn.style.borderBottomWidth = 0;
+            avatarBtn.style.borderLeftWidth = 0;
+            avatarBtn.style.borderRightWidth = 0; 
+            avatars.Add(avatarBtn);
+        }
     }
 }

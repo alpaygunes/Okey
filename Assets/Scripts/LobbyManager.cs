@@ -30,11 +30,11 @@ public class LobbyManager : NetworkBehaviour{
     private bool IsGameStarted = false;
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
     public GameObject networkPlayerPrefab;
-    private string AvadarID;
+    public string AvadarID;
     
     private void Awake(){
         myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
-        AvadarID = "avatar" + UnityEngine.Random.Range(0, 2);
+        AvadarID = "avatar" + UnityEngine.Random.Range(0, 6);
 
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et

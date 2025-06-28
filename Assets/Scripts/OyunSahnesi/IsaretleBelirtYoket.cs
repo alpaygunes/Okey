@@ -82,14 +82,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
                     GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive); 
                 }
-            }
-            /*if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                if (GorevYoneticisi.Instance.SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
-                    GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
-                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-                    GameManager.Instance.OyunSahnesiKapaniyor = true;
-                }
-            }*/
+            } 
         }
     }
     
