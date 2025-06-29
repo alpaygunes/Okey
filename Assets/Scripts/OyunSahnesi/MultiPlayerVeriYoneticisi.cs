@@ -99,8 +99,8 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                 return;
             }
 
-            string displayName = LobbyManager.Instance ? LobbyManager.Instance.myDisplayName : "Unknown";
-            string AvadarID = LobbyManager.Instance.AvadarID;
+            string displayName = LobbyManager.Instance ? PlayerPrefs.GetString("NickName") : "Unknown";
+            string AvadarID = PlayerPrefs.GetString("AvatarName");
 
             if (!OyuncuVarMi(clientId)){
                 OyuncuListesi.Add(new PlayerData
@@ -165,8 +165,8 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         playerDatas.Add("AltinSayisi",PuanlamaIStatistikleri.AltinSayisi.ToString());
         playerDatas.Add("ElmasSayisi",PuanlamaIStatistikleri.ElmasSayisi.ToString());
         playerDatas.Add("ToplamTasSayisi",PuanlamaIStatistikleri.ToplamTasSayisi.ToString());
-        playerDatas.Add("myDisplayName",LobbyManager.Instance.myDisplayName);
-        playerDatas.Add("AvadarID",LobbyManager.Instance.AvadarID);
+        playerDatas.Add("NickName",PlayerPrefs.GetString("NickName"));
+        playerDatas.Add("AvatarName",PlayerPrefs.GetString("AvatarName"));
 
         // Örneğin JSON
         string json = JsonUtility.ToJson(new SerializationHelper(playerDatas));
@@ -181,7 +181,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         string jsonString = playerDatas.ToString(); 
         // JSON string -> Dictionary<string, string>
         Dictionary<string, string> deserializedDatas = JsonUtility.FromJson<SerializationHelper>(jsonString).ToDictionary();
-        FixedString64Bytes clientName = LobbyManager.Instance.myDisplayName;
+        FixedString64Bytes clientName = PlayerPrefs.GetString("NickName");
         try{
             for (int i = 0; i < OyuncuListesi.Count; i++){ 
                 if (OyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
@@ -197,8 +197,8 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                         AltinSayisi=Convert.ToInt16(deserializedDatas["AltinSayisi"]),
                         ElmasSayisi=Convert.ToInt16(deserializedDatas["ElmasSayisi"]),
                         ToplamTasSayisi=Convert.ToInt16(deserializedDatas["ToplamTasSayisi"]),  
-                        ClientName = deserializedDatas["myDisplayName"],
-                        AvadarID = deserializedDatas["AvadarID"],
+                        ClientName = deserializedDatas["NickName"],
+                        AvadarID = deserializedDatas["AvatarName"],
                     };
                     break;
                 }

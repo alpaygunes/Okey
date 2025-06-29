@@ -358,7 +358,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
     public void CeplerinYidiziniGuncelle(){
         foreach (var cepScript in Istaka.Instance.CepList){
-            cepScript.YildiziYak(0);
+            cepScript?.YildiziYak(0);
             if (cepScript.TasInstance == null) continue;
             var tas = cepScript.TasInstance;
             GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");

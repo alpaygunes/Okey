@@ -23,18 +23,18 @@ public class LobbyManager : NetworkBehaviour{
     private const int MaxPlayers = 10;
     private const string LobbyName = "okey";
     private Coroutine heartbeatCoroutine;
-    public string myDisplayName;
+    //public string NickName;
     private LobbyEventCallbacks hostCallBacks;
     public Coroutine lobbyUpdateCoroutine;
     public string gameSeed;
     private bool IsGameStarted = false;
     const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
     public GameObject networkPlayerPrefab;
-    public string AvadarID;
+    //public string AvatarName;
     
     private void Awake(){
-        myDisplayName = "Player_" + UnityEngine.Random.Range(1, 50);
-        AvadarID = "avatar" + UnityEngine.Random.Range(0, 6);
+        // myDisplayName = PlayerPrefs.GetString("NickName");
+        // AvatarName = PlayerPrefs.GetString("AvatarName");
 
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
@@ -63,7 +63,7 @@ public class LobbyManager : NetworkBehaviour{
 
             var playerData = new Dictionary<string, PlayerDataObject>
             {
-                { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, "HOST") }
+                { "NickName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, "HOST") }
             };
 
             var player = new Player(
@@ -278,9 +278,9 @@ public class LobbyManager : NetworkBehaviour{
                 Player = new Player
                 {
                     Data = new Dictionary<string, PlayerDataObject>
-                    {
-                        { "DisplayName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, myDisplayName) },
-                        { "avatar", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, AvadarID) }
+                    { 
+                        { "NickName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, PlayerPrefs.GetString("NickName")) },
+                        { "AvatarName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, PlayerPrefs.GetString("AvatarName")) }
                     }
                 }
             };

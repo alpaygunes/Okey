@@ -14,7 +14,20 @@ public class GameManager : MonoBehaviour{
     public string seed;
     public static GameManager Instance{ get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
-    public OyunDurumlari oyunDurumu;
+    private OyunDurumlari _oyunDurumu;
+    public OyunDurumlari oyunDurumu
+    {
+        get => _oyunDurumu;
+        set
+        {
+            if (_oyunDurumu != value)
+            {
+                _oyunDurumu = value;
+                OyunDurumuDegisti();
+                Istaka.Instance.IlkBosCebiBelirt();
+            }
+        }
+    }
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public int YeniTasEklendiSayisi = 0;
     public bool OyunSahnesiKapaniyor{ get; set; } = false;
@@ -31,7 +44,7 @@ public class GameManager : MonoBehaviour{
             OyunKurallari.Instance.InitializeSettings();
         }
 
-        oyunDurumu = OyunDurumlari.DevamEdiyor;
+        _oyunDurumu = OyunDurumlari.DevamEdiyor;
         if (Instance != null && Instance != this){
             Destroy(gameObject);
             return;
@@ -73,6 +86,17 @@ public class GameManager : MonoBehaviour{
         OyunSahnesiUI.Instance.KalanTasSayisi.text = TasManeger.Instance.TasList.Count.ToString();
         OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
         PuanlamaIStatistikleri.Sifirla();
+    }
+
+    private void OyunDurumuDegisti()
+    {
+        if (oyunDurumu == OyunDurumlari.DevamEdiyor)
+        {
+            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap)
+            {
+                GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
+            }
+        }
     }
 
     private IEnumerator OyununBitimiIcinGeriSayRoutine(){
@@ -151,7 +175,7 @@ public class GameManager : MonoBehaviour{
                     ? OyunDurumlari.DegerlendirmeYapiliyor
                     : OyunDurumlari.DevamEdiyor;
         
-        Istaka.Instance.CeptekiYildiziKontrolEtBayragi = Card.Instance.TiklanamazTasVar();
+        //Istaka.Instance.CeptekiYildiziKontrolEtBayragi = Card.Instance.TiklanamazTasVar();
          
     }
 
@@ -173,6 +197,9 @@ public class GameManager : MonoBehaviour{
                 } 
             }
         }
+        Istaka.Instance.IlkBosCebiBelirt();
     }
+    
+    
 }
 

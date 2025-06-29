@@ -1,0 +1,8 @@
+.avatar_item {
+    width: 64px;
+    height: 64px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+}

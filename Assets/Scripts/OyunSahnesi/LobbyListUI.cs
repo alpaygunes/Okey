@@ -291,8 +291,8 @@ public class LobbyListUI : MonoBehaviour{
                 Debug.LogWarning("Player.Data null! DisplayName atanamadı.");
                 continue; // Null gelen veriyi atla
             }
-            var name = player.Data.ContainsKey("DisplayName")
-                ? player.Data["DisplayName"].Value
+            var name = player.Data.ContainsKey("NickName")
+                ? player.Data["NickName"].Value
                 : "Bilinmeyen Oyuncu";
             var playerListItem = new VisualElement();
             playerListItem.AddToClassList("bPlayerListItem");
@@ -301,8 +301,8 @@ public class LobbyListUI : MonoBehaviour{
             var playerAvatar = new Button();
             playerAvatar.AddToClassList("bPlayerAvatar");
             
-            string avatarName = player.Data.ContainsKey("avatar")
-                ? player.Data["avatar"].Value
+            string avatarName = player.Data.ContainsKey("AvatarName")
+                ? player.Data["AvatarName"].Value
                 : "avatar0";
             Sprite avatarSprite = Resources.Load<Sprite>($"avatars/{avatarName}");
             if (avatarSprite != null)

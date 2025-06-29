@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class Istaka : MonoBehaviour{
     public List<Cep> CepList = new List<Cep>();
     public static Istaka Instance;
-    public bool CeptekiYildiziKontrolEtBayragi = false;
+    //public bool CeptekiYildiziKontrolEtBayragi = false;
  
     public GameObject Body;
     private float posYrate = 0.66f;
@@ -64,16 +64,18 @@ public class Istaka : MonoBehaviour{
         foreach (var cardtakiTas in cardtakiTaslar){
             if (cardtakiTas is null) break;
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
+            CardtakiTas.TiklanaBilir = false;
             StartCoroutine(CardtakiTas.BekleYokol(beklemeSuresi));
-            beklemeSuresi += 0.05f;
+            beklemeSuresi += 0.2f;
         }
 
         foreach (var cepInstance in CepList){
             var CeptekiTas = cepInstance?.TasInstance;
             if (CeptekiTas is null) break;
+            CeptekiTas.TiklanaBilir = false;
             StartCoroutine(CeptekiTas.BekleYokol(beklemeSuresi));
             cepInstance.TasInstance = null;
-            beklemeSuresi += 0.05f;
+            beklemeSuresi += 0.2f;
         }
 
          
@@ -85,7 +87,7 @@ public class Istaka : MonoBehaviour{
             if (cardtakiTas is null) break;
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
             CardtakiTas.PersizIstakaTaslariGostergesi.SetActive(true);
-            CardtakiTas.TiklanaBilir = false;
+            //CardtakiTas.TiklanaBilir = false;
         }
 
         foreach (var cepInstance in CepList){
@@ -101,17 +103,31 @@ public class Istaka : MonoBehaviour{
             foreach (var pTas in grup.Value.Taslar){ 
                 pTas.cepInstance?.YildiziYak(0);
                 beklemeSuresi += .1f;
+                pTas.TiklanaBilir = false;
                 pTas.StartCoroutine(pTas.BekleYokol(beklemeSuresi));
             } 
         }
     }
+    
+    public void IlkBosCebiBelirt(){
+        Cep ilkBosCep = null;
+        foreach (var cep in CepList){
+            cep.BosBelirteci.SetActive(false); 
+            if (cep.Dolu == false && ilkBosCep == null){
+                ilkBosCep = cep; 
+            }
+        } 
+        if (ilkBosCep != null) ilkBosCep.BosBelirteci.SetActive(true);
+    }
 
-    private void Update(){
+    /*private void Update(){
         if (CeptekiYildiziKontrolEtBayragi){ 
             CeptekiYildiziKontrolEtBayragi = (GameManager.Instance.oyunDurumu != GameManager.OyunDurumlari.DevamEdiyor); 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
+                GorevYoneticisi.Instance.CeplerinYidiziniGuncelle(); 
             }
         }
-    }
+    }*/
+
+
 }

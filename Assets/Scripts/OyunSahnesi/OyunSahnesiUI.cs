@@ -101,7 +101,7 @@ public class OyunSahnesiUI : MonoBehaviour
                 avatarBtn.style.backgroundImage = new StyleBackground(avatarSprite);
 
             avatarBtn.tooltip = displayName;
-            avatarBtn.AddToClassList("avatar");
+            avatarBtn.AddToClassList("AvatarName");
             avatarBtn.RegisterCallback<GeometryChangedEvent>(e =>{
                 float h = avatarBtn.resolvedStyle.height;
                 avatarBtn.style.width = h;
