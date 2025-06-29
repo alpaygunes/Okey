@@ -150,7 +150,7 @@ public class OyunSonu : NetworkBehaviour{
     }
 
     private void OnYeniOyunuBaslatClick(){
-        GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.DevamEdiyor;
+        GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.DevamEdiyor;
         // Multy ise
         if (!MainMenu.isSoloGame)
             MultiPlayerVeriYoneticisi.Instance.OyunuYenidenBaslatServerRpc();

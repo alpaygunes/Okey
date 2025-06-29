@@ -19,10 +19,7 @@ public class Tas : MonoBehaviour{
     private Vector3 skorTxtPosition;
     //public Camera uiCamera;
     private Object _collider;
- 
-    private AudioSource _audioSource_down;
-    private AudioSource _audioSource_up;
-    private AudioSource _audioSource_patla;
+  
     public Cep cepInstance = null;
     public Tweener tweener = null;
     public Vector3 orginalScale;
@@ -78,17 +75,6 @@ public class Tas : MonoBehaviour{
         MeyveResmiSpriteRenderer.color = koyuRenk;
         MeyveResmiSpriteRenderer.transform.localScale *= 1.25f;
  
-        _audioSource_down = gameObject.AddComponent<AudioSource>();
-        _audioSource_down.playOnAwake = false;
-        _audioSource_down.clip = Resources.Load<AudioClip>("Sounds/tas_down");
-
-        _audioSource_up = gameObject.AddComponent<AudioSource>();
-        _audioSource_up.playOnAwake = false;
-        _audioSource_up.clip = Resources.Load<AudioClip>("Sounds/tas_up");
-
-        _audioSource_patla = gameObject.AddComponent<AudioSource>();
-        _audioSource_patla.playOnAwake = false;
-        _audioSource_patla.clip = Resources.Load<AudioClip>("Sounds/tas_patla");
 
         TextMeyveID.text = MeyveID.ToString();
         orginalScale = MeyveResmiSpriteRenderer.transform.localScale;
@@ -127,7 +113,7 @@ public class Tas : MonoBehaviour{
 
             //taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
             if (ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
-                && GameManager.Instance.OyunDurumu == GameManager.OynanmaDurumu.DevamEdiyor){
+                && GameManager.Instance.oyunDurumu == GameManager.OyunDurumlari.DevamEdiyor){
                 TasManeger.Instance.TaslariOlustur();
             }
 
@@ -146,8 +132,7 @@ public class Tas : MonoBehaviour{
             if (hedefCep.Dolu == false){ 
                 hedefCep.Dolu = true;
                 hedefCep.TasInstance = this;
-                cepInstance = hedefCep; 
-                _audioSource_down.Play();
+                cepInstance = hedefCep;  
                 sallanmaDurumu = false;
                 cebeYerles = true;
                 StartCoroutine(RigidbodyVeCollideriSilGecikmeli());

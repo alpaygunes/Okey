@@ -199,4 +199,29 @@ public class Card : MonoBehaviour{
             }
         }
     }
+
+    public bool TiklanamazTasVar(){
+        // tıklana bilir nesne varsa oyun durumunu değiştirelim
+        bool TiklanamazTasVar = false;
+        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
+        var perdekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
+        foreach (var cTas in cardtakiTaslar){
+            var cTasIstance = TasManeger.Instance.TasInstances[cTas];
+            if (cTasIstance.TiklanaBilir == false){
+                TiklanamazTasVar = true;
+                break;
+            }
+        }
+
+        if (!TiklanamazTasVar){
+            foreach (var pTas in perdekiTaslar){
+                var pTasIstance = TasManeger.Instance.TasInstances[pTas];
+                if (pTasIstance.TiklanaBilir == false){
+                    TiklanamazTasVar = true;
+                    break;
+                }
+            }
+        }
+        return TiklanamazTasVar;
+    }
 }

@@ -32,7 +32,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
         if (!MainMenu.isSoloGame){
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
                 if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
-                    GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
+                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                     if (MultiPlayerVeriYoneticisi.Instance.OyuncuListesi != null){
                         IEnumerator enumerator;
@@ -50,7 +50,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
                 if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
-                    GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
+                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                     if (MultiPlayerVeriYoneticisi.Instance.OyuncuListesi != null){
                         IEnumerator enumerator;
@@ -72,14 +72,14 @@ public class IsaretleBelirtYoket : MonoBehaviour{
         if(MainMenu.isSoloGame){ 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
                 if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
-                    GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
+                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
             }
 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
                 if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
-                    GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
+                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive); 
                 }
             } 

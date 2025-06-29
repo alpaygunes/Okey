@@ -7,13 +7,8 @@ using UnityEngine.UIElements;
 public class Istaka : MonoBehaviour{
     public List<Cep> CepList = new List<Cep>();
     public static Istaka Instance;
-    /*
-    public List<Dictionary<int, GameObject>> FarkliMeyvePerleri = new List<Dictionary<int, GameObject>>();
-    public List<Dictionary<int, GameObject>> AyniMeyvePerleri = new List<Dictionary<int, GameObject>>();
-    public List<Dictionary<int, GameObject>> FarkliMeyveAyniRenkPerleri = new List<Dictionary<int, GameObject>>();
-    public List<Dictionary<int, GameObject>> AyniMeyveAyniRenkPerleri = new List<Dictionary<int, GameObject>>();
-    public List<Dictionary<int, GameObject>> AyniMeyveFarkliRenkPerleri = new List<Dictionary<int, GameObject>>();
-    */
+    public bool CeptekiYildiziKontrolEtBayragi = false;
+ 
     public GameObject Body;
     private float posYrate = 0.66f;
 
@@ -99,10 +94,7 @@ public class Istaka : MonoBehaviour{
             CeptekiTas?.PersizIstakaTaslariGostergesi.SetActive(true);
         }
     }
-  
-
- 
-
+    
     public void PtaslariYoket(){ 
         float beklemeSuresi = .1f;
         foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
@@ -111,6 +103,15 @@ public class Istaka : MonoBehaviour{
                 beklemeSuresi += .1f;
                 pTas.StartCoroutine(pTas.BekleYokol(beklemeSuresi));
             } 
+        }
+    }
+
+    private void Update(){
+        if (CeptekiYildiziKontrolEtBayragi){ 
+            CeptekiYildiziKontrolEtBayragi = (GameManager.Instance.oyunDurumu != GameManager.OyunDurumlari.DevamEdiyor); 
+            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+                GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
+            }
         }
     }
 }

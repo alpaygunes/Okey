@@ -14,13 +14,13 @@ public class GameManager : MonoBehaviour{
     public string seed;
     public static GameManager Instance{ get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
-    public OynanmaDurumu OyunDurumu;
+    public OyunDurumlari oyunDurumu;
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public int YeniTasEklendiSayisi = 0;
     public bool OyunSahnesiKapaniyor{ get; set; } = false;
     public int CanSayisi{ get; set; } = 10;
 
-    public enum OynanmaDurumu{
+    public enum OyunDurumlari{
         LimitDoldu,
         DevamEdiyor,
         DegerlendirmeYapiliyor,
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour{
             OyunKurallari.Instance.InitializeSettings();
         }
 
-        OyunDurumu = OynanmaDurumu.DevamEdiyor;
+        oyunDurumu = OyunDurumlari.DevamEdiyor;
         if (Instance != null && Instance != this){
             Destroy(gameObject);
             return;
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour{
                 GorevYoneticisi.Instance.SiradakiGorevSiraNosu++;
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
                 if (GorevYoneticisi.Instance.SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
-                    OyunDurumu = OynanmaDurumu.LimitDoldu;
+                    oyunDurumu = OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                     OyunSahnesiKapaniyor = true;
                 }
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour{
     }
 
     void Update(){
-        if (OyunDurumu == OynanmaDurumu.LimitDoldu) return;
+        if (oyunDurumu == OyunDurumlari.LimitDoldu) return;
         // tıklama algılama
         #if UNITY_ANDROID || UNITY_IOS
                                     if (Input.touchCount > 0)
@@ -146,51 +146,30 @@ public class GameManager : MonoBehaviour{
                     TiklamaTuslamaKontrol(worldPoint);
                 }
         #endif
-        // tıklana bilir nesne varsa oyun durumunu değiştirelim
-        bool TiklanamazTasVar = false;
-        var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-        var perdekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
-        foreach (var cTas in cardtakiTaslar){
-            var cTasIstance = TasManeger.Instance.TasInstances[cTas];
-            if (cTasIstance.TiklanaBilir == false){
-                TiklanamazTasVar = true;
-                break;
-            }
-        }
-
-        if (!TiklanamazTasVar){
-            foreach (var pTas in perdekiTaslar){
-                var pTasIstance = TasManeger.Instance.TasInstances[pTas];
-                if (pTasIstance.TiklanaBilir == false){
-                    TiklanamazTasVar = true;
-                    break;
-                }
-            }
-        }
-
-        if (TiklanamazTasVar){
-            OyunDurumu = OynanmaDurumu.DegerlendirmeYapiliyor;
-        }
-        else{
-            OyunDurumu = OynanmaDurumu.DevamEdiyor;
-        } 
+ 
+        oyunDurumu = Card.Instance.TiklanamazTasVar()
+                    ? OyunDurumlari.DegerlendirmeYapiliyor
+                    : OyunDurumlari.DevamEdiyor;
+        
+        Istaka.Instance.CeptekiYildiziKontrolEtBayragi = Card.Instance.TiklanamazTasVar();
+         
     }
 
     void TiklamaTuslamaKontrol(Vector2 worldPoint){
-        if (OyunDurumu != OynanmaDurumu.DevamEdiyor) return;
+        if (oyunDurumu != OyunDurumlari.DevamEdiyor) return;
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null){
             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
                 var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
                 if (!tasInstance.TiklanaBilir) return;
                 var yerlestimi = tasInstance.BosCebeYerles();
-                if (yerlestimi){ 
+                if (yerlestimi){
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
                         GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
                     } 
                     PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
                     PerKontrolBirimi.Instance.PerdekiTaslariBelirt();
-                    DugmeYadaOtomatikDegerlendirme();
+                    DugmeYadaOtomatikDegerlendirme(); 
                 } 
             }
         }

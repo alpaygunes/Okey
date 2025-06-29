@@ -427,7 +427,7 @@ public class LobbyManager : NetworkBehaviour{
     // LOBBY SİLME İŞLEMLERİ 
     
     public async Task CikisIsteginiGonder(){
-        GameManager.Instance.OyunDurumu = GameManager.OynanmaDurumu.LimitDoldu;
+        GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
         // soloysa hemen çık
         if (MainMenu.isSoloGame){
             SceneManager.LoadScene("LobbyManager");
