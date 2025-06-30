@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour{
     private Button ZamanLimitliBtn;  
     private Button SPlayerBtn; 
     private Button MPlayerBtn;
+    public Button Settings{ get; set; }
     private Button GorevYap; 
     private VisualElement MenuBox; 
     static public bool isSoloGame = true;
@@ -22,6 +23,15 @@ public class MainMenu : MonoBehaviour{
             await UnityServices.InitializeAsync();
         } 
         await AnonimGiris();
+        
+        string nick = PlayerPrefs.GetString("NickName");
+        if (!PlayerPrefs.HasKey("NickName") || string.IsNullOrEmpty(nick))
+        {
+            SceneManager.LoadScene("Settings");
+        }
+        //PlayerPrefs.DeleteAll();
+        //PlayerPrefs.Save();
+
     }
     
     async Task AnonimGiris(){
@@ -51,11 +61,18 @@ public class MainMenu : MonoBehaviour{
         
         SPlayerBtn = rootElement.Q<Button>("SoloPlayer");
         MPlayerBtn = rootElement.Q<Button>("Multyplayer");
+        Settings = rootElement.Q<Button>("Settings");
         SPlayerBtn.clicked += ChangeSoloMultyMode; 
         MPlayerBtn.clicked += ChangeSoloMultyMode; 
-        SPlayerBtn.enabledSelf = (!MainMenu.isSoloGame);
-        MPlayerBtn.enabledSelf = (MainMenu.isSoloGame);
+        Settings.clicked += OpenSettings; 
+        SPlayerBtn.enabledSelf = (!isSoloGame);
+        MPlayerBtn.enabledSelf = (isSoloGame);
     }
+
+    private void OpenSettings(){ 
+        SceneManager.LoadScene("Settings");
+    }
+
 
     private void SearchHamleLimitliGame(){ 
         OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.HamleLimitli;

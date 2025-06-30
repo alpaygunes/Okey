@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      altin_sayisi_0: 4916681811117829130
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

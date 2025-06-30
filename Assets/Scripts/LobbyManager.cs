@@ -32,9 +32,7 @@ public class LobbyManager : NetworkBehaviour{
     public GameObject networkPlayerPrefab;
     //public string AvatarName;
     
-    private void Awake(){
-        // myDisplayName = PlayerPrefs.GetString("NickName");
-        // AvatarName = PlayerPrefs.GetString("AvatarName");
+    private void Awake(){ 
 
         if (Instance != null && Instance != this){
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
