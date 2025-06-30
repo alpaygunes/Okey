@@ -42,9 +42,9 @@ public class OyunKurallari:NetworkBehaviour
 
             case OyunTipleri.GorevYap:
                 HamleLimit = 0;
-                SkorLimiti = 20;
-                ZamanLimiti = 0;
-                GorevLimit = 5;
+                SkorLimiti = 0;
+                ZamanLimiti = 25;
+                GorevLimit = 2;
                 break;
 
             case OyunTipleri.ZamanLimitli:

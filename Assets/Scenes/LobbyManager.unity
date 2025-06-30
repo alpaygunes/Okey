@@ -176,10 +176,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   relayIDForJoin: 
-  myDisplayName: 
   gameSeed: 
   networkPlayerPrefab: {fileID: 2272045343390177029, guid: da4fac90143cb85aaa4adf0fbf75f364, type: 3}
-  AvadarID: 
 --- !u!4 &714562002
 Transform:
   m_ObjectHideFlags: 0

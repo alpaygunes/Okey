@@ -19,11 +19,9 @@ public class OyunSahnesiUI : MonoBehaviour
     public Button degerlendirmeYap; 
     public Label GorevSayisiLbl;
     public Label CanSayisi;
-    private VisualElement avatars;
-    
+    private VisualElement avatars; 
     public Label AltinSayisi; 
-    public Label ElmasSayisi; 
- 
+    public Label ElmasSayisi;  
  
     private void Awake(){
         if (Instance != null && Instance != this){
@@ -77,8 +75,7 @@ public class OyunSahnesiUI : MonoBehaviour
         IsaretleBelirtYoket.Instance.Degerlendir(); 
     }
 
-    public void AvatarSirasiniGuncelle(){
-        Debug.Log("Avatar Sirasini Guncellendi ");
+    public void AvatarSirasiniGuncelle(){ 
         NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.OyuncuListesi;
         var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>(); 
         for (int i = 0; i < oyuncuListesi.Count; i++) {

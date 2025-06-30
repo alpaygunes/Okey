@@ -30,10 +30,10 @@ public class MainMenu : MonoBehaviour{
             await AuthenticationService.Instance.SignInAnonymouslyAsync(); 
         }
         catch (AuthenticationException ex){
-            Debug.Log($"AnonimGiris AuthenticationException {ex.Message}" );
+            Debug.Log($"AnonimGiris AuthenticationException HATA :{ex.Message}" );
         }
         catch (RequestFailedException ex){
-            Debug.Log($"AnonimGiris RequestFailedException {ex.Message}" );
+            Debug.Log($"AnonimGiris RequestFailedException HATA :{ex.Message}" );
         }
     }
 
@@ -73,9 +73,9 @@ public class MainMenu : MonoBehaviour{
     }
     
     private void ChangeSoloMultyMode(){
-        MainMenu.isSoloGame = !MainMenu.isSoloGame;
-        MPlayerBtn.enabledSelf = MainMenu.isSoloGame;
-        SPlayerBtn.enabledSelf = !MainMenu.isSoloGame;
+        isSoloGame = !isSoloGame;
+        MPlayerBtn.enabledSelf = isSoloGame;
+        SPlayerBtn.enabledSelf = !isSoloGame;
     }
 
     private void OnDisable(){

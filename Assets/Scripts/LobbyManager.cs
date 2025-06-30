@@ -111,7 +111,7 @@ public class LobbyManager : NetworkBehaviour{
             OyunKurallari.Instance.InitializeSettings();
         }
         catch (Exception e){
-            Debug.Log(e.Message);
+            Debug.Log($"LobbyCreate Hata {e.Message}");
         }
     }
 
@@ -192,7 +192,7 @@ public class LobbyManager : NetworkBehaviour{
             }
         }
         catch (Exception ex){
-            Debug.LogError("Genel hata: " + ex.ToString());
+            Debug.LogError("Genel HATA : " + ex.ToString());
         }
     }
     
@@ -214,7 +214,7 @@ public class LobbyManager : NetworkBehaviour{
             nm.StartClient();
         }
         catch (Exception ex){
-            Debug.LogError($"StartClientRelay HATASI: {ex.Message}");
+            Debug.LogError($"StartClientRelay HATA: {ex.Message}");
         } 
     }
 
@@ -224,7 +224,7 @@ public class LobbyManager : NetworkBehaviour{
             LobbyListUI.Instance.RefreshPlayerList();
         }
         catch (LobbyServiceException ex){
-            Debug.LogWarning($"Lobby güncelleme hatası: {ex.Message}");
+            Debug.LogWarning($"Lobby güncelleme HATA : {ex.Message}");
         }
     }
 
@@ -246,7 +246,7 @@ public class LobbyManager : NetworkBehaviour{
             return response;
         }
         catch (LobbyServiceException e){
-            Debug.Log(e.Message);
+            Debug.Log($"eGetLobbyList HATA : {e.Message}");
             return null;
         }
     }
@@ -302,12 +302,12 @@ public class LobbyManager : NetworkBehaviour{
                     OyunKurallari.Instance.InitializeSettings(); 
                 }
                 else{
-                    Debug.LogWarning("Geçersiz oyun tipi: " + relayData.Value);
+                    Debug.Log("Geçersiz oyun tipi: " + relayData.Value);
                 }
             }
         }
         catch (LobbyServiceException e){
-            Debug.Log(e.Message);
+            Debug.Log($"JoinLobbyByID HATA : {e.Message}");
             return false;
         }
 
@@ -398,13 +398,10 @@ public class LobbyManager : NetworkBehaviour{
 
             try{
                 await LobbyService.Instance.DeleteLobbyAsync(mevcutLobiId);
-                LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.None;
-                //LobbyListUI.Instance.CreateLobbyBtn.style.display = DisplayStyle.Flex;
+                LobbyListUI.Instance.CloseLobbyBtn.style.display = DisplayStyle.None; 
                 LobbyListUI.Instance.StartRelay.style.display = DisplayStyle.None;
                 LobbyListUI.Instance.CreatedLobiCodeTxt.text = null;
-                LobbyListUI.Instance.PlayerList.Clear();
-                //LobbyListUI.Instance.HostListBtn.style.display = DisplayStyle.Flex; 
-                //LobbyListUI.Instance.CrtLobBtn.style.display = DisplayStyle.Flex;
+                LobbyListUI.Instance.PlayerList.Clear(); 
                 LobbyListUI.Instance.CrtLobBtn.visible = true;
                 LobbyListUI.Instance.OnLobbyListButtonClickedWrapper();
 
@@ -420,7 +417,7 @@ public class LobbyManager : NetworkBehaviour{
                 lobbyUpdateCoroutine = null;
             }
             catch (LobbyServiceException e){
-                Debug.LogError($" Lobi silinirken bir hata oluştu: {e.Message}");
+                Debug.Log($" Lobi silinirken bir hata oluştu HATA :{e.Message}");
             }
         }
     }

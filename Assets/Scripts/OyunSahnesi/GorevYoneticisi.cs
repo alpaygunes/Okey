@@ -339,6 +339,7 @@ public class GorevYoneticisi : NetworkBehaviour{
          
         foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
             foreach (var pTas in grup.Value.Taslar){
+                if (pTas.cepInstance ==null) continue;
                 if (gorevTaslari.Length == pTas.cepInstance.colID) break; 
                 var gTas = gorevTaslari[pTas.cepInstance.colID];
                 if (pTas.MeyveID == gTas.MeyveID && pTas.Renk == gTas.Renk){
@@ -357,8 +358,8 @@ public class GorevYoneticisi : NetworkBehaviour{
     }
 
     public void CeplerinYidiziniGuncelle(){
-        foreach (var cepScript in Istaka.Instance.CepList){
-            cepScript?.YildiziYak(0);
+        foreach (var cepScript in Istaka.Instance.CepList){ 
+            cepScript.YildiziYak(0);
             if (cepScript.TasInstance == null) continue;
             var tas = cepScript.TasInstance;
             GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
@@ -372,5 +373,13 @@ public class GorevYoneticisi : NetworkBehaviour{
             }
             cepScript.YildiziYak(uyumSayisi);  
         } 
+    }
+
+    public void GorevLimitiKontrolu(){
+        if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
+            GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+            SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
+            GameManager.Instance.OyunSahnesiKapaniyor = true;
+        }
     }
 }

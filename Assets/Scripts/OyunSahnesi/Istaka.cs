@@ -32,8 +32,7 @@ public class Istaka : MonoBehaviour{
 
     public int DoluCepSayisi(){
         int doluCepSayisi = 0;
-        foreach (var cepIns in CepList){
-            //var cepScript = cep.GetComponent<IstakaCebi>();
+        foreach (var cepIns in CepList){ 
             if (cepIns.Dolu){
                 doluCepSayisi++;
             }

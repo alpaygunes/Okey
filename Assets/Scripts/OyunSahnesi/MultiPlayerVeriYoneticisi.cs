@@ -232,5 +232,4 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
            Debug.Log($"YeniSeediLobbyeGonder içinde HATA {e.Message}");
         }
     } 
-
 }

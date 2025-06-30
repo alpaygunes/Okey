@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour{
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
             }
             // Multi ise GorevYoneticisi OnNetworkSpawn() olunca tetiklenir.
+            OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
         }
         else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             // puanlama sırasında gereken kotrol yapılıyor.
@@ -139,11 +140,7 @@ public class GameManager : MonoBehaviour{
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){ 
                 GorevYoneticisi.Instance.SiradakiGorevSiraNosu++;
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
-                if (GorevYoneticisi.Instance.SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
-                    oyunDurumu = OyunDurumlari.LimitDoldu;
-                    SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-                    OyunSahnesiKapaniyor = true;
-                }
+                GorevYoneticisi.Instance.GorevLimitiKontrolu(); 
             }
         } 
         PuanlamaIStatistikleri.SayilariGuncelle(); 

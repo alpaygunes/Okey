@@ -203,7 +203,7 @@ public class LobbyListUI : MonoBehaviour{
             }
         }
         catch (Exception e){
-            Debug.Log($"OnLobbyListButtonClicked hata eydan geldin {e.Message}"); 
+            Debug.Log($"OnLobbyListButtonClicked hata eydan geldin HATA : {e.Message}"); 
         }
 
         if (lobbyListUpdateCoroutine==null){
@@ -287,8 +287,7 @@ public class LobbyListUI : MonoBehaviour{
         StartRelay.style.display = players == null ? DisplayStyle.None : DisplayStyle.Flex;
         PlayerList.Clear();
         foreach (var player in players){
-            if (player.Data == null){
-                Debug.LogWarning("Player.Data null! DisplayName atanamadı.");
+            if (player.Data == null){ 
                 continue; // Null gelen veriyi atla
             }
             var name = player.Data.ContainsKey("NickName")
