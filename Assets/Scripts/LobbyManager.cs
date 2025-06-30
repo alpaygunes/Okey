@@ -335,6 +335,9 @@ public class LobbyManager : NetworkBehaviour{
     private void LobiVerisiDegisti(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> data){
         if (data.TryGetValue("isGameStarted", out var isGameStarted)){
             IsGameStarted = (isGameStarted.Value.Value == "true") ? true : false;
+            if (IsGameStarted == false){
+                CikisIsteginiGonder();
+            }
         }
 
         if (data.TryGetValue("GameSeed", out var GameSeedData)){
@@ -428,6 +431,7 @@ public class LobbyManager : NetworkBehaviour{
             SceneManager.LoadScene("LobbyManager");
             return;
         }
+        
         // 1) Lobby bayrağını sıfırla (sadece host)
         if (IsHost){
             await LobbyService.Instance.UpdateLobbyAsync(
@@ -457,11 +461,10 @@ public class LobbyManager : NetworkBehaviour{
                 Destroy(nm.gameObject);
             await Task.Yield(); 
             NetcodeBootstrapper.CleanUp();
+            await LobbyListUI.Instance.LobidenAyril();
             SceneManager.LoadScene("MainMenu");
         }
         
- 
-   
     }
 
     public void AbonelikeriBitir(){

@@ -75,7 +75,7 @@ public class OyunSahnesiUI : MonoBehaviour
         IsaretleBelirtYoket.Instance.Degerlendir(); 
     }
 
-    public void AvatarSirasiniGuncelle(){ 
+    public void AvatarSirasiniGuncelle(){
         NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.OyuncuListesi;
         var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>(); 
         for (int i = 0; i < oyuncuListesi.Count; i++) {
