@@ -15,6 +15,12 @@ public class Settings : MonoBehaviour{
     private void Start(){
         AvatarIconlariniListele();
         AyarlariYukle();
+        
+        string nick = PlayerPrefs.GetString("NickName");
+        if (!PlayerPrefs.HasKey("NickName") || string.IsNullOrEmpty(nick))
+        { 
+            NickName.Q("unity-text-input").style.backgroundColor = new StyleColor(Color.red); 
+        }
     }
 
     private void OnEnable(){
