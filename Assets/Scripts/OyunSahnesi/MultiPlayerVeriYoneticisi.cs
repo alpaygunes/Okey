@@ -144,7 +144,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
             OyunSahnesiUI.Instance.AvatarSirasiniGuncelle();
         }
         
-        if (GameManager.Instance?.oyunDurumu != GameManager.OyunDurumlari.LimitDoldu){
+        if (GameManager.Instance?.OyunDurumu != GameManager.OyunDurumlari.LimitDoldu){
             skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
         }
     }

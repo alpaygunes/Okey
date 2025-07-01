@@ -23,11 +23,17 @@ public class Card : MonoBehaviour{
 
     public void CreateSpawnHoles(){
         Vector2 cardSize = Card.Instance.Size;
-        float colonWidth = cardSize.x / GameManager.Instance._colonCount;
-        for (int i = 0; i < GameManager.Instance._colonCount; i++){
+        float colonWidth = cardSize.x / GameManager.Instance.ColonCount; 
+        if (colonWidth > cardSize.x / 6) {
+            colonWidth = cardSize.x / 6;
+        }
+        var toplamgenislik = GameManager.Instance.ColonCount * colonWidth;
+        var fark = cardSize.x - toplamgenislik;
+        for (int i = 0; i < GameManager.Instance.ColonCount; i++){
             float holePositionX = i * colonWidth - cardSize.x * .5f;
             float holePositionY = cardSize.y * .35f + colonWidth;
             holePositionX += colonWidth * .5f;
+            holePositionX += fark * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
             SpawnHole.GetComponent<SpawnHole>().colID = i;
             var sh = Instantiate(SpawnHole, new Vector3(holePositionX, holePositionY, -0.2f), Quaternion.identity);
@@ -38,12 +44,19 @@ public class Card : MonoBehaviour{
 
     public void KutulariHazirla(){
         Vector2 cardSize = Instance.Size;
-        float colonWidth = (cardSize.x / GameManager.Instance._colonCount);
+        float colonWidth = (cardSize.x / GameManager.Instance.ColonCount);
+        if (colonWidth > cardSize.x / 6) {
+            colonWidth = cardSize.x / 6;
+        }
+        var toplamgenislik = GameManager.Instance.ColonCount * colonWidth;
+        var fark = cardSize.x - toplamgenislik;
+        
         GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
         float satirSayisi = (cardSize.y / colonWidth);
         for (var satir = 0; satir < satirSayisi; satir++){
-            for (int sutun = 0; sutun < GameManager.Instance._colonCount; sutun++){
+            for (int sutun = 0; sutun < GameManager.Instance.ColonCount; sutun++){
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
+                positionX += fark * .5f;
                 float positionY = -(cardSize.y * .5f) + ((satirSayisi - satir) * colonWidth);
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
                 kutu.transform.localScale = spawnHolesList[0].transform.localScale;
@@ -66,7 +79,7 @@ public class Card : MonoBehaviour{
                     var uTasInstance = TasManeger.Instance.TasInstances[cTas];
                     uTasInstance.TiklanaBilir = false;
                     uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));
-                    beklemeSuresi += 0.5f;
+                    beklemeSuresi += 0.1f;
                 } 
                 
             }
@@ -80,7 +93,7 @@ public class Card : MonoBehaviour{
                 foreach (var bonusTaslari in pTas.BonusOlarakEslesenTaslar){
                     bonusTaslari.Value.TiklanaBilir = false;
                     bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi));
-                    beklemeSuresi += .5f;
+                    beklemeSuresi += .1f;
                 }
             }
         }

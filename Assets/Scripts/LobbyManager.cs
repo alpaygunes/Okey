@@ -336,7 +336,7 @@ public class LobbyManager : NetworkBehaviour{
         if (data.TryGetValue("isGameStarted", out var isGameStarted)){
             IsGameStarted = (isGameStarted.Value.Value == "true") ? true : false;
             if (IsGameStarted == false){
-                CikisIsteginiGonder();
+                _ = CikisIsteginiGonder();
             }
         }
 
@@ -425,7 +425,7 @@ public class LobbyManager : NetworkBehaviour{
     // LOBBY SİLME İŞLEMLERİ 
     
     public async Task CikisIsteginiGonder(){
-        GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+        GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
         // soloysa hemen çık
         if (MainMenu.isSoloGame){
             SceneManager.LoadScene("LobbyManager");

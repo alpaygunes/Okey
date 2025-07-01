@@ -33,7 +33,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
         if (!MainMenu.isSoloGame){
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
                 if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
-                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+                    GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                     if (MultiPlayerVeriYoneticisi.Instance.OyuncuListesi != null){
                         IEnumerator enumerator;
@@ -50,8 +50,8 @@ public class IsaretleBelirtYoket : MonoBehaviour{
             }
 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
-                if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
-                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+                if (GameManager.Instance.OyununBitimineKalanZaman <= 0){
+                    GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                     if (MultiPlayerVeriYoneticisi.Instance.OyuncuListesi != null){
                         IEnumerator enumerator;
@@ -69,8 +69,8 @@ public class IsaretleBelirtYoket : MonoBehaviour{
 
             // görev yap modunun zaman kontrolu burada. groevsayısı kontroulu gerevyonetimi içinde yapılıyor
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
-                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+                if (GameManager.Instance.OyununBitimineKalanZaman <= 0){
+                    GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     if (NetworkManager.Singleton.IsHost){
                         NetworkManager.Singleton.SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                     }
@@ -98,22 +98,22 @@ public class IsaretleBelirtYoket : MonoBehaviour{
         if(MainMenu.isSoloGame){
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
                 if (HamleSayisi >= OyunKurallari.Instance.HamleLimit){
-                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+                    GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
             }
 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
-                if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
-                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+                if (GameManager.Instance.OyununBitimineKalanZaman <= 0){
+                    GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive); 
                 }
             } 
 
             // görev yap modunun zaman kontrolu burada. groevsayısı kontroulu gerevyonetimi içinde yapılıyor
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                if (GameManager.Instance.oyununBitimineKalanZaman <= 0){
-                    GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+                if (GameManager.Instance.OyununBitimineKalanZaman <= 0){
+                    GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive); 
                 }
             } 

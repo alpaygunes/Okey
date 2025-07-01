@@ -1,51 +1,47 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class GameManager : MonoBehaviour{
-    public readonly int _colonCount = 6;
-    public readonly int BaslangicTasSayisi = 100;
-    public readonly int CepSayisi = 6;
+public class GameManager : MonoBehaviour {
+    public readonly int ColonCount = 3;
+    public readonly int BaslangicTasSayisi = 200;
+    public readonly int CepSayisi = 3;
     public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
-    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 8);
-    public string seed;
-    public static GameManager Instance{ get; private set; }
-    public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
+    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6);
+    public string Seed;
+    public static GameManager Instance { get; private set; }
+    public int OyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
     private OyunDurumlari _oyunDurumu;
-    public OyunDurumlari oyunDurumu
-    {
+
+    public OyunDurumlari OyunDurumu {
         get => _oyunDurumu;
-        set
-        {
-            if (_oyunDurumu != value)
-            {
+        set {
+            if (_oyunDurumu != value) {
                 _oyunDurumu = value;
                 OyunDurumuDegisti();
                 Istaka.Instance.IlkBosCebiBelirt();
             }
         }
     }
+
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public int YeniTasEklendiSayisi = 0;
-    public bool OyunSahnesiKapaniyor{ get; set; } = false;
-    public int CanSayisi{ get; set; } = 10;
+    public bool OyunSahnesiKapaniyor { get; set; } = false;
+    public int CanSayisi { get; set; } = 10;
 
-    public enum OyunDurumlari{
+    public enum OyunDurumlari {
         LimitDoldu,
         DevamEdiyor,
         DegerlendirmeYapiliyor,
     }
 
-    void Awake(){
-        if (MainMenu.isSoloGame){
+    void Awake() {
+        if (MainMenu.isSoloGame) {
             OyunKurallari.Instance.InitializeSettings();
         }
 
         _oyunDurumu = OyunDurumlari.DevamEdiyor;
-        if (Instance != null && Instance != this){
+        if (Instance != null && Instance != this) {
             Destroy(gameObject);
             return;
         }
@@ -53,34 +49,34 @@ public class GameManager : MonoBehaviour{
         Instance = this;
     }
 
-    private void Start(){
-        seed = "A";
+    private void Start() {
+        Seed = "A";
         // solo
-        if (MainMenu.isSoloGame){
-            seed = MainMenu.GetRandomSeed();
+        if (MainMenu.isSoloGame) {
+            Seed = MainMenu.GetRandomSeed();
         }
         // multy
-        else if (LobbyManager.Instance){ 
-            seed = LobbyManager.Instance.gameSeed;
+        else if (LobbyManager.Instance) {
+            Seed = LobbyManager.Instance.gameSeed;
         }
- 
+
         Card.Instance.CreateSpawnHoles();
         TasManeger.Instance.TaslariOlustur();
         Card.Instance.KutulariHazirla();
 
-        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
+        if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli) {
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
         }
-        else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+        else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
             // solo ise
-            if (MainMenu.isSoloGame){
+            if (MainMenu.isSoloGame) {
                 GorevYoneticisi.GorevHazirla();
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
             }
-            // Multi ise GorevYoneticisi OnNetworkSpawn() olunca tetiklenir.
+
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
         }
-        else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
+        else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli) {
             // puanlama sırasında gereken kotrol yapılıyor.
         }
 
@@ -89,30 +85,27 @@ public class GameManager : MonoBehaviour{
         PuanlamaIStatistikleri.Sifirla();
     }
 
-    private void OyunDurumuDegisti()
-    {
-        if (oyunDurumu == OyunDurumlari.DevamEdiyor)
-        {
-            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap)
-            {
+    private void OyunDurumuDegisti() {
+        if (OyunDurumu == OyunDurumlari.DevamEdiyor) {
+            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
                 GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
             }
         }
     }
 
-    private IEnumerator OyununBitimiIcinGeriSayRoutine(){
-        if (OyunKurallari.Instance){
-            oyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
+    private IEnumerator OyununBitimiIcinGeriSayRoutine() {
+        if (OyunKurallari.Instance) {
+            OyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
         }
 
-        while (oyununBitimineKalanZaman > 0){
-            OyunSahnesiUI.Instance.GeriSayim.text = oyununBitimineKalanZaman.ToString();
+        while (OyununBitimineKalanZaman > 0) {
+            OyunSahnesiUI.Instance.GeriSayim.text = OyununBitimineKalanZaman.ToString();
             yield return new WaitForSeconds(1f);
-            oyununBitimineKalanZaman--;
+            OyununBitimineKalanZaman--;
         }
 
         OyunSahnesiUI.Instance.GeriSayim.text = "0";
-        if (OyununBitimiIcinGeriSayRoutineCoroutin != null){
+        if (OyununBitimiIcinGeriSayRoutineCoroutin != null) {
             StopCoroutine(OyununBitimiIcinGeriSayRoutineCoroutin);
             OyununBitimiIcinGeriSayRoutineCoroutin = null;
         }
@@ -120,38 +113,39 @@ public class GameManager : MonoBehaviour{
         IsaretleBelirtYoket.Instance.LimitleriKontrolEt();
     }
 
-    public void DugmeYadaOtomatikDegerlendirme(){
+    public void DugmeYadaOtomatikDegerlendirme() {
         // per VAR sa
-        if (PerKontrolBirimi.Instance.Gruplar.Count > 0){
-            if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
+        if (PerKontrolBirimi.Instance.Gruplar.Count > 0) {
+            if (Istaka.Instance.DoluCepSayisi() == CepSayisi) {
                 IsaretleBelirtYoket.Instance.Degerlendir();
             }
-            else{
+            else {
                 OyunSahnesiUI.Instance.degerlendirmeYap.style.display = DisplayStyle.Flex;
             }
         }
         // per YOK ama istaka full.
-        else if (Istaka.Instance.DoluCepSayisi() == CepSayisi){
-            CanSayisi--; 
-            IsaretleBelirtYoket.Instance.HamleSayisi++;  
+        else if (Istaka.Instance.DoluCepSayisi() == CepSayisi) {
+            CanSayisi--;
+            IsaretleBelirtYoket.Instance.HamleSayisi++;
             OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
             Istaka.Instance.TumTaslarinGostergesiniAc();
             Istaka.Instance.IstakayiVeCartiTemizle();
-            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){ 
+            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
                 GorevYoneticisi.Instance.SiradakiGorevSiraNosu++;
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
-                GorevYoneticisi.Instance.GorevLimitiKontrolu(); 
+                GorevYoneticisi.Instance.GorevLimitiKontrolu();
             }
-        } 
-        PuanlamaIStatistikleri.SayilariGuncelle(); 
-        PuanlamaIStatistikleri.UIgucelle(); 
+        }
+
+        PuanlamaIStatistikleri.SayilariGuncelle();
+        PuanlamaIStatistikleri.UIgucelle();
         IsaretleBelirtYoket.Instance.LimitleriKontrolEt();
     }
 
-    void Update(){
-        if (oyunDurumu == OyunDurumlari.LimitDoldu) return;
+    void Update() {
+        if (OyunDurumu == OyunDurumlari.LimitDoldu) return;
         // tıklama algılama
-        #if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS
                                     if (Input.touchCount > 0)
                                     {
                                         Touch touch = Input.GetTouch(0);
@@ -161,42 +155,40 @@ public class GameManager : MonoBehaviour{
                                             TiklamaTuslamaKontrol(worldPoint);
                                         }
                                     }
-        #else
-                if (Input.GetMouseButtonDown(0)){
-                    Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    TiklamaTuslamaKontrol(worldPoint);
-                }
-        #endif
- 
-        oyunDurumu = Card.Instance.TiklanamazTasVar()
-                    ? OyunDurumlari.DegerlendirmeYapiliyor
-                    : OyunDurumlari.DevamEdiyor;
-        
+#else
+        if (Input.GetMouseButtonDown(0)) {
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            TiklamaTuslamaKontrol(worldPoint);
+        }
+#endif
+
+        OyunDurumu = Card.Instance.TiklanamazTasVar()
+            ? OyunDurumlari.DegerlendirmeYapiliyor
+            : OyunDurumlari.DevamEdiyor;
+
         //Istaka.Instance.CeptekiYildiziKontrolEtBayragi = Card.Instance.TiklanamazTasVar();
-         
     }
 
-    void TiklamaTuslamaKontrol(Vector2 worldPoint){
-        if (oyunDurumu != OyunDurumlari.DevamEdiyor) return;
+    void TiklamaTuslamaKontrol(Vector2 worldPoint) {
+        if (OyunDurumu != OyunDurumlari.DevamEdiyor) return;
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-        if (hit.collider != null){
-            if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")){
+        if (hit.collider != null) {
+            if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
                 var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
                 if (!tasInstance.TiklanaBilir) return;
                 var yerlestimi = tasInstance.BosCebeYerles();
-                if (yerlestimi){
-                    if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
+                if (yerlestimi) {
+                    if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
                         GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
-                    } 
+                    }
+
                     PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
                     PerKontrolBirimi.Instance.PerdekiTaslariBelirt();
-                    DugmeYadaOtomatikDegerlendirme(); 
-                } 
+                    DugmeYadaOtomatikDegerlendirme();
+                }
             }
         }
+
         Istaka.Instance.IlkBosCebiBelirt();
     }
-    
-    
 }
-

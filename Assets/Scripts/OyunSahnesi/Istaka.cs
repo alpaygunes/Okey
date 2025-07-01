@@ -44,8 +44,15 @@ public class Istaka : MonoBehaviour{
     public void CepleriOlustur(){
         float istakaGenisligi = Body.GetComponent<SpriteRenderer>().bounds.size.x;
         float aralikMesafesi = istakaGenisligi / GameManager.Instance.CepSayisi;
+        
+        if (aralikMesafesi > istakaGenisligi / 6) {
+            aralikMesafesi = istakaGenisligi / 6;
+        }
+        var toplamgenislik = GameManager.Instance.CepSayisi * aralikMesafesi;
+        var fark = istakaGenisligi - toplamgenislik;
         for (int i = 0; i < GameManager.Instance.CepSayisi; i++){
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - istakaGenisligi * .5f;
+            x += fark * .5f; // ortalama için farkın yarısıı ekle
             GameObject Cep = Resources.Load<GameObject>("Prefabs/IstakaCebi");
             var cep = Instantiate(Cep, new Vector3(x, Body.transform.position.y, -2), Quaternion.identity);
             cep.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -5);
@@ -65,7 +72,7 @@ public class Istaka : MonoBehaviour{
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
             CardtakiTas.TiklanaBilir = false;
             StartCoroutine(CardtakiTas.BekleYokol(beklemeSuresi));
-            beklemeSuresi += 0.2f;
+            beklemeSuresi += 0.1f;
         }
 
         foreach (var cepInstance in CepList){
@@ -74,7 +81,7 @@ public class Istaka : MonoBehaviour{
             CeptekiTas.TiklanaBilir = false;
             StartCoroutine(CeptekiTas.BekleYokol(beklemeSuresi));
             cepInstance.TasInstance = null;
-            beklemeSuresi += 0.2f;
+            beklemeSuresi += 0.1f;
         }
 
          
@@ -119,14 +126,7 @@ public class Istaka : MonoBehaviour{
         if (ilkBosCep != null) ilkBosCep.BosBelirteci.SetActive(true);
     }
 
-    /*private void Update(){
-        if (CeptekiYildiziKontrolEtBayragi){ 
-            CeptekiYildiziKontrolEtBayragi = (GameManager.Instance.oyunDurumu != GameManager.OyunDurumlari.DevamEdiyor); 
-            if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-                GorevYoneticisi.Instance.CeplerinYidiziniGuncelle(); 
-            }
-        }
-    }*/
+ 
 
 
 }

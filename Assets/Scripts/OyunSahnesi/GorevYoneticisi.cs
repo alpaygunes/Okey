@@ -291,6 +291,7 @@ public class GorevYoneticisi : NetworkBehaviour{
     // -----------------------------------  SON --------------------------------------- 
     public void SiradakiGoreviIstakadaGoster(){
         var body = Instance.transform.Find("Body");
+        float gorvePaneliGenisligi = body.GetComponent<SpriteRenderer>().bounds.size.x;
         if (body == null) return;
         // öncekileri temizle 
         for (int j = body.childCount - 1; j >= 0; j--) {
@@ -301,22 +302,27 @@ public class GorevYoneticisi : NetworkBehaviour{
         GorevData gorev;
         if (MainMenu.isSoloGame){
             gorev = gorevlerSoloList[SiradakiGorevSiraNosu];
-        }
-        else{
+        }else{
             gorev = gorevlerNetList[SiradakiGorevSiraNosu];
         }
+        
+        float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.CepSayisi;
+        if (aralikMesafesi > gorvePaneliGenisligi / 6) {
+            aralikMesafesi = gorvePaneliGenisligi / 6;
+        }
+        
+        var toplamgenislik = gorev.Taslar.Length * aralikMesafesi;
+        var fark = gorvePaneliGenisligi - toplamgenislik;
         
         FixedList128Bytes<TasData> taslar = gorev.Taslar;
         // tas nesnelerini tasList e ekle
         int i = 0;
-        foreach (var gorevTasi in taslar){
-            // gorev gameobjectini kooordinatlarına göre sahneye yerleştir
-            float gorvePaneliGenisligi = body.GetComponent<SpriteRenderer>().bounds.size.x;
-            float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.CepSayisi;
+        foreach (var gorevTasi in taslar){  
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f;
+            x = x + fark * .5f;
             GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
             var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);
-            gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1); 
+            gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
             gTas.GetComponent<gTas>().meyveID = gorevTasi.MeyveID;
             gTas.GetComponent<gTas>().renk = gorevTasi.Renk;
             gTas.transform.SetParent(body.transform);
@@ -351,7 +357,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
         SiradakiGorevSiraNosu++;
         if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
-            GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+            GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             GameManager.Instance.OyunSahnesiKapaniyor = true;
         }
@@ -377,7 +383,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
     public void GorevLimitiKontrolu(){
         if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
-            GameManager.Instance.oyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
+            GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             GameManager.Instance.OyunSahnesiKapaniyor = true;
         }

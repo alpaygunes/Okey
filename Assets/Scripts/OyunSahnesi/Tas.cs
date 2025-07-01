@@ -17,7 +17,6 @@ public class Tas : MonoBehaviour{
     public SpriteRenderer zeminSpriteRenderer;
     public SpriteRenderer MeyveResmiSpriteRenderer;
     private Vector3 skorTxtPosition;
-    //public Camera uiCamera;
     private Object _collider;
   
     public Cep cepInstance = null;
@@ -59,7 +58,6 @@ public class Tas : MonoBehaviour{
         MeyveResmi = transform.Find("MeyveResmi").gameObject;
         PtasIleUyumluGostergesi = transform.Find("PtasIleUyumluGostergesi").gameObject;
         PersizIstakaTaslariGostergesi = transform.Find("PersizIstakaTaslariGostergesi").gameObject;
-        //uiCamera = Camera.main;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 
@@ -70,15 +68,11 @@ public class Tas : MonoBehaviour{
         zeminSpriteRenderer.color = acikRenk;
         Sprite sprite = Resources.Load<Sprite>("Images/Meyveler/" + MeyveID);
         MeyveResmiSpriteRenderer.sprite = sprite;
-
         var koyuRenk = Color.Lerp(Renk, Color.black, 0.0f);
         MeyveResmiSpriteRenderer.color = koyuRenk;
         MeyveResmiSpriteRenderer.transform.localScale *= 1.25f;
- 
-
         TextMeyveID.text = MeyveID.ToString();
         orginalScale = MeyveResmiSpriteRenderer.transform.localScale;
-
         GorevUyumGostergesi1.SetActive(false);
         GorevUyumGostergesi2.SetActive(false);
         PereUyumluGostergesi.SetActive(false);
@@ -113,7 +107,7 @@ public class Tas : MonoBehaviour{
 
             //taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
             if (ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
-                && GameManager.Instance.oyunDurumu == GameManager.OyunDurumlari.DevamEdiyor){
+                && GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DevamEdiyor){
                 TasManeger.Instance.TaslariOlustur();
             }
 
@@ -155,7 +149,10 @@ public class Tas : MonoBehaviour{
             _rigidbody.constraints &= ~RigidbodyConstraints2D.FreezePositionX;  
             Destroy(_collider);
             Vector2 cardSize = Card.Instance.Size;
-            float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
+            float colonWidth = cardSize.x / GameManager.Instance.CepSayisi; 
+            if (colonWidth > cardSize.x / 6) {
+                colonWidth = cardSize.x / 6;
+            }
             transform.localScale = new Vector3(colonWidth * 1.1f, colonWidth);
             var hedefCepPosition = new Vector3(
                 hedefCep.transform.position.x,

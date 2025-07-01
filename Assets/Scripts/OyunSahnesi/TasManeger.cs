@@ -37,7 +37,7 @@ public class TasManeger : MonoBehaviour{
     }
 
     public static List<Data> GenerateDataList(){
-        var seed = GameManager.Instance.seed;
+        var seed = GameManager.Instance.Seed;
         string SubSeed = seed.Substring(GameManager.Instance.YeniTasEklendiSayisi, 1);
         GameManager.Instance.YeniTasEklendiSayisi++; 
         if (GameManager.Instance.YeniTasEklendiSayisi == seed.Length){

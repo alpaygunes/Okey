@@ -34,7 +34,7 @@ public class NetcodeBootstrapper : MonoBehaviour
                 NetworkManager.Singleton.Shutdown();
             }
 
-            GameObject.Destroy(NetworkManager.Singleton.gameObject);
+            Destroy(NetworkManager.Singleton.gameObject);
         }
 
         _instance = null;

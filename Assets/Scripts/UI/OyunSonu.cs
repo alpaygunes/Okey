@@ -74,9 +74,6 @@ public class OyunSonu : NetworkBehaviour{
     public void SonucListesiniGoster(){
         try{
             NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi = MultiPlayerVeriYoneticisi.Instance.OyuncuListesi;
-            if (NetworkManager.Singleton.IsHost){
-                Debug.Log($"Oyuncu Listesi : {oyuncuListesi.Count}");
-            }
             sonucListesi.Clear();
             // Burada yeni bir kopya liste oluştur 
             var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>(); 
@@ -86,8 +83,6 @@ public class OyunSonu : NetworkBehaviour{
                 localList.Add(oyuncu);
             }
             
-            
-                
             // Bu kopyayı sıralıyoruz
             var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
             
@@ -158,7 +153,7 @@ public class OyunSonu : NetworkBehaviour{
             MultiPlayerVeriYoneticisi.Instance.OyunuYenidenBaslatServerRpc();
         // Solo ise
         if (MainMenu.isSoloGame){
-            GameManager.Instance.seed = MainMenu.GetRandomSeed(); 
+            GameManager.Instance.Seed = MainMenu.GetRandomSeed(); 
             SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single); 
         }
     }
