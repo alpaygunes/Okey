@@ -128,8 +128,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         int renkEnd = GameManager.Instance.RenkAraligi.end;
         int renkSayisi = renkEnd - renkStart + 1;
         
-        int meyveStart = GameManager.Instance.MeyveIDAraligi.start;
-        int meyveEnd = GameManager.Instance.MeyveIDAraligi.end;
+        int meyveStart = GameManager.Instance.MeyveAraligi.start;
+        int meyveEnd = GameManager.Instance.MeyveAraligi.end;
         int meyveSayisi = meyveEnd - meyveStart + 1;
         for (int i = 0; i < GorevSayisi; i++) 
             switch (RastgelePerTuruSec())
@@ -168,8 +168,8 @@ public class GorevYoneticisi : NetworkBehaviour{
             Taslar = new FixedList128Bytes<TasData>()
         };
 
-        int start = GameManager.Instance.MeyveIDAraligi.start;
-        int end = GameManager.Instance.MeyveIDAraligi.end - GameManager.Instance.CepSayisi; 
+        int start = GameManager.Instance.MeyveAraligi.start;
+        int end = GameManager.Instance.MeyveAraligi.end - GameManager.Instance.CepSayisi; 
         int rasgeleBaslangic = UnityEngine.Random.Range(start, end);
         var secilenSayilar = Enumerable.Range(rasgeleBaslangic, GameManager.Instance.CepSayisi).ToList();
         
@@ -199,8 +199,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         int tasSayisi = maxTasSayisi;
 
         // --- Rakam (hepsi aynı olacak) --------------------------------------
-        int meyveStart = GameManager.Instance.MeyveIDAraligi.start;
-        int meyveEnd = GameManager.Instance.MeyveIDAraligi.end;
+        int meyveStart = GameManager.Instance.MeyveAraligi.start;
+        int meyveEnd = GameManager.Instance.MeyveAraligi.end;
         int secilenRakam = UnityEngine.Random.Range(meyveStart, meyveEnd + 1);
 
         // --- Benzersiz renkler ---------------------------------------------
@@ -249,8 +249,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         int tasSayisi = maxTasSayisi;
 
         // --- Ortak rakam -----------------------------------------------------
-        int rakamStart   = GameManager.Instance.MeyveIDAraligi.start;
-        int rakamEnd     = GameManager.Instance.MeyveIDAraligi.end;
+        int rakamStart   = GameManager.Instance.MeyveAraligi.start;
+        int rakamEnd     = GameManager.Instance.MeyveAraligi.end;
         int secilenMeyve = UnityEngine.Random.Range(rakamStart, rakamEnd + 1);
 
         // --- Benzersiz renkler ---------------------------------------------

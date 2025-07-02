@@ -6,11 +6,11 @@ public class GameManager : MonoBehaviour {
     public readonly int ColonCount = 3;
     public readonly int BaslangicTasSayisi = 200;
     public readonly int CepSayisi = 3;
-    public readonly RangeInt RenkAraligi = new RangeInt(0, 6);
-    public readonly RangeInt MeyveIDAraligi = new RangeInt(0, 6);
+    public RangeInt RenkAraligi = new RangeInt(0, 3);
+    public RangeInt MeyveAraligi = new RangeInt(0, 10);
     public string Seed;
     public static GameManager Instance { get; private set; }
-    public int OyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
+    public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
     private OyunDurumlari _oyunDurumu;
 
     public OyunDurumlari OyunDurumu {
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
     void Awake() {
         if (MainMenu.isSoloGame) {
-            OyunKurallari.Instance.InitializeSettings();
+            OyunKurallari.Instance.InitializeSettings(); 
         }
 
         _oyunDurumu = OyunDurumlari.DevamEdiyor;
@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour {
         }
 
         Instance = this;
+ 
     }
 
     private void Start() {
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour {
         // solo
         if (MainMenu.isSoloGame) {
             Seed = MainMenu.GetRandomSeed();
+            LevelManager.Init(); 
         }
         // multy
         else if (LobbyManager.Instance) {
@@ -73,7 +75,6 @@ public class GameManager : MonoBehaviour {
                 GorevYoneticisi.GorevHazirla();
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
             }
-
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
         }
         else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli) {
@@ -95,13 +96,13 @@ public class GameManager : MonoBehaviour {
 
     private IEnumerator OyununBitimiIcinGeriSayRoutine() {
         if (OyunKurallari.Instance) {
-            OyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
+            oyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
         }
 
-        while (OyununBitimineKalanZaman > 0) {
-            OyunSahnesiUI.Instance.GeriSayim.text = OyununBitimineKalanZaman.ToString();
+        while (oyununBitimineKalanZaman > 0) {
+            OyunSahnesiUI.Instance.GeriSayim.text = oyununBitimineKalanZaman.ToString();
             yield return new WaitForSeconds(1f);
-            OyununBitimineKalanZaman--;
+            oyununBitimineKalanZaman--;
         }
 
         OyunSahnesiUI.Instance.GeriSayim.text = "0";
@@ -145,28 +146,26 @@ public class GameManager : MonoBehaviour {
     void Update() {
         if (OyunDurumu == OyunDurumlari.LimitDoldu) return;
         // tıklama algılama
-#if UNITY_ANDROID || UNITY_IOS
-                                    if (Input.touchCount > 0)
-                                    {
-                                        Touch touch = Input.GetTouch(0);
-                                        if (touch.phase == TouchPhase.Began)
-                                        {
-                                            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
-                                            TiklamaTuslamaKontrol(worldPoint);
-                                        }
-                                    }
-#else
-        if (Input.GetMouseButtonDown(0)) {
-            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            TiklamaTuslamaKontrol(worldPoint);
-        }
-#endif
+        #if UNITY_ANDROID || UNITY_IOS
+                if (Input.touchCount > 0)
+                {
+                    Touch touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+                        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touch.position);
+                        TiklamaTuslamaKontrol(worldPoint);
+                    }
+                }
+        #else
+                if (Input.GetMouseButtonDown(0)) {
+                    Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    TiklamaTuslamaKontrol(worldPoint);
+                }
+        #endif
 
         OyunDurumu = Card.Instance.TiklanamazTasVar()
             ? OyunDurumlari.DegerlendirmeYapiliyor
             : OyunDurumlari.DevamEdiyor;
-
-        //Istaka.Instance.CeptekiYildiziKontrolEtBayragi = Card.Instance.TiklanamazTasVar();
     }
 
     void TiklamaTuslamaKontrol(Vector2 worldPoint) {

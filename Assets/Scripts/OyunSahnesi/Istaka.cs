@@ -6,8 +6,7 @@ using UnityEngine.UIElements;
 
 public class Istaka : MonoBehaviour{
     public List<Cep> CepList = new List<Cep>();
-    public static Istaka Instance;
-    //public bool CeptekiYildiziKontrolEtBayragi = false;
+    public static Istaka Instance; 
  
     public GameObject Body;
     private float posYrate = 0.66f;

@@ -49,7 +49,7 @@ public class TasManeger : MonoBehaviour{
         List<Data> dataList = new List<Data>();
 
         for (int i = 0; i < GameManager.Instance.BaslangicTasSayisi; i++){
-            int number = random.Next(GameManager.Instance.MeyveIDAraligi.start,  GameManager.Instance.MeyveIDAraligi.end );
+            int number = random.Next(GameManager.Instance.MeyveAraligi.start,  GameManager.Instance.MeyveAraligi.end );
             int color = random.Next(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end);
             dataList.Add(new Data(number, color));
         }

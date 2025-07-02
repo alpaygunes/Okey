@@ -22,15 +22,13 @@ public class LobbyManager : NetworkBehaviour{
     public Lobby CurrentLobby; 
     private const int MaxPlayers = 10;
     private const string LobbyName = "okey";
-    private Coroutine heartbeatCoroutine;
-    //public string NickName;
+    private Coroutine heartbeatCoroutine; 
     private LobbyEventCallbacks hostCallBacks;
     public Coroutine lobbyUpdateCoroutine;
     public string gameSeed;
     private bool IsGameStarted = false;
-    const float LOBBY_LISTESINI_GUNCELLEME_PERYODU = 15f;
-    public GameObject networkPlayerPrefab;
-    //public string AvatarName;
+    const float LobbyLıstesınıGuncellemePeryodu = 15f;
+    public GameObject networkPlayerPrefab; 
     
     private void Awake(){ 
 
@@ -116,7 +114,7 @@ public class LobbyManager : NetworkBehaviour{
     private IEnumerator UpdateLobbyLoop(){
         // host a görünen lobideki player list
         while (true){
-            yield return new WaitForSeconds(LOBBY_LISTESINI_GUNCELLEME_PERYODU); // her 10 saniyede bir bekle 
+            yield return new WaitForSeconds(LobbyLıstesınıGuncellemePeryodu); // her 10 saniyede bir bekle 
             _ = UpdateLobbyAsync();
         }
     }

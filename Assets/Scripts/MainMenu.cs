@@ -28,10 +28,7 @@ public class MainMenu : MonoBehaviour{
         if (!PlayerPrefs.HasKey("NickName") || string.IsNullOrEmpty(nick))
         {
             SceneManager.LoadScene("Settings");
-        }
-        //PlayerPrefs.DeleteAll();
-        //PlayerPrefs.Save();
-
+        } 
     }
     
     async Task AnonimGiris(){

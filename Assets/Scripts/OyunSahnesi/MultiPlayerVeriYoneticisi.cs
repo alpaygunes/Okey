@@ -145,13 +145,13 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         }
         
         if (GameManager.Instance?.OyunDurumu != GameManager.OyunDurumlari.LimitDoldu){
-            skorListesiniYavasGuncelleCoroutine = StartCoroutine(SkorListesiniYavasGuncelle());
+            skorListesiniYavasGuncelleCoroutine = StartCoroutine(MultySkorListesiniYavasGuncelle());
         }
     }
     
-    public IEnumerator SkorListesiniYavasGuncelle(){
+    public IEnumerator MultySkorListesiniYavasGuncelle(){
         yield return new WaitUntil(() => OyunSonu.Instance != null);
-        OyunSonu.Instance.SonucListesiniGoster();
+        OyunSonu.Instance.MultySonucListesiniGoster();
     }
 
     public void OyuncuVerileriniGuncelle(){
