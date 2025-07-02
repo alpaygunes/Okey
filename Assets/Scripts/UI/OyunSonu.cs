@@ -14,11 +14,10 @@ public class OyunSonu : NetworkBehaviour {
     private VisualElement container;
     private VisualElement sonucListesi;
     private VisualElement footer;
-    public Button YeniOyunuBaslat;
+    private Button yeniOyunuBaslat;
 
-    public Button Quit;
+    private Button quit;
 
-    //public Button Hazirim;
     public static OyunSonu Instance;
 
     private void Awake() {
@@ -145,13 +144,13 @@ public class OyunSonu : NetworkBehaviour {
         container = rootElement.Q<VisualElement>("Container");
         sonucListesi = rootElement.Q<VisualElement>("SonucListesi");
         footer = rootElement.Q<VisualElement>("Footer");
-        YeniOyunuBaslat = container.Q<Button>("YeniOyunuBaslat");
-        Quit = rootElement.Q<Button>("Quit");
+        yeniOyunuBaslat = container.Q<Button>("YeniOyunuBaslat");
+        quit = rootElement.Q<Button>("Quit");
         //Hazirim = rootElement.Q<Button>("Hazirim"); 
-        YeniOyunuBaslat.clicked += OnYeniOyunuBaslatClick;
-        Quit.clicked += OnQuitClick;
+        yeniOyunuBaslat.clicked += OnYeniOyunuBaslatClick;
+        quit.clicked += OnQuitClick;
         //Hazirim.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.None : DisplayStyle.Flex;
-        YeniOyunuBaslat.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.Flex : DisplayStyle.None;
+        yeniOyunuBaslat.style.display = NetworkManager.Singleton.IsHost ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     private void OnQuitClick() {
@@ -168,4 +167,5 @@ public class OyunSonu : NetworkBehaviour {
             SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
         }
     }
+    
 }

@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour {
-    public readonly int ColonCount = 3;
+    public int ColonCount = 6;
     public readonly int BaslangicTasSayisi = 200;
-    public readonly int CepSayisi = 3;
-    public RangeInt RenkAraligi = new RangeInt(0, 3);
-    public RangeInt MeyveAraligi = new RangeInt(0, 10);
+    public int CepSayisi = 6;
+    public RangeInt RenkAraligi = new RangeInt(0, 10);
+    public RangeInt MeyveAraligi = new RangeInt(0, 14);
     public string Seed;
     public static GameManager Instance { get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
@@ -37,25 +37,26 @@ public class GameManager : MonoBehaviour {
 
     void Awake() {
         if (MainMenu.isSoloGame) {
-            OyunKurallari.Instance.InitializeSettings(); 
+            OyunKurallari.Instance.InitializeSettings();
         }
 
         _oyunDurumu = OyunDurumlari.DevamEdiyor;
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
             return;
-        }
-
+        } 
         Instance = this;
- 
+
+        if (MainMenu.isSoloGame) {
+            LevelManager.Init();
+        }
     }
 
     private void Start() {
         Seed = "A";
         // solo
         if (MainMenu.isSoloGame) {
-            Seed = MainMenu.GetRandomSeed();
-            LevelManager.Init(); 
+            Seed = MainMenu.GetRandomSeed(); 
         }
         // multy
         else if (LobbyManager.Instance) {
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour {
                 GorevYoneticisi.GorevHazirla();
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
             }
+
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
         }
         else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli) {
@@ -146,7 +148,7 @@ public class GameManager : MonoBehaviour {
     void Update() {
         if (OyunDurumu == OyunDurumlari.LimitDoldu) return;
         // tıklama algılama
-        #if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS
                 if (Input.touchCount > 0)
                 {
                     Touch touch = Input.GetTouch(0);
@@ -156,12 +158,12 @@ public class GameManager : MonoBehaviour {
                         TiklamaTuslamaKontrol(worldPoint);
                     }
                 }
-        #else
-                if (Input.GetMouseButtonDown(0)) {
-                    Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    TiklamaTuslamaKontrol(worldPoint);
-                }
-        #endif
+#else
+        if (Input.GetMouseButtonDown(0)) {
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            TiklamaTuslamaKontrol(worldPoint);
+        }
+#endif
 
         OyunDurumu = Card.Instance.TiklanamazTasVar()
             ? OyunDurumlari.DegerlendirmeYapiliyor
