@@ -66,8 +66,8 @@ public class Card : MonoBehaviour{
 
     public void Sallanma(){
         var carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-        foreach (var tas in carddakiTaslar){
-            TasManeger.Instance.TasInstances[tas].sallanmaDurumu = false;
+        foreach (var tas in carddakiTaslar){ 
+            TasManeger.Instance.TasInstances[tas].sallanmaDurumu = false; 
         }
     }
 

@@ -1,13 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DG.Tweening;
-using NUnit.Framework.Constraints;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 public class Tas : MonoBehaviour{
@@ -18,19 +14,16 @@ public class Tas : MonoBehaviour{
     public SpriteRenderer MeyveResmiSpriteRenderer;
     private Vector3 skorTxtPosition;
     private Object _collider;
-  
     public Cep cepInstance = null;
     public Tweener tweener = null;
     public Vector3 orginalScale;
     public GameObject zemin;
-    public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>();
-    public bool NetworkDatayaEklendi = false;
+    public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>(); 
     public TextMeshPro TextMeyveID;
     public int colID;
-
-    public int
-        GorevleUyumBayragi = 0; //0 = yok, 1 = gorevle, 2 = gorevle ve yok . Bu alan Cepteki tas için. Cart takiler icin degil
-
+    private int SallanmakIcinBeklemeSuresi = 2;
+    private Coroutine SallanmaCoroutine;
+    public int GorevleUyumBayragi = 0; //0 = yok, 1 = gorevle, 2 = gorevle ve yok . Bu alan Cepteki tas için. Cart takiler icin degil
     public GameObject GorevUyumGostergesi1;
     public GameObject GorevUyumGostergesi2;
     public GameObject PereUyumluGostergesi; // cepteki daslar per halindeyse belirtir.
@@ -172,19 +165,32 @@ public class Tas : MonoBehaviour{
     }
  
     private void Update(){  
-        if (sallanmaDurumu && !tweener.IsActive() && tweener == null){
+        if (sallanmaDurumu && !tweener.IsActive() && tweener == null) {
+            if (SallanmaCoroutine==null) { 
+                SallanmaCoroutine = StartCoroutine(BekleSallan());
+            }
+            
+        }
+        if(!sallanmaDurumu && tweener.IsActive() ) { 
+            tweener.Complete();
+            tweener.Kill();
+            tweener = null;
+            MeyveResmiSpriteRenderer.transform.localScale = orginalScale;
+            if (SallanmaCoroutine is not null) {
+                StopCoroutine(SallanmaCoroutine);
+                SallanmaCoroutine = null;
+            }
+        }
+    }
+
+    private IEnumerator BekleSallan() {
+        yield return new WaitForSeconds(SallanmakIcinBeklemeSuresi);
+        if (sallanmaDurumu && !tweener.IsActive() && tweener == null) { 
             tweener = MeyveResmiSpriteRenderer.transform.DOScale(.8f, .5f)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetAutoKill(true);
-            
-        }
-        else if (!sallanmaDurumu && tweener != null && tweener.IsActive()){
-            tweener.Complete();
-            tweener.Kill();
-            tweener = null;
-            MeyveResmiSpriteRenderer.transform.localScale = orginalScale; 
-        }
+        } 
     }
 
     public void AltinVeElmasGoster(){

@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEngine;
-using Object = System.Object;
+using System.Collections.Generic; 
+using UnityEngine; 
 
 public static class PerIcinUygunTaslariBelirt{
     public static Dictionary<int, Grup> MevcutGruplar{ get; set; }

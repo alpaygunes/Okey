@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Unity.Collections;
 using Unity.Netcode;
-using Unity.Services.Lobbies;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -16,7 +13,7 @@ public class OyunSahnesiUI : MonoBehaviour
     public Label HamleSayisi; 
     public Label GeriSayim;
     private Button exit;
-    public Button degerlendirmeYap; 
+    public Button DegerlendirmeYap; 
     public Label GorevSayisiLbl;
     public Label CanSayisi;
     private VisualElement avatars; 
@@ -41,11 +38,11 @@ public class OyunSahnesiUI : MonoBehaviour
         AltinSayisi = rootElement.Q<Label>("AltinSayisi");
         ElmasSayisi = rootElement.Q<Label>("ElmasSayisi");
         CanSayisi = rootElement.Q<Label>("CanSayisi");
-        degerlendirmeYap = rootElement.Q<Button>("DegerlendirmeYap");
+        DegerlendirmeYap = rootElement.Q<Button>("DegerlendirmeYap");
         exit = rootElement.Q<Button>("Exit"); 
         avatars = rootElement.Q<VisualElement>("Avtars"); 
-        degerlendirmeYap.clicked += PerleriDegerlendir;  
-        degerlendirmeYap.style.display = DisplayStyle.None; 
+        DegerlendirmeYap.clicked += PerleriDegerlendir;  
+        DegerlendirmeYap.style.display = DisplayStyle.None; 
         GorevSayisiLbl.style.display =    DisplayStyle.None; 
         CanSayisi.style.display =    DisplayStyle.Flex; 
         GeriSayim.text = null;
@@ -90,8 +87,8 @@ public class OyunSahnesiUI : MonoBehaviour
             string avatarName = player.AvadarID != default
                 ? player.AvadarID.ToString()
                 : "avatar0";
-            string displayName = player.ClientName!= default
-                ? player.AvadarID.ToString()
+            string displayName = player.NickName!= default
+                ? player.NickName.ToString()
                 : "NoDisplayName";
             Sprite avatarSprite = Resources.Load<Sprite>($"avatars/{avatarName}");
             if (avatarSprite != null)

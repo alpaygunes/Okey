@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
     public static MultiPlayerVeriYoneticisi Instance;
     public NetworkList<PlayerData> OyuncuListesi = new NetworkList<PlayerData>();
-    public Coroutine skorListesiniYavasGuncelleCoroutine;
+    public Coroutine SkorListesiniYavasGuncelleCoroutine;
     
     public struct PlayerData : INetworkSerializable, IEquatable<PlayerData>{
         public ulong ClientId; 
@@ -25,7 +25,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         public int AltinSayisi;
         public int ElmasSayisi;
         public int ToplamTasSayisi; 
-        public FixedString64Bytes ClientName;
+        public FixedString64Bytes NickName;
         public FixedString64Bytes AvadarID;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter{
@@ -39,7 +39,8 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
             serializer.SerializeValue(ref AltinSayisi);
             serializer.SerializeValue(ref ElmasSayisi);
             serializer.SerializeValue(ref ToplamTasSayisi); 
-            serializer.SerializeValue(ref AvadarID); 
+            serializer.SerializeValue(ref AvadarID);
+            serializer.SerializeValue(ref NickName);
         }
 
         public bool Equals(PlayerData other){
@@ -83,8 +84,8 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
             NetworkManager.Singleton.OnClientConnectedCallback -= AddOyuncu;
         }
 
-        if (skorListesiniYavasGuncelleCoroutine != null){
-            StopCoroutine(skorListesiniYavasGuncelleCoroutine);
+        if (SkorListesiniYavasGuncelleCoroutine != null){
+            StopCoroutine(SkorListesiniYavasGuncelleCoroutine);
         } 
         OyuncuListesi.OnListChanged -= OnOyuncuListesiGuncellendi;
     }
@@ -116,7 +117,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                     AltinSayisi=0,
                     ElmasSayisi=0,
                     ToplamTasSayisi=0,  
-                    ClientName = displayName,
+                    NickName = displayName,
                     AvadarID = AvadarID,
                 });
             }
@@ -144,18 +145,21 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
             OyunSahnesiUI.Instance.AvatarSirasiniGuncelle();
         }
         
-        if (GameManager.Instance?.OyunDurumu != GameManager.OyunDurumlari.LimitDoldu){
-            skorListesiniYavasGuncelleCoroutine = StartCoroutine(MultySkorListesiniYavasGuncelle());
+        if (GameManager.Instance?.OyunDurumu == GameManager.OyunDurumlari.LimitDoldu){
+            if (SkorListesiniYavasGuncelleCoroutine==null) {
+                SkorListesiniYavasGuncelleCoroutine = StartCoroutine(MultySkorListesiniYavasGuncelle());
+            } 
         }
     }
     
     public IEnumerator MultySkorListesiniYavasGuncelle(){
         yield return new WaitUntil(() => OyunSonu.Instance != null);
         OyunSonu.Instance.MultySonucListesiniGoster();
+        SkorListesiniYavasGuncelleCoroutine = null;
     }
 
     public void OyuncuVerileriniGuncelle(){
-        Dictionary<string, string> playerDatas = new Dictionary<string, string>();  
+        Dictionary<string, string> playerDatas = new Dictionary<string, string>();
         playerDatas.Add("BonusMeyveSayisi",PuanlamaIStatistikleri.BonusMeyveSayisi.ToString());
         playerDatas.Add("HamleSayisi",PuanlamaIStatistikleri.HamleSayisi.ToString());
         playerDatas.Add("Zaman",PuanlamaIStatistikleri.Zaman.ToString());
@@ -171,17 +175,15 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
         // Örneğin JSON
         string json = JsonUtility.ToJson(new SerializationHelper(playerDatas));
 
-        FixedString512Bytes fs = json;
+        FixedString512Bytes fs = json; 
         SkorVeHamleGuncelleServerRpc(fs); 
     }
     
     [ServerRpc(RequireOwnership = false)]
-    public void SkorVeHamleGuncelleServerRpc( FixedString512Bytes playerDatas, ServerRpcParams rpcParams = default){
-        // FixedString -> JSON string
-        string jsonString = playerDatas.ToString(); 
-        // JSON string -> Dictionary<string, string>
-        Dictionary<string, string> deserializedDatas = JsonUtility.FromJson<SerializationHelper>(jsonString).ToDictionary();
-        FixedString64Bytes clientName = PlayerPrefs.GetString("NickName");
+    public void SkorVeHamleGuncelleServerRpc( FixedString512Bytes playerDatas, ServerRpcParams rpcParams = default)
+    { 
+        string jsonString = playerDatas.ToString();  
+        Dictionary<string, string> deserializedDatas = JsonUtility.FromJson<SerializationHelper>(jsonString).ToDictionary(); 
         try{
             for (int i = 0; i < OyuncuListesi.Count; i++){ 
                 if (OyuncuListesi[i].ClientId == rpcParams.Receive.SenderClientId){
@@ -197,7 +199,7 @@ public class MultiPlayerVeriYoneticisi : NetworkBehaviour{
                         AltinSayisi=Convert.ToInt16(deserializedDatas["AltinSayisi"]),
                         ElmasSayisi=Convert.ToInt16(deserializedDatas["ElmasSayisi"]),
                         ToplamTasSayisi=Convert.ToInt16(deserializedDatas["ToplamTasSayisi"]),  
-                        ClientName = deserializedDatas["NickName"],
+                        NickName = deserializedDatas["NickName"],
                         AvadarID = deserializedDatas["AvatarName"],
                     };
                     break;

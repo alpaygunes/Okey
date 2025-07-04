@@ -4,13 +4,13 @@ public static class LevelManager {
     public static void Init() {
         RenkVeMeyveSeviyesi();
         AyarlariUygula();
-        if (PlayerPrefs.GetInt("RenkSeviyesi")>=9) {
+        if (PlayerPrefs.GetInt("MeyveSeviyesi")>=9) {
             GameManager.Instance.ColonCount = 6;
             GameManager.Instance.CepSayisi = 6;
-        } else if (PlayerPrefs.GetInt("RenkSeviyesi")>=5) {
+        } else if (PlayerPrefs.GetInt("MeyveSeviyesi")>=5) {
             GameManager.Instance.ColonCount = 5;
             GameManager.Instance.CepSayisi = 5;
-        }      
+        }
         // PlayerPrefs.DeleteAll();
         // PlayerPrefs.Save();
     }
@@ -46,13 +46,16 @@ public static class LevelManager {
         if (MeyveSeviyesi >= MeyveSayisi) MeyveSeviyesi = 0;
         
         PlayerPrefs.SetInt("RenkSeviyesi", RenkSeviyesi);
-        PlayerPrefs.SetInt("MeyveSeviyesi", MeyveSeviyesi); 
+        PlayerPrefs.SetInt("MeyveSeviyesi", MeyveSeviyesi);
     }
 
     public static void AyarlariUygula() {
         GameManager.Instance.RenkAraligi = new RangeInt (0,PlayerPrefs.GetInt("RenkSeviyesi"));
         GameManager.Instance.MeyveAraligi= new RangeInt (0,PlayerPrefs.GetInt("MeyveSeviyesi"));
-        Debug.Log($"RenkSeviyesi: {PlayerPrefs.GetInt("RenkSeviyesi")}  " +
-                  $"--  MeyveSeviyesi: {PlayerPrefs.GetInt("MeyveSeviyesi")}");
+        // geçici ayar debug için sonra sil
+        GameManager.Instance.RenkAraligi = new RangeInt (0,10);
+        GameManager.Instance.MeyveAraligi= new RangeInt (0,10);
+        GameManager.Instance.ColonCount = 5;
+        GameManager.Instance.CepSayisi = 5;
     }
 }

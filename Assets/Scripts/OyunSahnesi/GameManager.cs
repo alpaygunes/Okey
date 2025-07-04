@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour {
                 IsaretleBelirtYoket.Instance.Degerlendir();
             }
             else {
-                OyunSahnesiUI.Instance.degerlendirmeYap.style.display = DisplayStyle.Flex;
+                OyunSahnesiUI.Instance.DegerlendirmeYap.style.display = DisplayStyle.Flex;
             }
         }
         // per YOK ama istaka full.
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour {
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
                         GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
                     }
-
+                    Card.Instance.Sallanma();
                     PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
                     PerKontrolBirimi.Instance.PerdekiTaslariBelirt();
                     DugmeYadaOtomatikDegerlendirme();

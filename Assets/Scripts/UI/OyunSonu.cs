@@ -30,6 +30,11 @@ public class OyunSonu : NetworkBehaviour {
     }
 
     private void Start() {
+        sonucListesi.Clear();
+        var hazirlaniyor = new Button();
+        hazirlaniyor.text = "Liste Hazırlanıyor... "; 
+        sonucListesi.Add(hazirlaniyor);
+        
         if (MainMenu.isSoloGame) {
             SoloSonucListesiniGoster();
         }
@@ -41,24 +46,24 @@ public class OyunSonu : NetworkBehaviour {
         var BonusSayisiBtn = new Button();
         BonusSayisiBtn.text = PuanlamaIStatistikleri.BonusMeyveSayisi.ToString();
         BonusSayisiBtn.AddToClassList("bonus_sayisi");
-        BonusSayisiBtn.AddToClassList("kutu");
+        BonusSayisiBtn.AddToClassList("kutular");
 
         var AltinBtn = new Button();
         AltinBtn.text = PuanlamaIStatistikleri.AltinSayisi.ToString();
         AltinBtn.AddToClassList("altin_sayisi");
-        AltinBtn.AddToClassList("kutu");
+        AltinBtn.AddToClassList("kutular");
 
         var ElmasBtn = new Button();
         ElmasBtn.text = PuanlamaIStatistikleri.ElmasSayisi.ToString();
         ElmasBtn.AddToClassList("elmas_sayisi");
-        ElmasBtn.AddToClassList("kutu");
+        ElmasBtn.AddToClassList("kutular");
 
         var SkorBtn = new Button();
         var Skor = (PuanlamaIStatistikleri.BonusMeyveSayisi + PuanlamaIStatistikleri.AltinSayisi +
                     PuanlamaIStatistikleri.ElmasSayisi);
         SkorBtn.text = Skor.ToString();
         SkorBtn.AddToClassList("skor_sayisi");
-        SkorBtn.AddToClassList("kutu");
+        SkorBtn.AddToClassList("kutular");
 
         // solo oyuncunun skorlimiti taamase renkSeviyesini artır 
         if (OyunKurallari.Instance.SkorLimiti <= Skor) {
@@ -84,6 +89,7 @@ public class OyunSonu : NetworkBehaviour {
         try {
             NetworkList<MultiPlayerVeriYoneticisi.PlayerData> oyuncuListesi =
                 MultiPlayerVeriYoneticisi.Instance.OyuncuListesi;
+            
             sonucListesi.Clear();
             // Burada yeni bir kopya liste oluştur 
             var localList = new List<MultiPlayerVeriYoneticisi.PlayerData>();
@@ -97,9 +103,9 @@ public class OyunSonu : NetworkBehaviour {
             var siraliListe = localList.OrderByDescending(p => p.Skor).ToList();
 
             foreach (var oyuncu in siraliListe) {
-                ulong clientID = oyuncu.ClientId;
-                FixedString64Bytes clientName = oyuncu.ClientName;
-
+                //ulong clientID = oyuncu.ClientId;
+                FixedString64Bytes NickName = oyuncu.NickName; 
+                
                 var BonusSayisiBtn = new Button();
                 BonusSayisiBtn.text = oyuncu.BonusMeyveSayisi.ToString();
                 BonusSayisiBtn.AddToClassList("bonus_sayisi");
@@ -121,7 +127,7 @@ public class OyunSonu : NetworkBehaviour {
                 SkorBtn.AddToClassList("kutu");
 
                 var playerNameBtn = new Button();
-                playerNameBtn.text = clientName.ToString();
+                playerNameBtn.text = NickName.ToString();
                 playerNameBtn.AddToClassList("name");
 
                 var ListRowVisuElm = new VisualElement();

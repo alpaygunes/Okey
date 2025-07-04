@@ -23,7 +23,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
 
     private void Start(){
         if (!MainMenu.isSoloGame){
-            // boş bir değişim yaratalım. skorl sitesine eklensin. Host un skor listesinde tekrar eden host clientName i çözmek için.
+            // boş bir değişim yaratalım. skorl sitesine eklensin. Host un skor listesinde tekrar eden host NickName i çözmek için.
             MultiPlayerVeriYoneticisi.Instance?.OyuncuVerileriniGuncelle();
         } 
     }
@@ -39,7 +39,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
                         IEnumerator enumerator;
                         try{
                             enumerator = MultiPlayerVeriYoneticisi.Instance.MultySkorListesiniYavasGuncelle();
-                            MultiPlayerVeriYoneticisi.Instance.skorListesiniYavasGuncelleCoroutine
+                            MultiPlayerVeriYoneticisi.Instance.SkorListesiniYavasGuncelleCoroutine
                                 = MultiPlayerVeriYoneticisi.Instance.StartCoroutine(enumerator);
                         }
                         catch (Exception e){
@@ -57,7 +57,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
                         IEnumerator enumerator;
                         try{
                             enumerator = MultiPlayerVeriYoneticisi.Instance.MultySkorListesiniYavasGuncelle();
-                            MultiPlayerVeriYoneticisi.Instance.skorListesiniYavasGuncelleCoroutine
+                            MultiPlayerVeriYoneticisi.Instance.SkorListesiniYavasGuncelleCoroutine
                                 = MultiPlayerVeriYoneticisi.Instance.StartCoroutine(enumerator);
                         }
                         catch (Exception e){
@@ -82,7 +82,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
                         IEnumerator enumerator;
                         try{
                             enumerator = MultiPlayerVeriYoneticisi.Instance.MultySkorListesiniYavasGuncelle();
-                            MultiPlayerVeriYoneticisi.Instance.skorListesiniYavasGuncelleCoroutine
+                            MultiPlayerVeriYoneticisi.Instance.SkorListesiniYavasGuncelleCoroutine
                                 = MultiPlayerVeriYoneticisi.Instance.StartCoroutine(enumerator);
                         }
                         catch (Exception e){
@@ -124,7 +124,7 @@ public class IsaretleBelirtYoket : MonoBehaviour{
         Card.Instance.Sallanma();
         HamleSayisi++; 
         if ( PerKontrolBirimi.Instance.Gruplar.Count>0){
-            OyunSahnesiUI.Instance.degerlendirmeYap.style.display = DisplayStyle.None; 
+            OyunSahnesiUI.Instance.DegerlendirmeYap.style.display = DisplayStyle.None; 
             Card.Instance.CardtakiBonusTaslariBelirt();
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap &&
                 PerKontrolBirimi.Instance.Gruplar != null){
