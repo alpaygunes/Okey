@@ -117,12 +117,12 @@ public class Istaka : MonoBehaviour{
     public void IlkBosCebiBelirt(){
         Cep ilkBosCep = null;
         foreach (var cep in CepList){
-            cep.BosBelirteci.SetActive(false); 
+            cep.bosBelirteci.SetActive(false); 
             if (cep.Dolu == false && ilkBosCep == null){
                 ilkBosCep = cep; 
             }
         } 
-        if (ilkBosCep != null) ilkBosCep.BosBelirteci.SetActive(true);
+        if (ilkBosCep != null) ilkBosCep.bosBelirteci.SetActive(true);
     }
 
  

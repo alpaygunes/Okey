@@ -8,15 +8,15 @@ public class Cep : MonoBehaviour{
     public int colID;
     private GameObject yildiz1;
     private GameObject yildiz2;
-    public GameObject BosBelirteci;
+    public GameObject bosBelirteci = null;
 
     private void Start(){
         yildiz1 = transform.Find("yildiz1").gameObject;
         yildiz2 = transform.Find("yildiz2").gameObject;
-        BosBelirteci = transform.Find("BosBelirteci").gameObject;
+        bosBelirteci = transform.Find("BosBelirteci").gameObject;
         yildiz1.SetActive(false);
         yildiz2.SetActive(false);
-        BosBelirteci.SetActive(false);
+        bosBelirteci.SetActive(false);
     }
 
     public void YildiziYak(int uyumSayisi){

@@ -60,6 +60,8 @@ public class Card : MonoBehaviour{
                 float positionY = -(cardSize.y * .5f) + ((satirSayisi - satir) * colonWidth);
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
                 kutu.transform.localScale = spawnHolesList[0].transform.localScale;
+                kutu.transform.Find("OdulBelirteci").gameObject.SetActive(false);
+                kutu.tag = "KUTU";
             }
         }
     }
@@ -72,14 +74,14 @@ public class Card : MonoBehaviour{
     }
 
     public void GoreveUyumluCtasYoket(){
-        float beklemeSuresi = .1f;
+        float beklemeSuresi = .5f;
         foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
             foreach (var pTas in grup.Value.Taslar){
                 foreach (var cTas in pTas.AyniKolondakiAltinveElmasTaslar){
                     var uTasInstance = TasManeger.Instance.TasInstances[cTas];
                     uTasInstance.TiklanaBilir = false;
                     uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));
-                    beklemeSuresi += 0.1f;
+                    beklemeSuresi += 0.5f;
                 } 
                 
             }
@@ -93,7 +95,7 @@ public class Card : MonoBehaviour{
                 foreach (var bonusTaslari in pTas.BonusOlarakEslesenTaslar){
                     bonusTaslari.Value.TiklanaBilir = false;
                     bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi));
-                    beklemeSuresi += .1f;
+                    beklemeSuresi += .5f;
                 }
             }
         }
@@ -112,8 +114,7 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                         else if (pTaslar.Count == 4){
@@ -121,16 +122,14 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                         else if (pTaslar.Count >= 5){
                             pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                 cTasInstance);
                             cTasInstance.BonusBayragi = true;
-                            cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                            //cTasInstance.TiklanaBilir = false;
+                            cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                         }
                     }
                     else if (grup.Value.GrupTuru == "ramf"){
@@ -143,8 +142,7 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                         else if (pTaslar.Count == 5){
@@ -152,16 +150,14 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                         else if (pTaslar.Count >= 6){
                             pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                 cTasInstance);
                             cTasInstance.BonusBayragi = true;
-                            cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                            //cTasInstance.TiklanaBilir = false;
+                            cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                         }
                     }
                     else if (grup.Value.GrupTuru == "rfma"){
@@ -170,8 +166,7 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                         else if (pTaslar.Count == 4){
@@ -179,8 +174,7 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                         else if (pTaslar.Count == 5){
@@ -188,8 +182,7 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                         else if (pTaslar.Count >= 6){
@@ -197,8 +190,7 @@ public class Card : MonoBehaviour{
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.BonusBayragi = true;
-                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true);
-                                //cTasInstance.TiklanaBilir = false;
+                                cTasInstance.PtasIleUyumluGostergesi.SetActive(true); 
                             }
                         }
                     }

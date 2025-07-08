@@ -491,15 +491,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MeyveID: 0
   Renk: {r: 0, g: 0, b: 0, a: 0}
-  sagindakiKomsuTas: {fileID: 0}
-  birCardPerineDahil: 0
   zeminSpriteRenderer: {fileID: 0}
   MeyveResmiSpriteRenderer: {fileID: 0}
-  uiCamera: {fileID: 0}
   cepInstance: {fileID: 0}
   orginalScale: {x: 0, y: 0, z: 0}
   zemin: {fileID: 0}
-  NetworkDatayaEklendi: 0
   TextMeyveID: {fileID: 0}
   colID: 0
   GorevleUyumBayragi: 0

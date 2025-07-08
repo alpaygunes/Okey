@@ -343,10 +343,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3251a291c1651a6bb847a5a6c616cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 
+  ColonCount: 6
+  CepSayisi: 6
+  Seed: 
   oyununBitimineKalanZaman: 0
-  OyunDurumu: 0
-  YeniTasEklendiSayisi: 0
+  yeniTasEklendiSayisi: 0
+  oyunSahnesiKapaniyor: 0
 --- !u!4 &343139322
 Transform:
   m_ObjectHideFlags: 0
@@ -1209,6 +1211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  SiradakiGorevSiraNosu: 0
 --- !u!1 &1357448840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,7 +1395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f4aa4f9651bb582e9ae17cea759c03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hamleSayisi: 0
+  HamleSayisi: 0
 --- !u!4 &1416006419
 Transform:
   m_ObjectHideFlags: 0

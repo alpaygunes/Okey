@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
-    public int YeniTasEklendiSayisi = 0;
-    public bool OyunSahnesiKapaniyor { get; set; } = false;
+    public int yeniTasEklendiSayisi = 0;
+    public bool oyunSahnesiKapaniyor = false;
     public int CanSayisi { get; set; } = 10;
 
     public enum OyunDurumlari {
@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour {
         Card.Instance.CreateSpawnHoles();
         TasManeger.Instance.TaslariOlustur();
         Card.Instance.KutulariHazirla();
+        OdulKutulariYoneticisi.OdulKutulariniBelirle();
 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli) {
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());

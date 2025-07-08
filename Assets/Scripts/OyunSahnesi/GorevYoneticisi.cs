@@ -359,7 +359,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
             GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-            GameManager.Instance.OyunSahnesiKapaniyor = true;
+            GameManager.Instance.oyunSahnesiKapaniyor = true;
         }
     }
 
@@ -385,7 +385,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
             GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
-            GameManager.Instance.OyunSahnesiKapaniyor = true;
+            GameManager.Instance.oyunSahnesiKapaniyor = true;
         }
     }
 }
