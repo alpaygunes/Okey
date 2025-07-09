@@ -31,7 +31,7 @@ public class Card : MonoBehaviour{
         var fark = cardSize.x - toplamgenislik;
         for (int i = 0; i < GameManager.Instance.ColonCount; i++){
             float holePositionX = i * colonWidth - cardSize.x * .5f;
-            float holePositionY = cardSize.y * .35f + colonWidth;
+            float holePositionY = cardSize.y * .5f + colonWidth;
             holePositionX += colonWidth * .5f;
             holePositionX += fark * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
@@ -51,10 +51,11 @@ public class Card : MonoBehaviour{
         var toplamgenislik = GameManager.Instance.ColonCount * colonWidth;
         var fark = cardSize.x - toplamgenislik;
         
-        GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
+        
         float satirSayisi = (cardSize.y / colonWidth);
         for (var satir = 0; satir < satirSayisi; satir++){
             for (int sutun = 0; sutun < GameManager.Instance.ColonCount; sutun++){
+                GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
                 positionX += fark * .5f;
                 float positionY = -(cardSize.y * .5f) + ((satirSayisi - satir) * colonWidth);

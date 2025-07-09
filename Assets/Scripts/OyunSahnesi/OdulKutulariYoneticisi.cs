@@ -34,14 +34,14 @@ public static class OdulKutulariYoneticisi {
             foreach (var pTas in per.Value.Taslar) {
                 for (var k = 0; k < _odulluKutular.Count; k++) {
                     var kutu = _odulluKutular[k];
-                    var kutuylaOrtusenTas = GetKutuyaTemasEden(kutu);
+                    var kutuscript = kutu.GetComponent<Kutu>();
+                    var kutuylaOrtusenTas = kutuscript.GetKutuyaTemasEden();
                     if (kutuylaOrtusenTas) {
                         if (TasManeger.Instance.TasInstances[kutuylaOrtusenTas].MeyveID == pTas.MeyveID
                             && TasManeger.Instance.TasInstances[kutuylaOrtusenTas].Renk == pTas.Renk) {
                             //TODO EŞLEŞEN ÖDÜL KUTUSUNDAN KARTTAKİ TAŞLARA ŞİMŞEKLER ÇAKARAK TAŞLARI YOK EDECEK
                             Debug.Log("Eslesme var.");
-                            pTas.sallanmaDurumu = true;
-                            TasManeger.Instance.TasInstances[kutuylaOrtusenTas].sallanmaDurumu = true;
+                            pTas.sallanmaDurumu = true; 
                         }
                     }
                 }
@@ -49,37 +49,37 @@ public static class OdulKutulariYoneticisi {
         }
     }
 
-    private static GameObject GetKutuyaTemasEden(GameObject kutu)
-    {
-        // 1) Collider referansı
-        var belirteç = kutu.transform.Find("OdulBelirteci");
-        if (belirteç == null) return null;
-
-        var col = belirteç.GetComponent<CircleCollider2D>();
-        if (col == null) return null;
-
-        // 2) Gerekirse Kinematic Rigidbody ekle
-        if (col.attachedRigidbody == null)
-        {
-            var rb = belirteç.gameObject.AddComponent<Rigidbody2D>();
-            rb.bodyType = RigidbodyType2D.Kinematic;
-        }
-
-        // 3) Filtre – tetikleyicileri de dahil et
-        var filter = new ContactFilter2D
-        {
-            useTriggers = true,
-            layerMask   = Physics2D.DefaultRaycastLayers,
-            useLayerMask = true
-        };
-
-        // 4) Sonuçları tutacak dizi
-        Collider2D[] hits = new Collider2D[1];
-
-        // 5) Temas kontrolü
-        if (col.Overlap(filter, hits) > 0 && hits[0] != null)
-            return hits[0].gameObject;
-
-        return null;
-    }
+    // private static GameObject GetKutuyaTemasEden(GameObject kutu)
+    // {
+    //     // 1) Collider referansı
+    //     var belirteç = kutu.transform.Find("OdulBelirteci");
+    //     if (belirteç == null) return null;
+    //
+    //     var col = belirteç.GetComponent<CircleCollider2D>();
+    //     if (col == null) return null;
+    //
+    //     // 2) Gerekirse Kinematic Rigidbody ekle
+    //     if (col.attachedRigidbody == null)
+    //     {
+    //         var rb = belirteç.gameObject.AddComponent<Rigidbody2D>();
+    //         rb.bodyType = RigidbodyType2D.Kinematic;
+    //     }
+    //
+    //     // 3) Filtre – tetikleyicileri de dahil et
+    //     var filter = new ContactFilter2D
+    //     {
+    //         useTriggers = true,
+    //         layerMask   = Physics2D.DefaultRaycastLayers,
+    //         useLayerMask = true
+    //     };
+    //
+    //     // 4) Sonuçları tutacak dizi
+    //     Collider2D[] hits = new Collider2D[1];
+    //
+    //     // 5) Temas kontrolü
+    //     if (col.Overlap(filter, hits) > 0 && hits[0] != null)
+    //         return hits[0].gameObject;
+    //
+    //     return null;
+    // }
 }

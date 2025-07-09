@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
         TasManeger.Instance.TaslariOlustur();
         Card.Instance.KutulariHazirla();
         OdulKutulariYoneticisi.OdulKutulariniBelirle();
+        HareketsizKutuYoneticisi.HareketsizKutulariBelirle();
 
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli) {
             OyununBitimiIcinGeriSayRoutineCoroutin = StartCoroutine(OyununBitimiIcinGeriSayRoutine());
