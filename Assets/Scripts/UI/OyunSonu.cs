@@ -67,7 +67,7 @@ public class OyunSonu : NetworkBehaviour {
 
         // solo oyuncunun skorlimiti taamase renkSeviyesini artır 
         if (OyunKurallari.Instance.SkorLimiti <= Skor) {
-            LevelManager.RenkSayisiniArtir();
+            RenkVeMeyveSeviyeYoneticisi.RenkSayisiniArtir();
         }
 
 

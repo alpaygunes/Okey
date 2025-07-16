@@ -18,8 +18,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
             return;
         }
 
-        Instance = this;
-        //uiCamera = Camera.main; 
+        Instance = this; 
     }
 
     private void Start() {

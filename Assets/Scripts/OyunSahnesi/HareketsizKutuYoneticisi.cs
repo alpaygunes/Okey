@@ -12,11 +12,11 @@ public static class HareketsizKutuYoneticisi
         for (int i = 0; i < _kutuSayisi; i++) {
             int rndIndex = Random.Range(0, tumKutular.Count);
             var kutu = tumKutular[rndIndex];
-            var belirtec = kutu.transform.Find("OdulBelirteci").gameObject;
-            if (belirtec.activeSelf) continue;
-            belirtec.SetActive(true);
-            belirtec.GetComponent<SpriteRenderer>().color = Color.grey;
-            kutu.GetComponent<Kutu>().tasiStatikYap = true;
+            var belirtec = kutu.transform.Find("IsStaticBelirteci").gameObject;
+            var kutuScript = kutu.GetComponent<Kutu>();
+            if (kutuScript.odul_kutusu || kutuScript.KilitSayisi > 0) continue; 
+            belirtec.SetActive(true); 
+            kutuScript.isStoper = true;
             tumKutular.RemoveAt(rndIndex);
         }
     }

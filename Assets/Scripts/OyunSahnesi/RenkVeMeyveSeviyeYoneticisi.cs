@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class LevelManager {
+public static class RenkVeMeyveSeviyeYoneticisi {
     public static void Init() {
         RenkVeMeyveSeviyesi();
         AyarlariUygula();
@@ -51,11 +51,6 @@ public static class LevelManager {
 
     public static void AyarlariUygula() {
         GameManager.Instance.RenkAraligi = new RangeInt (0,PlayerPrefs.GetInt("RenkSeviyesi"));
-        GameManager.Instance.MeyveAraligi= new RangeInt (0,PlayerPrefs.GetInt("MeyveSeviyesi"));
-        // geçici ayar debug için sonra sil
-        GameManager.Instance.RenkAraligi = new RangeInt (0,10);
-        GameManager.Instance.MeyveAraligi= new RangeInt (0,10);
-        GameManager.Instance.ColonCount = 5;
-        GameManager.Instance.CepSayisi = 5;
+        GameManager.Instance.MeyveAraligi= new RangeInt (0,PlayerPrefs.GetInt("MeyveSeviyesi")); 
     }
 }

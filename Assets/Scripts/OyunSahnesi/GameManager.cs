@@ -48,7 +48,12 @@ public class GameManager : MonoBehaviour {
         Instance = this;
 
         if (MainMenu.isSoloGame) {
-            LevelManager.Init();
+            RenkVeMeyveSeviyeYoneticisi.Init();
+            // geçici ayar debug için sonra sil
+            GameManager.Instance.RenkAraligi = new RangeInt (0,4);
+            GameManager.Instance.MeyveAraligi= new RangeInt (0,4);
+            GameManager.Instance.ColonCount = 6;
+            GameManager.Instance.CepSayisi = 6;
         }
     }
 
@@ -66,6 +71,8 @@ public class GameManager : MonoBehaviour {
         Card.Instance.CreateSpawnHoles();
         TasManeger.Instance.TaslariOlustur();
         Card.Instance.KutulariHazirla();
+
+        KilitliKutuYoneticisi.KilitliKutulariBelirle();
         OdulKutulariYoneticisi.OdulKutulariniBelirle();
         HareketsizKutuYoneticisi.HareketsizKutulariBelirle();
 
@@ -179,6 +186,7 @@ public class GameManager : MonoBehaviour {
             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
                 var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
                 if (!tasInstance.TiklanaBilir) return;
+                if (tasInstance.Kilitli) return;
                 var yerlestimi = tasInstance.BosCebeYerles();
                 if (yerlestimi) {
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {

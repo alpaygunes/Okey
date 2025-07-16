@@ -23,8 +23,13 @@ public static class OdulKutulariYoneticisi {
         // Rastgele _kutuSayisi adet kutu seç
         for (int i = 0; i < _kutuSayisi; i++) {
             int rndIndex = Random.Range(0, tumKutular.Count);
-            _odulluKutular.Add(tumKutular[rndIndex]);
-            tumKutular[rndIndex].transform.Find("OdulBelirteci").gameObject.SetActive(true);
+            var kutu = tumKutular[rndIndex];
+            var belirtec = kutu.transform.Find("OdulBelirteci").gameObject;
+            var kutuScript = kutu.GetComponent<Kutu>();
+            if (kutuScript.isStoper || kutuScript.KilitSayisi>0) continue; 
+            _odulluKutular.Add(kutu);
+            belirtec.gameObject.SetActive(true);
+            kutu.GetComponent<Kutu>().odul_kutusu = true;
             tumKutular.RemoveAt(rndIndex); // Aynı kutunun tekrar seçilmesini engelle
         }
     }
@@ -35,51 +40,16 @@ public static class OdulKutulariYoneticisi {
                 for (var k = 0; k < _odulluKutular.Count; k++) {
                     var kutu = _odulluKutular[k];
                     var kutuscript = kutu.GetComponent<Kutu>();
-                    var kutuylaOrtusenTas = kutuscript.GetKutuyaTemasEden();
+                    var kutuylaOrtusenTas = kutuscript.OdulKutusunaTemasEdenMeyve();
                     if (kutuylaOrtusenTas) {
                         if (TasManeger.Instance.TasInstances[kutuylaOrtusenTas].MeyveID == pTas.MeyveID
                             && TasManeger.Instance.TasInstances[kutuylaOrtusenTas].Renk == pTas.Renk) {
                             //TODO EŞLEŞEN ÖDÜL KUTUSUNDAN KARTTAKİ TAŞLARA ŞİMŞEKLER ÇAKARAK TAŞLARI YOK EDECEK
-                            Debug.Log("Eslesme var.");
-                            pTas.sallanmaDurumu = true; 
+                            Debug.Log("Eslesme var."); 
                         }
                     }
                 }
             }
         }
-    }
-
-    // private static GameObject GetKutuyaTemasEden(GameObject kutu)
-    // {
-    //     // 1) Collider referansı
-    //     var belirteç = kutu.transform.Find("OdulBelirteci");
-    //     if (belirteç == null) return null;
-    //
-    //     var col = belirteç.GetComponent<CircleCollider2D>();
-    //     if (col == null) return null;
-    //
-    //     // 2) Gerekirse Kinematic Rigidbody ekle
-    //     if (col.attachedRigidbody == null)
-    //     {
-    //         var rb = belirteç.gameObject.AddComponent<Rigidbody2D>();
-    //         rb.bodyType = RigidbodyType2D.Kinematic;
-    //     }
-    //
-    //     // 3) Filtre – tetikleyicileri de dahil et
-    //     var filter = new ContactFilter2D
-    //     {
-    //         useTriggers = true,
-    //         layerMask   = Physics2D.DefaultRaycastLayers,
-    //         useLayerMask = true
-    //     };
-    //
-    //     // 4) Sonuçları tutacak dizi
-    //     Collider2D[] hits = new Collider2D[1];
-    //
-    //     // 5) Temas kontrolü
-    //     if (col.Overlap(filter, hits) > 0 && hits[0] != null)
-    //         return hits[0].gameObject;
-    //
-    //     return null;
-    // }
+    } 
 }

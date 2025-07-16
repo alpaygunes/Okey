@@ -62,9 +62,20 @@ public class Card : MonoBehaviour{
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
                 kutu.transform.localScale = spawnHolesList[0].transform.localScale;
                 kutu.transform.Find("OdulBelirteci").gameObject.SetActive(false);
+                kutu.transform.Find("IsStaticBelirteci").gameObject.SetActive(false);
+                kutu.transform.Find("KilitBelirteci").gameObject.SetActive(false);
                 kutu.tag = "KUTU";
+                kutu.GetComponent<Kutu>().colRowPosition = new Vector2Int(sutun, satir);
             }
         }
+
+        var kutular = GameObject.FindGameObjectsWithTag("KUTU");
+        var sonkutu = kutular[kutular.Length-1];
+        var posY = sonkutu.transform.position.y;
+        var sonkutununalti = posY - sonkutu.transform.localScale.y*0.5f;
+        var istaka = GameObject.Find("Middle/Stoper");
+        istaka.transform.position = new Vector3(istaka.transform.position.x, sonkutununalti, istaka.transform.position.z);
+
     }
 
     public void Sallanma(){
@@ -75,14 +86,14 @@ public class Card : MonoBehaviour{
     }
 
     public void GoreveUyumluCtasYoket(){
-        float beklemeSuresi = .5f;
+        float beklemeSuresi = .1f;
         foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
             foreach (var pTas in grup.Value.Taslar){
                 foreach (var cTas in pTas.AyniKolondakiAltinveElmasTaslar){
                     var uTasInstance = TasManeger.Instance.TasInstances[cTas];
                     uTasInstance.TiklanaBilir = false;
                     uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));
-                    beklemeSuresi += 0.5f;
+                    beklemeSuresi += 0.1f;
                 } 
                 
             }
@@ -96,7 +107,7 @@ public class Card : MonoBehaviour{
                 foreach (var bonusTaslari in pTas.BonusOlarakEslesenTaslar){
                     bonusTaslari.Value.TiklanaBilir = false;
                     bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi));
-                    beklemeSuresi += .5f;
+                    beklemeSuresi += .1f;
                 }
             }
         }
