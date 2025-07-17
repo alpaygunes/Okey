@@ -218,7 +218,7 @@ public class Tas : MonoBehaviour {
         if (GorevleUyumBayragi == 0) return;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cTas in cardtakiTaslar) {
-            var cTasscript = TasManeger.Instance.TasInstances[cTas];
+            var cTasscript = TasManeger.Instance.TasInstances[cTas]; 
             if (cTasscript.colID == cepInstance.colID) {
                 if (GorevleUyumBayragi == 1) {
                     cTasscript.GorevUyumGostergesi1.gameObject.SetActive(true);
@@ -229,6 +229,12 @@ public class Tas : MonoBehaviour {
                     cTasscript.GorevUyumGostergesi2.gameObject.SetActive(true);
                     cTasscript.MeyveResmi.gameObject.SetActive(false);
                     TiklanaBilir = false;
+                }
+                
+                if (cTasscript.kutuInstance && GorevleUyumBayragi >0 ) {
+                    cTasscript.Kilitli = false;
+                    cTasscript.kutuInstance.KilitSayisi = 0; 
+                    cTasscript.kutuInstance.Kilitlen(); 
                 }
 
                 AyniKolondakiAltinveElmasTaslar.Add(cTas);

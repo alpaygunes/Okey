@@ -69,6 +69,7 @@ public class Istaka : MonoBehaviour{
         foreach (var cardtakiTas in cardtakiTaslar){
             if (cardtakiTas is null) break;
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
+            if (CardtakiTas.Kilitli) continue;
             CardtakiTas.TiklanaBilir = false;
             StartCoroutine(CardtakiTas.BekleYokol(beklemeSuresi));
             beklemeSuresi += 0.1f;

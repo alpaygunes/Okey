@@ -6,6 +6,7 @@ using UnityEngine;
 public class Card : MonoBehaviour{
     public Vector2 Size; 
     public List<GameObject> spawnHolesList = new List<GameObject>();
+    public int SatirSayisi;
 
     public static Card Instance{ get; private set; } 
 
@@ -52,13 +53,13 @@ public class Card : MonoBehaviour{
         var fark = cardSize.x - toplamgenislik;
         
         
-        float satirSayisi = (cardSize.y / colonWidth);
-        for (var satir = 0; satir < satirSayisi; satir++){
+        SatirSayisi = (int)(cardSize.y / colonWidth);
+        for (var satir = 0; satir < SatirSayisi; satir++){
             for (int sutun = 0; sutun < GameManager.Instance.ColonCount; sutun++){
                 GameObject kutu_ = Resources.Load<GameObject>("Prefabs/Kutu");
                 float positionX = (colonWidth * .5f) + (sutun * colonWidth) - cardSize.x * .5f;
                 positionX += fark * .5f;
-                float positionY = -(cardSize.y * .5f) + ((satirSayisi - satir) * colonWidth);
+                float positionY = -(cardSize.y * .5f) + ((SatirSayisi - satir) * colonWidth);
                 var kutu = Instantiate(kutu_, new Vector3(positionX, positionY, -0.01f), Quaternion.identity);
                 kutu.transform.localScale = spawnHolesList[0].transform.localScale;
                 kutu.transform.Find("OdulBelirteci").gameObject.SetActive(false);

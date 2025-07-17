@@ -3,13 +3,9 @@ using UnityEngine;
 
 public static class KilitliKutuYoneticisi {
     public static void KilitliKutulariBelirle() {
-        int[,] sablon = new int[,]
-        {
-            { 0, 0, 1, 0, 0 },
-            { 0, 0, 1, 0, 0 },
-            { 0, 0, 1, 0, 0 }
-        };
-        Isaretle(sablon);
+        //var sablon = Pattern.getRandom();
+        var (_, matrix) = Pattern.getRandom();
+        Isaretle(matrix);
     }
 
     private static void Isaretle(int[,] sablon) {
@@ -23,9 +19,10 @@ public static class KilitliKutuYoneticisi {
             for (int j = 0; j < matRisSutunSayisi; j++) { 
                 for (int k = 0; k < tumKutular.Count; k++) { 
                     if (sablon[i, j] == 1) {
-                        var kutuScript = tumKutular[k].GetComponent<Kutu>();
+                        var kutuScript = tumKutular[k].GetComponent<Kutu>(); 
+                        var kutujI = i + Card.Instance.SatirSayisi - matrisSatirSayisi; 
                         if (kutuScript.colRowPosition.x == j 
-                            && kutuScript.colRowPosition.y == i) { 
+                            && kutuScript.colRowPosition.y == kutujI) { 
                             kutuScript.KilitSayisi = 2; // 0 olmamalı. 0 kilitsiz demek
                         } 
                     }
