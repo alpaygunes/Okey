@@ -58,7 +58,7 @@ public static class PuanlamaIStatistikleri{
         for (int i = 0; i < Istaka.Instance.CepList.Count; i++){
             var cep = Istaka.Instance.CepList[i];
             if (!cep.TasInstance) continue;
-            if (Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.activeSelf ){
+            if (Istaka.Instance.CepList[i].TasInstance.pereUyumluGostergesi.activeSelf ){
                 BonusMeyveSayisi++;
             }
         }
@@ -68,7 +68,7 @@ public static class PuanlamaIStatistikleri{
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cTas in cardtakiTaslar){
             var cTasscript = TasManeger.Instance.TasInstances[cTas];  
-            if (cTasscript.BonusBayragi){
+            if (cTasscript.bonusBayragi){
                 BonusMeyveSayisi++;
             } 
         }
@@ -79,11 +79,11 @@ public static class PuanlamaIStatistikleri{
         foreach (var cTas in cardtakiTaslar){
             var cTasscript = TasManeger.Instance.TasInstances[cTas];  
             // altı ise
-            if (cTasscript.GorevUyumGostergesi1.gameObject.activeSelf){
+            if (cTasscript.gorevUyumGostergesi1.gameObject.activeSelf){
                 AltinSayisi++;
             }
             // elmas ise
-            else if (cTasscript.GorevUyumGostergesi2.gameObject.activeSelf){
+            else if (cTasscript.gorevUyumGostergesi2.gameObject.activeSelf){
                 ElmasSayisi++;
             }
         }

@@ -69,8 +69,8 @@ public class Istaka : MonoBehaviour{
         foreach (var cardtakiTas in cardtakiTaslar){
             if (cardtakiTas is null) break;
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
-            if (CardtakiTas.Kilitli) continue;
-            CardtakiTas.TiklanaBilir = false;
+            if (CardtakiTas.kilitli) continue;
+            CardtakiTas.tiklanaBilir = false;
             StartCoroutine(CardtakiTas.BekleYokol(beklemeSuresi));
             beklemeSuresi += 0.1f;
         }
@@ -78,7 +78,7 @@ public class Istaka : MonoBehaviour{
         foreach (var cepInstance in CepList){
             var CeptekiTas = cepInstance?.TasInstance;
             if (CeptekiTas is null) break;
-            CeptekiTas.TiklanaBilir = false;
+            CeptekiTas.tiklanaBilir = false;
             StartCoroutine(CeptekiTas.BekleYokol(beklemeSuresi));
             cepInstance.TasInstance = null;
             beklemeSuresi += 0.1f;
@@ -92,14 +92,14 @@ public class Istaka : MonoBehaviour{
         foreach (var cardtakiTas in cardtakiTaslar){
             if (cardtakiTas is null) break;
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
-            CardtakiTas.PersizIstakaTaslariGostergesi.SetActive(true);
+            CardtakiTas.persizIstakaTaslariGostergesi.SetActive(true);
             //CardtakiTas.TiklanaBilir = false;
         }
 
         foreach (var cepInstance in CepList){
             if (cepInstance is null) break;
             var CeptekiTas = cepInstance.TasInstance;
-            CeptekiTas?.PersizIstakaTaslariGostergesi.SetActive(true);
+            CeptekiTas?.persizIstakaTaslariGostergesi.SetActive(true);
         }
     }
     
@@ -109,7 +109,7 @@ public class Istaka : MonoBehaviour{
             foreach (var pTas in grup.Value.Taslar){ 
                 pTas.cepInstance?.YildiziYak(0);
                 beklemeSuresi += .1f;
-                pTas.TiklanaBilir = false;
+                pTas.tiklanaBilir = false;
                 pTas.StartCoroutine(pTas.BekleYokol(beklemeSuresi));
             } 
         }

@@ -349,9 +349,9 @@ public class GorevYoneticisi : NetworkBehaviour{
                 if (gorevTaslari.Length == pTas.cepInstance.colID) break; 
                 var gTas = gorevTaslari[pTas.cepInstance.colID];
                 if (pTas.MeyveID == gTas.MeyveID && pTas.Renk == gTas.Renk){
-                    pTas.GorevleUyumBayragi = 2; 
+                    pTas.gorevleUyumBayragi = 2; 
                 }else if (pTas.MeyveID == gTas.MeyveID || pTas.Renk == gTas.Renk){ 
-                    pTas.GorevleUyumBayragi = 1; 
+                    pTas.gorevleUyumBayragi = 1; 
                 }   
             }
         }

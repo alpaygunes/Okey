@@ -80,7 +80,7 @@ public class Kutu : MonoBehaviour {
                     var rb = temasEden.GetComponent<Rigidbody2D>();
                     if (rb && rb.linearVelocity.sqrMagnitude < MinSpeedEpsilon) {
                         rb.bodyType = RigidbodyType2D.Static;
-                        TasManeger.Instance.TasInstances[temasEden].Kilitli = true;
+                        TasManeger.Instance.TasInstances[temasEden].kilitli = true;
                         TasManeger.Instance.TasInstances[temasEden].kutuInstance = this; 
                         kilitlendi = true;
                     }

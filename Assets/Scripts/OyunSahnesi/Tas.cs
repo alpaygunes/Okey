@@ -21,42 +21,43 @@ public class Tas : MonoBehaviour {
     public Dictionary<int, Tas> BonusOlarakEslesenTaslar = new Dictionary<int, Tas>();
     public TextMeshPro TextMeyveID;
     public int colID;
-    private int SallanmakIcinBeklemeSuresi = 2;
-    private Coroutine SallanmaCoroutine;
+    private readonly int sallanmakIcinBeklemeSuresi = 2;
+    private Coroutine sallanmaCoroutine;
 
-    public int
-        GorevleUyumBayragi =
-            0; //0 = yok, 1 = gorevle, 2 = gorevle ve yok . Bu alan Cepteki tas için. Cart takiler icin degil
+    public int gorevleUyumBayragi = 0; //0 = yok,
+                                       //1 = gorevle,
+                                       //2 = gorevle ve yok .
+                                       //Bu alan Cepteki tas için. Cart takiler icin degil
 
-    public GameObject GorevUyumGostergesi1;
-    public GameObject GorevUyumGostergesi2;
-    public GameObject PereUyumluGostergesi; // cepteki daslar per halindeyse belirtir.
-    public GameObject MeyveResmi;
-    public bool BonusBayragi; // Bu alan carttaki taslar için . ceptaki tas için degil
-    public GameObject PtasIleUyumluGostergesi; // cardtaki taslar için 
-    public GameObject PersizIstakaTaslariGostergesi;
-    public List<GameObject> AyniKolondakiAltinveElmasTaslar = new List<GameObject>();
-    public bool TiklanaBilir { get; set; } = true;
-    public Dictionary<int, GameObject> PerAilesi { get; set; } = null;
+    public GameObject gorevUyumGostergesi1;
+    public GameObject gorevUyumGostergesi2;
+    public GameObject pereUyumluGostergesi; // cepteki daslar per halindeyse belirtir.
+    public GameObject meyveResmi;
+    public bool bonusBayragi; // Bu alan carttaki taslar için . ceptaki tas için degil
+    public GameObject ptasIleUyumluGostergesi; // cardtaki taslar için 
+    public GameObject persizIstakaTaslariGostergesi;
+    public List<GameObject> ayniKolondakiAltinveElmasTaslar = new List<GameObject>();
+    public bool tiklanaBilir  = true;
+    public Dictionary<int, GameObject> PerAilesi  = null;
     public bool sallanmaDurumu = false;
     private bool cebeYerles = false;
     private Cep hedefCep;
-    public bool Kilitli = false;
+    public bool kilitli = false;
     public Kutu kutuInstance = null;
 
     private void Awake() {
-        BonusBayragi = false;
+        bonusBayragi = false;
         TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
         zemin = transform.Find("Zemin").gameObject;
         gameObject.SetActive(false);
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
         MeyveResmiSpriteRenderer = transform.Find("MeyveResmi").GetComponent<SpriteRenderer>();
-        GorevUyumGostergesi1 = transform.Find("GorevUyumGostergesi1").gameObject;
-        GorevUyumGostergesi2 = transform.Find("GorevUyumGostergesi2").gameObject;
-        PereUyumluGostergesi = transform.Find("PereUyumluGostergesi").gameObject;
-        MeyveResmi = transform.Find("MeyveResmi").gameObject;
-        PtasIleUyumluGostergesi = transform.Find("PtasIleUyumluGostergesi").gameObject;
-        PersizIstakaTaslariGostergesi = transform.Find("PersizIstakaTaslariGostergesi").gameObject;
+        gorevUyumGostergesi1 = transform.Find("GorevUyumGostergesi1").gameObject;
+        gorevUyumGostergesi2 = transform.Find("GorevUyumGostergesi2").gameObject;
+        pereUyumluGostergesi = transform.Find("PereUyumluGostergesi").gameObject;
+        meyveResmi = transform.Find("MeyveResmi").gameObject;
+        ptasIleUyumluGostergesi = transform.Find("PtasIleUyumluGostergesi").gameObject;
+        persizIstakaTaslariGostergesi = transform.Find("PersizIstakaTaslariGostergesi").gameObject;
         skorTxtPosition = new Vector3(0, 0, 0);
     }
 
@@ -72,11 +73,11 @@ public class Tas : MonoBehaviour {
         MeyveResmiSpriteRenderer.transform.localScale *= 1.25f;
         TextMeyveID.text = MeyveID.ToString();
         orginalScale = MeyveResmiSpriteRenderer.transform.localScale;
-        GorevUyumGostergesi1.SetActive(false);
-        GorevUyumGostergesi2.SetActive(false);
-        PereUyumluGostergesi.SetActive(false);
-        PtasIleUyumluGostergesi.SetActive(false);
-        PersizIstakaTaslariGostergesi.SetActive(false);
+        gorevUyumGostergesi1.SetActive(false);
+        gorevUyumGostergesi2.SetActive(false);
+        pereUyumluGostergesi.SetActive(false);
+        ptasIleUyumluGostergesi.SetActive(false);
+        persizIstakaTaslariGostergesi.SetActive(false);
     }
 
     private void OnDestroy() {
@@ -166,16 +167,18 @@ public class Tas : MonoBehaviour {
         
         if (kutuInstance && kutuInstance.KilitSayisi > 0) {
             kutuInstance.KilitSayisi--;
-            TiklanaBilir = true;
+            tiklanaBilir = true;
             if(kutuInstance.KilitSayisi <= 0){ 
                 kutuInstance.transform.Find("KilitBelirteci").gameObject.SetActive(false); 
-                Kilitli = false;
+                kilitli = false;
             } 
             kutuInstance.Kilitlen();
             yield break;
         }
-        
 
+        if (kutuInstance) {
+            gecikme = 0;
+        }
 
         yield return new WaitForSeconds(gecikme);
         if (this == null) yield break;
@@ -186,8 +189,8 @@ public class Tas : MonoBehaviour {
 
     private void Update() {
         if (sallanmaDurumu && !tweener.IsActive() && tweener == null) {
-            if (SallanmaCoroutine == null) {
-                SallanmaCoroutine = StartCoroutine(BekleSallan());
+            if (sallanmaCoroutine == null) {
+                sallanmaCoroutine = StartCoroutine(BekleSallan());
             }
         }
 
@@ -196,16 +199,16 @@ public class Tas : MonoBehaviour {
             tweener.Kill();
             tweener = null;
             MeyveResmiSpriteRenderer.transform.localScale = orginalScale;
-            if (SallanmaCoroutine is not null) {
-                StopCoroutine(SallanmaCoroutine);
-                SallanmaCoroutine = null;
+            if (sallanmaCoroutine is not null) {
+                StopCoroutine(sallanmaCoroutine);
+                sallanmaCoroutine = null;
             }
         }
     }
 
     private IEnumerator BekleSallan() {
-        if (Kilitli) yield break;
-        yield return new WaitForSeconds(SallanmakIcinBeklemeSuresi);
+        if (kilitli) yield break;
+        yield return new WaitForSeconds(sallanmakIcinBeklemeSuresi);
         if (sallanmaDurumu && !tweener.IsActive() && tweener == null) {
             tweener = MeyveResmiSpriteRenderer.transform.DOScale(.8f, .5f)
                 .SetEase(Ease.InOutSine)
@@ -215,29 +218,29 @@ public class Tas : MonoBehaviour {
     }
 
     public void AltinVeElmasGoster() {
-        if (GorevleUyumBayragi == 0) return;
+        if (gorevleUyumBayragi == 0) return;
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cTas in cardtakiTaslar) {
             var cTasscript = TasManeger.Instance.TasInstances[cTas]; 
             if (cTasscript.colID == cepInstance.colID) {
-                if (GorevleUyumBayragi == 1) {
-                    cTasscript.GorevUyumGostergesi1.gameObject.SetActive(true);
-                    cTasscript.MeyveResmi.gameObject.SetActive(false);
-                    TiklanaBilir = false;
+                if (gorevleUyumBayragi == 1) {
+                    cTasscript.gorevUyumGostergesi1.gameObject.SetActive(true);
+                    cTasscript.meyveResmi.gameObject.SetActive(false);
+                    tiklanaBilir = false;
                 }
-                else if (GorevleUyumBayragi == 2) {
-                    cTasscript.GorevUyumGostergesi2.gameObject.SetActive(true);
-                    cTasscript.MeyveResmi.gameObject.SetActive(false);
-                    TiklanaBilir = false;
+                else if (gorevleUyumBayragi == 2) {
+                    cTasscript.gorevUyumGostergesi2.gameObject.SetActive(true);
+                    cTasscript.meyveResmi.gameObject.SetActive(false);
+                    tiklanaBilir = false;
                 }
                 
-                if (cTasscript.kutuInstance && GorevleUyumBayragi >0 ) {
-                    cTasscript.Kilitli = false;
+                if (cTasscript.kutuInstance && gorevleUyumBayragi >0 ) {
+                    cTasscript.kilitli = false;
                     cTasscript.kutuInstance.KilitSayisi = 0; 
                     cTasscript.kutuInstance.Kilitlen(); 
                 }
 
-                AyniKolondakiAltinveElmasTaslar.Add(cTas);
+                ayniKolondakiAltinveElmasTaslar.Add(cTas);
             }
         }
     }

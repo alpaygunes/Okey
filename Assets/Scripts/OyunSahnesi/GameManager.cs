@@ -185,8 +185,8 @@ public class GameManager : MonoBehaviour {
         if (hit.collider != null) {
             if (hit.collider.gameObject.CompareTag("CARDTAKI_TAS")) {
                 var tasInstance = TasManeger.Instance.TasInstances[hit.collider.gameObject];
-                if (!tasInstance.TiklanaBilir) return;
-                if (tasInstance.Kilitli) return;
+                if (!tasInstance.tiklanaBilir) return;
+                if (tasInstance.kilitli) return;
                 var yerlestimi = tasInstance.BosCebeYerles();
                 if (yerlestimi) {
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {

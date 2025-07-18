@@ -37,8 +37,8 @@ public class PerKontrolBirimi : MonoBehaviour{
         for (int i = 0; i < Istaka.Instance.CepList.Count; i++){
             var cep = Istaka.Instance.CepList[i];
             if (!cep.TasInstance) continue;
-            Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.SetActive(false);
-            Istaka.Instance.CepList[i].TasInstance.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color =
+            Istaka.Instance.CepList[i].TasInstance.pereUyumluGostergesi.SetActive(false);
+            Istaka.Instance.CepList[i].TasInstance.pereUyumluGostergesi.GetComponent<SpriteRenderer>().color =
                 Color.white;
         }
 
@@ -46,8 +46,8 @@ public class PerKontrolBirimi : MonoBehaviour{
             var i = 0;
             foreach (var grup in Gruplar){
                 foreach (var tas in grup.Value.Taslar){
-                    tas.PereUyumluGostergesi.SetActive(true);
-                    tas.PereUyumluGostergesi.GetComponent<SpriteRenderer>().color = grupRenkleri[i];
+                    tas.pereUyumluGostergesi.SetActive(true);
+                    tas.pereUyumluGostergesi.GetComponent<SpriteRenderer>().color = grupRenkleri[i];
                 } 
                 i++;
             }
