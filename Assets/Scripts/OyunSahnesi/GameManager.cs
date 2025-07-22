@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour {
     public int ColonCount = 6;
     public readonly int BaslangicTasSayisi = 200;
     public int CepSayisi = 6;
-    public RangeInt RenkAraligi = new RangeInt(0, 10);
-    public RangeInt MeyveAraligi = new RangeInt(0, 14);
+    public RangeInt RenkAraligi = new RangeInt(0, 3);
+    public RangeInt MeyveAraligi = new RangeInt(0, 3);
     public string Seed;
     public static GameManager Instance { get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
@@ -72,7 +72,10 @@ public class GameManager : MonoBehaviour {
         TasManeger.Instance.TaslariOlustur();
         Card.Instance.KutulariHazirla();
 
-        KilitliKutuYoneticisi.KilitliKutulariBelirle();
+        if (MainMenu.isSoloGame) {
+            KilitliKutuYoneticisi.KilitliKutulariBelirle();
+        }
+
         OdulKutulariYoneticisi.OdulKutulariniBelirle();
         HareketsizKutuYoneticisi.HareketsizKutulariBelirle();
 
