@@ -42,14 +42,14 @@ public class Istaka : MonoBehaviour{
 
     public void CepleriOlustur(){
         float istakaGenisligi = Body.GetComponent<SpriteRenderer>().bounds.size.x;
-        float aralikMesafesi = istakaGenisligi / GameManager.Instance.CepSayisi;
+        float aralikMesafesi = istakaGenisligi / GameManager.Instance.cepSayisi;
         
         if (aralikMesafesi > istakaGenisligi / 6) {
             aralikMesafesi = istakaGenisligi / 6;
         }
-        var toplamgenislik = GameManager.Instance.CepSayisi * aralikMesafesi;
+        var toplamgenislik = GameManager.Instance.cepSayisi * aralikMesafesi;
         var fark = istakaGenisligi - toplamgenislik;
-        for (int i = 0; i < GameManager.Instance.CepSayisi; i++){
+        for (int i = 0; i < GameManager.Instance.cepSayisi; i++){
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - istakaGenisligi * .5f;
             x += fark * .5f; // ortalama için farkın yarısıı ekle
             GameObject Cep = Resources.Load<GameObject>("Prefabs/IstakaCebi");

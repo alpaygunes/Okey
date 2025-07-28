@@ -79,3 +79,8 @@
     color: rgb(255, 255, 255);
     -unity-text-align: upper-center;
 }
+
+.LevelBtn {
+    width: 64px;
+    height: 64px;
+}

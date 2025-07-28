@@ -7,7 +7,8 @@ public static class OdulKutulariYoneticisi {
     // Ödül atanmış kutular bu listede tutulacak
     private static readonly List<GameObject> _odulluKutular = new();
 
-    public static void OdulKutulariniBelirle() {
+    public static void OdulKutulariniBelirle() { 
+        if (!GameLevels.getLevel().OdulKutus) return;
         _odulluKutular.Clear();
 
         // Sahnedeki tüm "KUTU" objelerini çek

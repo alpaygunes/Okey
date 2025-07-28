@@ -5,19 +5,19 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour {
     public int ColonCount = 6;
     public readonly int BaslangicTasSayisi = 200;
-    public int CepSayisi = 6;
+    public int cepSayisi = 6;
     public RangeInt RenkAraligi = new RangeInt(0, 3);
     public RangeInt MeyveAraligi = new RangeInt(0, 3);
-    public string Seed;
+    public string seed;
     public static GameManager Instance { get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
-    private OyunDurumlari _oyunDurumu;
+    private OyunDurumlari oyunDurumu; 
 
     public OyunDurumlari OyunDurumu {
-        get => _oyunDurumu;
+        get => oyunDurumu;
         set {
-            if (_oyunDurumu != value) {
-                _oyunDurumu = value;
+            if (oyunDurumu != value) {
+                oyunDurumu = value;
                 OyunDurumuDegisti();
                 Istaka.Instance.IlkBosCebiBelirt();
             }
@@ -37,35 +37,39 @@ public class GameManager : MonoBehaviour {
 
     void Awake() {
         if (MainMenu.isSoloGame) {
-            OyunKurallari.Instance.InitializeSettings();
+            OyunKurallari.Instance.InitializeSettings(); 
         }
 
-        _oyunDurumu = OyunDurumlari.DevamEdiyor;
+        oyunDurumu = OyunDurumlari.DevamEdiyor;
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
             return;
         } 
         Instance = this;
-
         if (MainMenu.isSoloGame) {
-            RenkVeMeyveSeviyeYoneticisi.Init();
-            // geçici ayar debug için sonra sil
-            GameManager.Instance.RenkAraligi = new RangeInt (0,4);
-            GameManager.Instance.MeyveAraligi= new RangeInt (0,4);
-            GameManager.Instance.ColonCount = 6;
-            GameManager.Instance.CepSayisi = 6;
+            RenkAraligi = new RangeInt (0,GameLevels.getLevel().RenkSayisi);
+            MeyveAraligi= new RangeInt (0,GameLevels.getLevel().MeyveSayisi); 
+            if (PlayerPrefs.GetInt("GamePlayLevelID")>=3) {
+                ColonCount = 6;
+                cepSayisi = 6;
+            } else if (PlayerPrefs.GetInt("GamePlayLevelID")>=1) {
+                ColonCount = 5;
+                cepSayisi = 5;
+            }
+            //PlayerPrefs.DeleteAll();
+            //PlayerPrefs.Save();
         }
     }
 
     private void Start() {
-        Seed = "A";
+        seed = "A";
         // solo
         if (MainMenu.isSoloGame) {
-            Seed = MainMenu.GetRandomSeed(); 
+            seed = MainMenu.GetRandomSeed(); 
         }
         // multy
         else if (LobbyManager.Instance) {
-            Seed = LobbyManager.Instance.gameSeed;
+            seed = LobbyManager.Instance.gameSeed;
         }
 
         Card.Instance.CreateSpawnHoles();
@@ -131,7 +135,7 @@ public class GameManager : MonoBehaviour {
     public void DugmeYadaOtomatikDegerlendirme() {
         // per VAR sa
         if (PerKontrolBirimi.Instance.Gruplar.Count > 0) {
-            if (Istaka.Instance.DoluCepSayisi() == CepSayisi) {
+            if (Istaka.Instance.DoluCepSayisi() == cepSayisi) {
                 IsaretleBelirtYoket.Instance.Degerlendir();
             }
             else {
@@ -139,7 +143,7 @@ public class GameManager : MonoBehaviour {
             }
         }
         // per YOK ama istaka full.
-        else if (Istaka.Instance.DoluCepSayisi() == CepSayisi) {
+        else if (Istaka.Instance.DoluCepSayisi() == cepSayisi) {
             CanSayisi--;
             IsaretleBelirtYoket.Instance.HamleSayisi++;
             OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
@@ -14,13 +15,8 @@ using TextElement = UnityEngine.UIElements.TextElement;
 
 public class LobbyListUI : MonoBehaviour {
     public static LobbyListUI Instance;
-
-    //public Button CreateLobbyBtn;
     public Button CrtLobBtn;
-
     public Button CloseLobbyBtn;
-
-    //public Button HostListBtn;
     public Button QuitToMainMenu;
     public TextElement CreatedLobiCodeTxt;
     public VisualElement LobbyList;
@@ -30,6 +26,8 @@ public class LobbyListUI : MonoBehaviour {
     public VisualElement PlayerList;
     public Button StartRelay;
     public Button StartSolo;
+    public VisualElement SoloLevels;
+    public VisualElement Levels;
     public bool joinedToLobby = false;
     private VisualElement rootElement;
     public Button katilBtn;
@@ -37,7 +35,6 @@ public class LobbyListUI : MonoBehaviour {
     public Coroutine lobbyListUpdateCoroutine;
     public bool benLobininSahibiyim = false;
     const float LobbyLıstesınıGuncellemePeryodu = 10f;
-
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -51,6 +48,15 @@ public class LobbyListUI : MonoBehaviour {
     private void OnDisable() {
         if (lobbyListUpdateCoroutine != null) {
             StopCoroutine(lobbyListUpdateCoroutine);
+            lobbyListUpdateCoroutine = null;
+        }
+
+        if (Levels != null) {
+            foreach (var child in Levels.Children()) {
+                if (child is Button button) {
+                    button.clicked -= () => OnLevelBtnClicked(default);
+                }
+            }
         }
     }
 
@@ -60,18 +66,17 @@ public class LobbyListUI : MonoBehaviour {
         Satir2a = rootElement.Q<VisualElement>("Satir2a");
         Satir2b = rootElement.Q<VisualElement>("Satir2b");
         CrtLobBtn = rootElement.Q<Button>("CrtLobBtn");
-        //HostListBtn = rootElement.Q<Button>("HostListBtn");
-        //CreateLobbyBtn = rootElement.Q<Button>("CreateLobbyBtn");
         CloseLobbyBtn = rootElement.Q<Button>("CloseLobby");
         CreatedLobiCodeTxt = rootElement.Q<TextElement>("CreatedLobiCodeTxt");
         PlayerList = rootElement.Q<VisualElement>("PlayerList");
         StartRelay = rootElement.Q<Button>("StartRelay");
-        StartSolo = rootElement.Q<Button>("StartSolo");
+        SoloLevels = rootElement.Q<VisualElement>("SoloLevels");
+        StartSolo = SoloLevels.Q<Button>("StartSolo");
+        Levels = SoloLevels.Q<VisualElement>("Levels");
         QuitToMainMenu = rootElement.Q<Button>("QuitToMainMenu");
         StartRelay.style.display = DisplayStyle.None;
         StartSolo.style.display = DisplayStyle.None;
         benLobininSahibiyim = LobbyManager.Instance.CurrentLobby?.HostId == AuthenticationService.Instance.PlayerId;
-
 
         // Lobby Kapatma Butonu 
         CloseLobbyBtn.style.display = (benLobininSahibiyim) ? DisplayStyle.Flex : DisplayStyle.None;
@@ -112,8 +117,25 @@ public class LobbyListUI : MonoBehaviour {
             Satir2b.style.display = DisplayStyle.None;
             Satir2a.style.display = DisplayStyle.None;
             StartSolo.style.display = DisplayStyle.Flex;
+            SeviyeleriListele();
         }
     }
+
+    private void SeviyeleriListele() {
+        for (int i = 1; i < GameLevels.Levels.Count; i++) { 
+            var lvlBtn = new Button();
+            lvlBtn.AddToClassList("LevelBtn");
+            int levelIndex = i;
+            lvlBtn.clicked +=  () => OnLevelBtnClicked(levelIndex);
+            lvlBtn.text = (levelIndex).ToString();
+            Levels.Add(lvlBtn);
+        }
+    }
+
+    private void OnLevelBtnClicked(int i) {
+        PlayerPrefs.SetInt("GamePlayLevelID", i);
+        LobbyManager.Instance.StartSolo();
+    } 
 
     private void LobimiKapat() {
         LobbyManager.Instance?.OyunculariCikartVeLobiyiSil(LobbyManager.Instance?.CurrentLobby.Id);

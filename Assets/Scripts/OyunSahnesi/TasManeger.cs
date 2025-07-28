@@ -37,13 +37,12 @@ public class TasManeger : MonoBehaviour{
     }
 
     public static List<Data> GenerateDataList(){
-        var seed = GameManager.Instance.Seed;
+        var seed = GameManager.Instance.seed;
         string SubSeed = seed.Substring(GameManager.Instance.yeniTasEklendiSayisi, 1);
         GameManager.Instance.yeniTasEklendiSayisi++; 
         if (GameManager.Instance.yeniTasEklendiSayisi == seed.Length){
             GameManager.Instance.yeniTasEklendiSayisi = 0;
         }
-         
         
         System.Random random = new System.Random(SubSeed.GetHashCode());
         List<Data> dataList = new List<Data>();

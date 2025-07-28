@@ -149,7 +149,7 @@ public class Tas : MonoBehaviour {
             _rigidbody.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
             Destroy(_collider);
             Vector2 cardSize = Card.Instance.Size;
-            float colonWidth = cardSize.x / GameManager.Instance.CepSayisi;
+            float colonWidth = cardSize.x / GameManager.Instance.cepSayisi;
             if (colonWidth > cardSize.x / 6) {
                 colonWidth = cardSize.x / 6;
             }

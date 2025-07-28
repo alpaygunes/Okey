@@ -135,7 +135,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             switch (RastgelePerTuruSec())
             {
                 case PerTurleri.FarkliMeyveAyniRenk:
-                    if (GameManager.Instance.CepSayisi <= meyveSayisi){
+                    if (GameManager.Instance.cepSayisi <= meyveSayisi){
                         FarkliMeyveAyniRenkPeriOlustur();
                     }
                     else{
@@ -143,7 +143,7 @@ public class GorevYoneticisi : NetworkBehaviour{
                     }
                     break;  
                 case PerTurleri.AyniMeyveFarkliRenkPerleri:
-                    if (GameManager.Instance.CepSayisi <= renkSayisi){
+                    if (GameManager.Instance.cepSayisi <= renkSayisi){
                         AyniMeyveFarkliRenkPerleriOlustur();
                     } else{
                         AyniMeyveAyniRenkPerleriOlustur(); 
@@ -169,9 +169,9 @@ public class GorevYoneticisi : NetworkBehaviour{
         };
 
         int start = GameManager.Instance.MeyveAraligi.start;
-        int end = GameManager.Instance.MeyveAraligi.end - GameManager.Instance.CepSayisi; 
+        int end = GameManager.Instance.MeyveAraligi.end - GameManager.Instance.cepSayisi; 
         int rasgeleBaslangic = UnityEngine.Random.Range(start, end);
-        var secilenSayilar = Enumerable.Range(rasgeleBaslangic, GameManager.Instance.CepSayisi).ToList();
+        var secilenSayilar = Enumerable.Range(rasgeleBaslangic, GameManager.Instance.cepSayisi).ToList();
         
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
@@ -195,7 +195,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         };
 
         // --- Seçilecek taş sayısı ------------------------------------------
-        int maxTasSayisi = GameManager.Instance.CepSayisi; // Üst sınır
+        int maxTasSayisi = GameManager.Instance.cepSayisi; // Üst sınır
         int tasSayisi = maxTasSayisi;
 
         // --- Rakam (hepsi aynı olacak) --------------------------------------
@@ -245,7 +245,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         };
 
         // --- Taş adedi ------------------------------------------------------
-        int maxTasSayisi = GameManager.Instance.CepSayisi;
+        int maxTasSayisi = GameManager.Instance.cepSayisi;
         int tasSayisi = maxTasSayisi;
 
         // --- Ortak rakam -----------------------------------------------------
@@ -306,7 +306,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             gorev = gorevlerNetList[SiradakiGorevSiraNosu];
         }
         
-        float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.CepSayisi;
+        float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.cepSayisi;
         if (aralikMesafesi > gorvePaneliGenisligi / 6) {
             aralikMesafesi = gorvePaneliGenisligi / 6;
         }

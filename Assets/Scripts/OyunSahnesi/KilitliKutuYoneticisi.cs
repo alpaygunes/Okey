@@ -2,18 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class KilitliKutuYoneticisi {
-    public static void KilitliKutulariBelirle() {
-        //var sablon = Pattern.getRandom();
-        var (_, matrix) = Pattern.getRandom();
-        Isaretle(matrix);
+    public static void KilitliKutulariBelirle() {  
+        if (!GameLevels.getLevel().KilitliKutu) return;
+        var sablon = Pattern.getCharMatris(GameLevels.getLevel().Kalip[0]);
+        Isaretle(sablon);
+        //var (_, matrix) = Pattern.getRandom();
+        //Isaretle(matrix);
+        
     }
 
     private static void Isaretle(int[,] sablon) {
         var tumKutular = new List<GameObject>(GameObject.FindGameObjectsWithTag("KUTU"));
         if (tumKutular.Count == 0) return;
 
-        int matrisSatirSayisi = sablon.GetLength(0); // 3
-        int matRisSutunSayisi = sablon.GetLength(1); // 5
+        int matrisSatirSayisi = sablon.GetLength(0); 
+        int matRisSutunSayisi = sablon.GetLength(1); 
 
         for (int i = 0; i < matrisSatirSayisi; i++) {
             for (int j = 0; j < matRisSutunSayisi; j++) { 

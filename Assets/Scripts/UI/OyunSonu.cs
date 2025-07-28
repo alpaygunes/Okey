@@ -65,11 +65,6 @@ public class OyunSonu : NetworkBehaviour {
         SkorBtn.AddToClassList("skor_sayisi");
         SkorBtn.AddToClassList("kutular");
 
-        // solo oyuncunun skorlimiti taamase renkSeviyesini artır 
-        if (OyunKurallari.Instance.SkorLimiti <= Skor) {
-            RenkVeMeyveSeviyeYoneticisi.RenkSayisiniArtir();
-        }
-
 
         var playerNameBtn = new Button();
         playerNameBtn.text = "BAŞARDINIZ";
@@ -169,7 +164,7 @@ public class OyunSonu : NetworkBehaviour {
             MultiPlayerVeriYoneticisi.Instance.OyunuYenidenBaslatServerRpc();
         // Solo ise
         if (MainMenu.isSoloGame) {
-            GameManager.Instance.Seed = MainMenu.GetRandomSeed();
+            GameManager.Instance.seed = MainMenu.GetRandomSeed();
             SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
         }
     }
