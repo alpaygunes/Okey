@@ -3,8 +3,10 @@ using UnityEngine;
 
 public static class KilitliKutuYoneticisi {
     public static void KilitliKutulariBelirle() {  
-        if (!GameLevels.getLevel().KilitliKutu) return;
-        var sablon = Pattern.getCharMatris(GameLevels.getLevel().Kalip[0]);
+        if (!GameLevels.GetLevel().KilitliKutu) return;
+        var OynananKalipNo = PlayerPrefs.GetInt("OynananKalipNo");
+        var kalip = GameLevels.GetLevel().Kalip[OynananKalipNo];
+        var sablon = Pattern.getCharMatris(kalip);
         Isaretle(sablon);
         //var (_, matrix) = Pattern.getRandom();
         //Isaretle(matrix);

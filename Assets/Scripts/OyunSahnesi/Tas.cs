@@ -107,7 +107,8 @@ public class Tas : MonoBehaviour {
 
             //taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
             if (ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
-                && GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DevamEdiyor) {
+                && (GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DevamEdiyor 
+                    || GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DegerlendirmeYapiliyor)) {
                 TasManeger.Instance.TaslariOlustur();
             }
 

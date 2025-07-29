@@ -47,17 +47,15 @@ public class GameManager : MonoBehaviour {
         } 
         Instance = this;
         if (MainMenu.isSoloGame) {
-            RenkAraligi = new RangeInt (0,GameLevels.getLevel().RenkSayisi);
-            MeyveAraligi= new RangeInt (0,GameLevels.getLevel().MeyveSayisi); 
+            RenkAraligi = new RangeInt (0,GameLevels.GetLevel().RenkSayisi);
+            MeyveAraligi= new RangeInt (0,GameLevels.GetLevel().MeyveSayisi);
             if (PlayerPrefs.GetInt("GamePlayLevelID")>=3) {
                 ColonCount = 6;
                 cepSayisi = 6;
-            } else if (PlayerPrefs.GetInt("GamePlayLevelID")>=1) {
+            } else if (PlayerPrefs.GetInt("GamePlayLevelID")>=0) {
                 ColonCount = 5;
                 cepSayisi = 5;
-            }
-            //PlayerPrefs.DeleteAll();
-            //PlayerPrefs.Save();
+            } 
         }
     }
 
@@ -137,8 +135,7 @@ public class GameManager : MonoBehaviour {
         if (PerKontrolBirimi.Instance.Gruplar.Count > 0) {
             if (Istaka.Instance.DoluCepSayisi() == cepSayisi) {
                 IsaretleBelirtYoket.Instance.Degerlendir();
-            }
-            else {
+            } else {
                 OyunSahnesiUI.Instance.DegerlendirmeYap.style.display = DisplayStyle.Flex;
             }
         }
@@ -186,7 +183,7 @@ public class GameManager : MonoBehaviour {
             : OyunDurumlari.DevamEdiyor;
     }
 
-    void TiklamaTuslamaKontrol(Vector2 worldPoint) {
+    void TiklamaTuslamaKontrol(Vector2 worldPoint) { 
         if (OyunDurumu != OyunDurumlari.DevamEdiyor) return;
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null) {

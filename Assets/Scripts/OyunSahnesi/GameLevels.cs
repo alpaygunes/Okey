@@ -50,9 +50,58 @@ public static class GameLevels {
             true, true, false, 4, 5));
     }
 
-    public static Level getLevel() {
+    public static Level GetLevel() {
         var levelID = PlayerPrefs.GetInt("GamePlayLevelID");
         return Levels[levelID];
     }
+
+    public static void SetLevel() {
+        var RecordLevelID = PlayerPrefs.GetInt("RecordLevelID");
+        var GamePlayLevelID = PlayerPrefs.GetInt("GamePlayLevelID");
+        var OynananMeyveNo = PlayerPrefs.GetInt("OynananMeyveNo");
+        var OynananRenkNo = PlayerPrefs.GetInt("OynananRenkNo"); 
+        var OynananKalipNo = PlayerPrefs.GetInt("OynananKalipNo");
+        
+        OynananMeyveNo++; 
+        PlayerPrefs.SetInt("OynananMeyveNo", OynananMeyveNo);
+        //Debug.Log($" MEYVE NO ARTTI {OynananMeyveNo}");
+        
+        // Meyve No Limiti Aştıysa
+        if (OynananMeyveNo >= GetLevel().MeyveSayisi) {
+            OynananMeyveNo = 3;
+            PlayerPrefs.SetInt("OynananMeyveNo", OynananMeyveNo);
+            
+            OynananRenkNo++;
+            PlayerPrefs.SetInt("OynananRenkNo", OynananRenkNo);
+            //Debug.Log($" RENK NO ARTTI {OynananRenkNo}");
+            
+            // Renk No Limiti Aştıysa
+            if (OynananRenkNo >= GetLevel().RenkSayisi) {
+                PlayerPrefs.SetInt("RecordLevelID",RecordLevelID);
+                //Debug.Log($" OYUNUN RECORD SEVİYESİ ARTTI {RecordLevelID}"); 
+                
+                OynananRenkNo = 3;
+                PlayerPrefs.SetInt("OynananRenkNo", OynananRenkNo);
+
+                OynananKalipNo++;
+                PlayerPrefs.SetInt("OynananKalipNo", OynananKalipNo);
+                Debug.Log($" OynananKalipNo ARTTI  {OynananKalipNo}");
+                var kalip_sayisi = GetLevel().Kalip !=null ? GetLevel().Kalip.Count : 0 ;
+                if (OynananKalipNo >= kalip_sayisi) {
+                    OynananKalipNo = 0;
+                    PlayerPrefs.SetInt("OynananKalipNo", OynananKalipNo);
+                    GamePlayLevelID++;
+                    PlayerPrefs.SetInt("GamePlayLevelID",GamePlayLevelID);
+                    Debug.Log($" GamePlayLevelID SEVİYESİ ARTTI {GamePlayLevelID}");
+
+                    if (GamePlayLevelID>RecordLevelID) {
+                        RecordLevelID++;
+                        PlayerPrefs.SetInt("RecordLevelID",RecordLevelID);
+                    }
+                }
  
+            }
+        }
+        
+    }
 }

@@ -5,11 +5,11 @@ public static class OdulKutulariYoneticisi {
     private static int _kutuSayisi = 2;
 
     // Ödül atanmış kutular bu listede tutulacak
-    private static readonly List<GameObject> _odulluKutular = new();
+    private static readonly List<GameObject> OdulluKutular = new();
 
     public static void OdulKutulariniBelirle() { 
-        if (!GameLevels.getLevel().OdulKutus) return;
-        _odulluKutular.Clear();
+        OdulluKutular.Clear();
+        if (!GameLevels.GetLevel().OdulKutus) return;
 
         // Sahnedeki tüm "KUTU" objelerini çek
         var tumKutular = new List<GameObject>(GameObject.FindGameObjectsWithTag("KUTU"));
@@ -17,7 +17,7 @@ public static class OdulKutulariYoneticisi {
 
         // Kutu sayısı sahnedeki toplamdan büyükse hepsini al
         if (_kutuSayisi >= tumKutular.Count) {
-            _odulluKutular.AddRange(tumKutular);
+            OdulluKutular.AddRange(tumKutular);
             return;
         }
 
@@ -28,7 +28,7 @@ public static class OdulKutulariYoneticisi {
             var belirtec = kutu.transform.Find("OdulBelirteci").gameObject;
             var kutuScript = kutu.GetComponent<Kutu>();
             if (kutuScript.isStoper || kutuScript.KilitSayisi>0) continue; 
-            _odulluKutular.Add(kutu);
+            OdulluKutular.Add(kutu);
             belirtec.gameObject.SetActive(true);
             kutu.GetComponent<Kutu>().odul_kutusu = true;
             tumKutular.RemoveAt(rndIndex); // Aynı kutunun tekrar seçilmesini engelle
@@ -38,8 +38,8 @@ public static class OdulKutulariYoneticisi {
     public static void EslesmeVarmi() {
         foreach (var per in PerKontrolBirimi.Instance.Gruplar) {
             foreach (var pTas in per.Value.Taslar) {
-                for (var k = 0; k < _odulluKutular.Count; k++) {
-                    var kutu = _odulluKutular[k];
+                for (var k = 0; k < OdulluKutular.Count; k++) {
+                    var kutu = OdulluKutular[k];
                     var kutuscript = kutu.GetComponent<Kutu>();
                     var kutuylaOrtusenTas = kutuscript.OdulKutusunaTemasEdenMeyve();
                     if (kutuylaOrtusenTas) {

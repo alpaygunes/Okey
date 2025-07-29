@@ -484,6 +484,18 @@ public class LobbyManager : NetworkBehaviour {
     }
 
     public void StartSolo() {
+        var RecordLevelID = PlayerPrefs.GetInt("RecordLevelID");
+        var GamePlayLevelID = PlayerPrefs.GetInt("GamePlayLevelID");
+        var OynananMeyveNo = PlayerPrefs.GetInt("OynananMeyveNo");
+        var OynananRenkNo = PlayerPrefs.GetInt("OynananRenkNo"); 
+        var OynananKalipNo = PlayerPrefs.GetInt("OynananKalipNo");
+        
+        Debug.Log($"RecordLevelID {RecordLevelID}");
+        Debug.Log($"GamePlayLevelID {GamePlayLevelID}");
+        Debug.Log($"OynananMeyveNo {OynananMeyveNo}");
+        Debug.Log($"OynananRenkNo {OynananRenkNo}");
+        Debug.Log($"OynananKalipNo {OynananKalipNo}");
+        
         SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }
 }

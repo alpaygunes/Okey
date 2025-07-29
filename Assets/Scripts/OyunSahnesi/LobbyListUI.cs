@@ -89,7 +89,13 @@ public class LobbyListUI : MonoBehaviour {
         StartRelay.clicked += async () => { await LobbyManager.Instance.StartHostWithRelay(); };
 
         //start Solo
-        StartSolo.clicked += () => { LobbyManager.Instance.StartSolo(); };
+        StartSolo.clicked += () => {
+            //PlayerPrefs.DeleteAll();
+            //PlayerPrefs.Save();
+            var RecordLevelID = PlayerPrefs.GetInt("RecordLevelID");
+            PlayerPrefs.SetInt("GamePlayLevelID", RecordLevelID);
+            LobbyManager.Instance.StartSolo();
+        };
 
         //AnaMenüye Dön
         QuitToMainMenu.clicked += AnaMenuyeDon;
