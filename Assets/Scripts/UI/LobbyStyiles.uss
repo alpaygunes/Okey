@@ -1,5 +1,5 @@
 :root {
-    background-image: resource('Images/UI/bg0');
+    background-color: rgba(89, 31, 66, 0);
 }
 
 .aListRow {
@@ -55,8 +55,9 @@
     height: 42px;
     justify-content: center;
     flex-direction: row;
-    background-image: resource('Images/UI/lobi_player_name_bg');
+    background-image: none;
     align-items: center;
+    background-color: rgb(106, 55, 83);
 }
 
 .bPlayerAvatar {
@@ -83,4 +84,16 @@
 .LevelBtn {
     width: 64px;
     height: 64px;
+    background-color: rgb(55, 8, 41);
+    -unity-font-style: bold;
+    color: rgb(140, 63, 120);
+    -unity-text-align: middle-center;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
 }
