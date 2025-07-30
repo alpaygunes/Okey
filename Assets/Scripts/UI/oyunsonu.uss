@@ -1,5 +1,4 @@
 :root {
-    background-image: resource('Images/UI/bg0');
     align-items: center;
     align-self: center;
     flex-direction: column;
@@ -86,6 +85,7 @@
     background-position-x: center 0;
     background-size: cover;
     -unity-background-scale-mode: scale-to-fit;
+    background-color: rgb(154, 62, 125);
 }
 
 .skor_sayisi {
