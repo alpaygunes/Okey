@@ -96,16 +96,14 @@ public class IsaretleBelirtYoket : MonoBehaviour {
         // eğer solo ise
         if (MainMenu.isSoloGame) {
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli) {
-                if (HamleSayisi >= OyunKurallari.Instance.HamleLimit) {
-                    GameLevels.SetLevel();
+                if (HamleSayisi >= OyunKurallari.Instance.HamleLimit) { 
                     GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
             }
 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli) {
-                if (GameManager.Instance.oyununBitimineKalanZaman <= 0) {
-                    GameLevels.SetLevel();
+                if (GameManager.Instance.oyununBitimineKalanZaman <= 0) { 
                     GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
@@ -113,8 +111,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
 
             // görev yap modunun zaman kontrolu burada. groevsayısı kontroulu gerevyonetimi içinde yapılıyor
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
-                if (GameManager.Instance.oyununBitimineKalanZaman <= 0) {
-                    GameLevels.SetLevel();
+                if (GameManager.Instance.oyununBitimineKalanZaman <= 0) { 
                     GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
                     SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
                 }
@@ -137,6 +134,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
             }
 
             PuanlamaIStatistikleri.Sakla();
+            if (MainMenu.isSoloGame) GameLevels.SetLevel();
             Card.Instance.GoreveUyumluCtasYoket();
             Card.Instance.PtasIleUyumluCtaslariYoket();
             Istaka.Instance.PtaslariYoket();

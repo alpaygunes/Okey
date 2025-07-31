@@ -90,8 +90,8 @@ public class LobbyListUI : MonoBehaviour {
 
         //start Solo
         StartSolo.clicked += () => {
-            //PlayerPrefs.DeleteAll();
-            //PlayerPrefs.Save();
+            // PlayerPrefs.DeleteAll();
+            // PlayerPrefs.Save();
             var RecordLevelID = PlayerPrefs.GetInt("RecordLevelID");
             PlayerPrefs.SetInt("GamePlayLevelID", RecordLevelID);
             LobbyManager.Instance.StartSolo();
@@ -128,7 +128,7 @@ public class LobbyListUI : MonoBehaviour {
     }
 
     private void SeviyeleriListele() {
-        for (int i = 1; i < GameLevels.Levels.Count; i++) { 
+        for (int i = 0; i < GameLevels.Levels.Count; i++) { 
             var lvlBtn = new Button();
             lvlBtn.AddToClassList("LevelBtn");
             int levelIndex = i;
