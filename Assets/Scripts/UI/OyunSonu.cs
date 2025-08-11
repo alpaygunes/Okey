@@ -15,24 +15,21 @@ public class OyunSonu : NetworkBehaviour {
     private VisualElement sonucListesi;
     private VisualElement footer;
     private Button yeniOyunuBaslat;
-
     private Button quit;
-
     public static OyunSonu Instance;
 
     private void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
             return;
-        }
-
+        } 
         Instance = this;
     }
 
     private void Start() {
         sonucListesi.Clear();
         var hazirlaniyor = new Button();
-        hazirlaniyor.text = "Liste Hazırlanıyor... "; 
+        hazirlaniyor.text = "Liste Hazırlanıyor... ";
         sonucListesi.Add(hazirlaniyor);
         
         if (MainMenu.isSoloGame) {
@@ -64,7 +61,6 @@ public class OyunSonu : NetworkBehaviour {
         SkorBtn.text = Skor.ToString();
         SkorBtn.AddToClassList("skor_sayisi");
         SkorBtn.AddToClassList("kutular");
-
 
         var playerNameBtn = new Button();
         playerNameBtn.text = "BAŞARDINIZ";

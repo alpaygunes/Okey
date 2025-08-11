@@ -15,13 +15,13 @@ public class TasManeger : MonoBehaviour{
     }
   
     public void TaslariOlustur(){
-        List<Data> generatedData = GenerateDataList(); 
+        List<Data> generatedData = GenerateDataList();  
         foreach (var data in generatedData){
             GameObject tare = Resources.Load<GameObject>("Prefabs/Tas");
             var Tas = Instantiate(tare, new Vector3(0, 0, 5), Quaternion.identity); 
             var tasScribe = Tas.GetComponentInChildren<Tas>(); 
             tasScribe.MeyveID = data.number;
-            tasScribe.Renk = Renkler.RenkSozlugu[data.color];
+            tasScribe.Renk = Renkler.RenkSozlugu[data.color]; 
             TasList.Add(Tas);
         }
     }
@@ -29,7 +29,6 @@ public class TasManeger : MonoBehaviour{
     public class Data{
         public int number;
         public int color;
-
         public Data(int number, int color){
             this.number = number;
             this.color = color;

@@ -43,7 +43,7 @@ public class Tas : MonoBehaviour {
     private bool cebeYerles = false;
     private Cep hedefCep;
     public bool kilitli = false;
-    public Kutu kutuInstance = null;
+    public Kutu kutuInstance = null; 
 
     private void Awake() {
         bonusBayragi = false;
@@ -79,6 +79,8 @@ public class Tas : MonoBehaviour {
         ptasIleUyumluGostergesi.SetActive(false);
         persizIstakaTaslariGostergesi.SetActive(false);
     }
+    
+ 
 
     private void OnDestroy() {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, transform.localScale.x / 2);
@@ -162,6 +164,7 @@ public class Tas : MonoBehaviour {
             _rigidbody.MovePosition(hedefCepPosition);
             cebeYerles = false;
         }
+ 
     }
 
     public IEnumerator BekleYokol(float gecikme) {

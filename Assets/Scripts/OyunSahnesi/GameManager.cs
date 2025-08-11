@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour {
     public string seed;
     public static GameManager Instance { get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
-    private OyunDurumlari oyunDurumu; 
+    private OyunDurumlari oyunDurumu;
+    public BasariPopUplari basariPopUplari;
 
     public OyunDurumlari OyunDurumu {
         get => oyunDurumu;
@@ -37,33 +38,37 @@ public class GameManager : MonoBehaviour {
 
     void Awake() {
         if (MainMenu.isSoloGame) {
-            OyunKurallari.Instance.InitializeSettings(); 
+            OyunKurallari.Instance.InitializeSettings();
         }
 
         oyunDurumu = OyunDurumlari.DevamEdiyor;
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
             return;
-        } 
+        }
+
         Instance = this;
         if (MainMenu.isSoloGame) {
-            RenkAraligi = new RangeInt (0,GameLevels.GetLevel().RenkSayisi);
-            MeyveAraligi= new RangeInt (0,GameLevels.GetLevel().MeyveSayisi);
-            if (PlayerPrefs.GetInt("GamePlayLevelID")>=3) {
+            RenkAraligi = new RangeInt(0, GameLevels.GetLevel().RenkSayisi);
+            MeyveAraligi = new RangeInt(0, GameLevels.GetLevel().MeyveSayisi);
+            if (PlayerPrefs.GetInt("GamePlayLevelID") >= 3) {
                 ColonCount = 6;
                 cepSayisi = 6;
-            } else if (PlayerPrefs.GetInt("GamePlayLevelID")>=0) {
+            }
+            else if (PlayerPrefs.GetInt("GamePlayLevelID") >= 0) {
                 ColonCount = 5;
                 cepSayisi = 5;
-            } 
-        }
+            }
+        } 
+        
+        basariPopUplari = FindObjectOfType<BasariPopUplari>();
     }
 
     private void Start() {
         seed = "A";
         // solo
         if (MainMenu.isSoloGame) {
-            seed = MainMenu.GetRandomSeed(); 
+            seed = MainMenu.GetRandomSeed();
         }
         // multy
         else if (LobbyManager.Instance) {
@@ -111,23 +116,25 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator OyununBitimiIcinGeriSayRoutine() {
-        if (OyunKurallari.Instance) {
-            oyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
-        }
+        if (!MainMenu.isSoloGame) {
+            if (OyunKurallari.Instance) {
+                oyununBitimineKalanZaman = OyunKurallari.Instance.ZamanLimiti;
+            }
 
-        while (oyununBitimineKalanZaman > 0) {
-            OyunSahnesiUI.Instance.GeriSayim.text = oyununBitimineKalanZaman.ToString();
-            yield return new WaitForSeconds(1f);
-            oyununBitimineKalanZaman--;
-        }
+            while (oyununBitimineKalanZaman > 0) {
+                OyunSahnesiUI.Instance.GeriSayim.text = oyununBitimineKalanZaman.ToString();
+                yield return new WaitForSeconds(1f);
+                oyununBitimineKalanZaman--;
+            }
 
-        OyunSahnesiUI.Instance.GeriSayim.text = "0";
-        if (OyununBitimiIcinGeriSayRoutineCoroutin != null) {
-            StopCoroutine(OyununBitimiIcinGeriSayRoutineCoroutin);
-            OyununBitimiIcinGeriSayRoutineCoroutin = null;
-        }
+            OyunSahnesiUI.Instance.GeriSayim.text = "0";
+            if (OyununBitimiIcinGeriSayRoutineCoroutin != null) {
+                StopCoroutine(OyununBitimiIcinGeriSayRoutineCoroutin);
+                OyununBitimiIcinGeriSayRoutineCoroutin = null;
+            }
 
-        IsaretleBelirtYoket.Instance.LimitleriKontrolEt();
+            IsaretleBelirtYoket.Instance.LimitleriKontrolEt();
+        }
     }
 
     public void DugmeYadaOtomatikDegerlendirme() {
@@ -135,7 +142,8 @@ public class GameManager : MonoBehaviour {
         if (PerKontrolBirimi.Instance.Gruplar.Count > 0) {
             if (Istaka.Instance.DoluCepSayisi() == cepSayisi) {
                 IsaretleBelirtYoket.Instance.Degerlendir();
-            } else {
+            }
+            else {
                 OyunSahnesiUI.Instance.DegerlendirmeYap.style.display = DisplayStyle.Flex;
             }
         }
@@ -183,7 +191,7 @@ public class GameManager : MonoBehaviour {
             : OyunDurumlari.DevamEdiyor;
     }
 
-    void TiklamaTuslamaKontrol(Vector2 worldPoint) { 
+    void TiklamaTuslamaKontrol(Vector2 worldPoint) {
         if (OyunDurumu != OyunDurumlari.DevamEdiyor) return;
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null) {
@@ -196,6 +204,7 @@ public class GameManager : MonoBehaviour {
                     if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
                         GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
                     }
+
                     Card.Instance.Sallanma();
                     PerKontrolBirimi.Instance.ParseEt(Istaka.Instance.CepList);
                     PerKontrolBirimi.Instance.PerdekiTaslariBelirt();

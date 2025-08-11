@@ -82,8 +82,8 @@
 }
 
 .LevelBtn {
-    width: 64px;
-    height: 64px;
+    width: 20%;
+    height: auto;
     background-color: rgb(55, 8, 41);
     -unity-font-style: bold;
     color: rgb(140, 63, 120);

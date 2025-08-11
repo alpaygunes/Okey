@@ -17,8 +17,6 @@ public class Card : MonoBehaviour{
         }
 
         Instance = this;
-
-        Instance = this;
         Size = GetComponent<SpriteRenderer>().bounds.size;
     }
 

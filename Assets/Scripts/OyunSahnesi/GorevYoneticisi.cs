@@ -356,10 +356,16 @@ public class GorevYoneticisi : NetworkBehaviour{
             }
         }
         SiradakiGorevSiraNosu++;
-        if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
+        if ((SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit) && !MainMenu.isSoloGame){
             GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             GameManager.Instance.oyunSahnesiKapaniyor = true;
+        }
+        
+        if((SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit) && MainMenu.isSoloGame) {
+            //TODO BURAYA SONRA Bİ MÜDAHA EDİLECEK.
+            Debug.Log("GÖREVLER BİTTİ SINIFLANDI " + SiradakiGorevSiraNosu);
+            SiradakiGorevSiraNosu = 0; 
         }
     }
 
@@ -381,7 +387,8 @@ public class GorevYoneticisi : NetworkBehaviour{
         } 
     }
 
-    public void GorevLimitiKontrolu(){
+    public void GorevLimitiKontrolu() {
+        if (MainMenu.isSoloGame) return;
         if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
             GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);

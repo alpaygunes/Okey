@@ -7,17 +7,14 @@ using UnityEngine.UIElements;
 
 public class IsaretleBelirtYoket : MonoBehaviour {
     public static IsaretleBelirtYoket Instance { get; private set; }
-
-    //private Camera uiCamera; 
+    //private Camera uiCamera;
     public int HamleSayisi;
-
-
+    
     void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
             return;
         }
-
         Instance = this; 
     }
 
@@ -27,9 +24,11 @@ public class IsaretleBelirtYoket : MonoBehaviour {
             MultiPlayerVeriYoneticisi.Instance?.OyuncuVerileriniGuncelle();
         }
     }
-
-    public void LimitleriKontrolEt() {
-        // eğer multi player ise
+    
+    public void LimitleriKontrolEt() { 
+        if (MainMenu.isSoloGame) return;
+        
+        // eğer multiplayer ise
         if (!MainMenu.isSoloGame) {
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli) {
                 if (HamleSayisi >= OyunKurallari.Instance.HamleLimit) {
@@ -94,7 +93,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
         }
 
         // eğer solo ise
-        if (MainMenu.isSoloGame) {
+        if (MainMenu.isSoloGame) { 
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli) {
                 if (HamleSayisi >= OyunKurallari.Instance.HamleLimit) { 
                     GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
@@ -122,7 +121,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
     public void Degerlendir() {
         Card.Instance.Sallanma();
         HamleSayisi++;
-        if (PerKontrolBirimi.Instance.Gruplar.Count > 0) { 
+        if (PerKontrolBirimi.Instance.Gruplar.Count > 0) {
             OdulKutulariYoneticisi.EslesmeVarmi();
             OyunSahnesiUI.Instance.DegerlendirmeYap.style.display = DisplayStyle.None;
             Card.Instance.CardtakiBonusTaslariBelirt();
@@ -132,7 +131,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
                 Card.Instance.TaslariAltinVeElmasaDonustur();
                 GorevYoneticisi.Instance.SiradakiGoreviIstakadaGoster();
             }
-
+            
             PuanlamaIStatistikleri.Sakla();
             if (MainMenu.isSoloGame) GameLevels.SetLevel();
             Card.Instance.GoreveUyumluCtasYoket();
