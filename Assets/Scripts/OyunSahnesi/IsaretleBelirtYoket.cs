@@ -137,6 +137,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
             Card.Instance.GoreveUyumluCtasYoket();
             Card.Instance.PtasIleUyumluCtaslariYoket();
             Istaka.Instance.PtaslariYoket();
+            TasManeger.Instance.YeniTaslariOlustur();
         }
     }
 }

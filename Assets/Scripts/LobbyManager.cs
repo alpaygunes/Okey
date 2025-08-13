@@ -490,11 +490,11 @@ public class LobbyManager : NetworkBehaviour {
         var OynananRenkNo = PlayerPrefs.GetInt("OynananRenkNo"); 
         var OynananKalipNo = PlayerPrefs.GetInt("OynananKalipNo");
         
-        Debug.Log($"RecordLevelID {RecordLevelID}");
-        Debug.Log($"GamePlayLevelID {GamePlayLevelID}");
-        Debug.Log($"OynananMeyveNo {OynananMeyveNo}");
-        Debug.Log($"OynananRenkNo {OynananRenkNo}");
-        Debug.Log($"OynananKalipNo {OynananKalipNo}");
+        // Debug.Log($"RecordLevelID {RecordLevelID}");
+        // Debug.Log($"GamePlayLevelID {GamePlayLevelID}");
+        // Debug.Log($"OynananMeyveNo {OynananMeyveNo}");
+        // Debug.Log($"OynananRenkNo {OynananRenkNo}");
+        // Debug.Log($"OynananKalipNo {OynananKalipNo}");
         
         SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }

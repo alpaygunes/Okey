@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour {
@@ -13,7 +14,6 @@ public class GameManager : MonoBehaviour {
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
     private OyunDurumlari oyunDurumu;
     public BasariPopUplari basariPopUplari;
-
     public OyunDurumlari OyunDurumu {
         get => oyunDurumu;
         set {
@@ -24,13 +24,12 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
-
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public int yeniTasEklendiSayisi = 0;
     public bool oyunSahnesiKapaniyor = false;
     public int CanSayisi { get; set; } = 10;
-
     public enum OyunDurumlari {
+        YeniLevel,
         LimitDoldu,
         DevamEdiyor,
         DegerlendirmeYapiliyor,
@@ -106,6 +105,8 @@ public class GameManager : MonoBehaviour {
         OyunSahnesiUI.Instance.CanSayisi.text = CanSayisi.ToString();
         PuanlamaIStatistikleri.Sifirla();
     }
+    
+ 
 
     private void OyunDurumuDegisti() {
         if (OyunDurumu == OyunDurumlari.DevamEdiyor) {
@@ -215,4 +216,5 @@ public class GameManager : MonoBehaviour {
 
         Istaka.Instance.IlkBosCebiBelirt();
     }
+    
 }

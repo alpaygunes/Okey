@@ -53,5 +53,15 @@ public class TasManeger : MonoBehaviour{
         }
         return dataList;
     }
-    
+
+    public void YeniTaslariOlustur()
+    {
+        // taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
+        if (PuanlamaIStatistikleri.ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
+            && (GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DevamEdiyor
+                || GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DegerlendirmeYapiliyor))
+        {
+            TaslariOlustur();
+        }
+    }
 }
