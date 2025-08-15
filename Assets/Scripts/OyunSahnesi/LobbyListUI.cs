@@ -134,6 +134,10 @@ public class LobbyListUI : MonoBehaviour {
             int levelIndex = i;
             lvlBtn.clicked +=  () => OnLevelBtnClicked(levelIndex);
             lvlBtn.text = (levelIndex).ToString();
+            if (i > PlayerPrefs.GetInt("RecordLevelID"))
+            {
+                lvlBtn.SetEnabled(false);
+            }
             Levels.Add(lvlBtn);
         }
     }

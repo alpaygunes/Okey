@@ -321,8 +321,8 @@ public class GorevYoneticisi : NetworkBehaviour{
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f;
             x = x + fark * .5f;
             GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
-            var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, -2), Quaternion.identity);
-            gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, -1);
+            var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, .1f), Quaternion.identity);
+            gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, .1f);
             gTas.GetComponent<gTas>().meyveID = gorevTasi.MeyveID;
             gTas.GetComponent<gTas>().renk = gorevTasi.Renk;
             gTas.transform.SetParent(body.transform);

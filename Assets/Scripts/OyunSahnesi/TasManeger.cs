@@ -51,15 +51,23 @@ public class TasManeger : MonoBehaviour{
             int color = random.Next(GameManager.Instance.RenkAraligi.start, GameManager.Instance.RenkAraligi.end);
             dataList.Add(new Data(number, color));
         }
+        
         return dataList;
     }
 
     public void YeniTaslariOlustur()
-    {
+    { 
+        var siradakiTaslar = TasManeger.Instance.TasList.Count; 
+        var carddakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS"); 
+        var perdekiTaslar = GameObject.FindGameObjectsWithTag("CEPTEKI_TAS");
+        int toplamTasSayisi = siradakiTaslar + carddakiTaslar.Length + perdekiTaslar.Length;   
+        var ToplamTasSayisi = toplamTasSayisi;
+        
         // taş sayısı başlangıc sayısının yarısının altına indiyse yeni taşlar eklensin.
-        if (PuanlamaIStatistikleri.ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
+        if (ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
             && (GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DevamEdiyor
-                || GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DegerlendirmeYapiliyor))
+                || GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DegerlendirmeYapiliyor 
+                ))
         {
             TaslariOlustur();
         }

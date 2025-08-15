@@ -5,14 +5,13 @@ public class SpawnHole : MonoBehaviour
 {
     public bool musait = true;
     public int colID;
-    private bool _temastaBekleyenVar = false;
-    private bool _cikanVar = false;
+
 
     private void OnCollisionStay(Collision other)
     {
         if (other.collider.CompareTag("CARDTAKI_TAS"))
         {
-            _temastaBekleyenVar = true;
+            musait = false;
         }
     }
 
@@ -20,20 +19,13 @@ public class SpawnHole : MonoBehaviour
     {
         if (collision.collider.CompareTag("CARDTAKI_TAS"))
         {
-            _cikanVar = true;
+            musait = true;
         }
     }
 
 
     private void Update()
     {
-        if (!_temastaBekleyenVar && _cikanVar)
-        {
-            musait = true;    
-            _temastaBekleyenVar = false;
-            _cikanVar = false;
-        }
-        
         if (musait && TasManeger.Instance.TasList.Count > 0)
         {
             musait = false;
@@ -46,7 +38,7 @@ public class SpawnHole : MonoBehaviour
             siradakiTasInstance.colID = colID;
             TasManeger.Instance.TasInstances.Add(siradakiTas, siradakiTasInstance);
             siradakiTas.SetActive(true);
-            TasManeger.Instance.TasList.RemoveAt(0); 
+            TasManeger.Instance.TasList.RemoveAt(0);
         } 
     }
 }

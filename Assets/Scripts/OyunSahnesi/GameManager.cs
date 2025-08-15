@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour {
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
     private OyunDurumlari oyunDurumu;
-    public BasariPopUplari basariPopUplari;
+    public PopUplar PopUplar;
     public OyunDurumlari OyunDurumu {
         get => oyunDurumu;
         set {
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour {
     public bool oyunSahnesiKapaniyor = false;
     public int CanSayisi { get; set; } = 10;
     public enum OyunDurumlari {
-        YeniLevel,
+        OyunDurdu,
         LimitDoldu,
         DevamEdiyor,
         DegerlendirmeYapiliyor,
@@ -60,7 +61,7 @@ public class GameManager : MonoBehaviour {
             }
         } 
         
-        basariPopUplari = FindObjectOfType<BasariPopUplari>();
+        PopUplar = FindFirstObjectByType<PopUplar>();
     }
 
     private void Start() {

@@ -2,21 +2,23 @@ using System;
 using Unity.Collections;
 using UnityEngine;
 
-public static class PuanlamaIStatistikleri{
+public static class PuanlamaIStatistikleri
+{
     public static int BonusMeyveSayisi = 0;
-    public static int HamleSayisi = 0; 
+    public static int HamleSayisi = 0;
     public static int Zaman = 0;
     public static int CanSayisi = 0;
     public static int YokEdilenTasSayisi = 0;
     public static int GorevSayisi = 0;
     public static int AltinSayisi = 0;
     public static int ElmasSayisi = 0;
-    public static int ToplamTasSayisi{ get; set; } = 0;
+    public static int ToplamTasSayisi { get; set; } = 0;
 
-    
-    public static void Sifirla(){
+
+    public static void Sifirla()
+    {
         BonusMeyveSayisi = 0;
-        HamleSayisi = 0; 
+        HamleSayisi = 0;
         Zaman = 0;
         CanSayisi = 0;
         YokEdilenTasSayisi = 0;
@@ -26,64 +28,83 @@ public static class PuanlamaIStatistikleri{
         ToplamTasSayisi = 0;
     }
 
-    public static void Sakla(){
+    public static void Sakla()
+    {
         AltinVeElmaslariPuanla();
         BonuslariPuanla();
         PerdekiTaslariPuanla();
-        
-        SayilariGuncelle(); 
+
+        SayilariGuncelle();
         UIgucelle();
-        
-        if (!MainMenu.isSoloGame){
+
+        if (!MainMenu.isSoloGame)
+        {
             MultiPlayerVeriYoneticisi.Instance.OyuncuVerileriniGuncelle();
-        } 
-        
+        }
     }
 
-    public static void SayilariGuncelle(){
+    public static void SayilariGuncelle()
+    {
         CanSayisi = GameManager.Instance.CanSayisi;
         HamleSayisi = IsaretleBelirtYoket.Instance.HamleSayisi;
         GorevSayisi = GorevYoneticisi.Instance.SiradakiGorevSiraNosu;
     }
 
-    public static void UIgucelle(){
+    public static void UIgucelle()
+    {
         OyunSahnesiUI.Instance.SkorTxt.text = BonusMeyveSayisi.ToString();
         OyunSahnesiUI.Instance.AltinSayisi.text = AltinSayisi.ToString();
         OyunSahnesiUI.Instance.ElmasSayisi.text = ElmasSayisi.ToString();
-        OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi+1 + "/" + OyunKurallari.Instance.HamleLimit;
-        OyunSahnesiUI.Instance.GorevSayisiLbl.text = GorevSayisi+1 + "/" + OyunKurallari.Instance.GorevLimit;
+        if (MainMenu.isSoloGame)
+        {
+            OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi + 1 + "/" + GameLevels.GetLevel().HamleLimiti;
+        }  else  {
+            OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi + 1 + "/" + OyunKurallari.Instance.HamleLimit; 
+        }
+
+        OyunSahnesiUI.Instance.GorevSayisiLbl.text = GorevSayisi + 1 + "/" + OyunKurallari.Instance.GorevLimit;
     }
 
-    private static void PerdekiTaslariPuanla(){
-        for (int i = 0; i < Istaka.Instance.CepList.Count; i++){
+    private static void PerdekiTaslariPuanla()
+    {
+        for (int i = 0; i < Istaka.Instance.CepList.Count; i++)
+        {
             var cep = Istaka.Instance.CepList[i];
             if (!cep.TasInstance) continue;
-            if (Istaka.Instance.CepList[i].TasInstance.pereUyumluGostergesi.activeSelf ){
+            if (Istaka.Instance.CepList[i].TasInstance.pereUyumluGostergesi.activeSelf)
+            {
                 BonusMeyveSayisi++;
             }
         }
     }
 
-    private static void BonuslariPuanla(){
+    private static void BonuslariPuanla()
+    {
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-        foreach (var cTas in cardtakiTaslar){
-            var cTasscript = TasManeger.Instance.TasInstances[cTas];  
-            if (cTasscript.bonusBayragi){
+        foreach (var cTas in cardtakiTaslar)
+        {
+            var cTasscript = TasManeger.Instance.TasInstances[cTas];
+            if (cTasscript.bonusBayragi)
+            {
                 BonusMeyveSayisi++;
-            } 
+            }
         }
     }
 
-    private static void AltinVeElmaslariPuanla(){
+    private static void AltinVeElmaslariPuanla()
+    {
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
-        foreach (var cTas in cardtakiTaslar){
-            var cTasscript = TasManeger.Instance.TasInstances[cTas];  
+        foreach (var cTas in cardtakiTaslar)
+        {
+            var cTasscript = TasManeger.Instance.TasInstances[cTas];
             // altı ise
-            if (cTasscript.gorevUyumGostergesi1.gameObject.activeSelf){
+            if (cTasscript.gorevUyumGostergesi1.gameObject.activeSelf)
+            {
                 AltinSayisi++;
             }
             // elmas ise
-            else if (cTasscript.gorevUyumGostergesi2.gameObject.activeSelf){
+            else if (cTasscript.gorevUyumGostergesi2.gameObject.activeSelf)
+            {
                 ElmasSayisi++;
             }
         }

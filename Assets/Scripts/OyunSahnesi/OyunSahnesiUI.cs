@@ -65,7 +65,13 @@ public class OyunSahnesiUI : MonoBehaviour
         } else if(OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             HamleSayisi.style.display =    DisplayStyle.Flex;
             HamleSayisi.text  = "1/"+OyunKurallari.Instance.HamleLimit.ToString();
-        }  
+        }
+
+        if (MainMenu.isSoloGame)
+        {
+            HamleSayisi.style.display =    DisplayStyle.Flex;
+            HamleSayisi.text = "1/" + GameLevels.GetLevel().HamleLimiti.ToString();
+        }
     }
      
     public void PerleriDegerlendir(){ 

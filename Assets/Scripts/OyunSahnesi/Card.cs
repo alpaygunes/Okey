@@ -30,7 +30,7 @@ public class Card : MonoBehaviour{
         var fark = cardSize.x - toplamgenislik;
         for (int i = 0; i < GameManager.Instance.ColonCount; i++){
             float holePositionX = i * colonWidth - cardSize.x * .5f;
-            float holePositionY = cardSize.y * .5f;//+ colonWidth;
+            float holePositionY = cardSize.y * .5f + colonWidth;
             holePositionX += colonWidth * .5f;
             holePositionX += fark * .5f;
             GameObject SpawnHole = Resources.Load<GameObject>("Prefabs/SpawnHole");
