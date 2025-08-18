@@ -45,6 +45,7 @@ public class Tas : MonoBehaviour
     private Cep hedefCep;
     public bool kilitli = false;
     public Kutu kutuInstance = null;
+    //public bool YokolmayiBekliyor = false;
 
     private void Awake()
     {
@@ -171,17 +172,18 @@ public class Tas : MonoBehaviour
     }
 
     public IEnumerator BekleYokol(float gecikme)
-    {
+    { 
+        // if (YokolmayiBekliyor) yield break;
+        // YokolmayiBekliyor = true;
         if (kutuInstance && kutuInstance.KilitSayisi > 0)
         {
-            kutuInstance.KilitSayisi--;
-            tiklanaBilir = true;
+            kutuInstance.KilitSayisi--; 
             if (kutuInstance.KilitSayisi <= 0)
             {
                 kutuInstance.transform.Find("KilitBelirteci").gameObject.SetActive(false);
                 kilitli = false;
             }
-
+            tiklanaBilir = true;
             kutuInstance.Kilitlen();
             yield break;
         }
@@ -237,32 +239,37 @@ public class Tas : MonoBehaviour
 
     public void AltinVeElmasGoster()
     {
-        if (gorevleUyumBayragi == 0) return;
+        if (gorevleUyumBayragi == 0) return; 
         var cardtakiTaslar = GameObject.FindGameObjectsWithTag("CARDTAKI_TAS");
         foreach (var cTas in cardtakiTaslar)
-        {
-            var cTasscript = TasManeger.Instance.TasInstances[cTas];
+        { 
+            var cTasscript = TasManeger.Instance.TasInstances[cTas]; 
             if (cTasscript.colID == cepInstance.colID)
             {
-                if (gorevleUyumBayragi == 1)
-                {
+                //if (cTasscript.kilitli) continue;
+                if (gorevleUyumBayragi == 1) {
                     cTasscript.gorevUyumGostergesi1.gameObject.SetActive(true);
                     cTasscript.meyveResmi.gameObject.SetActive(false);
                     tiklanaBilir = false;
-                }
-                else if (gorevleUyumBayragi == 2)
-                {
+                } else if (gorevleUyumBayragi == 2) {
                     cTasscript.gorevUyumGostergesi2.gameObject.SetActive(true);
                     cTasscript.meyveResmi.gameObject.SetActive(false);
                     tiklanaBilir = false;
                 }
 
-                if (cTasscript.kutuInstance && gorevleUyumBayragi > 0)
+                /*if (cTasscript.kutuInstance && gorevleUyumBayragi > 0)
                 {
                     cTasscript.kilitli = false;
                     cTasscript.kutuInstance.KilitSayisi = 0;
                     cTasscript.kutuInstance.Kilitlen();
-                }
+                }*/
+                
+                if (cTasscript.kilitli)
+                {
+                    cTasscript.meyveResmi.gameObject.SetActive(true);
+                    cTasscript.gorevUyumGostergesi1.gameObject.SetActive(false);
+                    cTasscript.gorevUyumGostergesi2.gameObject.SetActive(false);
+                };
 
                 ayniKolondakiAltinveElmasTaslar.Add(cTas);
             }

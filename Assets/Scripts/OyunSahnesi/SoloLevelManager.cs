@@ -1,0 +1,194 @@
+using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine;
+using System.IO;
+using System.Linq;
+using UnityEngine.SceneManagement;
+
+
+[System.Serializable]
+public class LevelVerisi
+{
+    public int Level;
+    public int RenkSirasi;
+    public int MeyveSirasi;
+    public int KalipSirasi;
+}
+
+[System.Serializable]
+public class LevelTablosu
+{
+    public List<LevelVerisi> LevelListesi = new List<LevelVerisi>();
+}
+
+
+public class SoloLevelManager : MonoBehaviour
+{
+    public LevelTablosu tablo = new LevelTablosu();
+    private string dosyaYolu;
+    public static SoloLevelManager Instance;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Bu nesneden başka bir tane varsa, yenisini yok et
+            return;
+        }
+
+        Instance = this;
+
+        dosyaYolu = Application.persistentDataPath + "/leveldata.json";
+        YukleJson(); // oyun başlarken verileri yükle
+    }
+
+    // 🔹 Level kaydet
+    public void KaydetLevel(int level, int renk, int meyve, int kalip)
+    {
+        LevelVerisi veri = new LevelVerisi
+        {
+            Level = level,
+            RenkSirasi = renk,
+            MeyveSirasi = meyve,
+            KalipSirasi = kalip
+        };
+
+        // Daha önce aynı level oynanmışsa güncelle
+        var mevcut = tablo.LevelListesi.Find(x => x.Level == level);
+        if (mevcut != null)
+        {
+            mevcut.RenkSirasi = renk;
+            mevcut.MeyveSirasi = meyve;
+            mevcut.KalipSirasi = kalip;
+        }
+        else
+        {
+            tablo.LevelListesi.Add(veri);
+        }
+
+        KaydetJson(); // her seferinde dosyaya kaydet
+        Debug.Log($"Level {level} kaydedildi.");
+    }
+
+    // 🔹 Level verisini getir
+    public LevelVerisi GetLevelVerisi(int level)
+    {
+        return tablo.LevelListesi.Find(x => x.Level == level);
+    }
+
+    // 🔹 JSON'a kaydet
+    private void KaydetJson()
+    {
+        string json = JsonUtility.ToJson(tablo, true);
+        File.WriteAllText(dosyaYolu, json);
+    }
+
+    // 🔹 JSON'dan yükle
+    private void YukleJson()
+    {
+        if (File.Exists(dosyaYolu))
+        {
+            string json = File.ReadAllText(dosyaYolu);
+            tablo = JsonUtility.FromJson<LevelTablosu>(json);
+            if (tablo == null) tablo = new LevelTablosu();
+        }
+    }
+
+    // 🔹 Örnek kullanım
+    // private void Update()
+    // {
+    //     // Test için: L tuşuna basınca Level 2 kaydet
+    //     if (Input.GetKeyDown(KeyCode.L))
+    //     {
+    //         KaydetLevel(2, 1, 3, 2);
+    //     }
+    //
+    //     // Test için: K tuşuna basınca Level 2 yükle
+    //     if (Input.GetKeyDown(KeyCode.K))
+    //     {
+    //         LevelVerisi lv = GetLevelVerisi(2);
+    //         if (lv != null)
+    //         {
+    //             Debug.Log(
+    //                 $"Level: {lv.Level}, Renk: {lv.RenkSirasi}, Meyve: {lv.MeyveSirasi}, Kalip: {lv.KalipSirasi}");
+    //         }
+    //         else
+    //         {
+    //             Debug.Log("Level bulunamadı!");
+    //         }
+    //     }
+    // }
+
+    public int GetMaxLevel()
+    {
+        if (tablo.LevelListesi.Count == 0) return 0; // hiç level yoksa 0 dön
+        return tablo.LevelListesi.Max(x => x.Level);
+    }
+
+    public void Guncelle()
+    {
+        if (!PuanLimitiDoldumu()) return;
+        if (IsaretleBelirtYoket.Instance.HamleSayisi >=
+            GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti)
+        {
+            return;
+        }
+
+        sayac();
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    }
+
+    private void sayac()
+    {
+        var OynananLevel = GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")];
+        var kayitliOyuncuVerisi = GameManager.Instance.kayitliOyuncuVerisi;
+        var MeyveSirasi = kayitliOyuncuVerisi.MeyveSirasi;
+        var RenkSirasi = kayitliOyuncuVerisi.RenkSirasi;
+        var KalipSirasi = kayitliOyuncuVerisi.KalipSirasi;
+
+        if (MeyveSirasi < OynananLevel.MeyveEnd)
+        {
+            MeyveSirasi++;
+            KaydetLevel(kayitliOyuncuVerisi.Level, kayitliOyuncuVerisi.RenkSirasi, MeyveSirasi,
+                kayitliOyuncuVerisi.KalipSirasi);
+        }
+        else
+        {
+            if (RenkSirasi < OynananLevel.RenkEnd)
+            {
+                RenkSirasi++;
+                KaydetLevel(kayitliOyuncuVerisi.Level, RenkSirasi, MeyveSirasi, kayitliOyuncuVerisi.KalipSirasi);
+            }
+            else
+            { 
+                if (OynananLevel.Kalip != null && KalipSirasi < OynananLevel.Kalip.Count)
+                {
+                    KalipSirasi++;
+                    KaydetLevel(kayitliOyuncuVerisi.Level, RenkSirasi, MeyveSirasi, KalipSirasi);
+                } else {
+                    var NewLevel = kayitliOyuncuVerisi.Level;
+                    NewLevel++;
+                    if (GetLevelVerisi(NewLevel) == null) {
+                        var limitler = GameLevels.Levels[NewLevel];
+                        KaydetLevel(NewLevel, limitler.RenkStart, limitler.MeyveStart, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    private bool PuanLimitiDoldumu()
+    {
+        var bonusMeyveSayisi = PuanlamaIStatistikleri.BonusMeyveSayisi;
+        var altinSayisi = PuanlamaIStatistikleri.AltinSayisi;
+        var elmasSayisi = PuanlamaIStatistikleri.ElmasSayisi;
+        var toplananPuan = 0;
+        var levelGecmePuani = GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].LevelGecmePuani;
+
+        toplananPuan += bonusMeyveSayisi;
+        toplananPuan += altinSayisi * 4;
+        toplananPuan += elmasSayisi * 10;
+        Debug.Log($"ToplananPuan : {toplananPuan}");
+        return toplananPuan >= levelGecmePuani;
+    }
+}

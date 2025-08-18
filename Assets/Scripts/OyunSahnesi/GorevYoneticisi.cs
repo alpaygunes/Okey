@@ -126,11 +126,11 @@ public class GorevYoneticisi : NetworkBehaviour{
     public static void GorevHazirla(){
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
-        int renkSayisi = renkEnd - renkStart + 1;
+        int renkSayisi = renkEnd - renkStart;
         
         int meyveStart = GameManager.Instance.MeyveAraligi.start;
         int meyveEnd = GameManager.Instance.MeyveAraligi.end;
-        int meyveSayisi = meyveEnd - meyveStart + 1;
+        int meyveSayisi = meyveEnd - meyveStart;
         for (int i = 0; i < GorevSayisi; i++) 
             switch (RastgelePerTuruSec())
             {
@@ -175,7 +175,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
-        Color32 color = Renkler.RenkSozlugu[UnityEngine.Random.Range(renkStart, renkEnd + 1)];
+        Color32 color = Renkler.RenkSozlugu[UnityEngine.Random.Range(renkStart, renkEnd )];
         foreach (int sayi in secilenSayilar){
             gorev.Taslar.Add(new TasData { MeyveID = sayi, Renk = color });
         }
@@ -209,7 +209,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         // Aralıktaki tüm renk indekslerini havuza al
         List<int> renkHavuzu = Enumerable
-            .Range(renkStart, renkEnd - renkStart + 1)
+            .Range(renkStart, renkEnd - renkStart)
             .ToList();
 
         // Fisher–Yates karıştırması
@@ -251,7 +251,7 @@ public class GorevYoneticisi : NetworkBehaviour{
         // --- Ortak rakam -----------------------------------------------------
         int rakamStart   = GameManager.Instance.MeyveAraligi.start;
         int rakamEnd     = GameManager.Instance.MeyveAraligi.end;
-        int secilenMeyve = UnityEngine.Random.Range(rakamStart, rakamEnd + 1);
+        int secilenMeyve = UnityEngine.Random.Range(rakamStart, rakamEnd);
 
         // --- Benzersiz renkler ---------------------------------------------
         int renkStart = GameManager.Instance.RenkAraligi.start;
@@ -259,7 +259,7 @@ public class GorevYoneticisi : NetworkBehaviour{
 
         // Havuz: seçilebilir tüm renk indeksleri
         List<int> renkHavuzu = Enumerable
-            .Range(renkStart, renkEnd - renkStart + 1)
+            .Range(renkStart, renkEnd - renkStart)
             .ToList();
 
         // Fisher-Yates ile karıştır

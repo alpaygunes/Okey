@@ -67,9 +67,11 @@ public class TasManeger : MonoBehaviour{
         if (ToplamTasSayisi < GameManager.Instance.BaslangicTasSayisi * 0.5f
             && (GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DevamEdiyor
                 || GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.DegerlendirmeYapiliyor 
+                || GameManager.Instance.OyunDurumu == GameManager.OyunDurumlari.LimitDoldu 
                 ))
         {
             TaslariOlustur();
+            OyunSahnesiUI.Instance.KalanTasSayisi.text = TasManeger.Instance.TasList.Count.ToString();
         }
     }
 }

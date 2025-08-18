@@ -262,6 +262,11 @@ MonoBehaviour:
   PopUplar: {fileID: 0}
   yeniTasEklendiSayisi: 0
   oyunSahnesiKapaniyor: 0
+  kayitliOyuncuVerisi:
+    Level: 0
+    RenkSirasi: 0
+    MeyveSirasi: 0
+    KalipSirasi: 0
 --- !u!4 &343139322
 Transform:
   m_ObjectHideFlags: 0

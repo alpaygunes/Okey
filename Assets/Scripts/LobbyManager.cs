@@ -26,7 +26,7 @@ public class LobbyManager : NetworkBehaviour {
     public Coroutine lobbyUpdateCoroutine;
     public string gameSeed;
     private bool IsGameStarted = false;
-    const float LobbyLıstesınıGuncellemePeryodu = 15f;
+    const float LobbyListesiniGuncellemePeryodu = 15f;
     public GameObject networkPlayerPrefab;
 
     private void Awake() {
@@ -113,7 +113,7 @@ public class LobbyManager : NetworkBehaviour {
     private IEnumerator UpdateLobbyLoop() {
         // host a görünen lobideki player list
         while (true) {
-            yield return new WaitForSeconds(LobbyLıstesınıGuncellemePeryodu); // her 10 saniyede bir bekle 
+            yield return new WaitForSeconds(LobbyListesiniGuncellemePeryodu); // her 10 saniyede bir bekle 
             _ = UpdateLobbyAsync();
         }
     }
@@ -483,19 +483,7 @@ public class LobbyManager : NetworkBehaviour {
         }
     }
 
-    public void StartSolo() {
-        var RecordLevelID = PlayerPrefs.GetInt("RecordLevelID");
-        var GamePlayLevelID = PlayerPrefs.GetInt("GamePlayLevelID");
-        var OynananMeyveNo = PlayerPrefs.GetInt("OynananMeyveNo");
-        var OynananRenkNo = PlayerPrefs.GetInt("OynananRenkNo"); 
-        var OynananKalipNo = PlayerPrefs.GetInt("OynananKalipNo");
-        
-        Debug.Log($"RecordLevelID {RecordLevelID}");
-        Debug.Log($"GamePlayLevelID {GamePlayLevelID}");
-        Debug.Log($"OynananMeyveNo {OynananMeyveNo}");
-        Debug.Log($"OynananRenkNo {OynananRenkNo}");
-        Debug.Log($"OynananKalipNo {OynananKalipNo}");
-        
+    public void StartSolo() { 
         SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }
 }

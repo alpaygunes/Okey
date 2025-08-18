@@ -2,15 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class KilitliKutuYoneticisi {
-    public static void KilitliKutulariBelirle() {  
-        if (!GameLevels.GetLevel().KilitliKutu) return;
-        var OynananKalipNo = PlayerPrefs.GetInt("OynananKalipNo");
-        var kalip = GameLevels.GetLevel().Kalip[OynananKalipNo];
+    public static void KilitliKutulariBelirle()
+    {
+        var level = GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")];
+        if (!level.KilitliKutu) return; 
+        var oynananKalipNo = SoloLevelManager.Instance.GetLevelVerisi(PlayerPrefs.GetInt("OynananLevelID")).KalipSirasi;
+        var kalip = level.Kalip[oynananKalipNo];
         var sablon = Pattern.getCharMatris(kalip);
         Isaretle(sablon);
-        //var (_, matrix) = Pattern.getRandom();
-        //Isaretle(matrix);
-        
     }
 
     private static void Isaretle(int[,] sablon) {
@@ -28,7 +27,7 @@ public static class KilitliKutuYoneticisi {
                         var kutujI = i + Card.Instance.SatirSayisi - matrisSatirSayisi; 
                         if (kutuScript.colRowPosition.x == j 
                             && kutuScript.colRowPosition.y == kutujI) { 
-                            kutuScript.KilitSayisi = 2; // 0 olmamalı. 0 kilitsiz demek
+                            kutuScript.KilitSayisi = 4; // 0 olmamalı. 0 kilitsiz demek
                         } 
                     }
                 }

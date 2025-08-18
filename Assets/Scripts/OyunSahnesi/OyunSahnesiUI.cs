@@ -70,7 +70,7 @@ public class OyunSahnesiUI : MonoBehaviour
         if (MainMenu.isSoloGame)
         {
             HamleSayisi.style.display =    DisplayStyle.Flex;
-            HamleSayisi.text = "1/" + GameLevels.GetLevel().HamleLimiti.ToString();
+            HamleSayisi.text = "1/" + GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti.ToString();
         }
     }
      

@@ -9,7 +9,7 @@ public static class OdulKutulariYoneticisi {
 
     public static void OdulKutulariniBelirle() { 
         OdulluKutular.Clear();
-        if (!GameLevels.GetLevel().OdulKutus) return;
+        if (!GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].OdulKutus) return;
 
         // Sahnedeki tüm "KUTU" objelerini çek
         var tumKutular = new List<GameObject>(GameObject.FindGameObjectsWithTag("KUTU"));

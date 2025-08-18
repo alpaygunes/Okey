@@ -133,11 +133,10 @@ public class IsaretleBelirtYoket : MonoBehaviour {
             }
             
             PuanlamaIStatistikleri.Sakla();
-            if (MainMenu.isSoloGame) GameLevels.SetLevel();
+            if (MainMenu.isSoloGame) SoloLevelManager.Instance.Guncelle();
             Card.Instance.GoreveUyumluCtasYoket();
             Card.Instance.PtasIleUyumluCtaslariYoket();
-            Istaka.Instance.PtaslariYoket();
-            TasManeger.Instance.YeniTaslariOlustur();
+            Istaka.Instance.PtaslariYoket(); 
         }
     }
 }

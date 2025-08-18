@@ -6,7 +6,7 @@ public static class HareketsizKutuYoneticisi
     private static int _kutuSayisi = 2;
 
     public static void HareketsizKutulariBelirle() { 
-        if (!GameLevels.GetLevel().HareketsizKutu) return;
+        if (!GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HareketsizKutu) return;
         var tumKutular = new List<GameObject>(GameObject.FindGameObjectsWithTag("KUTU"));
         if (tumKutular.Count == 0) return;
         // Rastgele _kutuSayisi adet kutu seç

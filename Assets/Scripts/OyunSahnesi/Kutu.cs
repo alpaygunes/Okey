@@ -50,8 +50,12 @@ public class Kutu : MonoBehaviour
     {
         var kilit1 = transform.Find("KilitBelirteci/1");
         var kilit2 = transform.Find("KilitBelirteci/2");
+        var kilit3 = transform.Find("KilitBelirteci/3");
+        var kilit4 = transform.Find("KilitBelirteci/4");
         kilit1?.gameObject.SetActive(KilitSayisi == 1);
         kilit2?.gameObject.SetActive(KilitSayisi == 2);
+        kilit3?.gameObject.SetActive(KilitSayisi == 3);
+        kilit4?.gameObject.SetActive(KilitSayisi == 4);
     }
 
     // ===       Fizik Olayları     =======

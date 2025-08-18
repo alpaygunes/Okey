@@ -57,12 +57,15 @@ public static class PuanlamaIStatistikleri
         OyunSahnesiUI.Instance.ElmasSayisi.text = ElmasSayisi.ToString();
         if (MainMenu.isSoloGame)
         {
-            OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi + 1 + "/" + GameLevels.GetLevel().HamleLimiti;
+            OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi + 1 
+                                                                  + "/" + GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti;
         }  else  {
-            OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi + 1 + "/" + OyunKurallari.Instance.HamleLimit; 
+            OyunSahnesiUI.Instance.HamleSayisi.text = HamleSayisi + 1 
+                                                                  + "/" + OyunKurallari.Instance.HamleLimit; 
         }
 
-        OyunSahnesiUI.Instance.GorevSayisiLbl.text = GorevSayisi + 1 + "/" + OyunKurallari.Instance.GorevLimit;
+        OyunSahnesiUI.Instance.GorevSayisiLbl.text = GorevSayisi + 1 
+                                                                 + "/" + OyunKurallari.Instance.GorevLimit;
     }
 
     private static void PerdekiTaslariPuanla()

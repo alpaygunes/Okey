@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public Coroutine OyununBitimiIcinGeriSayRoutineCoroutin = null;
     public int yeniTasEklendiSayisi = 0;
     public bool oyunSahnesiKapaniyor = false;
+    public LevelVerisi kayitliOyuncuVerisi;
     public int CanSayisi { get; set; } = 10;
     public enum OyunDurumlari {
         OyunDurdu,
@@ -48,18 +49,22 @@ public class GameManager : MonoBehaviour {
         }
 
         Instance = this;
-        if (MainMenu.isSoloGame) {
-            RenkAraligi = new RangeInt(0, GameLevels.GetLevel().RenkSayisi);
-            MeyveAraligi = new RangeInt(0, GameLevels.GetLevel().MeyveSayisi);
-            if (PlayerPrefs.GetInt("GamePlayLevelID") >= 3) {
-                ColonCount = 6;
-                cepSayisi = 6;
-            }
-            else if (PlayerPrefs.GetInt("GamePlayLevelID") >= 0) {
-                ColonCount = 5;
-                cepSayisi = 5;
-            }
-        } 
+        if (MainMenu.isSoloGame)
+        {
+            Debug.Log(Application.persistentDataPath);
+            int renkSirasi, meyveSayisi; 
+            kayitliOyuncuVerisi = SoloLevelManager.Instance.GetLevelVerisi(PlayerPrefs.GetInt("OynananLevelID")); 
+            
+            if (kayitliOyuncuVerisi != null) {
+                RenkAraligi = new RangeInt(0,kayitliOyuncuVerisi.RenkSirasi);
+                MeyveAraligi = new RangeInt(0,kayitliOyuncuVerisi.MeyveSirasi);  
+            } else {
+                renkSirasi  = GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].RenkStart;
+                meyveSayisi = GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].MeyveStart;
+                SoloLevelManager.Instance.KaydetLevel(PlayerPrefs.GetInt("OynananLevelID"),renkSirasi,meyveSayisi,0);
+                kayitliOyuncuVerisi = SoloLevelManager.Instance.GetLevelVerisi(PlayerPrefs.GetInt("OynananLevelID")); 
+            } 
+        }
         
         PopUplar = FindFirstObjectByType<PopUplar>();
     }
@@ -113,6 +118,11 @@ public class GameManager : MonoBehaviour {
         if (OyunDurumu == OyunDurumlari.DevamEdiyor) {
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
                 GorevYoneticisi.Instance.CeplerinYidiziniGuncelle();
+            }
+
+            if (MainMenu.isSoloGame)
+            {
+                TasManeger.Instance.YeniTaslariOlustur(); 
             }
         }
     }
