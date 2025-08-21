@@ -93,32 +93,7 @@ public class SoloLevelManager : MonoBehaviour
             if (tablo == null) tablo = new LevelTablosu();
         }
     }
-
-    // 🔹 Örnek kullanım
-    // private void Update()
-    // {
-    //     // Test için: L tuşuna basınca Level 2 kaydet
-    //     if (Input.GetKeyDown(KeyCode.L))
-    //     {
-    //         KaydetLevel(2, 1, 3, 2);
-    //     }
-    //
-    //     // Test için: K tuşuna basınca Level 2 yükle
-    //     if (Input.GetKeyDown(KeyCode.K))
-    //     {
-    //         LevelVerisi lv = GetLevelVerisi(2);
-    //         if (lv != null)
-    //         {
-    //             Debug.Log(
-    //                 $"Level: {lv.Level}, Renk: {lv.RenkSirasi}, Meyve: {lv.MeyveSirasi}, Kalip: {lv.KalipSirasi}");
-    //         }
-    //         else
-    //         {
-    //             Debug.Log("Level bulunamadı!");
-    //         }
-    //     }
-    // }
-
+    
     public int GetMaxLevel()
     {
         if (tablo.LevelListesi.Count == 0) return 0; // hiç level yoksa 0 dön
@@ -128,12 +103,13 @@ public class SoloLevelManager : MonoBehaviour
     public void Guncelle()
     {
         if (!PuanLimitiDoldumu()) return;
+        
         if (IsaretleBelirtYoket.Instance.HamleSayisi >=
-            GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti)
-        {
+            GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti){
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
             return;
         }
-
+        
         sayac();
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
@@ -161,7 +137,7 @@ public class SoloLevelManager : MonoBehaviour
             }
             else
             { 
-                if (OynananLevel.Kalip != null && KalipSirasi < OynananLevel.Kalip.Count)
+                if (OynananLevel.Kalip != null && KalipSirasi < OynananLevel.Kalip.Count-1)
                 {
                     KalipSirasi++;
                     KaydetLevel(kayitliOyuncuVerisi.Level, RenkSirasi, MeyveSirasi, KalipSirasi);

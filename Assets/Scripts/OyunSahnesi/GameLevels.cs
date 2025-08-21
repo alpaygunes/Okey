@@ -52,7 +52,7 @@ public static class GameLevels
         Levels.Add(6, new Level(new List<string> { "0", "1", "2", "3", "4" },
             true, false, false, 2,4,2, 4, 10, 800));
         Levels.Add(7, new Level(new List<string> { "5", "6", "7", "8", "9" },
-            true, false, false, 2,4,2, 4, 10, 800));
+            true, false, false, 2,8,2, 8, 10, 800));
         Levels.Add(8, new Level(new List<string> { "A", "B", "C", "D", "E" },
             true, true, false, 2,4,2, 4, 10, 800));
         Levels.Add(9, new Level(new List<string> { "F", "G", "H", "I", "i" },

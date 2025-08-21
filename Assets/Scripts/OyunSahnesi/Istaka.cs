@@ -92,8 +92,10 @@ public class Istaka : MonoBehaviour{
         foreach (var cardtakiTas in cardtakiTaslar){
             if (cardtakiTas is null) break;
             var CardtakiTas = TasManeger.Instance.TasInstances[cardtakiTas];
+            if (CardtakiTas.kilitli) continue;
             CardtakiTas.persizIstakaTaslariGostergesi.SetActive(true);
             //CardtakiTas.TiklanaBilir = false;
+            
         }
 
         foreach (var cepInstance in CepList){

@@ -1,7 +1,5 @@
 using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+using UnityEngine; 
 using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour {

@@ -256,14 +256,7 @@ public class Tas : MonoBehaviour
                     cTasscript.meyveResmi.gameObject.SetActive(false);
                     tiklanaBilir = false;
                 }
-
-                /*if (cTasscript.kutuInstance && gorevleUyumBayragi > 0)
-                {
-                    cTasscript.kilitli = false;
-                    cTasscript.kutuInstance.KilitSayisi = 0;
-                    cTasscript.kutuInstance.Kilitlen();
-                }*/
-                
+ 
                 if (cTasscript.kilitli)
                 {
                     cTasscript.meyveResmi.gameObject.SetActive(true);
