@@ -109,7 +109,6 @@ public class LobbyManager : NetworkBehaviour {
             Debug.Log($"LobbyCreate Hata {e.Message}");
         }
     }
-
     private IEnumerator UpdateLobbyLoop() {
         // host a görünen lobideki player list
         while (true) {
@@ -117,20 +116,17 @@ public class LobbyManager : NetworkBehaviour {
             _ = UpdateLobbyAsync();
         }
     }
-
     public void StartHeartbeat() {
         if (heartbeatCoroutine == null) {
             heartbeatCoroutine = StartCoroutine(SendHeartbeatRoutine());
         }
     }
-
     public void StopHeartbeat() {
         if (heartbeatCoroutine != null) {
             StopCoroutine(heartbeatCoroutine);
             heartbeatCoroutine = null;
         }
     }
-
     private IEnumerator SendHeartbeatRoutine() {
         while (true) {
             if (CurrentLobby != null) {
@@ -140,7 +136,6 @@ public class LobbyManager : NetworkBehaviour {
             yield return new WaitForSeconds(15f); // her 15 saniyede bir ping
         }
     }
-
     public async Task StartHostWithRelay() {
         try {
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening) {
@@ -190,7 +185,6 @@ public class LobbyManager : NetworkBehaviour {
             Debug.LogError("Genel HATA : " + ex.ToString());
         }
     }
-
     public async Task StartClientRelay(string joinCode, string connectionType) {
         if (IsHost) return;
         try {
@@ -212,7 +206,6 @@ public class LobbyManager : NetworkBehaviour {
             Debug.LogError($"StartClientRelay HATA: {ex.Message}");
         }
     }
-
     private async Task UpdateLobbyAsync() {
         try {
             CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
@@ -222,7 +215,6 @@ public class LobbyManager : NetworkBehaviour {
             Debug.LogWarning($"Lobby güncelleme HATA : {ex.Message}");
         }
     }
-
     public async Task<QueryResponse> GetLobbyList() {
         try {
             QueryLobbiesOptions options = new QueryLobbiesOptions
@@ -245,7 +237,6 @@ public class LobbyManager : NetworkBehaviour {
             return null;
         }
     }
-
     public async Task<bool> JoinLobbyByID(string lobbyID) {
         if (string.IsNullOrEmpty(lobbyID)) return false;
         try {
@@ -316,11 +307,9 @@ public class LobbyManager : NetworkBehaviour {
 
         return true;
     }
-
     private void OnLobbyChangedForBtn(ILobbyChanges obj) {
         _ = OnLobbyChanged(obj);
     }
-
     private async Task OnLobbyChanged(ILobbyChanges changes) {
         // Data değişikliklerini kontrol et
         if (changes != null && changes.Data.Value != null) {
@@ -336,7 +325,6 @@ public class LobbyManager : NetworkBehaviour {
             }
         }
     }
-
     private void LobiVerisiDegisti(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> data) {
         if (data.TryGetValue("isGameStarted", out var isGameStarted)) {
             IsGameStarted = (isGameStarted.Value.Value == "true") ? true : false;
@@ -358,7 +346,6 @@ public class LobbyManager : NetworkBehaviour {
             }
         }
     }
-
     private void OnClientPlayerLeft(List<int> playerIds) {
         if (CurrentLobby.Players.Any(p => p.Id == AuthenticationService.Instance.PlayerId)) {
             _ = LobbyListUI.Instance.OnLobbyListButtonClicked();
@@ -372,19 +359,16 @@ public class LobbyManager : NetworkBehaviour {
     private void OnPlayerLeft(List<int> playerIds) {
         _ = HandlePlayerLeftAsync(playerIds);
     }
-
     private async Task HandlePlayerJoinedAsync(List<LobbyPlayerJoined> players) {
         var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         CurrentLobby = updatedLobby;
         LobbyListUI.Instance.RefreshPlayerList();
     }
-
     private async Task HandlePlayerLeftAsync(List<int> playerIds) {
         var updatedLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         CurrentLobby = updatedLobby;
         LobbyListUI.Instance.RefreshPlayerList();
     }
-
     public override void OnNetworkSpawn() {
         if (IsHost) {
             NetworkManager.Singleton.SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);

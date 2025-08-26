@@ -68,12 +68,12 @@ public class Tas : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<Collider2D>();
-        var acikRenk = Color.Lerp(Renk, Color.white, 1f);
-        zeminSpriteRenderer.color = acikRenk;
+        // var acikRenk = Color.Lerp(Renk, Color.white, 1f);
+        // zeminSpriteRenderer.color = acikRenk;
         Sprite sprite = Resources.Load<Sprite>("Images/Meyveler/" + MeyveID);
         MeyveResmiSpriteRenderer.sprite = sprite;
-        var koyuRenk = Color.Lerp(Renk, Color.black, 0.0f);
-        MeyveResmiSpriteRenderer.color = koyuRenk;
+        //var koyuRenk = Color.Lerp(Renk, Color.black, 0.0f);
+        MeyveResmiSpriteRenderer.color = Renk;
         MeyveResmiSpriteRenderer.transform.localScale *= 1.25f;
         TextMeyveID.text = MeyveID.ToString();
         orginalScale = MeyveResmiSpriteRenderer.transform.localScale;

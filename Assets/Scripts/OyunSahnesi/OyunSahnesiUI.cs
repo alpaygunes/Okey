@@ -31,9 +31,12 @@ public class OyunSahnesiUI : MonoBehaviour
     private void OnEnable(){
         rootElement = GetComponent<UIDocument>().rootVisualElement;
         SkorTxt = rootElement.Q<Label>("Skor");
+        //SkorTxt.style.display =    DisplayStyle.None;
         KalanTasSayisi = rootElement.Q<Label>("KalanTasSayisi");
+        KalanTasSayisi.style.display =    DisplayStyle.None;
         HamleSayisi = rootElement.Q<Label>("HamleSayisi");
-        GeriSayim = rootElement.Q<Label>("GeriSayim");
+        GeriSayim = rootElement.Q<Label>("GeriSayim"); 
+        GeriSayim.style.display =    DisplayStyle.None;
         GorevSayisiLbl = rootElement.Q<Label>("GorevSayisi");
         AltinSayisi = rootElement.Q<Label>("AltinSayisi");
         ElmasSayisi = rootElement.Q<Label>("ElmasSayisi");
@@ -44,7 +47,7 @@ public class OyunSahnesiUI : MonoBehaviour
         DegerlendirmeYap.clicked += PerleriDegerlendir;
         DegerlendirmeYap.style.display = DisplayStyle.None;
         GorevSayisiLbl.style.display =    DisplayStyle.None;
-        CanSayisi.style.display =    DisplayStyle.Flex;
+        CanSayisi.style.display =    DisplayStyle.None;
         GeriSayim.text = null;
         GorevSayisiLbl.text = null;
         CanSayisi.text = null;
@@ -54,13 +57,18 @@ public class OyunSahnesiUI : MonoBehaviour
         ElmasSayisi.text = "0";
         exit.clicked += () => {
             _ = LobbyManager.Instance.CikisIsteginiGonder();
-        }; 
+        };
         
+        if (MainMenu.isSoloGame)
+        {
+            avatars.style.display =    DisplayStyle.None;
+        }
+
         if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.ZamanLimitli){
             GeriSayim.text = OyunKurallari.Instance.ZamanLimiti.ToString();
-            GeriSayim.style.display =    DisplayStyle.Flex;
+            GeriSayim.style.display =    DisplayStyle.None;
         } else if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap){
-            GorevSayisiLbl.style.display =    DisplayStyle.Flex;
+            GorevSayisiLbl.style.display =    DisplayStyle.None;
             GorevSayisiLbl.text  = "1/"+OyunKurallari.Instance.GorevLimit.ToString();
         } else if(OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.HamleLimitli){
             HamleSayisi.style.display =    DisplayStyle.Flex;

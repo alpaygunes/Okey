@@ -59,11 +59,11 @@ public class MainMenu : MonoBehaviour{
         SPlayerBtn = rootElement.Q<Button>("SoloPlayer");
         MPlayerBtn = rootElement.Q<Button>("Multyplayer");
         Settings = rootElement.Q<Button>("Settings");
-        SPlayerBtn.clicked += ChangeSoloMultyMode; 
-        MPlayerBtn.clicked += ChangeSoloMultyMode; 
+        SPlayerBtn.clicked += () => ChangeSoloMultyMode("sp"); 
+        MPlayerBtn.clicked += () => ChangeSoloMultyMode("mp"); 
         Settings.clicked += OpenSettings; 
-        SPlayerBtn.enabledSelf = (!isSoloGame);
-        MPlayerBtn.enabledSelf = (isSoloGame);
+        SPlayerBtn.enabledSelf = true;
+        MPlayerBtn.enabledSelf = true;
     }
 
     private void OpenSettings(){ 
@@ -86,15 +86,17 @@ public class MainMenu : MonoBehaviour{
         SceneManager.LoadScene("LobbyManager");
     }
     
-    private void ChangeSoloMultyMode(){
-        isSoloGame = !isSoloGame;
-        MPlayerBtn.enabledSelf = isSoloGame;
-        SPlayerBtn.enabledSelf = !isSoloGame;
+    private void ChangeSoloMultyMode(string mode) { 
+        isSoloGame = (mode == "sp") ? true:false;   
+        OyunKurallari.Instance.GuncelOyunTipi = OyunKurallari.OyunTipleri.GorevYap;
+        SceneManager.LoadScene("LobbyManager"); 
     }
 
     private void OnDisable(){
         HamleLimitliBtn.clicked -= SearchHamleLimitliGame;
         ZamanLimitliBtn.clicked -= SearchZamanLimitliGame;
+        SPlayerBtn.clicked -= () => ChangeSoloMultyMode("sp"); 
+        MPlayerBtn.clicked -= () => ChangeSoloMultyMode("mp"); 
         GorevYap.clicked -= SearchGorevYapGame;
     }
     
