@@ -196,9 +196,13 @@ public class GameManager : MonoBehaviour {
         }
 #endif
 
-        OyunDurumu = Card.Instance.TiklanamazTasVar()
-            ? OyunDurumlari.DegerlendirmeYapiliyor
-            : OyunDurumlari.DevamEdiyor;
+        if (OyunDurumu != OyunDurumlari.OyunDurdu)
+        {
+            OyunDurumu = Card.Instance.TiklanamazTasVar()
+                ? OyunDurumlari.DegerlendirmeYapiliyor
+                : OyunDurumlari.DevamEdiyor; 
+        }
+
     }
 
     void TiklamaTuslamaKontrol(Vector2 worldPoint) {

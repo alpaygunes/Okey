@@ -489,6 +489,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95aed21196fc2eeb0998b97863655577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RenkliMeyveler0: []
+  RenkliMeyveler1:
+  - {fileID: -8531860443246922559, guid: 667e8312118928a20bcfe244cfa77d81, type: 3}
+  RenkliMeyveler2: []
+  RenkliMeyveler3: []
+  RenkliMeyveler4: []
+  RenkliMeyveler5: []
+  RenkliMeyveler6: []
+  RenkliMeyveler7: []
   MeyveID: 0
   Renk: {r: 0, g: 0, b: 0, a: 0}
   zeminSpriteRenderer: {fileID: 0}

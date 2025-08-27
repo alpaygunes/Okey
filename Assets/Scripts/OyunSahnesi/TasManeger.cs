@@ -21,17 +21,17 @@ public class TasManeger : MonoBehaviour{
             var Tas = Instantiate(tare, new Vector3(0, 0, 5), Quaternion.identity); 
             var tasScribe = Tas.GetComponentInChildren<Tas>(); 
             tasScribe.MeyveID = data.number;
-            tasScribe.Renk = Renkler.RenkSozlugu[data.color]; 
+            tasScribe.RenkID = data.colorID; 
             TasList.Add(Tas);
         }
     }
     
     public class Data{
         public int number;
-        public int color;
-        public Data(int number, int color){
+        public int colorID;
+        public Data(int number, int colorID){
             this.number = number;
-            this.color = color;
+            this.colorID = colorID;
         }
     }
 

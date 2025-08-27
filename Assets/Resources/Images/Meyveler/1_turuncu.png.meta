@@ -1,28 +1,43 @@
 fileFormatVersion: 2
-guid: bcb787b84427dd8afb8bff43e2760405
+guid: 75da23ef090ee40c59b42b3f5cfc1105
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4349915267927364619
-    second: 15_0
+      213: 3907475852210601273
+    second: 1_turuncu_0
   - first:
-      213: -8095896006545369725
-    second: 15_1
+      213: 7752879333809224070
+    second: 1_turuncu_1
   - first:
-      213: 5739011196802332283
-    second: 15_2
+      213: -5558365397717368106
+    second: 1_turuncu_2
   - first:
-      213: 4055332100673554613
-    second: 15_3
+      213: -8778984221936875546
+    second: 1_turuncu_3
   - first:
-      213: -9045062984340565635
-    second: 15_4
+      213: -3326409639751576527
+    second: 1_turuncu_4
   - first:
-      213: 2424684528825360195
-    second: 15_5
+      213: -6165449710009518087
+    second: 1_turuncu_5
   - first:
-      213: 1958067786081142177
-    second: 15_6
+      213: -8672750330669676360
+    second: 1_turuncu_6
+  - first:
+      213: -3732478029605031530
+    second: 1_turuncu_7
+  - first:
+      213: -2707125988620419167
+    second: 1_turuncu_8
+  - first:
+      213: 2256351374612412855
+    second: 1_turuncu_9
+  - first:
+      213: -903384567015136893
+    second: 1_turuncu_10
+  - first:
+      213: -7247571325100491676
+    second: 1_turuncu_11
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -69,7 +84,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -144,13 +159,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 15_0
+      name: 1_turuncu_0
       rect:
         serializedVersion: 2
-        x: 125
-        y: 245
-        width: 34
-        height: 11
+        x: 55
+        y: 290
+        width: 153
+        height: 183
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b04dbdba3e00e5c30800000000000000
-      internalID: 4349915267927364619
+      spriteID: 93dfd6bb5942a3630800000000000000
+      internalID: 3907475852210601273
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 15_1
+      name: 1_turuncu_1
       rect:
         serializedVersion: 2
-        x: 137
-        y: 230
-        width: 36
-        height: 21
+        x: 316
+        y: 305
+        width: 145
+        height: 153
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +196,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3851c57d97995af80800000000000000
-      internalID: -8095896006545369725
+      spriteID: 6897a267da2c79b60800000000000000
+      internalID: 7752879333809224070
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 15_2
+      name: 1_turuncu_2
       rect:
         serializedVersion: 2
-        x: 47
-        y: 1
-        width: 209
-        height: 229
+        x: 585
+        y: 310
+        width: 122
+        height: 143
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,20 +218,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b767463e64015af40800000000000000
-      internalID: 5739011196802332283
+      spriteID: 6d2cb39ce18bcd2b0800000000000000
+      internalID: -5558365397717368106
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 15_3
+      name: 1_turuncu_3
       rect:
         serializedVersion: 2
-        x: 213
-        y: 94
-        width: 6
-        height: 6
+        x: 825
+        y: 290
+        width: 157
+        height: 183
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,20 +240,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5b8c2ea3f0f674830800000000000000
-      internalID: 4055332100673554613
+      spriteID: 6e781bafc58ca2680800000000000000
+      internalID: -8778984221936875546
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 15_4
+      name: 1_turuncu_4
       rect:
         serializedVersion: 2
-        x: 224
-        y: 76
-        width: 8
-        height: 7
+        x: 1077
+        y: 290
+        width: 168
+        height: 183
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,20 +262,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d719857732b797280800000000000000
-      internalID: -9045062984340565635
+      spriteID: 1341c258e0836d1d0800000000000000
+      internalID: -3326409639751576527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 15_5
+      name: 1_turuncu_5
       rect:
         serializedVersion: 2
-        x: 106
-        y: 18
-        width: 18
-        height: 27
+        x: 1345
+        y: 290
+        width: 131
+        height: 183
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -269,20 +284,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34f55018bb536a120800000000000000
-      internalID: 2424684528825360195
+      spriteID: 9f7f85a972cef6aa0800000000000000
+      internalID: -6165449710009518087
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 15_6
+      name: 1_turuncu_6
       rect:
         serializedVersion: 2
-        x: 112
-        y: 0
-        width: 7
-        height: 8
+        x: 67
+        y: 42
+        width: 127
+        height: 164
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -291,8 +306,118 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a58083f6447c2b10800000000000000
-      internalID: 1958067786081142177
+      spriteID: 8b848c2468334a780800000000000000
+      internalID: -8672750330669676360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 1_turuncu_7
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 32
+        width: 117
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6913171f103933cc0800000000000000
+      internalID: -3732478029605031530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 1_turuncu_8
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 32
+        width: 93
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1af3d0e914b5e6ad0800000000000000
+      internalID: -2707125988620419167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 1_turuncu_9
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 44
+        width: 123
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b9bc3cde9b205f10800000000000000
+      internalID: 2256351374612412855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 1_turuncu_10
+      rect:
+        serializedVersion: 2
+        x: 1071
+        y: 47
+        width: 159
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3812e7bc5888673f0800000000000000
+      internalID: -903384567015136893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 1_turuncu_11
+      rect:
+        serializedVersion: 2
+        x: 1329
+        y: 51
+        width: 153
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46cf31377447b6b90800000000000000
+      internalID: -7247571325100491676
       vertices: []
       indices: 
       edges: []
@@ -311,13 +436,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      15_0: 4349915267927364619
-      15_1: -8095896006545369725
-      15_2: 5739011196802332283
-      15_3: 4055332100673554613
-      15_4: -9045062984340565635
-      15_5: 2424684528825360195
-      15_6: 1958067786081142177
+      1_turuncu_0: 3907475852210601273
+      1_turuncu_1: 7752879333809224070
+      1_turuncu_10: -903384567015136893
+      1_turuncu_11: -7247571325100491676
+      1_turuncu_2: -5558365397717368106
+      1_turuncu_3: -8778984221936875546
+      1_turuncu_4: -3326409639751576527
+      1_turuncu_5: -6165449710009518087
+      1_turuncu_6: -8672750330669676360
+      1_turuncu_7: -3732478029605031530
+      1_turuncu_8: -2707125988620419167
+      1_turuncu_9: 2256351374612412855
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

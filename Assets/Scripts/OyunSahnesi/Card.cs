@@ -159,7 +159,7 @@ public class Card : MonoBehaviour
                         }
                         else if (pTaslar.Count == 4)
                         {
-                            if (pTasInstance.Renk == cTasInstance.Renk)
+                            if (pTasInstance.RenkID == cTasInstance.RenkID)
                             {
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
@@ -184,7 +184,7 @@ public class Card : MonoBehaviour
                         else if (pTaslar.Count == 4)
                         {
                             if (pTasInstance.MeyveID == cTasInstance.MeyveID
-                                && pTasInstance.Renk == cTasInstance.Renk)
+                                && pTasInstance.RenkID == cTasInstance.RenkID)
                             {
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
@@ -194,7 +194,7 @@ public class Card : MonoBehaviour
                         }
                         else if (pTaslar.Count == 5)
                         {
-                            if (pTasInstance.Renk == cTasInstance.Renk)
+                            if (pTasInstance.RenkID == cTasInstance.RenkID)
                             {
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
@@ -214,7 +214,7 @@ public class Card : MonoBehaviour
                     {
                         if (pTaslar.Count == 3)
                         {
-                            if (pTasInstance.MeyveID == cTasInstance.MeyveID && pTasInstance.Renk == cTasInstance.Renk)
+                            if (pTasInstance.MeyveID == cTasInstance.MeyveID && pTasInstance.RenkID == cTasInstance.RenkID)
                             {
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
@@ -234,7 +234,7 @@ public class Card : MonoBehaviour
                         }
                         else if (pTaslar.Count == 5)
                         {
-                            if (pTasInstance.Renk == cTasInstance.Renk)
+                            if (pTasInstance.RenkID == cTasInstance.RenkID)
                             {
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
@@ -242,7 +242,7 @@ public class Card : MonoBehaviour
                                 cTasInstance.ptasIleUyumluGostergesi.SetActive(true);
                             }
                         } else if (pTaslar.Count >= 6) {
-                            if (pTasInstance.Renk == cTasInstance.Renk) {
+                            if (pTasInstance.RenkID == cTasInstance.RenkID) {
                                 pTasInstance.BonusOlarakEslesenTaslar.Add(pTasInstance.BonusOlarakEslesenTaslar.Count,
                                     cTasInstance);
                                 cTasInstance.bonusBayragi = true;

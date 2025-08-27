@@ -13,21 +13,21 @@ public class GorevYoneticisi : NetworkBehaviour{
     
     public struct TasData : INetworkSerializable, IEquatable<TasData>{
         public int MeyveID;
-        public Color32 Renk;
+        public int RenkID;
 
         public void NetworkSerialize<T>(BufferSerializer<T> ser) where T : IReaderWriter{
             ser.SerializeValue(ref MeyveID);
-            ser.SerializeValue(ref Renk);
+            ser.SerializeValue(ref RenkID);
         }
 
         public bool Equals(TasData other) =>
-            MeyveID == other.MeyveID && Renk.Equals(other.Renk);
+            MeyveID == other.MeyveID && RenkID.Equals(other.RenkID);
 
         public override bool Equals(object obj) =>
             obj is TasData other && Equals(other);
 
         public override int GetHashCode() =>
-            HashCode.Combine(MeyveID, Renk);
+            HashCode.Combine(MeyveID, RenkID);
     }
 
     public struct GorevData : INetworkSerializable, IEquatable<GorevData>{
@@ -175,9 +175,9 @@ public class GorevYoneticisi : NetworkBehaviour{
         
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
-        Color32 color = Renkler.RenkSozlugu[UnityEngine.Random.Range(renkStart, renkEnd )];
+        int color = UnityEngine.Random.Range(renkStart, renkEnd );
         foreach (int sayi in secilenSayilar){
-            gorev.Taslar.Add(new TasData { MeyveID = sayi, Renk = color });
+            gorev.Taslar.Add(new TasData { MeyveID = sayi, RenkID = color });
         }
 
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
@@ -226,7 +226,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             gorev.Taslar.Add(new TasData
             {
                 MeyveID = secilenRakam,
-                Renk = Renkler.RenkSozlugu[renkHavuzu[i]]
+                RenkID = renkHavuzu[i]
             });
         }
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
@@ -275,7 +275,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             gorev.Taslar.Add(new TasData
             {
                 MeyveID = secilenMeyve,
-                Renk  = Renkler.RenkSozlugu[renkHavuzu[0]]
+                RenkID  = renkHavuzu[0]
             });
         }
 
@@ -323,8 +323,8 @@ public class GorevYoneticisi : NetworkBehaviour{
             GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
             var gTas = Instantiate(gTasPref, new Vector3(x, body.transform.position.y, .1f), Quaternion.identity);
             gTas.transform.localScale = new Vector3(aralikMesafesi, aralikMesafesi, .1f);
-            gTas.GetComponent<gTas>().meyveID = gorevTasi.MeyveID;
-            gTas.GetComponent<gTas>().renk = gorevTasi.Renk;
+            gTas.GetComponent<gTas>().MeyveID = gorevTasi.MeyveID;
+            gTas.GetComponent<gTas>().RenkID = gorevTasi.RenkID;
             gTas.transform.SetParent(body.transform);
             gTas.SetActive(true);
             gTas.tag  = "gTas";
@@ -348,9 +348,9 @@ public class GorevYoneticisi : NetworkBehaviour{
                 if (pTas.cepInstance ==null) continue;
                 if (gorevTaslari.Length == pTas.cepInstance.colID) break; 
                 var gTas = gorevTaslari[pTas.cepInstance.colID];
-                if (pTas.MeyveID == gTas.MeyveID && pTas.Renk == gTas.Renk){
+                if (pTas.MeyveID == gTas.MeyveID && pTas.RenkID == gTas.RenkID){
                     pTas.gorevleUyumBayragi = 2; 
-                }else if (pTas.MeyveID == gTas.MeyveID || pTas.Renk == gTas.Renk){ 
+                }else if (pTas.MeyveID == gTas.MeyveID || pTas.RenkID == gTas.RenkID){ 
                     pTas.gorevleUyumBayragi = 1; 
                 }   
             }
@@ -377,10 +377,10 @@ public class GorevYoneticisi : NetworkBehaviour{
             GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
             var gTas = gorevTaslari[cepScript.colID];
             int uyumSayisi = 0;
-            if (gTas.GetComponent<gTas>().renk == tas.Renk){ 
+            if (gTas.GetComponent<gTas>().RenkID == tas.RenkID){ 
                 uyumSayisi++;
             }
-            if (gTas.GetComponent<gTas>().meyveID == tas.MeyveID){ 
+            if (gTas.GetComponent<gTas>().MeyveID == tas.MeyveID){ 
                 uyumSayisi++;
             }
             cepScript.YildiziYak(uyumSayisi);  

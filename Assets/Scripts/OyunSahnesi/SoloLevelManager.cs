@@ -27,6 +27,7 @@ public class SoloLevelManager : MonoBehaviour
     public LevelTablosu tablo = new LevelTablosu();
     private string dosyaYolu;
     public static SoloLevelManager Instance;
+    public string AsilanLimit { get; set; }
 
     private void Awake()
     {
@@ -93,7 +94,7 @@ public class SoloLevelManager : MonoBehaviour
             if (tablo == null) tablo = new LevelTablosu();
         }
     }
-    
+
     public int GetMaxLevel()
     {
         if (tablo.LevelListesi.Count == 0) return 0; // hiç level yoksa 0 dön
@@ -103,15 +104,19 @@ public class SoloLevelManager : MonoBehaviour
     public void Guncelle()
     {
         if (!PuanLimitiDoldumu()) return;
-        
+
         if (IsaretleBelirtYoket.Instance.HamleSayisi >=
-            GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti){
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti)
+        {
+            AsilanLimit = "HamleLimiti";
+            GameManager.Instance.PopUplar.Goster(AsilanLimit);
+            //SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
             return;
         }
-        
-        sayac();
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+
+        AsilanLimit = "";
+        sayac(); 
+        GameManager.Instance.PopUplar.Goster(AsilanLimit); 
     }
 
     private void sayac()
@@ -127,31 +132,39 @@ public class SoloLevelManager : MonoBehaviour
             MeyveSirasi++;
             KaydetLevel(kayitliOyuncuVerisi.Level, kayitliOyuncuVerisi.RenkSirasi, MeyveSirasi,
                 kayitliOyuncuVerisi.KalipSirasi);
+            AsilanLimit = "Meyve";
         }
         else
-        {
+        { 
             if (RenkSirasi < OynananLevel.RenkEnd)
             {
                 RenkSirasi++;
                 KaydetLevel(kayitliOyuncuVerisi.Level, RenkSirasi, MeyveSirasi, kayitliOyuncuVerisi.KalipSirasi);
+                AsilanLimit = "Renk";
             }
             else
             { 
-                if (OynananLevel.Kalip != null && KalipSirasi < OynananLevel.Kalip.Count-1)
+                if (OynananLevel.Kalip != null && KalipSirasi < OynananLevel.Kalip.Count - 1)
                 {
                     KalipSirasi++;
                     KaydetLevel(kayitliOyuncuVerisi.Level, RenkSirasi, MeyveSirasi, KalipSirasi);
-                } else {
+                    AsilanLimit = "Kalip";
+                }
+                else
+                {  
                     var NewLevel = kayitliOyuncuVerisi.Level;
                     NewLevel++;
-                    if (GetLevelVerisi(NewLevel) == null) {
+                    // if (GetLevelVerisi(NewLevel) == null)
+                    // {
+                        AsilanLimit = "PuanLimiti";
                         var limitler = GameLevels.Levels[NewLevel];
                         KaydetLevel(NewLevel, limitler.RenkStart, limitler.MeyveStart, 0);
-                    }
+                    // }
                 }
             }
         }
     }
+
 
     private bool PuanLimitiDoldumu()
     {
@@ -163,8 +176,15 @@ public class SoloLevelManager : MonoBehaviour
 
         toplananPuan += bonusMeyveSayisi;
         toplananPuan += altinSayisi * 4;
-        toplananPuan += elmasSayisi * 10;
-        Debug.Log($"ToplananPuan : {toplananPuan}");
+        toplananPuan += elmasSayisi * 10; 
+        OyunSahnesiUI.Instance.SkorTxt.text = toplananPuan.ToString();
+        if (toplananPuan >= levelGecmePuani)
+        {
+            PuanlamaIStatistikleri.BonusMeyveSayisi = 0;
+            PuanlamaIStatistikleri.AltinSayisi= 0;
+            PuanlamaIStatistikleri.ElmasSayisi= 0;
+        } 
+        
         return toplananPuan >= levelGecmePuani;
     }
 }

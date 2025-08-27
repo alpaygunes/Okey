@@ -1,22 +1,31 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PopUplar : MonoBehaviour {
     public GameObject meyvePopUp;
     public GameObject renkPopUp;
     public GameObject kalipPopUp;
     public GameObject HamleLimitiPopUp;
+    public GameObject PuanLimitiPopUp;
 
     void Start() {
         meyvePopUp = transform.Find("Meyve").gameObject;
         renkPopUp = transform.Find("Renk").gameObject;
         kalipPopUp = transform.Find("Kalip").gameObject;
         HamleLimitiPopUp = transform.Find("HamleLimiti").gameObject;
+        PuanLimitiPopUp = transform.Find("PuanLimiti").gameObject;
         Gizle();
     }
 
     public void Goster(string asilanLimitAdi) {
-        if (asilanLimitAdi != "") transform.gameObject.SetActive(true);
+        if (asilanLimitAdi != "")
+        {
+            GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.OyunDurdu;
+            transform.gameObject.SetActive(true);
+            Invoke("Gizle", 5f);
+            Invoke("toLobbyManager",6f);
+        } 
 
         if (asilanLimitAdi == "Meyve") {
             meyvePopUp.SetActive(true);
@@ -30,14 +39,20 @@ public class PopUplar : MonoBehaviour {
         }else if (asilanLimitAdi == "HamleLimiti") {
             HamleLimitiPopUp.SetActive(true);
             HamleLimitiPopUp.transform.Find("Txt").GetComponent<TextMeshPro>().text = "HamleLimiti " + IsaretleBelirtYoket.Instance.HamleSayisi.ToString();
-        }
-        Invoke("Gizle", 5f);
+        }else if (asilanLimitAdi == "PuanLimiti") {
+            PuanLimitiPopUp.SetActive(true);
+            PuanLimitiPopUp.transform.Find("Txt").GetComponent<TextMeshPro>().text = "Yeni Seviye ";
+        } 
     }
 
     void Gizle() {
         meyvePopUp.SetActive(false);
         renkPopUp.SetActive(false);
         kalipPopUp.SetActive(false);
-        transform.gameObject.SetActive(false);
+        transform.gameObject.SetActive(false); 
+    }
+    
+    void toLobbyManager() {
+        SceneManager.LoadScene("LobbyManager", LoadSceneMode.Single);
     }
 }

@@ -44,7 +44,7 @@ public static class OdulKutulariYoneticisi {
                     var kutuylaOrtusenTas = kutuscript.OdulKutusunaTemasEdenMeyve();
                     if (kutuylaOrtusenTas) {
                         if (TasManeger.Instance.TasInstances[kutuylaOrtusenTas].MeyveID == pTas.MeyveID
-                            && TasManeger.Instance.TasInstances[kutuylaOrtusenTas].Renk == pTas.Renk) {
+                            && TasManeger.Instance.TasInstances[kutuylaOrtusenTas].RenkID == pTas.RenkID) {
                             //TODO EŞLEŞEN ÖDÜL KUTUSUNDAN KARTTAKİ TAŞLARA ŞİMŞEKLER ÇAKARAK TAŞLARI YOK EDECEK
                             Debug.Log("Eslesme var."); 
                         }

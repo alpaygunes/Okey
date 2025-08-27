@@ -106,7 +106,7 @@ public class PerKontrolBirimi : MonoBehaviour{
                 if (j == cloneperAdayGrubu.Count - 1) break;
                 var st = cloneperAdayGrubu[j];
                 if (i == j) continue;
-                if (t.Renk != st.Renk){
+                if (t.RenkID != st.RenkID){
                     RA = false;
                     break;
                 }
@@ -120,7 +120,7 @@ public class PerKontrolBirimi : MonoBehaviour{
                 if (rr == cloneperAdayGrubu.Count - 1) break;
                 var st = cloneperAdayGrubu[rr];
                 if (r == rr) continue;
-                if (t.Renk == st.Renk){
+                if (t.RenkID == st.RenkID){
                     RF = false;
                     break;
                 }
