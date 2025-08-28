@@ -110,7 +110,7 @@ public class Card : MonoBehaviour
                     var uTasInstance = TasManeger.Instance.TasInstances[cTas];
                     uTasInstance.tiklanaBilir = false;
                     uTasInstance.StartCoroutine(uTasInstance.BekleYokol(beklemeSuresi));
-                    beklemeSuresi += 0.1f;
+                    beklemeSuresi += 0.05f;
                 }
             }
         }
@@ -118,7 +118,7 @@ public class Card : MonoBehaviour
 
     public void PtasIleUyumluCtaslariYoket()
     {
-        float beklemeSuresi = .1f;
+        float beklemeSuresi = .5f;
         foreach (var grup in PerKontrolBirimi.Instance.Gruplar)
         {
             foreach (var pTas in grup.Value.Taslar)
@@ -127,9 +127,13 @@ public class Card : MonoBehaviour
                 {
                     bonusTaslari.Value.tiklanaBilir = false;
                     bonusTaslari.Value.StartCoroutine(bonusTaslari.Value.BekleYokol(beklemeSuresi));
-                    if (!bonusTaslari.Value.kilitli)
-                        beklemeSuresi += .1f;
+                    // if (!bonusTaslari.Value.kilitli)
+                    //     beklemeSuresi += .1f;
                 }
+                pTas.cepInstance?.YildiziYak(0); 
+                pTas.tiklanaBilir = false;
+                pTas.StartCoroutine(pTas.BekleYokol(beklemeSuresi));
+                beklemeSuresi += .5f;
             }
         }
     }

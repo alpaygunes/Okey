@@ -1,9 +1,7 @@
 using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Collections.Generic; 
 using System.IO;
-using System.Linq;
-using UnityEngine.SceneManagement;
+using System.Linq; 
 
 
 [System.Serializable]
@@ -109,14 +107,14 @@ public class SoloLevelManager : MonoBehaviour
             GameLevels.Levels[PlayerPrefs.GetInt("OynananLevelID")].HamleLimiti)
         {
             AsilanLimit = "HamleLimiti";
-            GameManager.Instance.PopUplar.Goster(AsilanLimit);
+            GameManager.Instance.PopUplar.YeniBasariGoster(AsilanLimit);
             //SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
             return;
         }
 
         AsilanLimit = "";
         sayac(); 
-        GameManager.Instance.PopUplar.Goster(AsilanLimit); 
+        GameManager.Instance.PopUplar.YeniBasariGoster(AsilanLimit); 
     }
 
     private void sayac()
@@ -159,7 +157,8 @@ public class SoloLevelManager : MonoBehaviour
                         AsilanLimit = "PuanLimiti";
                         var limitler = GameLevels.Levels[NewLevel];
                         KaydetLevel(NewLevel, limitler.RenkStart, limitler.MeyveStart, 0);
-                    // }
+                        PlayerPrefs.SetInt("OynananLevelID", NewLevel);
+                        // }
                 }
             }
         }

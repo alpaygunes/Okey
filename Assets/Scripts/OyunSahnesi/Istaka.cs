@@ -105,17 +105,17 @@ public class Istaka : MonoBehaviour{
         }
     }
     
-    public void PtaslariYoket(){ 
-        float beklemeSuresi = .1f;
-        foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
-            foreach (var pTas in grup.Value.Taslar){ 
-                pTas.cepInstance?.YildiziYak(0);
-                beklemeSuresi += .1f;
-                pTas.tiklanaBilir = false;
-                pTas.StartCoroutine(pTas.BekleYokol(beklemeSuresi));
-            } 
-        }
-    }
+    // public void PtaslariYoket(){ 
+    //     float beklemeSuresi = .1f;
+    //     foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
+    //         foreach (var pTas in grup.Value.Taslar){ 
+    //             pTas.cepInstance?.YildiziYak(0);
+    //             beklemeSuresi += .1f;
+    //             pTas.tiklanaBilir = false;
+    //             pTas.StartCoroutine(pTas.BekleYokol(beklemeSuresi));
+    //         } 
+    //     }
+    // }
     
     public void IlkBosCebiBelirt(){
         Cep ilkBosCep = null;

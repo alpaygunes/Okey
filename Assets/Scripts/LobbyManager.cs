@@ -467,7 +467,7 @@ public class LobbyManager : NetworkBehaviour {
         }
     }
 
-    public void StartSolo() { 
+    public void StartSolo() {  
         SceneManager.LoadScene("OyunSahnesi", LoadSceneMode.Single);
     }
 }

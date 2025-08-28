@@ -136,7 +136,7 @@ public class IsaretleBelirtYoket : MonoBehaviour {
             if (MainMenu.isSoloGame) SoloLevelManager.Instance.Guncelle();
             Card.Instance.GoreveUyumluCtasYoket();
             Card.Instance.PtasIleUyumluCtaslariYoket();
-            Istaka.Instance.PtaslariYoket(); 
+            //Istaka.Instance.PtaslariYoket(); 
         }
     }
 }

@@ -249,8 +249,7 @@ public class Tas : MonoBehaviour
         {
             var cTasscript = TasManeger.Instance.TasInstances[cTas];
             if (cTasscript.colID == cepInstance.colID)
-            {
-                //if (cTasscript.kilitli) continue;
+            { 
                 if (gorevleUyumBayragi == 1)
                 {
                     cTasscript.gorevUyumGostergesi1.gameObject.SetActive(true);
@@ -269,9 +268,7 @@ public class Tas : MonoBehaviour
                     cTasscript.meyveResmi.gameObject.SetActive(true);
                     cTasscript.gorevUyumGostergesi1.gameObject.SetActive(false);
                     cTasscript.gorevUyumGostergesi2.gameObject.SetActive(false);
-                }
-
-                ;
+                } 
 
                 ayniKolondakiAltinveElmasTaslar.Add(cTas);
             }

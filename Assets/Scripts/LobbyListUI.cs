@@ -28,7 +28,7 @@ public class LobbyListUI : MonoBehaviour
     public Button StartRelay;
     public Button StartSolo;
     public VisualElement SoloLevels;
-    public VisualElement Levels;
+    public VisualElement LevelsButtonlari;
     public bool joinedToLobby = false;
     private VisualElement rootElement;
     public Button katilBtn;
@@ -56,9 +56,9 @@ public class LobbyListUI : MonoBehaviour
             lobbyListUpdateCoroutine = null;
         }
 
-        if (Levels != null)
+        if (LevelsButtonlari != null)
         {
-            foreach (var child in Levels.Children())
+            foreach (var child in LevelsButtonlari.Children())
             {
                 if (child is Button button)
                 {
@@ -81,7 +81,7 @@ public class LobbyListUI : MonoBehaviour
         StartRelay = rootElement.Q<Button>("StartRelay");
         SoloLevels = rootElement.Q<VisualElement>("SoloLevels");
         StartSolo = SoloLevels.Q<Button>("StartSolo");
-        Levels = SoloLevels.Q<VisualElement>("Levels");
+        LevelsButtonlari = SoloLevels.Q<VisualElement>("Levels");
         QuitToMainMenu = rootElement.Q<Button>("QuitToMainMenu");
         StartRelay.style.display = DisplayStyle.None;
         StartSolo.style.display = DisplayStyle.None;
@@ -155,7 +155,7 @@ public class LobbyListUI : MonoBehaviour
                 lvlBtn.SetEnabled(false);
             }
 
-            Levels.Add(lvlBtn);
+            LevelsButtonlari.Add(lvlBtn);
         }
     }
 

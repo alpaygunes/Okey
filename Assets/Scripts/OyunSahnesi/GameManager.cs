@@ -83,7 +83,8 @@ public class GameManager : MonoBehaviour {
         Card.Instance.KutulariHazirla();
 
         if (MainMenu.isSoloGame) {
-            KilitliKutuYoneticisi.KilitliKutulariBelirle();
+            KilitliKutuYoneticisi.KilitliKutulariBelirle(); 
+            PopUplar.SeviyeBilgisiGoster();
         }
 
         OdulKutulariYoneticisi.OdulKutulariniBelirle();
@@ -110,8 +111,6 @@ public class GameManager : MonoBehaviour {
         PuanlamaIStatistikleri.Sifirla();
     }
     
- 
-
     private void OyunDurumuDegisti() {
         if (OyunDurumu == OyunDurumlari.DevamEdiyor) {
             if (OyunKurallari.Instance.GuncelOyunTipi == OyunKurallari.OyunTipleri.GorevYap) {
@@ -229,5 +228,4 @@ public class GameManager : MonoBehaviour {
 
         Istaka.Instance.IlkBosCebiBelirt();
     }
-    
 }
