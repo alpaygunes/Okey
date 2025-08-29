@@ -162,19 +162,19 @@ TextureImporter:
       name: 5_pembe_0
       rect:
         serializedVersion: 2
-        x: 55
-        y: 290
-        width: 153
-        height: 183
+        x: 0
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9bf67746fbba57360800000000000000
+      spriteID: 883360fabf59127d99ef46ea376e463c
       internalID: 7166823220542664633
       vertices: []
       indices: 
@@ -184,19 +184,19 @@ TextureImporter:
       name: 5_pembe_1
       rect:
         serializedVersion: 2
-        x: 316
-        y: 305
-        width: 145
-        height: 153
+        x: 256
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f69efc2b2a8e7dc70800000000000000
+      spriteID: 4e7106d5effd53687996c2f0f714f9be
       internalID: 8995914566178171247
       vertices: []
       indices: 
@@ -206,19 +206,19 @@ TextureImporter:
       name: 5_pembe_2
       rect:
         serializedVersion: 2
-        x: 585
-        y: 310
-        width: 122
-        height: 143
+        x: 512
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f38346660dd3f39e0800000000000000
+      spriteID: a15f46debb1333fa8ba452423a78a515
       internalID: -1639523774059235265
       vertices: []
       indices: 
@@ -228,19 +228,19 @@ TextureImporter:
       name: 5_pembe_3
       rect:
         serializedVersion: 2
-        x: 825
-        y: 290
-        width: 157
-        height: 183
+        x: 768
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 45128896512ed0390800000000000000
+      spriteID: 7b46c5b9e8024dda68dc8a3af012a462
       internalID: -7850369993844186796
       vertices: []
       indices: 
@@ -250,19 +250,19 @@ TextureImporter:
       name: 5_pembe_4
       rect:
         serializedVersion: 2
-        x: 1077
-        y: 290
-        width: 168
-        height: 183
+        x: 1024
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ccbf26158893223b0800000000000000
+      spriteID: da08b4e5abb0792539e30b7b3f33580c
       internalID: -5538801334068511796
       vertices: []
       indices: 
@@ -272,19 +272,19 @@ TextureImporter:
       name: 5_pembe_5
       rect:
         serializedVersion: 2
-        x: 1345
-        y: 290
-        width: 131
-        height: 183
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 72407c45152d01e10800000000000000
+      spriteID: 6ad89c2ce9489e826b56d9e1df7de67f
       internalID: 2166462667521721383
       vertices: []
       indices: 
@@ -294,19 +294,19 @@ TextureImporter:
       name: 5_pembe_6
       rect:
         serializedVersion: 2
-        x: 67
-        y: 42
-        width: 127
-        height: 164
+        x: 0
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2c3d02edfb16ea2f0800000000000000
+      spriteID: b00d44979c66ded17960ea8e005fef96
       internalID: -959722193889995838
       vertices: []
       indices: 
@@ -316,19 +316,19 @@ TextureImporter:
       name: 5_pembe_7
       rect:
         serializedVersion: 2
-        x: 327
-        y: 32
-        width: 117
-        height: 183
+        x: 256
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: fa57dbc9e34530250800000000000000
+      spriteID: cb4b566379748c047a968c8db01d0064
       internalID: 5909659763934590383
       vertices: []
       indices: 
@@ -338,19 +338,19 @@ TextureImporter:
       name: 5_pembe_8
       rect:
         serializedVersion: 2
-        x: 594
-        y: 32
-        width: 93
-        height: 183
+        x: 512
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: cd1f6444d8e786390800000000000000
+      spriteID: 32d4bdd50fd4d2f53a09134c7a989f48
       internalID: -7824865207355248164
       vertices: []
       indices: 
@@ -360,19 +360,19 @@ TextureImporter:
       name: 5_pembe_9
       rect:
         serializedVersion: 2
-        x: 834
-        y: 44
-        width: 123
-        height: 159
+        x: 768
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 87b246c1781781520800000000000000
+      spriteID: e4e7cc30a01fbb636bbc74e7821cbb63
       internalID: 2673011203955239800
       vertices: []
       indices: 
@@ -382,19 +382,19 @@ TextureImporter:
       name: 5_pembe_10
       rect:
         serializedVersion: 2
-        x: 1071
-        y: 47
-        width: 159
-        height: 154
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ec6715494153fc940800000000000000
+      spriteID: fd4bd16bdc74ffe9495e3f2fcc6d673e
       internalID: 5318528047451829966
       vertices: []
       indices: 
@@ -404,19 +404,19 @@ TextureImporter:
       name: 5_pembe_11
       rect:
         serializedVersion: 2
-        x: 1329
-        y: 51
-        width: 153
-        height: 145
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 88db23d4de4454b90800000000000000
+      spriteID: 13d3698b1c4c33cd6934781bc132214e
       internalID: -7258319438444577400
       vertices: []
       indices: 
@@ -426,7 +426,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 83c548596b89d5e6f876acc6b2446c62
     internalID: 0
     vertices: []
     indices: 
@@ -434,7 +434,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       5_pembe_0: 7166823220542664633
       5_pembe_1: 8995914566178171247

@@ -162,19 +162,19 @@ TextureImporter:
       name: 8_turkuazimsi_0
       rect:
         serializedVersion: 2
-        x: 55
-        y: 290
-        width: 153
-        height: 183
+        x: 0
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: caa0123abf5d595f0800000000000000
+      spriteID: 1a0ae9fca59460d028938c809c844acf
       internalID: -750458486136960340
       vertices: []
       indices: 
@@ -184,19 +184,19 @@ TextureImporter:
       name: 8_turkuazimsi_1
       rect:
         serializedVersion: 2
-        x: 316
-        y: 305
-        width: 145
-        height: 153
+        x: 256
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 70246cacf5c68d850800000000000000
+      spriteID: 4546506c759a679f29d9d30bcd9610e6
       internalID: 6401986028986843655
       vertices: []
       indices: 
@@ -206,19 +206,19 @@ TextureImporter:
       name: 8_turkuazimsi_2
       rect:
         serializedVersion: 2
-        x: 585
-        y: 310
-        width: 122
-        height: 143
+        x: 512
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6158c8fe32f276ee0800000000000000
+      spriteID: a61b664a1caf538f5b2f8a6e2f5ed8f4
       internalID: -1267992938692180714
       vertices: []
       indices: 
@@ -228,19 +228,19 @@ TextureImporter:
       name: 8_turkuazimsi_3
       rect:
         serializedVersion: 2
-        x: 825
-        y: 290
-        width: 157
-        height: 183
+        x: 768
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ed3d547c34be7ec50800000000000000
+      spriteID: 880e1fed56ae54982ac99d82e3e4b580
       internalID: 6694578047448110046
       vertices: []
       indices: 
@@ -250,19 +250,19 @@ TextureImporter:
       name: 8_turkuazimsi_4
       rect:
         serializedVersion: 2
-        x: 1077
-        y: 290
-        width: 168
-        height: 183
+        x: 1024
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 7e6379741fa5b3950800000000000000
+      spriteID: d1a1ff95585cf4ff28a679b10bdff69c
       internalID: 6429832885336225511
       vertices: []
       indices: 
@@ -272,19 +272,19 @@ TextureImporter:
       name: 8_turkuazimsi_5
       rect:
         serializedVersion: 2
-        x: 1345
-        y: 290
-        width: 131
-        height: 183
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 11448b4dd13b1e9d0800000000000000
+      spriteID: 27931e8660ab309ee9816694ffee25ff
       internalID: -2746717357015022575
       vertices: []
       indices: 
@@ -294,19 +294,19 @@ TextureImporter:
       name: 8_turkuazimsi_6
       rect:
         serializedVersion: 2
-        x: 67
-        y: 42
-        width: 127
-        height: 164
+        x: 0
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 05f218b5a5eddb980800000000000000
+      spriteID: ec2791e91883e3a60bb71e315aa4cab7
       internalID: -8521410440251494576
       vertices: []
       indices: 
@@ -316,19 +316,19 @@ TextureImporter:
       name: 8_turkuazimsi_7
       rect:
         serializedVersion: 2
-        x: 327
-        y: 32
-        width: 117
-        height: 183
+        x: 256
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 30a91a39a43619110800000000000000
+      spriteID: c18c67e23670715ba82d73dab6c57d4b
       internalID: 1265902142223391235
       vertices: []
       indices: 
@@ -338,19 +338,19 @@ TextureImporter:
       name: 8_turkuazimsi_8
       rect:
         serializedVersion: 2
-        x: 594
-        y: 32
-        width: 93
-        height: 183
+        x: 512
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d1d7c2d5d2eec9440800000000000000
+      spriteID: 5c4597c2632685125934ce237a576dc3
       internalID: 4944088369550097693
       vertices: []
       indices: 
@@ -360,19 +360,19 @@ TextureImporter:
       name: 8_turkuazimsi_9
       rect:
         serializedVersion: 2
-        x: 834
-        y: 44
-        width: 123
-        height: 159
+        x: 768
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d2223f612d951c8a0800000000000000
+      spriteID: 481dfeadd3154483b8d44e86db67017e
       internalID: -6286644845969464787
       vertices: []
       indices: 
@@ -382,19 +382,19 @@ TextureImporter:
       name: 8_turkuazimsi_10
       rect:
         serializedVersion: 2
-        x: 1071
-        y: 47
-        width: 159
-        height: 154
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 69e806cd04f2cf850800000000000000
+      spriteID: c878bc383babbbfcb9b7233986fa816f
       internalID: 6412051925090471574
       vertices: []
       indices: 
@@ -404,19 +404,19 @@ TextureImporter:
       name: 8_turkuazimsi_11
       rect:
         serializedVersion: 2
-        x: 1329
-        y: 51
-        width: 153
-        height: 145
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 724b6ae2f6ac865f0800000000000000
+      spriteID: 0c1a0392778ec4b36a4a4ab351f24f80
       internalID: -763137557966441433
       vertices: []
       indices: 
@@ -426,7 +426,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c65ed9cce66262748837bea1bb2f5229
     internalID: 0
     vertices: []
     indices: 
@@ -434,7 +434,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       8_turkuazimsi_0: -750458486136960340
       8_turkuazimsi_1: 6401986028986843655

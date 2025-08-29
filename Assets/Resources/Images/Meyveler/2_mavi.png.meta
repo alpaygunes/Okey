@@ -162,19 +162,19 @@ TextureImporter:
       name: 2_mavi_0
       rect:
         serializedVersion: 2
-        x: 55
-        y: 290
-        width: 153
-        height: 183
+        x: 0
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d9e999652ccf439e0800000000000000
+      spriteID: 7aaed84d54b5772f1b92a4ba83c8a328
       internalID: -1642410052476625251
       vertices: []
       indices: 
@@ -184,19 +184,19 @@ TextureImporter:
       name: 2_mavi_1
       rect:
         serializedVersion: 2
-        x: 316
-        y: 305
-        width: 145
-        height: 153
+        x: 256
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f544050ed66b493e0800000000000000
+      spriteID: a069959371f4cb170b1e74b8ce7ea4dd
       internalID: -2047811347515685793
       vertices: []
       indices: 
@@ -206,19 +206,19 @@ TextureImporter:
       name: 2_mavi_2
       rect:
         serializedVersion: 2
-        x: 585
-        y: 310
-        width: 122
-        height: 143
+        x: 512
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2cf6ffdfcb8656820800000000000000
+      spriteID: 9985d627929c5a89f9306b09f5b2bceb
       internalID: 2910847895089409986
       vertices: []
       indices: 
@@ -228,19 +228,19 @@ TextureImporter:
       name: 2_mavi_3
       rect:
         serializedVersion: 2
-        x: 825
-        y: 290
-        width: 157
-        height: 183
+        x: 768
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 84469ecb528a25ac0800000000000000
+      spriteID: f850a76a8ec7020188f2aa0311b6cd7d
       internalID: -3867844249921166264
       vertices: []
       indices: 
@@ -250,19 +250,19 @@ TextureImporter:
       name: 2_mavi_4
       rect:
         serializedVersion: 2
-        x: 1077
-        y: 290
-        width: 168
-        height: 183
+        x: 1024
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6004fae0ea33b1ec0800000000000000
+      spriteID: 81a5cf1a3f5b822b19a1f93d0d76f27e
       internalID: -3595223054861516794
       vertices: []
       indices: 
@@ -272,19 +272,19 @@ TextureImporter:
       name: 2_mavi_5
       rect:
         serializedVersion: 2
-        x: 1345
-        y: 290
-        width: 131
-        height: 183
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d2a174f0b9158aee0800000000000000
+      spriteID: 7bdc044a1e370335486a658797f5bd4e
       internalID: -1249659170177213907
       vertices: []
       indices: 
@@ -294,19 +294,19 @@ TextureImporter:
       name: 2_mavi_6
       rect:
         serializedVersion: 2
-        x: 67
-        y: 42
-        width: 127
-        height: 164
+        x: 0
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f9ac775680a572960800000000000000
+      spriteID: 02b14564077cb2697b7328b59eb8c956
       internalID: 7577123890182736543
       vertices: []
       indices: 
@@ -316,19 +316,19 @@ TextureImporter:
       name: 2_mavi_7
       rect:
         serializedVersion: 2
-        x: 327
-        y: 32
-        width: 117
-        height: 183
+        x: 256
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: faaa3162ade9dfb80800000000000000
+      spriteID: 16117f388265f2b45b9ec5104b9ee108
       internalID: -8359350673550890321
       vertices: []
       indices: 
@@ -338,19 +338,19 @@ TextureImporter:
       name: 2_mavi_8
       rect:
         serializedVersion: 2
-        x: 594
-        y: 32
-        width: 93
-        height: 183
+        x: 512
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d2f08bf5fb6bed9e0800000000000000
+      spriteID: fcc995bba9306fa80b2410c6d45552b1
       internalID: -1594636284981670099
       vertices: []
       indices: 
@@ -360,19 +360,19 @@ TextureImporter:
       name: 2_mavi_9
       rect:
         serializedVersion: 2
-        x: 834
-        y: 44
-        width: 123
-        height: 159
+        x: 768
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 190251f785559c3e0800000000000000
+      spriteID: 20d0dec66d93d3653a1eb403a9555f10
       internalID: -2032999918203494255
       vertices: []
       indices: 
@@ -382,19 +382,19 @@ TextureImporter:
       name: 2_mavi_10
       rect:
         serializedVersion: 2
-        x: 1071
-        y: 47
-        width: 159
-        height: 154
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 62b00ba659d2c08c0800000000000000
+      spriteID: 983d6582365e10bb29bddff060822058
       internalID: -4031797446640137434
       vertices: []
       indices: 
@@ -404,19 +404,19 @@ TextureImporter:
       name: 2_mavi_11
       rect:
         serializedVersion: 2
-        x: 1329
-        y: 51
-        width: 153
-        height: 145
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: cf2e9100de0becba0800000000000000
+      spriteID: 4b9665b104db8cfa0a2c80e4fb19edad
       internalID: -6066717116066045188
       vertices: []
       indices: 
@@ -426,7 +426,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 85e7af75ba0a37b70bac5f899d9ec7d0
     internalID: 0
     vertices: []
     indices: 
@@ -434,7 +434,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceOnImport
+        value: False
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       2_mavi_0: -1642410052476625251
       2_mavi_1: -2047811347515685793

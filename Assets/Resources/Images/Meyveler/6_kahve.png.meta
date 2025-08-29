@@ -159,265 +159,265 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 6_kahvei_0
+      name: 6_kahve_0
       rect:
         serializedVersion: 2
-        x: 55
-        y: 290
-        width: 153
-        height: 183
+        x: 0
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 95da05442949ab910800000000000000
-      internalID: 1853957552548654425
+      spriteID: b7815ec23cca9dd45999c373405a9468
+      internalID: 1405794945
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_1
+      name: 6_kahve_1
       rect:
         serializedVersion: 2
-        x: 316
-        y: 305
-        width: 145
-        height: 153
+        x: 256
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 19a2d335e8755f260800000000000000
-      internalID: 7130701853804538513
+      spriteID: 6735b628c48445202ad8371dd8379da1
+      internalID: -1333530875
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_2
+      name: 6_kahve_2
       rect:
         serializedVersion: 2
-        x: 585
-        y: 310
-        width: 122
-        height: 143
+        x: 512
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f785a088a3d2b1180800000000000000
-      internalID: -9143664889031927681
+      spriteID: 34361f2c97547426e8ec01f2af5948ef
+      internalID: 1165107474
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_3
+      name: 6_kahve_3
       rect:
         serializedVersion: 2
-        x: 825
-        y: 290
-        width: 157
-        height: 183
+        x: 768
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: eef73994607aa9e70800000000000000
-      internalID: 9122787640638406638
+      spriteID: 21a1627b20de21fe09a2fd644bc4e2c9
+      internalID: -1371783732
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_4
+      name: 6_kahve_4
       rect:
         serializedVersion: 2
-        x: 1077
-        y: 290
-        width: 168
-        height: 183
+        x: 1024
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 7af2ebda4841978c0800000000000000
-      internalID: -4001144233858814041
+      spriteID: 9a32f5b1d37ad536ca88b6cd9f43ec23
+      internalID: -2083474771
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_5
+      name: 6_kahve_5
       rect:
         serializedVersion: 2
-        x: 1345
-        y: 290
-        width: 131
-        height: 183
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4ad8346034803a760800000000000000
-      internalID: 7467821691071335844
+      spriteID: 26b1e60dd1a248e5983ee2ed9cd640d9
+      internalID: -6505277
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_6
+      name: 6_kahve_6
       rect:
         serializedVersion: 2
-        x: 67
-        y: 42
-        width: 127
-        height: 164
+        x: 0
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a2518e24a43155b10800000000000000
-      internalID: 1969501621715473706
+      spriteID: 000c11d3d71dab24884452be00611f55
+      internalID: 643242397
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_7
+      name: 6_kahve_7
       rect:
         serializedVersion: 2
-        x: 327
-        y: 32
-        width: 117
-        height: 183
+        x: 256
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b888949e790dee5d0800000000000000
-      internalID: -3031256148301215605
+      spriteID: e7dc356e0f9d6f272a2d633b2539aae6
+      internalID: 560758622
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_8
+      name: 6_kahve_8
       rect:
         serializedVersion: 2
-        x: 594
-        y: 32
-        width: 93
-        height: 183
+        x: 512
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4ab2818568df89030800000000000000
-      internalID: 3501827463725984676
+      spriteID: 4cb9ae610b9f712d29685b7d5bfafbde
+      internalID: 852001051
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_9
+      name: 6_kahve_9
       rect:
         serializedVersion: 2
-        x: 834
-        y: 44
-        width: 123
-        height: 159
+        x: 768
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4a300d13d133ddb50800000000000000
-      internalID: 6619503227787281316
+      spriteID: d7d39cfad4b8e72c6800089b482d259a
+      internalID: 439144350
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_10
+      name: 6_kahve_10
       rect:
         serializedVersion: 2
-        x: 1071
-        y: 47
-        width: 159
-        height: 154
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 866ea60b1f47354c0800000000000000
-      internalID: -4299964637812955544
+      spriteID: 600369f4a5ef4897c914db0cd3d644ff
+      internalID: 1640499077
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 6_kahvei_11
+      name: 6_kahve_11
       rect:
         serializedVersion: 2
-        x: 1329
-        y: 51
-        width: 153
-        height: 145
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 552436a143a1d8b10800000000000000
-      internalID: 1985271821823590997
+      spriteID: 3d46ca1029c348f5f912915748788e9a
+      internalID: 631940578
       vertices: []
       indices: 
       edges: []
@@ -426,7 +426,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 8c25e84bca3a8632487fb27288357969
     internalID: 0
     vertices: []
     indices: 
@@ -434,20 +434,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      6_kahvei_0: 1853957552548654425
-      6_kahvei_1: 7130701853804538513
-      6_kahvei_10: -4299964637812955544
-      6_kahvei_11: 1985271821823590997
-      6_kahvei_2: -9143664889031927681
-      6_kahvei_3: 9122787640638406638
-      6_kahvei_4: -4001144233858814041
-      6_kahvei_5: 7467821691071335844
-      6_kahvei_6: 1969501621715473706
-      6_kahvei_7: -3031256148301215605
-      6_kahvei_8: 3501827463725984676
-      6_kahvei_9: 6619503227787281316
+      6_kahve_0: 1405794945
+      6_kahve_1: -1333530875
+      6_kahve_10: 1640499077
+      6_kahve_11: 631940578
+      6_kahve_2: 1165107474
+      6_kahve_3: -1371783732
+      6_kahve_4: -2083474771
+      6_kahve_5: -6505277
+      6_kahve_6: 643242397
+      6_kahve_7: 560758622
+      6_kahve_8: 852001051
+      6_kahve_9: 439144350
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
