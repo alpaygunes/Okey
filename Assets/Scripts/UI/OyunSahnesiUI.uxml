@@ -17,7 +17,23 @@
                 <ui:Label name="GorevSayisi" class="smallBox" style="background-image: resource(&apos;Images/UI/OyunSahnesi/gorev&apos;);" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="Middle" style="width: 100%; height: 74%; background-image: none; -unity-background-scale-mode: stretch-to-fill;" />
+        <ui:VisualElement name="Middle" style="width: 100%; height: 74%; background-image: none; -unity-background-scale-mode: stretch-to-fill; align-items: center; justify-content: center;">
+            <ui:VisualElement name="OnbilgiPopUp" enabled="true" style="flex-grow: 1; align-items: center; justify-content: center; align-self: center; width: 75%; height: 100px; -unity-background-image-tint-color: rgb(124, 115, 198); flex-direction: column; flex-wrap: nowrap; align-content: center; min-height: auto; max-height: 50%; display: none; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); background-image: url(&quot;project://database/Assets/JMO%20Assets/Cartoon%20FX%20Remaster/Demo%20Assets/CFXR%20Demo%20Ground.png?fileID=2800000&amp;guid=cacfcc09b4fbf7e4baebb23fbaaff36b&amp;type=3#CFXR Demo Ground&quot;); -unity-background-scale-mode: scale-and-crop; background-position-y: center 0; background-size: 25% 20%; background-repeat: space space; background-position-x: center 0;">
+                <ui:Label text="Label" name="LevelID" />
+                <ui:Label text="Label" name="MeyveSayisi" />
+                <ui:Label text="Label" name="RenkSayisi" />
+                <ui:Label text="Label" name="KalipSayisi" />
+                <ui:Button text="Oyna" name="Oyna" />
+            </ui:VisualElement>
+            <ui:VisualElement name="SonbilgiPopUp" enabled="true" style="flex-grow: 1; align-items: center; justify-content: center; align-self: center; width: 75%; height: 100px; -unity-background-image-tint-color: rgb(246, 231, 248); flex-direction: column; flex-wrap: nowrap; align-content: center; min-height: auto; max-height: 50%; display: none; background-color: rgb(0, 0, 0); background-image: url(&quot;project://database/Assets/JMO%20Assets/Cartoon%20FX%20Remaster/Demo%20Assets/CFXR%20Demo%20Ground.png?fileID=2800000&amp;guid=cacfcc09b4fbf7e4baebb23fbaaff36b&amp;type=3#CFXR Demo Ground&quot;); background-repeat: space space; background-size: 25% 20%; background-position-y: top 0; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-top-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-bottom-left-radius: 2px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);">
+                <ui:Label text="Label" name="SonBilgi_LevelID" style="display: none;" />
+                <ui:Label text="Label" name="SonBilgi_MeyveSayisi" style="display: none;" />
+                <ui:Label text="Label" name="SonBilgi_RenkSayisi" style="display: none;" />
+                <ui:Label text="Label" name="SonBilgi_KalipSayisi" style="display: none;" />
+                <ui:Label text="Label" name="SonBilgi_YeniLevel" style="display: none;" />
+                <ui:Button text="Devam" name="SonBilgi_Oyna" />
+            </ui:VisualElement>
+        </ui:VisualElement>
         <ui:VisualElement name="Bottom" class="footer_bottom" style="height: 16%; width: 90%; justify-content: center; align-items: center; align-self: center; min-height: auto; max-height: none;">
             <ui:Button name="DegerlendirmeYap" icon-image="project://database/Assets/Resources/Images/UI/OyunSahnesi/PuanlamaYap.png?fileID=2800000&amp;guid=1c858dd53792d9697ad24d813de4135b&amp;type=3#PuanlamaYap" display-tooltip-when-elided="true" enabled="true" class="tamam" style="-unity-text-align: middle-center; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 11px; border-top-right-radius: 11px; border-bottom-right-radius: 11px; border-bottom-left-radius: 11px; font-size: 12px; position: absolute; bottom: -9px; width: 216px; height: 65px; background-color: rgba(0, 0, 0, 0.41); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
         </ui:VisualElement>

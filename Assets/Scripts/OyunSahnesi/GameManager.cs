@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
     public int oyununBitimineKalanZaman = 0; // OyunKurallari.Instance.ZamanLimitin den alacak
     private OyunDurumlari oyunDurumu;
-    public PopUplar PopUplar;
+    //public PopUplar PopUplar;
     public OyunDurumlari OyunDurumu {
         get => oyunDurumu;
         set {
@@ -36,11 +36,11 @@ public class GameManager : MonoBehaviour {
     }
 
     void Awake() {
-        if (MainMenu.isSoloGame) {
-            OyunKurallari.Instance.InitializeSettings();
+        if (MainMenu.isSoloGame) { 
+           OyunKurallari.Instance.InitializeSettings();
         }
 
-        oyunDurumu = OyunDurumlari.DevamEdiyor;
+        OyunDurumu = OyunDurumlari.OyunDurdu; 
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
             return;
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour {
             } 
         }
         
-        PopUplar = FindFirstObjectByType<PopUplar>();
+        //PopUplar = FindFirstObjectByType<PopUplar>();
     }
 
     private void Start() {
@@ -84,7 +84,8 @@ public class GameManager : MonoBehaviour {
 
         if (MainMenu.isSoloGame) {
             KilitliKutuYoneticisi.KilitliKutulariBelirle(); 
-            PopUplar.SeviyeBilgisiGoster();
+            OyunSahnesiUI.Instance.SeviyeBilgisiGoster();
+            //PopUplar.Gizle();
         }
 
         OdulKutulariYoneticisi.OdulKutulariniBelirle();

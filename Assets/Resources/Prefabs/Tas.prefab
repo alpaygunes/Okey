@@ -162,7 +162,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2136321615
   m_SortingLayer: 2
-  m_SortingOrder: 2
+  m_SortingOrder: 7
   m_Sprite: {fileID: 3936999891657436746, guid: b06d2842a130bc2beb75d88e06e09492, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -249,7 +249,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2136321615
   m_SortingLayer: 2
-  m_SortingOrder: 6
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 921bfc9ba1b646761b4cc6c4be53681c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -258,7 +258,7 @@ SpriteRenderer:
   m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2134256657749301958
@@ -336,7 +336,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2136321615
   m_SortingLayer: 2
-  m_SortingOrder: 3
+  m_SortingOrder: 8
   m_Sprite: {fileID: 392920837949374446, guid: cc7b94b1c64b071fb9936c37dc30d921, type: 3}
   m_Color: {r: 0.2943663, g: 0.990566, b: 0.85190934, a: 1}
   m_FlipX: 0
@@ -423,7 +423,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2136321615
   m_SortingLayer: 2
-  m_SortingOrder: 5
+  m_SortingOrder: 9
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   m_Color: {r: 0.9254902, g: 0.40392154, b: 0.65926474, a: 1}
   m_FlipX: 0
@@ -489,17 +489,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95aed21196fc2eeb0998b97863655577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RenkliMeyveler0: []
-  RenkliMeyveler1:
-  - {fileID: -8531860443246922559, guid: 667e8312118928a20bcfe244cfa77d81, type: 3}
-  RenkliMeyveler2: []
-  RenkliMeyveler3: []
-  RenkliMeyveler4: []
-  RenkliMeyveler5: []
-  RenkliMeyveler6: []
-  RenkliMeyveler7: []
   MeyveID: 0
-  Renk: {r: 0, g: 0, b: 0, a: 0}
+  RenkID: 0
   zeminSpriteRenderer: {fileID: 0}
   MeyveResmiSpriteRenderer: {fileID: 0}
   cepInstance: {fileID: 0}
@@ -931,7 +922,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2136321615
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.8060937, g: 0.9245283, b: 0.40557134, a: 1}
   m_FlipX: 0

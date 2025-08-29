@@ -137,7 +137,8 @@ public class Tas : MonoBehaviour
                 hedefCep.TasInstance = this;
                 cepInstance = hedefCep;
                 sallanmaDurumu = false;
-                cebeYerles = true;
+                cebeYerles = true; 
+                tag = "CEPTEKI_TAS";
                 StartCoroutine(RigidbodyVeCollideriSilGecikmeli());
                 return true;
             }
@@ -148,8 +149,7 @@ public class Tas : MonoBehaviour
 
     IEnumerator RigidbodyVeCollideriSilGecikmeli()
     {
-        yield return new WaitForFixedUpdate(); // 1 fizik frame bekle
-        tag = "CEPTEKI_TAS";
+        yield return new WaitForFixedUpdate(); // 1 fizik frame bekle 
         Destroy(_rigidbody);
         PerIcinUygunTaslariBelirt.Bul();
     }
