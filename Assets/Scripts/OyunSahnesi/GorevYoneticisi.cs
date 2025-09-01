@@ -4,18 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
-public class GorevYoneticisi : NetworkBehaviour{ 
-    public static GorevYoneticisi Instance{ get; private set; }
+public class GorevYoneticisi : NetworkBehaviour
+{
+    public static GorevYoneticisi Instance { get; private set; }
     public int SiradakiGorevSiraNosu = 0;
     private float posYrate = 0.74f;
-    
-    public struct TasData : INetworkSerializable, IEquatable<TasData>{
+
+    public struct TasData : INetworkSerializable, IEquatable<TasData>
+    {
         public int MeyveID;
         public int RenkID;
 
-        public void NetworkSerialize<T>(BufferSerializer<T> ser) where T : IReaderWriter{
+        public void NetworkSerialize<T>(BufferSerializer<T> ser) where T : IReaderWriter
+        {
             ser.SerializeValue(ref MeyveID);
             ser.SerializeValue(ref RenkID);
         }
@@ -30,23 +33,28 @@ public class GorevYoneticisi : NetworkBehaviour{
             HashCode.Combine(MeyveID, RenkID);
     }
 
-    public struct GorevData : INetworkSerializable, IEquatable<GorevData>{
+    public struct GorevData : INetworkSerializable, IEquatable<GorevData>
+    {
         public byte TasSayisi;
         public FixedList128Bytes<TasData> Taslar; // 16 taş için kapasiteyi büyüttük
 
-        public void NetworkSerialize<T>(BufferSerializer<T> ser) where T : IReaderWriter{
+        public void NetworkSerialize<T>(BufferSerializer<T> ser) where T : IReaderWriter
+        {
             ser.SerializeValue(ref TasSayisi);
 
             if (ser.IsReader)
                 Taslar = new FixedList128Bytes<TasData>();
 
-            for (int i = 0; i < TasSayisi; i++){
-                if (ser.IsReader){
+            for (int i = 0; i < TasSayisi; i++)
+            {
+                if (ser.IsReader)
+                {
                     TasData td = default;
                     ser.SerializeValue(ref td);
                     Taslar.Add(td);
                 }
-                else{
+                else
+                {
                     var td = Taslar[i];
                     ser.SerializeValue(ref td);
                 }
@@ -54,11 +62,13 @@ public class GorevYoneticisi : NetworkBehaviour{
         }
 
         // IEquatable<GorevData> uygulaması
-        public bool Equals(GorevData other){
+        public bool Equals(GorevData other)
+        {
             if (TasSayisi != other.TasSayisi)
                 return false;
 
-            for (int i = 0; i < TasSayisi; i++){
+            for (int i = 0; i < TasSayisi; i++)
+            {
                 if (!Taslar[i].Equals(other.Taslar[i]))
                     return false;
             }
@@ -69,126 +79,151 @@ public class GorevYoneticisi : NetworkBehaviour{
         public override bool Equals(object obj) =>
             obj is GorevData other && Equals(other);
 
-        public override int GetHashCode(){
+        public override int GetHashCode()
+        {
             int hash = TasSayisi;
             for (int i = 0; i < TasSayisi; i++)
                 hash = HashCode.Combine(hash, Taslar[i].GetHashCode());
             return hash;
         }
     }
-    
+
     private NetworkList<GorevData> gorevlerNetList;
-    
+
     private List<GorevData> gorevlerSoloList;
-    
+
     private static readonly int GorevSayisi = 10;
 
-    private void Awake(){
-        if (Instance != null && Instance != this){
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
             return;
-        } 
-        Instance = this; 
+        }
+
+        Instance = this;
         gorevlerNetList = new NetworkList<GorevData>(
             readPerm: NetworkVariableReadPermission.Everyone,
             writePerm: NetworkVariableWritePermission.Server);
- 
+
         gorevlerSoloList = new List<GorevData>();
     }
 
-    private void Start(){
+    private void Start()
+    {
         float y = Card.Instance.Size.y;
         transform.position = new Vector3(0, -y * posYrate, 0);
     }
 
-    public override void OnNetworkSpawn(){
-        if (OyunKurallari.Instance.GuncelOyunTipi != OyunKurallari.OyunTipleri.GorevYap){
+    public override void OnNetworkSpawn()
+    {
+        if (OyunKurallari.Instance.GuncelOyunTipi != OyunKurallari.OyunTipleri.GorevYap)
+        {
             return;
         }
- 
-        if (IsServer){
+
+        if (IsServer)
+        {
             gorevlerNetList.Clear();
             GorevHazirla();
         }
 
-        if (IsClient){
+        if (IsClient)
+        {
             SiradakiGoreviIstakadaGoster();
         }
     }
- 
+
     //----------------------------- GÖREVLERİ OLUŞTURMA --------------------------------- 
-    private enum PerTurleri{
-        FarkliMeyveAyniRenk, 
+    private enum PerTurleri
+    {
+        FarkliMeyveAyniRenk,
         AyniMeyveFarkliRenkPerleri,
         AyniMeyveAyniRenkPerleri,
+        KarisikRenkveMeyve,
     }
 
-    public static void GorevHazirla(){
+    public static void GorevHazirla()
+    {
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
         int renkSayisi = renkEnd - renkStart;
-        
+
         int meyveStart = GameManager.Instance.MeyveAraligi.start;
         int meyveEnd = GameManager.Instance.MeyveAraligi.end;
         int meyveSayisi = meyveEnd - meyveStart;
-        for (int i = 0; i < GorevSayisi; i++) 
+        for (int i = 0; i < GorevSayisi; i++)
             switch (RastgelePerTuruSec())
             {
                 case PerTurleri.FarkliMeyveAyniRenk:
-                    if (GameManager.Instance.cepSayisi <= meyveSayisi){
+                    if (GameManager.Instance.cepSayisi <= meyveSayisi)
+                    {
                         FarkliMeyveAyniRenkPeriOlustur();
                     }
-                    else{
+                    else
+                    {
                         AyniMeyveAyniRenkPerleriOlustur();
                     }
-                    break;  
+
+                    break;
                 case PerTurleri.AyniMeyveFarkliRenkPerleri:
-                    if (GameManager.Instance.cepSayisi <= renkSayisi){
+                    if (GameManager.Instance.cepSayisi <= renkSayisi)
+                    {
                         AyniMeyveFarkliRenkPerleriOlustur();
-                    } else{
-                        AyniMeyveAyniRenkPerleriOlustur(); 
                     }
-                    break; 
+                    else
+                    {
+                        AyniMeyveAyniRenkPerleriOlustur();
+                    }
+
+                    break;
                 case PerTurleri.AyniMeyveAyniRenkPerleri:
                     AyniMeyveAyniRenkPerleriOlustur();
-                    break; 
-            } 
+                    break;
+                case PerTurleri.KarisikRenkveMeyve:
+                    KarisikRenkveMeyvePerleriOlustur();
+                    break;
+            }
     }
-    
+
     private static PerTurleri RastgelePerTuruSec()
     {
         int elemanSayisi = Enum.GetValues(typeof(PerTurleri)).Length;
         int rastgeleIndex = UnityEngine.Random.Range(0, elemanSayisi);
         return (PerTurleri)rastgeleIndex;
     }
-    
-    private static void FarkliMeyveAyniRenkPeriOlustur(){
+
+    private static void FarkliMeyveAyniRenkPeriOlustur()
+    {
         GorevData gorev = new GorevData
         {
             Taslar = new FixedList128Bytes<TasData>()
         };
 
         int start = GameManager.Instance.MeyveAraligi.start;
-        int end = GameManager.Instance.MeyveAraligi.end - GameManager.Instance.cepSayisi; 
+        int end = GameManager.Instance.MeyveAraligi.end - GameManager.Instance.cepSayisi;
         int rasgeleBaslangic = UnityEngine.Random.Range(start, end);
         var secilenSayilar = Enumerable.Range(rasgeleBaslangic, GameManager.Instance.cepSayisi).ToList();
-        
+
         int renkStart = GameManager.Instance.RenkAraligi.start;
         int renkEnd = GameManager.Instance.RenkAraligi.end;
-        int color = UnityEngine.Random.Range(renkStart, renkEnd );
-        foreach (int sayi in secilenSayilar){
+        int color = UnityEngine.Random.Range(renkStart, renkEnd);
+        foreach (int sayi in secilenSayilar)
+        {
             gorev.Taslar.Add(new TasData { MeyveID = sayi, RenkID = color });
         }
 
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
         // Sadece sunucu yazabilir
-        if (Instance != null && Instance.IsServer)  Instance.gorevlerNetList.Add(gorev);
+        if (Instance != null && Instance.IsServer) Instance.gorevlerNetList.Add(gorev);
         // solo oyunada ayni görev fonksiyonu çalışmalı
-        if (MainMenu.isSoloGame) 
+        if (MainMenu.isSoloGame)
             Instance.gorevlerSoloList.Add(gorev);
     }
-    
-    private static void AyniMeyveFarkliRenkPerleriOlustur(){
+
+    private static void AyniMeyveFarkliRenkPerleriOlustur()
+    {
         GorevData gorev = new GorevData
         {
             Taslar = new FixedList128Bytes<TasData>()
@@ -213,7 +248,8 @@ public class GorevYoneticisi : NetworkBehaviour{
             .ToList();
 
         // Fisher–Yates karıştırması
-        for (int i = renkHavuzu.Count - 1; i > 0; i--){
+        for (int i = renkHavuzu.Count - 1; i > 0; i--)
+        {
             int j = UnityEngine.Random.Range(0, i + 1);
             (renkHavuzu[i], renkHavuzu[j]) = (renkHavuzu[j], renkHavuzu[i]);
         }
@@ -222,23 +258,26 @@ public class GorevYoneticisi : NetworkBehaviour{
         tasSayisi = Mathf.Min(tasSayisi, renkHavuzu.Count);
 
         // --- Taşları oluştur -------------------------------------------------
-        for (int i = 0; i < tasSayisi; i++){
+        for (int i = 0; i < tasSayisi; i++)
+        {
             gorev.Taslar.Add(new TasData
             {
                 MeyveID = secilenRakam,
                 RenkID = renkHavuzu[i]
             });
         }
+
         gorev.TasSayisi = (byte)gorev.Taslar.Length;
 
         // Sunucudaysak görevi listeye ekle
         if (Instance != null && Instance.IsServer) Instance.gorevlerNetList.Add(gorev);
         // solo oyunada ayni görev fonksiyonu çalışmalı
-        if (MainMenu.isSoloGame) 
+        if (MainMenu.isSoloGame)
             Instance.gorevlerSoloList.Add(gorev);
     }
 
-    private static void AyniMeyveAyniRenkPerleriOlustur(){
+    private static void AyniMeyveAyniRenkPerleriOlustur()
+    {
         GorevData gorev = new GorevData
         {
             Taslar = new FixedList128Bytes<TasData>()
@@ -249,13 +288,13 @@ public class GorevYoneticisi : NetworkBehaviour{
         int tasSayisi = maxTasSayisi;
 
         // --- Ortak rakam -----------------------------------------------------
-        int rakamStart   = GameManager.Instance.MeyveAraligi.start;
-        int rakamEnd     = GameManager.Instance.MeyveAraligi.end;
+        int rakamStart = GameManager.Instance.MeyveAraligi.start;
+        int rakamEnd = GameManager.Instance.MeyveAraligi.end;
         int secilenMeyve = UnityEngine.Random.Range(rakamStart, rakamEnd);
 
         // --- Benzersiz renkler ---------------------------------------------
         int renkStart = GameManager.Instance.RenkAraligi.start;
-        int renkEnd   = GameManager.Instance.RenkAraligi.end;
+        int renkEnd = GameManager.Instance.RenkAraligi.end;
 
         // Havuz: seçilebilir tüm renk indeksleri
         List<int> renkHavuzu = Enumerable
@@ -275,7 +314,7 @@ public class GorevYoneticisi : NetworkBehaviour{
             gorev.Taslar.Add(new TasData
             {
                 MeyveID = secilenMeyve,
-                RenkID  = renkHavuzu[0]
+                RenkID = renkHavuzu[0]
             });
         }
 
@@ -284,40 +323,106 @@ public class GorevYoneticisi : NetworkBehaviour{
         // Yalnızca sunucu ekler
         if (Instance != null && Instance.IsServer) Instance.gorevlerNetList.Add(gorev);
         // solo oyunada ayni görev fonksiyonu çalışmalı
-        if (MainMenu.isSoloGame) 
+        if (MainMenu.isSoloGame)
             Instance.gorevlerSoloList.Add(gorev);
-    } 
-    
+    }
+
+
+    private static void KarisikRenkveMeyvePerleriOlustur()
+    {
+        GorevData gorev = new GorevData
+        {
+            Taslar = new FixedList128Bytes<TasData>()
+        };
+
+        // --- Seçilecek taş sayısı ------------------------------------------
+        int maxTasSayisi = GameManager.Instance.cepSayisi; // Üst sınır
+        int tasSayisi = maxTasSayisi;
+
+
+        // --- Rakam (hepsi aynı olacak) --------------------------------------
+        int meyveStart = GameManager.Instance.MeyveAraligi.start;
+        int meyveEnd = GameManager.Instance.MeyveAraligi.end;
+
+        // --- Benzersiz renkler ---------------------------------------------
+        int renkStart = GameManager.Instance.RenkAraligi.start;
+        int renkEnd = GameManager.Instance.RenkAraligi.end;
+
+        // Aralıktaki tüm renk indekslerini havuza al
+        List<int> renkHavuzu = Enumerable
+            .Range(renkStart, renkEnd - renkStart)
+            .ToList();
+
+        // Fisher–Yates karıştırması
+        for (int i = renkHavuzu.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            (renkHavuzu[i], renkHavuzu[j]) = (renkHavuzu[j], renkHavuzu[i]);
+        }
+
+        // Havuz yeterli değilse üst sınırı düşür
+        tasSayisi = Mathf.Min(tasSayisi, renkHavuzu.Count);
+
+        // --- Taşları oluştur -------------------------------------------------
+        for (int i = 0; i < tasSayisi; i++)
+        {
+            var secilenRakam = UnityEngine.Random.Range(meyveStart, meyveEnd + 1);
+            var yeniTas = new TasData
+            {
+                MeyveID = secilenRakam,
+                RenkID = renkHavuzu[i]
+            };
+
+            gorev.Taslar.Add(yeniTas);
+        }
+
+        gorev.TasSayisi = (byte)gorev.Taslar.Length;
+
+        // Sunucudaysak görevi listeye ekle
+        if (Instance != null && Instance.IsServer) Instance.gorevlerNetList.Add(gorev);
+        // solo oyunada ayni görev fonksiyonu çalışmalı
+        if (MainMenu.isSoloGame)
+            Instance.gorevlerSoloList.Add(gorev);
+    }
+
+
     // -----------------------------------  SON --------------------------------------- 
-    public void SiradakiGoreviIstakadaGoster(){
+    public void SiradakiGoreviIstakadaGoster()
+    {
         var body = Instance.transform.Find("Body");
         float gorvePaneliGenisligi = body.GetComponent<SpriteRenderer>().bounds.size.x;
         if (body == null) return;
         // öncekileri temizle 
-        for (int j = body.childCount - 1; j >= 0; j--) {
-            var child = body.GetChild(j); 
+        for (int j = body.childCount - 1; j >= 0; j--)
+        {
+            var child = body.GetChild(j);
             Destroy(child.gameObject);
         }
 
         GorevData gorev;
-        if (MainMenu.isSoloGame){
+        if (MainMenu.isSoloGame)
+        {
             gorev = gorevlerSoloList[SiradakiGorevSiraNosu];
-        }else{
+        }
+        else
+        {
             gorev = gorevlerNetList[SiradakiGorevSiraNosu];
         }
-        
+
         float aralikMesafesi = gorvePaneliGenisligi / GameManager.Instance.cepSayisi;
-        if (aralikMesafesi > gorvePaneliGenisligi / 6) {
+        if (aralikMesafesi > gorvePaneliGenisligi / 6)
+        {
             aralikMesafesi = gorvePaneliGenisligi / 6;
         }
-        
+
         var toplamgenislik = gorev.Taslar.Length * aralikMesafesi;
         var fark = gorvePaneliGenisligi - toplamgenislik;
-        
+
         FixedList128Bytes<TasData> taslar = gorev.Taslar;
         // tas nesnelerini tasList e ekle
         int i = 0;
-        foreach (var gorevTasi in taslar){  
+        foreach (var gorevTasi in taslar)
+        {
             float x = (i * aralikMesafesi) + aralikMesafesi * .5f - gorvePaneliGenisligi * .5f;
             x = x + fark * .5f;
             GameObject gTasPref = Resources.Load<GameObject>("Prefabs/gTas");
@@ -327,69 +432,89 @@ public class GorevYoneticisi : NetworkBehaviour{
             gTas.GetComponent<gTas>().RenkID = gorevTasi.RenkID;
             gTas.transform.SetParent(body.transform);
             gTas.SetActive(true);
-            gTas.tag  = "gTas";
+            gTas.tag = "gTas";
             gTas.name = "gTas" + i;
             gTas.GetComponent<gTas>().colID = i;
             i++;
-        } 
+        }
     }
-    
-    public void GoreveUygunCeplereBayrakKoy(){
+
+    public void GoreveUygunCeplereBayrakKoy()
+    {
         FixedList128Bytes<TasData> gorevTaslari;
-        if (MainMenu.isSoloGame){
+        if (MainMenu.isSoloGame)
+        {
             gorevTaslari = gorevlerSoloList[SiradakiGorevSiraNosu].Taslar;
-        } else{
+        }
+        else
+        {
             gorevTaslari = gorevlerNetList[SiradakiGorevSiraNosu].Taslar;
         }
 
-         
-        foreach (var grup in PerKontrolBirimi.Instance.Gruplar){
-            foreach (var pTas in grup.Value.Taslar){
-                if (pTas.cepInstance ==null) continue;
-                if (gorevTaslari.Length == pTas.cepInstance.colID) break; 
+
+        foreach (var grup in PerKontrolBirimi.Instance.Gruplar)
+        {
+            foreach (var pTas in grup.Value.Taslar)
+            {
+                if (pTas.cepInstance == null) continue;
+                if (gorevTaslari.Length == pTas.cepInstance.colID) break;
                 var gTas = gorevTaslari[pTas.cepInstance.colID];
-                if (pTas.MeyveID == gTas.MeyveID && pTas.RenkID == gTas.RenkID){
-                    pTas.gorevleUyumBayragi = 2; 
-                }else if (pTas.MeyveID == gTas.MeyveID || pTas.RenkID == gTas.RenkID){ 
-                    pTas.gorevleUyumBayragi = 1; 
-                }   
+                if (pTas.MeyveID == gTas.MeyveID && pTas.RenkID == gTas.RenkID)
+                {
+                    pTas.gorevleUyumBayragi = 2;
+                }
+                else if (pTas.MeyveID == gTas.MeyveID || pTas.RenkID == gTas.RenkID)
+                {
+                    pTas.gorevleUyumBayragi = 1;
+                }
             }
         }
+
         SiradakiGorevSiraNosu++;
-        if ((SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit) && !MainMenu.isSoloGame){
+        if ((SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit) && !MainMenu.isSoloGame)
+        {
             GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             GameManager.Instance.oyunSahnesiKapaniyor = true;
         }
-        
-        if((SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit) && MainMenu.isSoloGame) {
+
+        if ((SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit) && MainMenu.isSoloGame)
+        {
             //TODO BURAYA SONRA Bİ MÜDAHA EDİLECEK.
             Debug.Log("GÖREVLER BİTTİ SINIFLANDI " + SiradakiGorevSiraNosu);
-            SiradakiGorevSiraNosu = 0; 
+            SiradakiGorevSiraNosu = 0;
         }
     }
 
-    public void CeplerinYidiziniGuncelle(){
-        foreach (var cepScript in Istaka.Instance.CepList){ 
+    public void CeplerinYidiziniGuncelle()
+    {
+        foreach (var cepScript in Istaka.Instance.CepList)
+        {
             cepScript.YildiziYak(0);
             if (cepScript.TasInstance == null) continue;
             var tas = cepScript.TasInstance;
             GameObject[] gorevTaslari = GameObject.FindGameObjectsWithTag("gTas");
             var gTas = gorevTaslari[cepScript.colID];
             int uyumSayisi = 0;
-            if (gTas.GetComponent<gTas>().RenkID == tas.RenkID){ 
+            if (gTas.GetComponent<gTas>().RenkID == tas.RenkID)
+            {
                 uyumSayisi++;
             }
-            if (gTas.GetComponent<gTas>().MeyveID == tas.MeyveID){ 
+
+            if (gTas.GetComponent<gTas>().MeyveID == tas.MeyveID)
+            {
                 uyumSayisi++;
             }
-            cepScript.YildiziYak(uyumSayisi);  
-        } 
+
+            cepScript.YildiziYak(uyumSayisi);
+        }
     }
 
-    public void GorevLimitiKontrolu() {
+    public void GorevLimitiKontrolu()
+    {
         if (MainMenu.isSoloGame) return;
-        if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit){
+        if (SiradakiGorevSiraNosu >= OyunKurallari.Instance.GorevLimit)
+        {
             GameManager.Instance.OyunDurumu = GameManager.OyunDurumlari.LimitDoldu;
             SceneManager.LoadScene("OyunSonu", LoadSceneMode.Additive);
             GameManager.Instance.oyunSahnesiKapaniyor = true;

@@ -308,5 +308,5 @@ public class Card : MonoBehaviour
         }
 
         return TiklanamazTasVar;
-    }
+    } 
 }

@@ -41,8 +41,7 @@ public class Tas : MonoBehaviour
     private Cep hedefCep;
     public bool kilitli = false;
     public Kutu kutuInstance = null; 
-    private bool YokOlmayiBekliyor = false;
-
+ 
     private void Awake()
     {
         bonusBayragi = false;
@@ -178,9 +177,9 @@ public class Tas : MonoBehaviour
 
     public IEnumerator BekleYokol(float gecikme)
     { 
-        if (kutuInstance && kutuInstance.KilitSayisi > 0 && !YokOlmayiBekliyor)
+        if (kutuInstance && kutuInstance.KilitSayisi > 0  )
         { 
-            YokOlmayiBekliyor = true;
+             
             kutuInstance.KilitSayisi--;
             if (kutuInstance.KilitSayisi <= 0)
             {
