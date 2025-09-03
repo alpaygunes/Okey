@@ -172,8 +172,14 @@ public class Tas : MonoBehaviour
                 hedefCep.transform.position.y * .9f);
             _rigidbody.MovePosition(hedefCepPosition);
             cebeYerles = false;
-        }
+        } 
+        
+        
     }
+    
+ 
+    
+    
 
     public IEnumerator BekleYokol(float gecikme)
     { 
