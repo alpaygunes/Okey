@@ -361,16 +361,16 @@ public class GorevYoneticisi : NetworkBehaviour
         }
 
         // Havuz yeterli değilse üst sınırı düşür
-        tasSayisi = Mathf.Min(tasSayisi, renkHavuzu.Count);
+        //tasSayisi = Mathf.Min(tasSayisi, renkHavuzu.Count);
 
         // --- Taşları oluştur -------------------------------------------------
         for (int i = 0; i < tasSayisi; i++)
         {
-            var secilenRakam = UnityEngine.Random.Range(meyveStart, meyveEnd + 1);
+            var secilenRakam = UnityEngine.Random.Range(meyveStart, meyveEnd );
             var yeniTas = new TasData
             {
                 MeyveID = secilenRakam,
-                RenkID = renkHavuzu[i]
+                RenkID = renkHavuzu[i%renkHavuzu.Count]
             };
 
             gorev.Taslar.Add(yeniTas);
