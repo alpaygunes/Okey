@@ -75,8 +75,34 @@ public class Card : MonoBehaviour
                 kutu.transform.Find("OdulBelirteci").gameObject.SetActive(false);
                 kutu.transform.Find("IsStaticBelirteci").gameObject.SetActive(false);
                 kutu.transform.Find("KilitBelirteci").gameObject.SetActive(false);
+                kutu.transform.Find("bg0").gameObject.SetActive(false);
+                kutu.transform.Find("bg1").gameObject.SetActive(false);
                 kutu.tag = "KUTU";
                 kutu.GetComponent<Kutu>().colRowPosition = new Vector2Int(sutun, satir);
+
+
+                if (satir % 2 == 0)
+                {
+                    if (sutun % 2 == 0)
+                    {
+                        kutu.transform.Find("bg0").gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        kutu.transform.Find("bg1").gameObject.SetActive(true);
+                    }
+                }
+                else
+                {
+                    if (sutun % 2 != 0)
+                    {
+                        kutu.transform.Find("bg0").gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        kutu.transform.Find("bg1").gameObject.SetActive(true);
+                    }
+                }
             }
         }
 

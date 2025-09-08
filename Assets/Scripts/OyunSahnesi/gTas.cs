@@ -17,16 +17,16 @@ public class gTas : MonoBehaviour{
         zeminSpriteRenderer = transform.Find("Zemin").GetComponent<SpriteRenderer>();
         //TextMeyveID = transform.Find("TextMeyveID").GetComponent<TextMeshPro>();
         
-        RenkliMeyvelerDic.Add(0,Resources.LoadAll<Sprite>("Images/Meyveler/0_kirmizi"));
-        RenkliMeyvelerDic.Add(1,Resources.LoadAll<Sprite>("Images/Meyveler/1_turuncu"));
-        RenkliMeyvelerDic.Add(2,Resources.LoadAll<Sprite>("Images/Meyveler/2_mavi"));
-        RenkliMeyvelerDic.Add(3,Resources.LoadAll<Sprite>("Images/Meyveler/3_yesil"));
-        RenkliMeyvelerDic.Add(4,Resources.LoadAll<Sprite>("Images/Meyveler/4_mor"));
-        RenkliMeyvelerDic.Add(5,Resources.LoadAll<Sprite>("Images/Meyveler/5_pembe"));
-        RenkliMeyvelerDic.Add(6,Resources.LoadAll<Sprite>("Images/Meyveler/6_kahve"));
-        RenkliMeyvelerDic.Add(7,Resources.LoadAll<Sprite>("Images/Meyveler/7_mavimsi"));
-        RenkliMeyvelerDic.Add(8,Resources.LoadAll<Sprite>("Images/Meyveler/8_turkuazimsi"));
-        RenkliMeyvelerDic.Add(9,Resources.LoadAll<Sprite>("Images/Meyveler/9_yesilimsi"));
+        RenkliMeyvelerDic.Add(0,Resources.LoadAll<Sprite>("Images/Meyveler/Page 1"));
+        RenkliMeyvelerDic.Add(1,Resources.LoadAll<Sprite>("Images/Meyveler/Page 2"));
+        RenkliMeyvelerDic.Add(2,Resources.LoadAll<Sprite>("Images/Meyveler/Page 3"));
+        RenkliMeyvelerDic.Add(3,Resources.LoadAll<Sprite>("Images/Meyveler/Page 4"));
+        RenkliMeyvelerDic.Add(4,Resources.LoadAll<Sprite>("Images/Meyveler/Page 5"));
+        RenkliMeyvelerDic.Add(5,Resources.LoadAll<Sprite>("Images/Meyveler/Page 6"));
+        RenkliMeyvelerDic.Add(6,Resources.LoadAll<Sprite>("Images/Meyveler/Page 7"));
+        RenkliMeyvelerDic.Add(7,Resources.LoadAll<Sprite>("Images/Meyveler/Page 8"));
+        RenkliMeyvelerDic.Add(8,Resources.LoadAll<Sprite>("Images/Meyveler/Page 9"));
+        RenkliMeyvelerDic.Add(9,Resources.LoadAll<Sprite>("Images/Meyveler/Page 10"));
     }
 
     private void Start(){

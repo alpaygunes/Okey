@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 9150946381154711298}
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &922326687342847919
@@ -311,10 +311,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b40b5532042347173a7426e0ff85e28c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meyveID: 0
-  renk: {r: 0, g: 0, b: 0, a: 0}
+  MeyveID: 0
+  RenkID: 0
   TextMeyveID: {fileID: 0}
-  meyveResmiSpriteRenderer: {fileID: 0}
+  MeyveResmiSpriteRenderer: {fileID: 0}
   colID: 0
 --- !u!1 &3459735661408257812
 GameObject:
